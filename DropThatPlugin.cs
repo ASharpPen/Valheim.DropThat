@@ -16,17 +16,15 @@ namespace Valheim.DropThat
 
         public static ConfigEntry<bool> DebugMode { get; set; }
 
-        public static ManualLogSource PluginLogger;
-
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
         {
+            Logger.LogInfo("Loading configurations");
+
             string dropTableConfigFile = Path.Combine(Paths.ConfigPath, "drop_that.tables.cfg");
 
             ConfigFile generalConfig = new ConfigFile(Path.Combine(Paths.ConfigPath, "drop_that.cfg"), true);
-            DebugMode = generalConfig.Bind<bool>("General", "EnableDebug", false, "Enable debug logging. May be irrelevant depending on how BepInEx handles its logging.");
-
-            PluginLogger = Logger;
+            DebugMode = generalConfig.Bind<bool>("General", "EnableDebug", false, "Enable debug logging.");
 
             ConfigFile dropConfig;
             if (!File.Exists(dropTableConfigFile))
@@ -42,6 +40,8 @@ namespace Valheim.DropThat
             DropTableConfigurationLoader.ScanBindings(dropConfig);
             DropTables = DropTableConfigurationLoader.GroupConfigurations(dropConfig);
 
+            Logger.LogInfo("Configuration loading complete.");
+
             var harmony = new Harmony("mod.drop_that");
             harmony.PatchAll();
         }
@@ -56,7 +56,7 @@ namespace Valheim.DropThat
 
             string cleanedName = name.Split('(')[0].Trim().ToUpperInvariant();
 
-            if (DropThatPlugin.DebugMode.Value) DropThatPlugin.PluginLogger.LogDebug("CharacterDrop starting: " + name + "; " + cleanedName);
+            if (DropThatPlugin.DebugMode.Value) Debug.Log("CharacterDrop starting: " + name + "; " + cleanedName);
 
             var configMatch = DropThatPlugin.DropTables.FirstOrDefault(x => cleanedName == x.EntityName.Trim().ToUpperInvariant());
 
@@ -74,7 +74,7 @@ namespace Valheim.DropThat
 
                     if (item == null)
                     {
-                        DropThatPlugin.PluginLogger.LogWarning($"Couldn't find item '{dropEntry.ItemName}'");
+                        Debug.LogWarning($"Couldn't find item '{dropEntry.ItemName}'");
                         continue;
                     }
 
@@ -88,18 +88,18 @@ namespace Valheim.DropThat
                         m_onePerPlayer = dropEntry.OnePerPlayer.Value
                     };
 
-                    if (DropThatPlugin.DebugMode.Value) DropThatPlugin.PluginLogger.LogDebug($"[{configMatch.EntityName}]: {__instance.m_drops.Count} existing drops in table.");
+                    if (DropThatPlugin.DebugMode.Value) Debug.Log($"[{configMatch.EntityName}]: {__instance.m_drops.Count} existing drops in table.");
 
                     if (__instance.m_drops.Count > dropEntry.Index && dropEntry.Index >= 0)
                     {
-                        if (DropThatPlugin.DebugMode.Value) DropThatPlugin.PluginLogger.LogDebug($"[{configMatch.EntityName}]: Replacing {__instance.m_drops[dropEntry.Index].m_prefab.name} drop with {dropEntry.ItemName.Value}.");
+                        if (DropThatPlugin.DebugMode.Value) Debug.Log($"[{configMatch.EntityName}]: Replacing {__instance.m_drops[dropEntry.Index].m_prefab.name} drop with {dropEntry.ItemName.Value}.");
 
                         //Replace existing entry
                         __instance.m_drops[dropEntry.Index] = dropConfig;
                     }
                     else
                     {
-                        if (DropThatPlugin.DebugMode.Value) DropThatPlugin.PluginLogger.LogDebug($"[{configMatch.EntityName}]: Adding {dropEntry.ItemName.Value} drop.");
+                        if (DropThatPlugin.DebugMode.Value) Debug.Log($"[{configMatch.EntityName}]: Adding {dropEntry.ItemName.Value} drop.");
                         __instance.m_drops.Insert(dropEntry.Index, dropConfig);
                     }
                 }

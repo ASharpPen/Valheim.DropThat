@@ -11,6 +11,8 @@ namespace Valheim.DropThat
     {
         public static void InitializeExample(ConfigFile config)
         {
+            if (DropThatPlugin.DebugMode.Value) Debug.Log("Generating example config.");
+
             config.Bind<string>("Draugr.0", nameof(DropConfiguration.ItemName), "Entrails");
             config.Bind<int>("Draugr.0", nameof(DropConfiguration.AmountMin), 1);
             config.Bind<int>("Draugr.0", nameof(DropConfiguration.AmountMax), 1);
@@ -41,7 +43,7 @@ namespace Valheim.DropThat
                     {
                         string key = keyValue[0].Trim();
 
-                        Debug.Log($"Binding {lastSection}:{key}");
+                        if(DropThatPlugin.DebugMode.Value) Debug.Log($"Binding {lastSection}:{key}");
 
                         switch (key)
                         {
@@ -77,7 +79,7 @@ namespace Valheim.DropThat
 
             foreach (var group in groups)
             {
-                Debug.Log(group.Key);
+                if(DropThatPlugin.DebugMode.Value) Debug.Log(group.Key);
 
                 var components = group.Key.Split('.');
 
