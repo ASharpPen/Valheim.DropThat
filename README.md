@@ -16,6 +16,7 @@ The main configuration file 'drop_that.tables.cfg' is expected (and generated if
 
 Drop tables are configured by creating a section as follows:
 
+```
   [<EntityName>.<DropIndex>]
   ItemName = <ItemPrefabName>
   AmountMin = <integer>
@@ -23,42 +24,34 @@ Drop tables are configured by creating a section as follows:
   Chance = <DropChance> //1 is 100%
   OnePerPlayer = <bool>
   LevelMultiplier = <bool>
-  
+```
+
 The DropIndex is used to either override an existing item drop, or simply to add to the list.
 Multiple drops for a mob can be modified by copying the above multiple times, using the same entity name and a different index.
   
 ## Example
+``` INI
+[Draugr.0]
+ItemName = Entrails
+AmountMin = 1
+AmountMax = 1
+Chance = 1
+OnePerPlayer = false
+LevelMultiplier = true
 
-  [Draugr.0]
+[Draugr.1]
+ItemName = ScrapIron
+AmountMin = 1
+AmountMax = 1
+Chance = 1
+OnePerPlayer = false
+LevelMultiplier = true
 
-  # Setting type: String
-  # Default value: Entrails
-  ItemName = Entrails
-
-  # Setting type: Int32
-  # Default value: 1
-  AmountMin = 1
-
-  # Setting type: Int32
-  # Default value: 1
-  AmountMax = 1
-
-  # Setting type: Single
-  # Default value: 1
-  Chance = 1
-
-  # Setting type: Boolean
-  # Default value: false
-  OnePerPlayer = false
-
-  # Setting type: Boolean
-  # Default value: true
-  LevelMultiplier = true
-  
-  [Draugr.1]
-  ItemName = ScrapIron
-  AmountMin = 1
-  AmountMax = 1
-  Chance = 1
-  OnePerPlayer = false
-  LevelMultiplier = true
+[Deer.5]
+ItemName = Coins
+AmountMin = 1
+AmountMax = 100
+Chance = 0.5f
+OnePerPlayer = false
+LevelMultiplier = false
+```
