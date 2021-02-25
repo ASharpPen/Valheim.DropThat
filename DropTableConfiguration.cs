@@ -26,8 +26,15 @@ namespace Valheim.DropThat
 
         public ConfigEntry<bool> LevelMultiplier;
 
+        public ConfigEntry<bool> Enabled;
+
         public bool IsValid()
         {
+            if(Enabled == null || !Enabled.Value)
+            {
+                return false;
+            }
+
             if (Index < 0)
             {
                 return false;
