@@ -74,6 +74,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterDropPatch.cs" />
+    <Compile Include="DefaultConfiguration.cs" />
     <Compile Include="DropTableConfiguration.cs" />
     <Compile Include="DropTableConfigurationLoader.cs" />
     <Compile Include="DropThatPlugin.cs" />

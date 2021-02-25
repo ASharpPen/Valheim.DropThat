@@ -11,7 +11,7 @@ namespace Valheim.DropThat
     {
         public static void InitializeExample(ConfigFile config)
         {
-            if (DropThatPlugin.DebugMode.Value) Debug.Log("Generating example config.");
+            if (DropThatPlugin.DefaultConfiguration.DebugMode.Value) Debug.Log("Generating example config.");
 
             config.Bind<string>("Draugr.0", nameof(DropConfiguration.ItemName), "Entrails");
             config.Bind<int>("Draugr.0", nameof(DropConfiguration.AmountMin), 1);
@@ -19,6 +19,7 @@ namespace Valheim.DropThat
             config.Bind<float>("Draugr.0", nameof(DropConfiguration.Chance), 1f);
             config.Bind<bool>("Draugr.0", nameof(DropConfiguration.OnePerPlayer), false);
             config.Bind<bool>("Draugr.0", nameof(DropConfiguration.LevelMultiplier), true);
+            config.Bind<bool>("Draugr.0", nameof(DropConfiguration.Enabled), false, "Enable/Disable this drop entry.");
         }
 
         public static void ScanBindings(ConfigFile config)
@@ -43,7 +44,7 @@ namespace Valheim.DropThat
                     {
                         string key = keyValue[0].Trim();
 
-                        if(DropThatPlugin.DebugMode.Value) Debug.Log($"Binding {lastSection}:{key}");
+                        if(DropThatPlugin.DefaultConfiguration.DebugMode.Value) Debug.Log($"Binding {lastSection}:{key}");
 
                         switch (key)
                         {
@@ -62,6 +63,9 @@ namespace Valheim.DropThat
                             case nameof(DropConfiguration.LevelMultiplier):
                                 _ = config.Bind<bool>(lastSection, key, false);
                                 break;
+                            case nameof(DropConfiguration.Enabled):
+                                _ = config.Bind<bool>(lastSection, key, true);
+                                break;
                             default:
                                 _ = config.Bind<string>(lastSection, key, "");
                                 break;
@@ -79,7 +83,7 @@ namespace Valheim.DropThat
 
             foreach (var group in groups)
             {
-                if(DropThatPlugin.DebugMode.Value) Debug.Log(group.Key);
+                if(DropThatPlugin.DefaultConfiguration.DebugMode.Value) Debug.Log(group.Key);
 
                 var components = group.Key.Split('.');
 
@@ -137,6 +141,7 @@ namespace Valheim.DropThat
                     drop.Chance = configFile.Bind<float>(group.Key, nameof(drop.Chance), 1f);
                     drop.LevelMultiplier = configFile.Bind<bool>(group.Key, nameof(drop.LevelMultiplier), false);
                     drop.OnePerPlayer = configFile.Bind<bool>(group.Key, nameof(drop.OnePerPlayer), false);
+                    drop.Enabled = configFile.Bind<bool>(group.Key, nameof(drop.Enabled), true);
                 }
                 else
                 {
