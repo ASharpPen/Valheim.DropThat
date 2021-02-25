@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Valheim.DropThat
 {
-    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "0.0.1.0")]
+    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.1.0")]
     public class DropThatPlugin : BaseUnityPlugin
     {
         public static List<DropTableConfiguration> DropTables = new List<DropTableConfiguration>();
