@@ -74,10 +74,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterDropPatch.cs" />
-    <Compile Include="DefaultConfiguration.cs" />
-    <Compile Include="DropTableConfiguration.cs" />
-    <Compile Include="DropTableConfigurationLoader.cs" />
+    <Compile Include="ConfigurationCore\Log.cs" />
+    <Compile Include="Patches\CharacterDropPatch.cs" />
+    <Compile Include="ConfigurationCore\ConfigurationEntry.cs" />
+    <Compile Include="ConfigurationCore\ConfigurationGroup.cs" />
+    <Compile Include="ConfigurationCore\ConfigurationLoader.cs" />
+    <Compile Include="ConfigurationCore\ConfigurationSection.cs" />
+    <Compile Include="ConfigurationCore\IHaveEntries.cs" />
+    <Compile Include="ConfigurationManager.cs" />
+    <Compile Include="ConfigurationTypes\DropTableConfiguration.cs" />
+    <Compile Include="ConfigurationTypes\GeneralConfiguration.cs" />
     <Compile Include="DropThatPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
