@@ -69,10 +69,10 @@ Drop tables are configured by creating a section as follows:
 ItemName = <ItemPrefabName>
 AmountMin = <integer>
 AmountMax = <integer>
-Chance = <DropChance> //1 is 100%, 0 disables it
+Chance = <DropChance> //0 disables it, 0.5 is 50% chance, 1 is 100% chance.
 OnePerPlayer = <bool>
 LevelMultiplier = <bool>
-Enabled = <bool> //Disables this entry while running.
+Enabled = <bool> //Disables this entry from being applied.
 ```
 
 The DropIndex is used to either override an existing item drop, or simply to add to the list.
@@ -122,3 +122,4 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 	- Port and rewrite of configuration system from [Custom Raids](https://valheim.thunderstore.io/package/ASharpPen/Custom_Raids/)
 	- Now supports loading of templates
 	- Additional general configuration options
+	- Now supports reloading of drop table configurations when reloading world. This means you can avoid having to completely restart the game if you only change the loot configs.
