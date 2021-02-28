@@ -36,6 +36,11 @@ namespace Valheim.DropThat.ConfigurationTypes
             {
                 if (int.TryParse(SectionName, out int result))
                 {
+                    if(result < 0)
+                    {
+                        return int.MaxValue;
+                    }
+
                     return result;
                 }
                 return int.MaxValue;
