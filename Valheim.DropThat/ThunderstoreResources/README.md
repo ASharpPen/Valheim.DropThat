@@ -2,9 +2,12 @@
 
 This mod enables configuration of any mob loot table.
 
+This solution is set up to easily (well, somewhat) configure any "character" drop table in the game. It can either add or replace existing drops.
+
+
 See the [Valheim wiki](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Table) to get a list of item names which can be used.
 
-This solution is set up to easily (well, somewhat) configure any "character" drop table in the game. It can either add or replace existing drops.
+A pretty comprehensive guide for prefabs can be found here https://gist.github.com/Sonata26/e2b85d53e125fb40081b18e2aee6d584 or here https://steamcommunity.com/sharedfiles/filedetails/?id=2392080520
 
 # Features
 
@@ -12,6 +15,7 @@ This solution is set up to easily (well, somewhat) configure any "character" dro
 - Add as many additional drops with their own drop chance or drop range as you want
 - Discard all existing drop tables
 - Discard all existing drop tables for entities modified.
+- Configuration templates, for easy extension.
 
 # Manual Installation:
 
@@ -61,7 +65,7 @@ AlwaysAppend = false
 Drop tables are configured by creating a section as follows:
 
 ``` INI
-[<EntityName>.<DropIndex>]
+[<EntityPrepfabName>.<DropIndex>]
 ItemName = <ItemPrefabName>
 AmountMin = <integer>
 AmountMax = <integer>
@@ -98,8 +102,23 @@ Enabled = true
 ItemName = Coins
 AmountMin = 1
 AmountMax = 100
-Chance = 0.5f
+Chance = 0.5
 OnePerPlayer = false
 LevelMultiplier = false
 Enabled = true
 ```
+
+## Supplemental
+
+By default, Drop That will load additional configurations from configs with names prefixed with "drop_that.supplemental.".
+
+This allows for adding your own custom templates to Drop That. Eg. "drop_that.supplemental.my_custom_configuration.cfg"
+
+The supplemental configuration expects the same structure as "drop_that.tables.cfg".
+
+# Changelog
+
+- v1.2.0
+	- Port and rewrite of configuration system from [Custom Raids](https://valheim.thunderstore.io/package/ASharpPen/Custom_Raids/)
+	- Now supports loading of templates
+	- Additional general configuration options

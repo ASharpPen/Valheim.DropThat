@@ -1,6 +1,6 @@
 {
-  "name": "DropThat",
-  "version_number": "1.1.0",
+  "name": "Drop_That",
+  "version_number": "1.2.0",
   "website_url": "https://github.com/ASharpPen/Valheim.DropThat",
   "description": "Modify mob loot tables.",
   "dependencies": [

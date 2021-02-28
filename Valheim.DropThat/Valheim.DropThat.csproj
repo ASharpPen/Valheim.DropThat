@@ -90,6 +90,7 @@
     <None Include="app.config" />
     <None Include="ThunderstoreResources\manifest.json" />
     <None Include="packages.config" />
+    <None Include="ThunderstoreResources\README.md" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
