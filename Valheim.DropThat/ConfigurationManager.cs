@@ -85,7 +85,7 @@ namespace Valheim.DropThat
 
             var configFile = new ConfigFile(configPath, true);
 
-            if (GeneralConfig?.StopTouchingMyConfigs != null) configFile.SaveOnConfigSet = GeneralConfig.StopTouchingMyConfigs.Value;
+            if (GeneralConfig?.StopTouchingMyConfigs?.Value != null) configFile.SaveOnConfigSet = GeneralConfig.StopTouchingMyConfigs.Value;
 
             Dictionary<string, DropTableConfiguration> configurations = ConfigurationLoader.LoadConfigurationGroup<DropTableConfiguration, DropConfiguration>(configFile);
 

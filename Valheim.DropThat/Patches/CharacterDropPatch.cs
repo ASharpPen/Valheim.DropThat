@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Linq;
 using UnityEngine;
 using Valheim.DropThat.ConfigurationCore;
@@ -26,7 +25,7 @@ namespace Valheim.DropThat
 
             Log.LogDebug($"[{name}] CharacterDrop starting. Using cleaned name '{cleanedName}' for comparisons.");
 
-            var configMatch = ConfigurationManager.DropConfigs.FirstOrDefault(x => cleanedName == x.EntityName);
+            var configMatch = ConfigurationManager.DropConfigs.FirstOrDefault(x => x.Enabled.Value && cleanedName == x.EntityName);
 
             Log.LogTrace("Possible comparisons:");
             ConfigurationManager.DropConfigs.ForEach(x =>
