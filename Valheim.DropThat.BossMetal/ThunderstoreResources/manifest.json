@@ -1,0 +1,10 @@
+{
+  "name": "Drop_That_-_Boss_Metals",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/ASharpPen/Valheim.DropThat",
+  "description": "Bosses drop metal ores according to their tier. Highly configurable.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.602",
+    "ASharpPen-Drop_That-1.2.0"
+  ]
+}
