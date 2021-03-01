@@ -29,6 +29,8 @@ namespace Valheim.DropThat.ConfigurationTypes
 
         public ConfigurationEntry<bool> LevelMultiplier = new ConfigurationEntry<bool>(true, "Toggles level multiplier for dropped amount.");
 
+        //public ConfigurationEntry<int> ConditionMinLevel = new ConfigurationEntry<int>(1, "Minimum ")
+
         // Inefficient, but will do for now.
         public int Index
         {

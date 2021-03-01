@@ -73,6 +73,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conditions\ConditionChecker.cs" />
+    <Compile Include="Conditions\MonsterLevel.cs" />
     <Compile Include="ConfigurationCore\Log.cs" />
     <Compile Include="Patches\CharacterDropPatch.cs" />
     <Compile Include="ConfigurationCore\ConfigurationEntry.cs" />
@@ -95,5 +97,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

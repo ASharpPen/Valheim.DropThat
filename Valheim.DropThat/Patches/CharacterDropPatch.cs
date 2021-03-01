@@ -57,7 +57,12 @@ namespace Valheim.DropThat
                         continue;
                     }
 
+                    //TODO: Check dropEntry conditions
+
                     GameObject item = ObjectDB.instance.GetItemPrefab(dropEntry.ItemName?.Value);
+
+                    var itemDrop = item.GetComponent<ItemDrop>();
+                    itemDrop.m_itemData.m_quality = 3;
 
                     if (item == null)
                     {
