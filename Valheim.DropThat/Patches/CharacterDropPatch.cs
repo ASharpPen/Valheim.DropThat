@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEngine;
 using Valheim.DropThat.ConfigurationCore;
 using Valheim.DropThat.ConfigurationTypes;
+using System.Collections.Generic;
+using Valheim.DropThat.Conditions;
 
 namespace Valheim.DropThat
 {
@@ -57,8 +59,6 @@ namespace Valheim.DropThat
                         continue;
                     }
 
-                    //TODO: Check dropEntry conditions
-
                     GameObject item = ObjectDB.instance.GetItemPrefab(dropEntry.ItemName?.Value);
 
                     var itemDrop = item.GetComponent<ItemDrop>();
@@ -70,18 +70,18 @@ namespace Valheim.DropThat
                         continue;
                     }
 
-                    CharacterDrop.Drop dropConfig = new CharacterDrop.Drop
+                    DropExtended dropConfig = new DropExtended
                     {
                         m_prefab = item,
                         m_amountMax = dropEntry.AmountMax.Value,
                         m_amountMin = dropEntry.AmountMin.Value,
                         m_chance = dropEntry.Chance.Value,
                         m_levelMultiplier = dropEntry.LevelMultiplier.Value,
-                        m_onePerPlayer = dropEntry.OnePerPlayer.Value
+                        m_onePerPlayer = dropEntry.OnePerPlayer.Value,
+                        Config = dropEntry,
                     };
 
                     Log.LogDebug($"[{name}]: {__instance.m_drops.Count} existing drops in table.");
-
 
                     if(!GeneralConfig.AlwaysAppend.Value)
                     {
@@ -96,6 +96,11 @@ namespace Valheim.DropThat
 
                     Insert(__instance, dropEntry, dropConfig);
                 }
+            }
+
+            if (!GeneralConfig.ApplyConditionsOnDeath?.Value ?? false)
+            {
+                __instance.m_drops = ConditionChecker.FilterByCondition(__instance);
             }
         }
 
