@@ -91,6 +91,5 @@ namespace Valheim.DropThat
 
             return configurations.Values.ToList();
         }
-
     }
 }

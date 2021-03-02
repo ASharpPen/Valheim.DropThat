@@ -15,6 +15,8 @@ namespace Valheim.DropThat.ConfigurationTypes
 
     public class DropConfiguration : ConfigurationSection
     {
+        #region CharacterDrop.Drop
+
         public ConfigurationEntry<string> ItemName = new ConfigurationEntry<string>("", "Prefab name of item to drop.");
 
         public ConfigurationEntry<bool> Enabled = new ConfigurationEntry<bool>(true, "Enable/disable this specific drop configuration.");
@@ -28,6 +30,28 @@ namespace Valheim.DropThat.ConfigurationTypes
         public ConfigurationEntry<bool> OnePerPlayer = new ConfigurationEntry<bool>(false);
 
         public ConfigurationEntry<bool> LevelMultiplier = new ConfigurationEntry<bool>(true, "Toggles level multiplier for dropped amount.");
+
+        #endregion
+
+        #region DropExtended Conditions
+
+        public ConfigurationEntry<int> ConditionMinLevel = new ConfigurationEntry<int>(-1, "Minimum level of mob for which item drops.");
+
+        public ConfigurationEntry<int> ConditionMaxLevel = new ConfigurationEntry<int>(-1, "Maximum level of mob for which item drops.");
+
+        public ConfigurationEntry<bool> ConditionNotDay = new ConfigurationEntry<bool>(false, "If true, will not drop during daytime.");
+
+        public ConfigurationEntry<bool> ConditionNotAfternoon = new ConfigurationEntry<bool>(false, "If true, will not drop during afternoon.");
+
+        public ConfigurationEntry<bool> ConditionNotNight = new ConfigurationEntry<bool>(false, "If true, will not drop during night.");
+
+        public ConfigurationEntry<string> ConditionEnvironments = new ConfigurationEntry<string>("", "Array (separated by ,) of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.");
+
+        public ConfigurationEntry<string> ConditionGlobalKeys = new ConfigurationEntry<string>("", "Array(separated by,) of global keys names that allow the item to drop while they are active.\nEg. defeated_eikthyr,defeated_gdking.Leave empty to always allow.");
+
+        public ConfigurationEntry<string> ConditionBiomes = new ConfigurationEntry<string>("", "Array(separated by,) of biome names that allow the item to drop while they are active.\nEg. Meadows, Swamp. Leave empty to always allow.");
+
+        #endregion
 
         // Inefficient, but will do for now.
         public int Index
