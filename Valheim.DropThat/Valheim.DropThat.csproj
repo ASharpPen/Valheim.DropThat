@@ -87,6 +87,7 @@
     <Compile Include="ConfigurationTypes\GeneralConfiguration.cs" />
     <Compile Include="DropThatPlugin.cs" />
     <Compile Include="Patches\DropTranspilePatch.cs" />
+    <Compile Include="Patches\WorldStartPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
