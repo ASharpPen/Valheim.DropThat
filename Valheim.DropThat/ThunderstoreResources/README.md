@@ -90,22 +90,39 @@ OnePerPlayer = <bool>
 LevelMultiplier = <bool>
 Enabled = <bool> //Disables this entry from being applied.
 ```
+The DropIndex is used to either override an existing item drop, or simply to add to the list.
+Multiple drops for a mob can be modified by copying the above multiple times, using the same entity name and a different index.
 
 Conditions can be added to each index as follows:
 
-| Condition | Type | Default | Description |
-| --------- | ------- | ----------- |
-| ConditionMinLevel | int | -1 | Minimum level of mob for which item drops.|
-| ConditionMaxLevel | int | -1 | Maximum level of mob for which item drops.|
-| ConditionNotDay | bool | false | If true, will not drop during daytime..|
-| ConditionNotAfternoon | bool | false | If true, will not drop during afternoon.|
-| ConditionNotNight | bool | false | If true, will not drop during night.|
-| ConditionEnvironments | string | | Array (separated by ,) of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.|
-| ConditionGlobalKeys | string | | Array(separated by,) of global keys names that allow the item to drop while they are active.\nEg. defeated_eikthyr,defeated_gdking.Leave empty to always allow.|
-| ConditionBiomes | string | | Array(separated by,) of biome names that allow the item to drop while they are active.\nEg. Meadows, Swamp. Leave empty to always allow.|
+``` INI
 
-The DropIndex is used to either override an existing item drop, or simply to add to the list.
-Multiple drops for a mob can be modified by copying the above multiple times, using the same entity name and a different index.
+## Minimum level of mob for which item drops.
+ConditionMinLevel = -1
+
+## Maximum level of mob for which item drops.
+ConditionMaxLevel = -1 
+
+## If true, will not drop during daytime.
+ConditionNotDay = false
+
+## If true, will not drop during afternoon.
+ConditionNotAfternoon = false
+
+## If true, will not drop during night.
+ConditionNotNight = false 
+
+## Array (separated by ,) of environment names that allow the item to drop while they are active.
+## Eg. Misty, Thunderstorm. Leave empty to always allow.
+ConditionEnvironments = 
+
+## Array(separated by,) of global keys names that allow the item to drop while they are active.
+## Eg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.
+ConditionGlobalKeys = 
+
+## Array(separated by,) of biome names that allow the item to drop while they are active.
+## Eg. Meadows, Swamp. Leave empty to always allow.
+ConditionBiomes = 
   
 ## Example
 ``` INI
@@ -154,7 +171,10 @@ This allows for adding your own custom templates to Drop That. Eg. "drop_that.su
 The supplemental configuration expects the same structure as "drop_that.tables.cfg".
 
 # Changelog
-
+- v1.3.2
+	- fml. Readme again.
+- v1.3.1
+	- Woops. Fixed the readme. Turns out thunderstore does not like markdown tables.
 - v1.3.0
 	- Fixed lie about drop table configurations reloading on world start. It should work properly now!
 	- Added support for setting drop conditions on each item
