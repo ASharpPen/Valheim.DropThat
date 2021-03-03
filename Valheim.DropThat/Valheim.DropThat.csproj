@@ -73,7 +73,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conditions\ConditionChecker.cs" />
     <Compile Include="ConfigurationCore\Log.cs" />
+    <Compile Include="Patches\DropExtended.cs" />
     <Compile Include="Patches\CharacterDropPatch.cs" />
     <Compile Include="ConfigurationCore\ConfigurationEntry.cs" />
     <Compile Include="ConfigurationCore\ConfigurationGroup.cs" />
@@ -84,6 +86,8 @@
     <Compile Include="ConfigurationTypes\DropTableConfiguration.cs" />
     <Compile Include="ConfigurationTypes\GeneralConfiguration.cs" />
     <Compile Include="DropThatPlugin.cs" />
+    <Compile Include="Patches\DropTranspilePatch.cs" />
+    <Compile Include="Patches\WorldStartPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,9 +4,10 @@ This mod enables configuration of any mob loot table.
 
 This solution is set up to easily (well, somewhat) configure any "character" drop table in the game. It can either add or replace existing drops.
 
+
 See the [Valheim wiki](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Table) to get a list of item names which can be used.
 
-A pretty comprehensive guide for prefabs can be found [here](https://gist.github.com/Sonata26/e2b85d53e125fb40081b18e2aee6d584)
+A pretty comprehensive guide for prefabs can be found here https://gist.github.com/Sonata26/e2b85d53e125fb40081b18e2aee6d584 or here https://steamcommunity.com/sharedfiles/filedetails/?id=2392080520
 
 # Features
 
@@ -15,20 +16,19 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Discard all existing drop tables
 - Discard all existing drop tables for entities modified.
 - Configuration templates, for easy extension.
-- Add conditions for when a mob should drop an item
 
 # Manual Installation:
 
 1. Install the [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
 2. Download the latest zip
-3. Extract it in the \<GameDirectory\>\Bepinex\plugins\folder.
+3. Extract it in the \<GameDirectory\>\Bepinex\plugins\ folder.
 
 # Configuration
 
 Attempting to work with the BepInEx configuration system, but is set up to manage "arrays" of drops.
 The configuration file 'drop_that.tables.cfg' is expected (and generated if not present) in the BepInEx config folder.
 
-If files are not present, start the game and they will be generated.
+If files are not present, start the game and they will be generated including an example. 
 Restart to apply changes.
 
 ## General
@@ -42,15 +42,7 @@ General configurations. Contains predefined configurations, which includes rules
 [General]
 
 ## Enable debug logging.
-EnableDebug = false
-
-## Reloads drop table configurations when a game world starts.
-## This means if you are playing solo, you can edit the drop table files while logged out, without exiting the game completely.
-LoadDropTableConfigsOnWorldStart = true
-
-## Loads drop table configurations from supplemental files.
-## Eg. drop_that.supplemental.my_drops.cfg will be included on load.
-LoadSupplementalDropTables = true
+EnableDebug = true
 
 [DropTables]
 
@@ -58,19 +50,11 @@ LoadSupplementalDropTables = true
 ClearAllExisting = false
 
 ## When enabled, all existing items in drop tables are removed when a configuration for that entity exist. 
-## Eg. if "Deer" is present in configuration table, the configured drops will be the only drops for "Deer".
+## Eg. if 'Deer' is present in configuration table, the configured drops will be the only drops for 'Deer'.
 ClearAllExistingWhenModified = false
 
 ## When enabled, drop configurations will not override existing items if their indexes match.
 AlwaysAppend = false
-
-## When enabled, drop conditions are checked at time of death, instead of at time of spawn.
-ApplyConditionsOnDeath = false
-
-[Debug]
-
-## Enables in-depth logging. Note, this might generate a LOT of log entries.
-EnableTraceLogging = false
 
 ```
 
@@ -90,19 +74,6 @@ OnePerPlayer = <bool>
 LevelMultiplier = <bool>
 Enabled = <bool> //Disables this entry from being applied.
 ```
-
-Conditions can be added to each index as follows:
-
-| Condition | Type | Default | Description |
-| --------- | ------- | ----------- |
-| ConditionMinLevel | int | -1 | Minimum level of mob for which item drops.|
-| ConditionMaxLevel | int | -1 | Maximum level of mob for which item drops.|
-| ConditionNotDay | bool | false | If true, will not drop during daytime..|
-| ConditionNotAfternoon | bool | false | If true, will not drop during afternoon.|
-| ConditionNotNight | bool | false | If true, will not drop during night.|
-| ConditionEnvironments | string | | Array (separated by ,) of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.|
-| ConditionGlobalKeys | string | | Array(separated by,) of global keys names that allow the item to drop while they are active.\nEg. defeated_eikthyr,defeated_gdking.Leave empty to always allow.|
-| ConditionBiomes | string | | Array(separated by,) of biome names that allow the item to drop while they are active.\nEg. Meadows, Swamp. Leave empty to always allow.|
 
 The DropIndex is used to either override an existing item drop, or simply to add to the list.
 Multiple drops for a mob can be modified by copying the above multiple times, using the same entity name and a different index.
@@ -135,14 +106,6 @@ Chance = 0.5
 OnePerPlayer = false
 LevelMultiplier = false
 Enabled = true
-ConditionMinLevel=1
-ConditionMaxLevel=2
-ConditionNotDay=false
-ConditionNotNight=false
-ConditionNotAfternoon=false
-ConditionEnvironments=Misty
-ConditionGlobalKeys=defeated_bonemass
-ConditionBiomes=Blackforest,Meadows
 ```
 
 ## Supplemental
@@ -155,10 +118,6 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 
 # Changelog
 
-- v1.3.0
-	- Fixed lie about drop table configurations reloading on world start. It should work properly now!
-	- Added support for setting drop conditions on each item
-	- Added support for selecting whether to apply conditions at time of spawn or death.
 - v1.2.0
 	- Port and rewrite of configuration system from [Custom Raids](https://valheim.thunderstore.io/package/ASharpPen/Custom_Raids/)
 	- Now supports loading of templates

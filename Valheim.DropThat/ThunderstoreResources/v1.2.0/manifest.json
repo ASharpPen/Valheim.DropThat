@@ -1,0 +1,9 @@
+{
+  "name": "Drop_That",
+  "version_number": "1.2.0",
+  "website_url": "https://github.com/ASharpPen/Valheim.DropThat",
+  "description": "Modify mob loot tables.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.602"
+  ]
+}
