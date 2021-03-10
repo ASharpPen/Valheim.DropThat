@@ -123,8 +123,10 @@ ConditionGlobalKeys =
 ## Array(separated by,) of biome names that allow the item to drop while they are active.
 ## Eg. Meadows, Swamp. Leave empty to always allow.
 ConditionBiomes = 
+```
   
 ## Example
+
 ``` INI
 [Draugr.0]
 ItemName = Entrails
@@ -136,7 +138,7 @@ LevelMultiplier = true
 Enabled = true
 
 [Draugr.1]
-ItemName = ScrapIron
+ItemName = IronScrap
 AmountMin = 1
 AmountMax = 1
 Chance = 1
@@ -171,10 +173,9 @@ This allows for adding your own custom templates to Drop That. Eg. "drop_that.su
 The supplemental configuration expects the same structure as "drop_that.tables.cfg".
 
 # Changelog
-- v1.3.2
-	- fml. Readme again.
-- v1.3.1
-	- Woops. Fixed the readme. Turns out thunderstore does not like markdown tables.
+- v1.3.3
+	- Fixed quality being set to 3 by mistake. Leftover from discarded feature, ups!
+	- Fixed readme example.
 - v1.3.0
 	- Fixed lie about drop table configurations reloading on world start. It should work properly now!
 	- Added support for setting drop conditions on each item

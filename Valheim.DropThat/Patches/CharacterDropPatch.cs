@@ -61,9 +61,6 @@ namespace Valheim.DropThat
 
                     GameObject item = ObjectDB.instance.GetItemPrefab(dropEntry.ItemName?.Value);
 
-                    var itemDrop = item.GetComponent<ItemDrop>();
-                    itemDrop.m_itemData.m_quality = 3;
-
                     if (item == null)
                     {
                         Log.LogWarning($"Couldn't find item '{dropEntry.ItemName}' for configuration '{configMatch.EntityName}'");
