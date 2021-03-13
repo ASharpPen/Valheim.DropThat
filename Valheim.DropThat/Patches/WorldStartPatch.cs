@@ -3,13 +3,17 @@ using Valheim.DropThat.ConfigurationCore;
 
 namespace Valheim.DropThat.Patches
 {
-    [HarmonyPatch(typeof(FejdStartup), nameof(FejdStartup.OnWorldStart))]
+    [HarmonyPatch(typeof(FejdStartup), "OnWorldStart")]
     public static class WorldStartPatch
     {
-        private static void Postfix(ref FejdStartup __instance)
+        private static void Postfix()
         {
-            Log.LogDebug("World startet. Loading drop configurations.");
-            ConfigurationManager.LoadAllDropTableConfigurations();
+            //Turns out, ZNet is null when starting singleplayer worlds.
+            if (ZNet.instance == null)
+            {
+                Log.LogDebug("World startet. Loading configurations.");
+                ConfigurationManager.LoadAllConfigurations();
+            }
         }
     }
 }

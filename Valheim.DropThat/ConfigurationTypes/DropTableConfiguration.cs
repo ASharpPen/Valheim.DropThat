@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Valheim.DropThat.ConfigurationCore;
 
 namespace Valheim.DropThat.ConfigurationTypes
 {
+    [Serializable]
     public class DropTableConfiguration : ConfigurationGroup<DropConfiguration>
     {
         public ConfigurationEntry<bool> Enabled = new ConfigurationEntry<bool>(true, "Enable/disable configuration for this entity.");
@@ -13,6 +15,7 @@ namespace Valheim.DropThat.ConfigurationTypes
         public string EntityName => GroupName.Trim().ToUpperInvariant();
     }
 
+    [Serializable]
     public class DropConfiguration : ConfigurationSection
     {
         #region CharacterDrop.Drop
