@@ -14,7 +14,6 @@ namespace Valheim.DropThat.ConfigurationTypes
 
         public ConfigurationEntry<bool> DebugMode = new ConfigurationEntry<bool>(false, "Enable debug logging.");
         public ConfigurationEntry<bool> StopTouchingMyConfigs = new ConfigurationEntry<bool>(true, "Disables automatic updating and saving of drop table configurations.\nThis means no helpers will be added, but.. allows you to keep things compact.");
-        public ConfigurationEntry<bool> LoadDropTableConfigsOnWorldStart = new ConfigurationEntry<bool>(true, "Reloads drop table configurations when a game world starts.\nThis means if you are playing solo, you can edit the drop table files while logged out, without exiting the game completely.");
         public ConfigurationEntry<bool> LoadSupplementalDropTables = new ConfigurationEntry<bool>(true, "Loads drop table configurations from supplemental files.\nEg. drop_that.supplemental.my_drops.cfg will be included on load.");
 
         #endregion
@@ -47,7 +46,6 @@ namespace Valheim.DropThat.ConfigurationTypes
 
             DebugMode.Bind(Config, "General", "EnableDebug");
             StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
-            LoadDropTableConfigsOnWorldStart.Bind(Config, "General", nameof(LoadDropTableConfigsOnWorldStart));
             LoadSupplementalDropTables.Bind(Config, "General", nameof(LoadSupplementalDropTables));
         }
     }

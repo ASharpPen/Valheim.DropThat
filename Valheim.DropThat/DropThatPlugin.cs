@@ -13,11 +13,6 @@ namespace Valheim.DropThat
 
             ConfigurationManager.LoadGeneralConfigurations();
 
-            if (!ConfigurationManager.GeneralConfig.LoadDropTableConfigsOnWorldStart.Value)
-            {
-                ConfigurationManager.LoadAllDropTableConfigurations();
-            }
-
             Logger.LogInfo("Finished loading configurations");
 
             new Harmony("mod.custom_raids").PatchAll();
