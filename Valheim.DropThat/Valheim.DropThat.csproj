@@ -78,8 +78,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\ConditionChecker.cs" />
-    <Compile Include="ConfigurationCore\ConfigMultiplayer.cs" />
+    <Compile Include="Multiplayer\ConfigMultiplayerPatch.cs" />
     <Compile Include="ConfigurationCore\Log.cs" />
+    <Compile Include="Multiplayer\ConfigurationDto.cs" />
+    <Compile Include="Multiplayer\ConfigurationPackage.cs" />
     <Compile Include="Patches\DropExtended.cs" />
     <Compile Include="Patches\CharacterDropPatch.cs" />
     <Compile Include="ConfigurationCore\ConfigurationEntry.cs" />

@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
+using Valheim.DropThat.ConfigurationCore;
+using Valheim.DropThat.ConfigurationTypes;
 
-namespace Valheim.DropThat.ConfigurationCore.Multiplayer
+namespace Valheim.DropThat.Multiplayer
 {
 	[HarmonyPatch(typeof(ZNet))]
 	public class ConfigMultiplayerPatch
@@ -17,14 +17,17 @@ namespace Valheim.DropThat.ConfigurationCore.Multiplayer
 		{
 			if (ZNet.instance.IsServer())
 			{
+				ConfigurationManager.LoadAllConfigurations();
+
 				Log.LogDebug("Registering server RPC for sending configs on request from client.");
-				//TODO: Maybe initiate config loading here?
 				peer.m_rpc.Register(nameof(RPC_RquestConfigsDropThat), new ZRpc.RpcMethod.Method(RPC_RquestConfigsDropThat));
 			}
 			else
 			{
 				Log.LogDebug("Registering client RPC for receiving configs from server.");
 				peer.m_rpc.Register<ZPackage>(nameof(RPC_ReceiveConfigsDropThat), new Action<ZRpc, ZPackage>(RPC_ReceiveConfigsDropThat));
+
+				Log.LogDebug("Requesting configs from server.");
 				peer.m_rpc.Invoke(nameof(RPC_RquestConfigsDropThat));
 			}
 		}
@@ -42,21 +45,27 @@ namespace Valheim.DropThat.ConfigurationCore.Multiplayer
 
 				ZPackage configPackage = new ZPackage();
 
-				var test = new TestPackage("Send this please");
+				var package = new ConfigurationPackage(ConfigurationManager.GeneralConfig, ConfigurationManager.DropConfigs);
+
+				Log.LogTrace("Serializing configs.");
 
 				using (MemoryStream memStream = new MemoryStream())
 				{
 					BinaryFormatter binaryFormatter = new BinaryFormatter();
-					binaryFormatter.Serialize(memStream, test);
+					binaryFormatter.Serialize(memStream, package);
 
 					byte[] serialized = memStream.ToArray();
 
 					configPackage.Write(serialized);
 				}
 
+				Log.LogTrace("Sending config package.");
+
 				rpc.Invoke(nameof(RPC_ReceiveConfigsDropThat), new object[] { configPackage });
+
+				Log.LogTrace("Finished sending config package.");
 			}
-			catch(Exception e)
+			catch (Exception e)
             {
 				Log.LogError("Unexpected error while attempting to create and send config package from server to client.", e);
             }
@@ -64,18 +73,32 @@ namespace Valheim.DropThat.ConfigurationCore.Multiplayer
 
 		private static void RPC_ReceiveConfigsDropThat(ZRpc rpc, ZPackage pkg)
 		{
+			Log.LogTrace("Received package.");
 			try
 			{
 				var serialized = pkg.ReadByteArray();
+
+				Log.LogTrace("Deserializing package.");
 
 				using (MemoryStream memStream = new MemoryStream(serialized))
 				{
 					BinaryFormatter binaryFormatter = new BinaryFormatter();
 					var responseObject = binaryFormatter.Deserialize(memStream);
 
-					if (responseObject is TestPackage configPackage)
+					if (responseObject is ConfigurationPackage configPackage)
 					{
-						Log.LogInfo("Received config package: " + configPackage.TestValue);
+						Log.LogDebug("Received and deserialized config package");
+
+						Log.LogTrace("Unpackaging general config.");
+
+						ConfigurationManager.GeneralConfig = (GeneralConfiguration)configPackage.GeneralConfig.Configuration;
+
+						Log.LogTrace("Successfully set general config.");
+						Log.LogTrace("Unpackaging drop table configs.");
+
+						ConfigurationManager.DropConfigs = (List<DropTableConfiguration>)configPackage.DropTableConfigs.Configuration;
+
+						Log.LogTrace("Successfully set drop table configs.");
 					}
 					else
 					{
@@ -86,21 +109,6 @@ namespace Valheim.DropThat.ConfigurationCore.Multiplayer
 			catch(Exception e)
             {
 				Log.LogError("Error while attempting to read received config package.", e);
-            }
-		}
-
-		[Serializable]
-		public class TestPackage
-		{
-			public string TestValue = "Hello World";
-
-			public TestPackage()
-            {
-            }
-
-			public TestPackage(string anotherValue)
-            {
-				TestValue = anotherValue;
             }
 		}
 	}

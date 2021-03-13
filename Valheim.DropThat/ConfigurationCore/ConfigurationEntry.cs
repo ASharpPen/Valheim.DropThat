@@ -1,4 +1,6 @@
 ﻿using BepInEx.Configuration;
+using System;
+using System.Runtime.Serialization;
 
 namespace Valheim.DropThat.ConfigurationCore
 {
@@ -7,12 +9,27 @@ namespace Valheim.DropThat.ConfigurationCore
         void Bind(ConfigFile config, string section, string key);
     }
 
+    [Serializable]
     public class ConfigurationEntry<TIn> : IConfigurationEntry
     {
         public TIn DefaultValue { get; set; }
-        public string Description { get; set; }
 
-        public ConfigEntry<TIn> Config { get; set; }
+        [NonSerialized]
+        public string Description;
+
+        [NonSerialized]
+        public ConfigEntry<TIn> Config;
+
+        [OnSerializing]
+        internal void OnSerialize()
+        {
+            // We cheat, and don't actually use the bepinex bindings for syncronized configurations.
+            // Due to Config not being set, this should result in DefaultValue always being used instead.
+            if(Config != null)
+            {
+                DefaultValue = Config.Value;
+            }
+        }
 
         public void Bind(ConfigFile config, string section, string key)
         {
@@ -28,6 +45,10 @@ namespace Valheim.DropThat.ConfigurationCore
 
         public override string ToString()
         {
+            if(Config == null)
+            {
+                return $"[Entry: {DefaultValue}]";
+            }
             return $"[{Config.Definition.Key}:{Config.Definition.Section}]: {Config.Value}";
         }
 
