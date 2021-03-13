@@ -1,35 +1,136 @@
-# Valheim.DropThat
+# Drop That!
 
-Valheim BepInEx plugin for modification of drop tables.
-Mainly implemented for personal use. Feel free to steal, use or eat the code in any way you want.
+This mod enables configuration of any mob loot table.
 
 This solution is set up to easily (well, somewhat) configure any "character" drop table in the game. It can either add or replace existing drops.
 
-# Installation:
+See the [Valheim wiki](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Table) to get a list of item names which can be used.
 
-Standard BepInEx plugin, just dump it into the plugin folder and it should hopefully work (aka. works on my machine!)
+A pretty comprehensive guide for prefabs can be found [here](https://gist.github.com/Sonata26/e2b85d53e125fb40081b18e2aee6d584)
+
+# Features
+
+- Override any existing potential drop of a mob, by specifying the index (0 based) of the item you want changed.
+- Add as many additional drops with their own drop chance or drop range as you want
+- Discard all existing drop tables
+- Discard all existing drop tables for entities modified.
+- Configuration templates, for easy extension.
+- Add conditions for when a mob should drop an item
+- Server-side configs
+
+# Manual Installation:
+
+1. Install the [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
+2. Download the latest zip
+3. Extract it in the \<GameDirectory\>\Bepinex\plugins\folder.
 
 # Configuration
 
 Attempting to work with the BepInEx configuration system, but is set up to manage "arrays" of drops.
-The main configuration file 'drop_that.tables.cfg' is expected (and generated if not present) in the BepInEx config folder.
+The configuration file 'drop_that.tables.cfg' is expected (and generated if not present) in the BepInEx config folder.
+
+If files are not present, start the game and they will be generated.
+Restart to apply changes.
+
+# Client / Server
+
+Drop That needs to be installed on all clients to work.
+
+From v1.4.0 clients will request the configurations currently loaded by the server, and use those without affecting the clients config files.
+This means you should be able to have server-specific configurations, and the client can have its own setup for singleplayer.
+
+## General
+
+'drop_that.cfg'
+
+General configurations. Contains predefined configurations, which includes rules for how the 'drop_that.tables.cfg' entries will be applied.
+
+``` INI
+
+[General]
+
+## Enable debug logging.
+EnableDebug = false
+
+## Loads drop table configurations from supplemental files.
+## Eg. drop_that.supplemental.my_drops.cfg will be included on load.
+LoadSupplementalDropTables = true
+
+[DropTables]
+
+## When enabled, all existing items in drop tables gets removed.
+ClearAllExisting = false
+
+## When enabled, all existing items in drop tables are removed when a configuration for that entity exist. 
+## Eg. if "Deer" is present in configuration table, the configured drops will be the only drops for "Deer".
+ClearAllExistingWhenModified = false
+
+## When enabled, drop configurations will not override existing items if their indexes match.
+AlwaysAppend = false
+
+## When enabled, drop conditions are checked at time of death, instead of at time of spawn.
+ApplyConditionsOnDeath = false
+
+[Debug]
+
+## Enables in-depth logging. Note, this might generate a LOT of log entries.
+EnableTraceLogging = false
+
+```
+
+## Drop Tables 
+
+'drop_that.tables.cfg'
 
 Drop tables are configured by creating a section as follows:
 
+``` INI
+[<EntityPrepfabName>.<DropIndex>]
+ItemName = <ItemPrefabName>
+AmountMin = <integer>
+AmountMax = <integer>
+Chance = <DropChance> //0 disables it, 0.5 is 50% chance, 1 is 100% chance.
+OnePerPlayer = <bool>
+LevelMultiplier = <bool>
+Enabled = <bool> //Disables this entry from being applied.
 ```
-  [<EntityName>.<DropIndex>]
-  ItemName = <ItemPrefabName>
-  AmountMin = <integer>
-  AmountMax = <integer>
-  Chance = <DropChance> //1 is 100%
-  OnePerPlayer = <bool>
-  LevelMultiplier = <bool>
-```
-
 The DropIndex is used to either override an existing item drop, or simply to add to the list.
 Multiple drops for a mob can be modified by copying the above multiple times, using the same entity name and a different index.
+
+Conditions can be added to each index as follows:
+
+``` INI
+
+## Minimum level of mob for which item drops.
+ConditionMinLevel = -1
+
+## Maximum level of mob for which item drops.
+ConditionMaxLevel = -1 
+
+## If true, will not drop during daytime.
+ConditionNotDay = false
+
+## If true, will not drop during afternoon.
+ConditionNotAfternoon = false
+
+## If true, will not drop during night.
+ConditionNotNight = false 
+
+## Array (separated by ,) of environment names that allow the item to drop while they are active.
+## Eg. Misty, Thunderstorm. Leave empty to always allow.
+ConditionEnvironments = 
+
+## Array(separated by,) of global keys names that allow the item to drop while they are active.
+## Eg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.
+ConditionGlobalKeys = 
+
+## Array(separated by,) of biome names that allow the item to drop while they are active.
+## Eg. Meadows, Swamp. Leave empty to always allow.
+ConditionBiomes = 
+```
   
 ## Example
+
 ``` INI
 [Draugr.0]
 ItemName = Entrails
@@ -38,20 +139,56 @@ AmountMax = 1
 Chance = 1
 OnePerPlayer = false
 LevelMultiplier = true
+Enabled = true
 
 [Draugr.1]
-ItemName = ScrapIron
+ItemName = IronScrap
 AmountMin = 1
 AmountMax = 1
 Chance = 1
 OnePerPlayer = false
 LevelMultiplier = true
+Enabled = true
 
 [Deer.5]
 ItemName = Coins
 AmountMin = 1
 AmountMax = 100
-Chance = 0.5f
+Chance = 0.5
 OnePerPlayer = false
 LevelMultiplier = false
+Enabled = true
+ConditionMinLevel=1
+ConditionMaxLevel=2
+ConditionNotDay=false
+ConditionNotNight=false
+ConditionNotAfternoon=false
+ConditionEnvironments=Misty
+ConditionGlobalKeys=defeated_bonemass
+ConditionBiomes=Blackforest,Meadows
 ```
+
+## Supplemental
+
+By default, Drop That will load additional configurations from configs with names prefixed with "drop_that.supplemental.".
+
+This allows for adding your own custom templates to Drop That. Eg. "drop_that.supplemental.my_custom_configuration.cfg"
+
+The supplemental configuration expects the same structure as "drop_that.tables.cfg".
+
+# Changelog
+- v1.4.0
+	- Server-to-client config synchronization added.
+	- Removed option "LoadDropTableConfigsOnWorldStart". This will be done by default now (including the general config).
+- v1.3.3
+	- Fixed quality being set to 3 by mistake. Leftover from discarded feature, ups!
+	- Fixed readme example.
+- v1.3.0
+	- Fixed lie about drop table configurations reloading on world start. It should work properly now!
+	- Added support for setting drop conditions on each item
+	- Added support for selecting whether to apply conditions at time of spawn or death.
+- v1.2.0
+	- Port and rewrite of configuration system from [Custom Raids](https://valheim.thunderstore.io/package/ASharpPen/Custom_Raids/)
+	- Now supports loading of templates
+	- Additional general configuration options
+	- Now supports reloading of drop table configurations when reloading world. This means you can avoid having to completely restart the game if you only change the loot configs.

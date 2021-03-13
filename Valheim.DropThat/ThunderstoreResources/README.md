@@ -16,6 +16,7 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Discard all existing drop tables for entities modified.
 - Configuration templates, for easy extension.
 - Add conditions for when a mob should drop an item
+- Server-side configs
 
 # Manual Installation:
 
@@ -31,6 +32,13 @@ The configuration file 'drop_that.tables.cfg' is expected (and generated if not 
 If files are not present, start the game and they will be generated.
 Restart to apply changes.
 
+# Client / Server
+
+Drop That needs to be installed on all clients to work.
+
+From v1.4.0 clients will request the configurations currently loaded by the server, and use those without affecting the clients config files.
+This means you should be able to have server-specific configurations, and the client can have its own setup for singleplayer.
+
 ## General
 
 'drop_that.cfg'
@@ -43,10 +51,6 @@ General configurations. Contains predefined configurations, which includes rules
 
 ## Enable debug logging.
 EnableDebug = false
-
-## Reloads drop table configurations when a game world starts.
-## This means if you are playing solo, you can edit the drop table files while logged out, without exiting the game completely.
-LoadDropTableConfigsOnWorldStart = true
 
 ## Loads drop table configurations from supplemental files.
 ## Eg. drop_that.supplemental.my_drops.cfg will be included on load.
@@ -173,6 +177,9 @@ This allows for adding your own custom templates to Drop That. Eg. "drop_that.su
 The supplemental configuration expects the same structure as "drop_that.tables.cfg".
 
 # Changelog
+- v1.4.0
+	- Server-to-client config synchronization added.
+	- Removed option "LoadDropTableConfigsOnWorldStart". This will be done by default now (including the general config).
 - v1.3.3
 	- Fixed quality being set to 3 by mistake. Leftover from discarded feature, ups!
 	- Fixed readme example.
