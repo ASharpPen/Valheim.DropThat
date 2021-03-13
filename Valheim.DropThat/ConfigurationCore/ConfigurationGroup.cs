@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Valheim.DropThat.ConfigurationCore
 {
+    [Serializable]
     public class ConfigurationGroup<TSection> : IHaveEntries where TSection : ConfigurationSection
     {
         public string GroupName { get; set; }
