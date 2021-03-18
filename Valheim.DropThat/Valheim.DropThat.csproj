@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\ConditionChecker.cs" />
+    <Compile Include="Debugging\DropTableDumperPatch.cs" />
     <Compile Include="Multiplayer\ConfigMultiplayerPatch.cs" />
     <Compile Include="ConfigurationCore\Log.cs" />
     <Compile Include="Multiplayer\ConfigurationDto.cs" />
