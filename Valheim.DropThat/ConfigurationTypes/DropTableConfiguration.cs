@@ -28,11 +28,11 @@ namespace Valheim.DropThat.ConfigurationTypes
 
         public ConfigurationEntry<int> AmountMax = new ConfigurationEntry<int>(1, "Maximum amount dropped.");
 
-        public ConfigurationEntry<float> Chance = new ConfigurationEntry<float>(1f, "Chance to drop. 1 is 100%.\nExample values: 0, 0.5, 1, 1.0");
+        public ConfigurationEntry<float> Chance = new ConfigurationEntry<float>(1, "Chance to drop. 1 is 100%.\nExample values: 0, 0.5, 1, 1.0");
 
-        public ConfigurationEntry<bool> OnePerPlayer = new ConfigurationEntry<bool>(false);
+        public ConfigurationEntry<bool> OnePerPlayer = new ConfigurationEntry<bool>(false, "If set, will drop one of this item per player. Ignoring other factors.");
 
-        public ConfigurationEntry<bool> LevelMultiplier = new ConfigurationEntry<bool>(true, "Toggles level multiplier for dropped amount.");
+        public ConfigurationEntry<bool> LevelMultiplier = new ConfigurationEntry<bool>(true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.");
 
         #endregion
 
