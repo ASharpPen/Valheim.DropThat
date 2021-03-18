@@ -13,7 +13,9 @@ namespace Valheim.DropThat.Conditions
 
             foreach (var drop in characterDrop.m_drops)
             {
-                if (drop is DropExtended dropExtended)
+                var dropExtended = DropExtended.GetExtension(drop);
+
+                if (dropExtended != null)
                 {
                     var character = characterDrop.gameObject.GetComponent<Character>();
 

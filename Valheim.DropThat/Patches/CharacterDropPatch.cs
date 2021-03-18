@@ -67,7 +67,7 @@ namespace Valheim.DropThat
                         continue;
                     }
 
-                    DropExtended dropConfig = new DropExtended
+                    CharacterDrop.Drop newDrop = new CharacterDrop.Drop
                     {
                         m_prefab = item,
                         m_amountMax = dropEntry.AmountMax.Value,
@@ -75,8 +75,9 @@ namespace Valheim.DropThat
                         m_chance = dropEntry.Chance.Value,
                         m_levelMultiplier = dropEntry.LevelMultiplier.Value,
                         m_onePerPlayer = dropEntry.OnePerPlayer.Value,
-                        Config = dropEntry,
                     };
+
+                    DropExtended.Set(newDrop, dropEntry);
 
                     Log.LogDebug($"[{name}]: {__instance.m_drops.Count} existing drops in table.");
 
@@ -91,7 +92,7 @@ namespace Valheim.DropThat
                         }
                     }
 
-                    Insert(__instance, dropEntry, dropConfig);
+                    Insert(__instance, dropEntry, newDrop);
                 }
             }
 
