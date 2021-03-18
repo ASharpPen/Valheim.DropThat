@@ -15,7 +15,7 @@ namespace Valheim.DropThat
 
             Logger.LogInfo("Finished loading configurations");
 
-            new Harmony("mod.custom_raids").PatchAll();
+            new Harmony("mod.drop_that").PatchAll();
         }
     }
 }
