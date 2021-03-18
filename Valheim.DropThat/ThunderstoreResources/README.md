@@ -76,6 +76,9 @@ ApplyConditionsOnDeath = false
 ## Enables in-depth logging. Note, this might generate a LOT of log entries.
 EnableTraceLogging = false
 
+## When enabled, creates a file on world start, in the plugin folder containing the default mob drop tables.
+WriteDefaultDropTableToFile = false
+
 ```
 
 ## Drop Tables 
@@ -177,6 +180,8 @@ This allows for adding your own custom templates to Drop That. Eg. "drop_that.su
 The supplemental configuration expects the same structure as "drop_that.tables.cfg".
 
 # Changelog
+- v1.5.0
+	- Adding option in spawn_that.cfg to generate a file containing all default drop table items. Long missing feature, I know.
 - v1.4.0
 	- Server-to-client config synchronization added.
 	- Removed option "LoadDropTableConfigsOnWorldStart". This will be done by default now (including the general config).
