@@ -30,6 +30,7 @@ namespace Valheim.DropThat.ConfigurationTypes
         #region Debug
 
         public ConfigurationEntry<bool> EnableTraceLogging = new ConfigurationEntry<bool>(false, "Enables in-depth logging. Note, this might generate a LOT of log entries.");
+        public ConfigurationEntry<bool> WriteDefaultDropTableToFile = new ConfigurationEntry<bool>(false, "When enabled, creates a file on world start, in the plugin folder containing the default mob drop tables.");
 
         #endregion
 
@@ -45,6 +46,8 @@ namespace Valheim.DropThat.ConfigurationTypes
             ApplyConditionsOnDeath.Bind(Config, "DropTables", nameof(ApplyConditionsOnDeath));
 
             DebugMode.Bind(Config, "General", "EnableDebug");
+            WriteDefaultDropTableToFile.Bind(Config, "Debug", nameof(WriteDefaultDropTableToFile));
+
             StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
             LoadSupplementalDropTables.Bind(Config, "General", nameof(LoadSupplementalDropTables));
         }
