@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace Valheim.DropThat
 {
-    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.4.0")]
+    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.5.0")]
     public class DropThatPlugin : BaseUnityPlugin
     {
         // Awake is called once when both the game and the plug-in are loaded
@@ -15,7 +15,7 @@ namespace Valheim.DropThat
 
             Logger.LogInfo("Finished loading configurations");
 
-            new Harmony("mod.custom_raids").PatchAll();
+            new Harmony("mod.drop_that").PatchAll();
         }
     }
 }

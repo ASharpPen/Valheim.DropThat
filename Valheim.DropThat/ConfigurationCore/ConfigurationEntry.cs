@@ -72,6 +72,7 @@ namespace Valheim.DropThat.ConfigurationCore
 
         public ConfigurationEntry(TIn defaultValue, string description = null)
         {
+            Description = description;
             DefaultValue = defaultValue;
         }
     }
