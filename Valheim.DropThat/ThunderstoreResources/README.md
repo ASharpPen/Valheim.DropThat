@@ -1,4 +1,4 @@
-# Drop That!
+# Drop That! 
 
 This mod enables configuration of any mob loot table.
 

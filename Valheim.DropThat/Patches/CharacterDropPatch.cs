@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using Valheim.DropThat.ConfigurationCore;
 using Valheim.DropThat.ConfigurationTypes;
-using System.Collections.Generic;
 using Valheim.DropThat.Conditions;
 
 namespace Valheim.DropThat

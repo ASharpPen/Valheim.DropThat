@@ -130,6 +130,16 @@ namespace Valheim.DropThat.Conditions
                             }
                         }
                     }
+
+                    if (!ConditionCreatureState.ConditionCreatureStates(drop, dropExtended, character))
+                    {
+                        continue;
+                    }
+
+                    if (!ConditionCreatureState.ConditionNotCreatureStates(drop, dropExtended, character))
+                    {
+                        continue;
+                    }
                 }
 
                 validDrops.Add(drop);
