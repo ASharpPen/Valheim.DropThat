@@ -13,7 +13,7 @@ namespace Valheim.DropThat.Patches
     [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.GenerateDropList))]
     public static class CharacterDropDropListPatch
     {
-        private static MethodInfo DropFilter = AccessTools.Method(typeof(ConditionChecker), nameof(ConditionChecker.FilterByCondition), new[] { typeof(CharacterDrop) });
+        private static MethodInfo DropFilter = AccessTools.Method(typeof(ConditionChecker), nameof(ConditionChecker.FilterOnDeath), new[] { typeof(CharacterDrop) });
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
@@ -28,12 +28,8 @@ namespace Valheim.DropThat.Patches
 
                 if (instruction.opcode == OpCodes.Ldfld)
                 {
-
                     if (instruction.OperandIs(operandToReplace))
                     {
-                        Log.LogDebug($"Identified anchor {instruction.opcode}:{operandToReplace}");
-                        Log.LogDebug($"Replacing anchor with {OpCodes.Callvirt}:{DropFilter}");
-
                         resultInstructions.Add(new CodeInstruction(OpCodes.Callvirt, DropFilter));
                     }
                     else

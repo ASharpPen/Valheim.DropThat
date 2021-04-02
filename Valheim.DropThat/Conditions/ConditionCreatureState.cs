@@ -1,12 +1,23 @@
 ﻿using System;
+using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.ConfigurationCore;
 using Valheim.DropThat.ConfigurationTypes;
 
 namespace Valheim.DropThat.Conditions
-{
-    internal static class ConditionCreatureState
+{    
+    internal class ConditionCreatureState : ICondition
     {
+        private static ConditionCreatureState _instance;
+
+        public static ConditionCreatureState Instance
+        {
+            get
+            {
+                return _instance ??= new ConditionCreatureState();
+            }
+        }
+
         private enum CreatureState
         {
             DEFAULT,
@@ -14,7 +25,28 @@ namespace Valheim.DropThat.Conditions
             EVENT,
         }
 
-        public static bool ConditionCreatureStates(CharacterDrop.Drop drop, DropExtended extended, Character character)
+        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
+        {
+#if DEBUG
+            Log.LogDebug("Checking creature state conditions.");
+#endif
+
+            var character = CharacterCache.GetCharacter(characterDrop);
+
+            if (!ValidConditionCreatureStates(drop, extended, character))
+            {
+                return true;
+            }
+
+            if (!ValidConditionNotCreatureStates(drop, extended, character))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool ValidConditionCreatureStates(CharacterDrop.Drop drop, DropExtended extended, Character character)
         {
             if(extended.Config.ConditionCreatureStates.Value.Length > 0)
             {
@@ -22,24 +54,24 @@ namespace Valheim.DropThat.Conditions
 
                 if((states?.Length?? 0) == 0)
                 {
+#if DEBUG
+                    Log.LogDebug("No conditions for creature state were found.");
+#endif
                     //Skip if we have no states to check. This indicates all are allowed.
                     return true;
                 }
 
-                foreach(var state in states)
-                {
-                    if(!HasState(character, state))
+                    if(!states.Any(x => HasState(character, x)))
                     {
                         Log.LogTrace($"{nameof(extended.Config.ConditionCreatureStates)}: Disabling drop {drop.m_prefab.name} due to not finding any of the requires creature states '{extended.Config.ConditionCreatureStates.Value}'.");
                         return false;
                     }
-                }
             }
 
             return true;
         }
 
-        public static bool ConditionNotCreatureStates(CharacterDrop.Drop drop, DropExtended extended, Character character)
+        public static bool ValidConditionNotCreatureStates(CharacterDrop.Drop drop, DropExtended extended, Character character)
         {
             if (extended.Config.ConditionNotCreatureStates.Value.Length > 0)
             {
@@ -47,17 +79,18 @@ namespace Valheim.DropThat.Conditions
 
                 if ((states?.Length ?? 0) == 0)
                 {
+#if DEBUG
+                    Log.LogDebug("No conditions for not having a creature state were found.");
+#endif
+
                     //Skip if we have no states to check. This indicates all are allowed.
                     return true;
                 }
 
-                foreach (var state in states)
+                if (states.Any(x => HasState(character, x)))
                 {
-                    if (HasState(character, state))
-                    {
-                        Log.LogTrace($"{nameof(extended.Config.ConditionNotCreatureStates)}: Disabling drop {drop.m_prefab.name} due to creature state '{state}'.");
-                        return false;
-                    }
+                    Log.LogTrace($"{nameof(extended.Config.ConditionNotCreatureStates)}: Disabling drop {drop.m_prefab.name} due to forbidden creature state.");
+                    return false;
                 }
             }
 
@@ -73,7 +106,7 @@ namespace Valheim.DropThat.Conditions
                     case CreatureState.TAMED:
                         return character.IsTamed();
                     case CreatureState.EVENT:
-                        MonsterAI ai = CharacterExtended.GetMonsterAI(character);
+                        MonsterAI ai = CharacterCache.GetMonsterAI(character);
 
                         if (ai is null)
                         {

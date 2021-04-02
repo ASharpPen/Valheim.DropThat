@@ -97,7 +97,7 @@ namespace Valheim.DropThat
 
             if (!GeneralConfig.ApplyConditionsOnDeath?.Value ?? false)
             {
-                __instance.m_drops = ConditionChecker.FilterByCondition(__instance);
+                __instance.m_drops = ConditionChecker.FilterOnStart(__instance);
             }
         }
 
