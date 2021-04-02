@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using Valheim.DropThat.ConfigurationCore;
 using Valheim.DropThat.ConfigurationTypes;
@@ -27,7 +25,8 @@ namespace Valheim.DropThat.Debugging
                     
                 foreach(var prefab in ___m_prefabs)
                 {
-                    if (prefab.TryGetComponent<CharacterDrop>(out CharacterDrop characterDrop))
+                    var characterDrop = prefab.GetComponent<CharacterDrop>();
+                    if (characterDrop)
                     {
                         prefabsWithDropTables.Add(new Tuple<GameObject, CharacterDrop>(prefab, characterDrop));
                     }
