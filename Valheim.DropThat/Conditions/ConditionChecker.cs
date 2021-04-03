@@ -6,8 +6,8 @@ namespace Valheim.DropThat.Conditions
 {
     public class ConditionChecker
     {
-        private static HashSet<ICondition> OnStartConditions = new HashSet<ICondition>();
-        private static HashSet<ICondition> OnDeathConditions = new HashSet<ICondition>();
+        private HashSet<ICondition> OnStartConditions;
+        private HashSet<ICondition> OnDeathConditions;
 
         private static ConditionChecker _instance;
 
@@ -29,6 +29,7 @@ namespace Valheim.DropThat.Conditions
             #region Add OnStart conditions
 
             OnStartConditions = new HashSet<ICondition>();
+            OnStartConditions.Add(ConditionInventory.Instance);
 
             if (!ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {
@@ -43,7 +44,6 @@ namespace Valheim.DropThat.Conditions
             #region Add OnDeath conditions
 
             OnDeathConditions = new HashSet<ICondition>();
-
             OnDeathConditions.Add(ConditionCreatureState.Instance);
 
             if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
@@ -60,12 +60,12 @@ namespace Valheim.DropThat.Conditions
 
         public static List<CharacterDrop.Drop> FilterOnStart(CharacterDrop characterDrop)
         {
-            return Instance.Filter(characterDrop, OnStartConditions);
+            return Instance.Filter(characterDrop, Instance.OnStartConditions);
         }
 
         public static List<CharacterDrop.Drop> FilterOnDeath(CharacterDrop characterDrop)
         {
-            return Instance.Filter(characterDrop, OnDeathConditions);
+            return Instance.Filter(characterDrop, Instance.OnDeathConditions);
         }
 
         public List<CharacterDrop.Drop> Filter(CharacterDrop characterDrop, IEnumerable<ICondition> conditions)

@@ -27,10 +27,6 @@ namespace Valheim.DropThat.Conditions
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {
-#if DEBUG
-            Log.LogDebug("Checking creature state conditions.");
-#endif
-
             var character = CharacterCache.GetCharacter(characterDrop);
 
             if (!ValidConditionCreatureStates(drop, extended, character))

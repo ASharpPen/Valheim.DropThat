@@ -7,5 +7,9 @@ namespace Valheim.DropThat.Caches
         public bool? HasMonsterAI { get; set; }
 
         public MonsterAI MonsterAI { get; set; }
+
+        public bool? HasInventory { get; set; }
+
+        public Inventory Inventory { get; set; }
     }
 }

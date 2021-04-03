@@ -58,6 +58,8 @@ namespace Valheim.DropThat.ConfigurationTypes
 
         public ConfigurationEntry<string> ConditionNotCreatureStates = new ConfigurationEntry<string>("", "Array (separated by,) of creature states for which the item will not drop.\nEg. Tamed,Event");
 
+        public ConfigurationEntry<string> ConditionHasItem = new ConfigurationEntry<string>("", "Array of items (prefab names) that will enable this drop. If empty, allows all.\nEg. skeleton_bow");
+
         #endregion
 
         // Inefficient, but will do for now.
