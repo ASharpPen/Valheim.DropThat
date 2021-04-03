@@ -12,7 +12,7 @@ namespace Valheim.DropThat
     {
         private static GeneralConfiguration GeneralConfig => ConfigurationManager.GeneralConfig;
 
-        private static void Postfix(ref CharacterDrop __instance)
+        private static void Postfix(CharacterDrop __instance)
         {
             if(ConfigurationManager.DropConfigs == null)
             {
@@ -95,10 +95,7 @@ namespace Valheim.DropThat
                 }
             }
 
-            if (!GeneralConfig.ApplyConditionsOnDeath?.Value ?? false)
-            {
-                __instance.m_drops = ConditionChecker.FilterOnStart(__instance);
-            }
+            __instance.m_drops = ConditionChecker.FilterOnStart(__instance);
         }
 
         private static void Insert(CharacterDrop __instance, DropConfiguration config, CharacterDrop.Drop drop)

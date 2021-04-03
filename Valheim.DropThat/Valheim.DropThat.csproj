@@ -78,6 +78,7 @@
     <Compile Include="Conditions\ConditionDaytime.cs" />
     <Compile Include="Conditions\ConditionEnvironments.cs" />
     <Compile Include="Conditions\ConditionGlobalKeys.cs" />
+    <Compile Include="Conditions\ConditionInventory.cs" />
     <Compile Include="Conditions\ConditionLevel.cs" />
     <Compile Include="Conditions\ICondition.cs" />
     <Compile Include="Debugging\DropTableDumperPatch.cs" />

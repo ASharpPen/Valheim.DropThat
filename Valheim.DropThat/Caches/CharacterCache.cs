@@ -51,5 +51,24 @@ namespace Valheim.DropThat.Caches
 
             return extended.MonsterAI;
         }
+
+        public static Inventory GetInventory(Character character)
+        {
+            var extended = CharacterTable.GetOrCreateValue(character);
+
+            if(extended.HasInventory.HasValue)
+            {
+                return extended.HasInventory.Value
+                    ? extended.Inventory
+                    : null;
+            }
+
+            var inventory = character.GetComponent<Humanoid>()?.GetInventory();
+
+            extended.Inventory = inventory;
+            extended.HasInventory = inventory is not null;
+
+            return inventory;
+        }
     }
 }
