@@ -44,6 +44,9 @@ namespace Valheim.DropThat.Conditions
                 .Select(x => x.m_dropPrefab.name.Trim().ToUpperInvariant())
                 .ToHashSet();
 
+#if DEBUG
+            Log.LogTrace("Inventory: " + inventoryItems.Join());
+#endif
             if (!items.Any(x => inventoryItems.Contains(x.Trim().ToUpperInvariant())))
             {
                 //No inventory items matched an item in condition list.
