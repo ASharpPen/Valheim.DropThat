@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Valheim.DropThat</RootNamespace>
     <AssemblyName>Valheim.DropThat</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,38 +32,26 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\BepInEx\core\0Harmony.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="assembly_utils, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\valheim_Data\Managed\assembly_utils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="assembly_valheim">
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\valheim_Data\Managed\assembly_valheim.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\BepInEx\core\BepInEx.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil, Version=0.11.3.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>packages\Mono.Cecil.0.11.3\lib\net40\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb, Version=0.11.3.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>packages\Mono.Cecil.0.11.3\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb, Version=0.11.3.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>packages\Mono.Cecil.0.11.3\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks, Version=0.11.3.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
-      <HintPath>packages\Mono.Cecil.0.11.3\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour, Version=21.1.11.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MonoMod.RuntimeDetour.21.1.11.1\lib\net40\MonoMod.RuntimeDetour.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.Utils, Version=21.1.11.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MonoMod.Utils.21.1.11.1\lib\net40\MonoMod.Utils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -71,14 +62,28 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caches\CharacterCache.cs" />
+    <Compile Include="Caches\CharacterExtended.cs" />
+    <Compile Include="Conditions\ConditionBiome.cs" />
     <Compile Include="Conditions\ConditionChecker.cs" />
+    <Compile Include="Conditions\ConditionCreatureState.cs" />
+    <Compile Include="Conditions\ConditionDaytime.cs" />
+    <Compile Include="Conditions\ConditionEnvironments.cs" />
+    <Compile Include="Conditions\ConditionGlobalKeys.cs" />
+    <Compile Include="Conditions\ConditionInventory.cs" />
+    <Compile Include="Conditions\ConditionLevel.cs" />
+    <Compile Include="Conditions\ICondition.cs" />
+    <Compile Include="Debugging\CreatureItemFileWriter.cs" />
     <Compile Include="Debugging\DropTableDumperPatch.cs" />
+    <Compile Include="Debugging\DropTableFileWriter.cs" />
     <Compile Include="Multiplayer\ConfigMultiplayerPatch.cs" />
     <Compile Include="ConfigurationCore\Log.cs" />
     <Compile Include="Multiplayer\ConfigurationDto.cs" />
@@ -95,8 +100,9 @@
     <Compile Include="ConfigurationTypes\GeneralConfiguration.cs" />
     <Compile Include="DropThatPlugin.cs" />
     <Compile Include="Patches\DropTranspilePatch.cs" />
-    <Compile Include="Patches\WorldStartPatch.cs" />
+    <Compile Include="Reset\WorldStartPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reset\StateResetter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -106,6 +112,16 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libs\assembly_utils.dll" />
+    <None Include="Libs\assembly_valheim.dll" />
+    <None Include="Libs\UnityEngine.CoreModule.dll" />
+    <None Include="Libs\UnityEngine.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libs\0Harmony.dll" />
+    <None Include="Libs\BepInEx.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

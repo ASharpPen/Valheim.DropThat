@@ -54,6 +54,12 @@ namespace Valheim.DropThat.ConfigurationTypes
 
         public ConfigurationEntry<string> ConditionBiomes = new ConfigurationEntry<string>("", "Array(separated by,) of biome names that allow the item to drop while they are active.\nEg. Meadows, Swamp. Leave empty to always allow.");
 
+        public ConfigurationEntry<string> ConditionCreatureStates = new ConfigurationEntry<string>("", "Array (separated by,) of creature states for which the item drop. If empty, allows all.\nEg. Default,Tamed,Event");
+
+        public ConfigurationEntry<string> ConditionNotCreatureStates = new ConfigurationEntry<string>("", "Array (separated by,) of creature states for which the item will not drop.\nEg. Default,Tamed,Event");
+
+        public ConfigurationEntry<string> ConditionHasItem = new ConfigurationEntry<string>("", "Array of items (prefab names) that will enable this drop. If empty, allows all.\nEg. skeleton_bow");
+
         #endregion
 
         // Inefficient, but will do for now.

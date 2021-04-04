@@ -5,70 +5,48 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using UnityEngine;
+using Valheim.DropThat.Caches;
 using Valheim.DropThat.ConfigurationCore;
 using Valheim.DropThat.ConfigurationTypes;
 
 namespace Valheim.DropThat.Debugging
 {
-    [HarmonyPatch(typeof(ZNetScene))]
+    /// <summary>
+    /// Could have loaded in at ZNetScene Awake, 
+    /// but we want to be later to let other mods fill in their prefabs.
+    /// </summary>
+    [HarmonyPatch(typeof(ZoneSystem))]
     public static class DropTableDumperPatch
     {
-        private const string FileName = "drop_table_defaults.txt";
-
-        [HarmonyPatch("Awake")]
+        [HarmonyPatch("Start")]
         [HarmonyPostfix]
-        private static void ScanPrefabs(List<GameObject> ___m_prefabs)
+        private static void ScanPrefabs(ZoneSystem __instance)
         {
-            if (ConfigurationManager.GeneralConfig?.WriteDefaultDropTableToFile?.Value == true)
+            var prefabs = ZNetScene.instance.m_prefabs;
+
             {
                 var prefabsWithDropTables = new List<Tuple<GameObject, CharacterDrop>>();
                     
-                foreach(var prefab in ___m_prefabs)
+                foreach(var prefab in prefabs)
                 {
-                    if (prefab.TryGetComponent<CharacterDrop>(out CharacterDrop characterDrop))
+                    var characterDrop = prefab.GetComponent<CharacterDrop>();
+                    if (characterDrop)
                     {
                         prefabsWithDropTables.Add(new Tuple<GameObject, CharacterDrop>(prefab, characterDrop));
                     }
                 }
-                
-                WriteToFile(prefabsWithDropTables);
-            }
-        }
 
-        public static void WriteToFile(List<Tuple<GameObject, CharacterDrop>> characters)
-        {
-            List<string> lines = new List<string>(characters.Count * 20);
-
-            foreach(var characterDrop in characters)
-            {
-                if((characterDrop.Item2?.m_drops?.Count ?? 0) == 0)
+                if (ConfigurationManager.GeneralConfig?.WriteDefaultDropTableToFile?.Value == true)
                 {
-                    continue;
+                    DropTableFileWriter.WriteToFile(prefabsWithDropTables);
                 }
 
-                for (int i = 0; i < characterDrop.Item2.m_drops.Count; ++i)
+                if (ConfigurationManager.GeneralConfig?.WriteCreatureItemsToFile?.Value == true)
                 {
-                    var item = characterDrop.Item2.m_drops[i];
-
-                    lines.Add($"[{characterDrop.Item1.name}.{i}]");
-                    lines.Add($"{nameof(DropConfiguration.ItemName)}={item.m_prefab?.name}");
-                    lines.Add($"{nameof(DropConfiguration.Enabled)}={true}");
-                    lines.Add($"{nameof(DropConfiguration.AmountMin)}={item.m_amountMin}");
-                    lines.Add($"{nameof(DropConfiguration.AmountMax)}={item.m_amountMax}");
-                    lines.Add($"{nameof(DropConfiguration.Chance)}={item.m_chance.ToString(CultureInfo.InvariantCulture)}");
-                    lines.Add($"{nameof(DropConfiguration.OnePerPlayer)}={item.m_onePerPlayer}");
-                    lines.Add($"{nameof(DropConfiguration.LevelMultiplier)}={item.m_levelMultiplier}");
-                    lines.Add("");
+                    CreatureItemFileWriter.WriteToFile(prefabsWithDropTables);
                 }
             }
-
-            string filePath = Path.Combine(Paths.PluginPath, FileName);
-
-            Log.LogInfo($"Writing default drop tables to file {filePath}.");
-
-            File.WriteAllLines(filePath, lines);
         }
     }
 }
