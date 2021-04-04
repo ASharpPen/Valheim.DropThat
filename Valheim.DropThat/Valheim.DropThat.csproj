@@ -81,7 +81,9 @@
     <Compile Include="Conditions\ConditionInventory.cs" />
     <Compile Include="Conditions\ConditionLevel.cs" />
     <Compile Include="Conditions\ICondition.cs" />
+    <Compile Include="Debugging\CreatureItemFileWriter.cs" />
     <Compile Include="Debugging\DropTableDumperPatch.cs" />
+    <Compile Include="Debugging\DropTableFileWriter.cs" />
     <Compile Include="Multiplayer\ConfigMultiplayerPatch.cs" />
     <Compile Include="ConfigurationCore\Log.cs" />
     <Compile Include="Multiplayer\ConfigurationDto.cs" />
