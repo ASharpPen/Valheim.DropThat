@@ -39,6 +39,11 @@ namespace Valheim.DropThat.Conditions
 
             var items = extended.Config.ConditionHasItem.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
+            if((items?.Length ?? 0) == 0)
+            {
+                return false;
+            }
+
             var inventoryItems = inventory
                 .GetAllItems()
                 .Select(x => x.m_dropPrefab.name.Trim().ToUpperInvariant())
