@@ -246,6 +246,8 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 - Event
 
 # Changelog
+- v1.6.1 
+	- Fixed empty ConditionHasItem not being considered "all allowed".
 - v1.6.0 
 	- Added output file for creature items.
 	- Added conditions for creature items (eg. skeleton_bow)
