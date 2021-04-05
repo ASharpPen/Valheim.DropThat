@@ -91,7 +91,7 @@ namespace Valheim.DropThat
         private static void Insert(CharacterDrop __instance, DropConfiguration config, CharacterDrop.Drop drop)
         {
             int index = config.Index;
-            if (index >= 0 && __instance.m_drops.Count >= index)
+            if (index >= 0 && __instance.m_drops.Count >= index && !ConfigurationManager.GeneralConfig.AlwaysAppend.Value)
             {
                 Log.LogDebug($"[{__instance.gameObject.name}]: Inserting drop {config.ItemName.Value} at index '{index}'.");
 
