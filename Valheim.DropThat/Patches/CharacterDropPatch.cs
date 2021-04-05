@@ -24,17 +24,7 @@ namespace Valheim.DropThat
 
             string cleanedName = name.Split('(')[0].Trim().ToUpperInvariant();
 
-            Log.LogTrace($"[{name}] CharacterDrop starting. Using cleaned name '{cleanedName}' for comparisons.");
-
             var configMatch = ConfigurationManager.DropConfigs.FirstOrDefault(x => x.Enabled.Value && cleanedName == x.EntityName);
-
-            Log.LogTrace("Possible comparisons:");
-            ConfigurationManager.DropConfigs.ForEach(x =>
-            {
-                Log.LogTrace(x.EntityName);
-
-                x.DropConfigurations.ForEach(y => Log.LogTrace("\t" + y.SectionName + ":" + y.ItemName));
-            });
 
             if(GeneralConfig.ClearAllExisting.Value && __instance.m_drops.Count > 0)
             {

@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using Valheim.DropThat.ConfigurationCore;
 
 namespace Valheim.DropThat
 {
@@ -9,11 +10,9 @@ namespace Valheim.DropThat
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
         {
-            Logger.LogInfo("Loading configurations...");
+            Log.Logger = Logger;
 
             ConfigurationManager.LoadGeneralConfigurations();
-
-            Logger.LogInfo("Finished loading configurations");
 
             new Harmony("mod.drop_that").PatchAll();
         }
