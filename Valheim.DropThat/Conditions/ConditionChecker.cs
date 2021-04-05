@@ -78,6 +78,7 @@ namespace Valheim.DropThat.Conditions
 
                 if (dropExtended is null)
                 {
+                    validDrops.Add(drop);
                     continue;
                 }
 
