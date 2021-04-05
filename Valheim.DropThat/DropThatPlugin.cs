@@ -1,19 +1,18 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using Valheim.DropThat.ConfigurationCore;
 
 namespace Valheim.DropThat
 {
-    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.6.1")]
+    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.6.2")]
     public class DropThatPlugin : BaseUnityPlugin
     {
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
         {
-            Logger.LogInfo("Loading configurations...");
+            Log.Logger = Logger;
 
             ConfigurationManager.LoadGeneralConfigurations();
-
-            Logger.LogInfo("Finished loading configurations");
 
             new Harmony("mod.drop_that").PatchAll();
         }

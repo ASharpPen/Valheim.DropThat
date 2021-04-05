@@ -246,6 +246,9 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 - Event
 
 # Changelog
+- v1.6.2
+	- Fixed option AlwaysAppend being ignored.
+	- Fixed drops with no configuration being discarded
 - v1.6.1 
 	- Fixed empty ConditionHasItem not being considered "all allowed".
 - v1.6.0 
