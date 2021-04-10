@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.ConfigurationCore;
-using Valheim.DropThat.ConfigurationTypes;
+using Valheim.DropThat.Configuration.ConfigTypes;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Debugging
 {
@@ -78,7 +78,7 @@ namespace Valheim.DropThat.Debugging
                 }
 #endif
                 lines.Add($"[{characterDrop.Item1.name}.0]");
-                lines.Add($"{nameof(DropConfiguration.ConditionHasItem)}={inventoryItems?.Join()}");
+                lines.Add($"{nameof(DropItemConfiguration.ConditionHasItem)}={inventoryItems?.Join()}");
                 lines.Add("");
             }
 

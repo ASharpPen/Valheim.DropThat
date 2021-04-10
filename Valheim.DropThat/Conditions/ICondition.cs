@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Valheim.DropThat.ConfigurationTypes;
+﻿
+using Valheim.DropThat.Caches;
 
 namespace Valheim.DropThat.Conditions
 {

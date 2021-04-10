@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Valheim.DropThat.ConfigurationTypes;
+using Valheim.DropThat.Caches;
+using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Conditions

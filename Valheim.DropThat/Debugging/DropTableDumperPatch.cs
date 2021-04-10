@@ -1,14 +1,8 @@
-﻿using BepInEx;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.ConfigurationCore;
-using Valheim.DropThat.ConfigurationTypes;
+using Valheim.DropThat.Configuration;
 
 namespace Valheim.DropThat.Debugging
 {
