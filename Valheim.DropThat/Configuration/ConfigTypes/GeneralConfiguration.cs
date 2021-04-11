@@ -1,8 +1,8 @@
 ﻿using BepInEx.Configuration;
 using System;
-using Valheim.DropThat.ConfigurationCore;
+using Valheim.DropThat.Core.Configuration;
 
-namespace Valheim.DropThat.ConfigurationTypes
+namespace Valheim.DropThat.Configuration.ConfigTypes
 {
     [Serializable]
     public class GeneralConfiguration

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
-using Valheim.DropThat.ConfigurationCore;
+using Valheim.DropThat.Configuration;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Reset
 {
@@ -14,7 +15,7 @@ namespace Valheim.DropThat.Reset
                 StateResetter.Reset();
 
                 Log.LogDebug("World startet. Loading configurations.");
-                ConfigurationManager.LoadAllConfigurations();
+                ConfigurationManager.LoadAll();
             }
         }
     }
