@@ -1,12 +1,9 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Valheim.DropThat.Caches;
-using Valheim.DropThat.ConfigurationCore;
-using Valheim.DropThat.ConfigurationTypes;
+using Valheim.DropThat.Configuration.ConfigTypes;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Conditions
 {
@@ -55,7 +52,7 @@ namespace Valheim.DropThat.Conditions
             if (!items.Any(x => inventoryItems.Contains(x.Trim().ToUpperInvariant())))
             {
                 //No inventory items matched an item in condition list.
-                Log.LogTrace($"{nameof(DropConfiguration.ConditionHasItem)}: Found none of the required items in inventory.");
+                Log.LogTrace($"{nameof(DropItemConfiguration.ConditionHasItem)}: Found none of the required items in inventory.");
 
                 return true;
             }

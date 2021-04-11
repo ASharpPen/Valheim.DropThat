@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Valheim.DropThat.ConfigurationCore;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Reset
 {

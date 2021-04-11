@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.ConfigurationCore;
-using Valheim.DropThat.ConfigurationTypes;
+using Valheim.DropThat.Caches;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Conditions
 {

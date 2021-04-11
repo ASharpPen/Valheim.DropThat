@@ -1,23 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Valheim.DropThat.ConfigurationCore;
+using Valheim.DropThat.Core.Configuration;
 
-namespace Valheim.DropThat.ConfigurationTypes
+namespace Valheim.DropThat.Configuration.ConfigTypes
 {
     [Serializable]
-    public class DropTableConfiguration : ConfigurationGroup<DropConfiguration>
+    public class DropConfiguration : ConfigWithSubsections<DropMobConfiguration>, IConfigFile
     {
-        public ConfigurationEntry<bool> Enabled = new ConfigurationEntry<bool>(true, "Enable/disable configuration for this entity.");
-
-        public List<DropConfiguration> DropConfigurations => Sections.Values.ToList();
-
-        public string EntityName => GroupName.Trim().ToUpperInvariant();
+        protected override DropMobConfiguration InstantiateSubsection(string subsectionName)
+        {
+            return new DropMobConfiguration();
+        }
     }
 
     [Serializable]
-    public class DropConfiguration : ConfigurationSection
+    public class DropMobConfiguration : ConfigWithSubsections<DropItemConfiguration>
     {
+        protected override DropItemConfiguration InstantiateSubsection(string subsectionName)
+        {
+            return new DropItemConfiguration();
+        }
+    }
+
+    [Serializable]
+    public class DropItemConfiguration : ConfigWithSubsections<Config>
+    {
+        protected override Config InstantiateSubsection(string subsectionName)
+        {
+            Config newModConfig = null;
+
+            if(subsectionName == DropModConfigCLLC.ModName)
+            {
+                newModConfig = new DropModConfigCLLC();
+            }
+
+            return newModConfig;
+        }
+
         #region CharacterDrop.Drop
 
         public ConfigurationEntry<string> ItemName = new ConfigurationEntry<string>("", "Prefab name of item to drop.");
@@ -65,11 +83,11 @@ namespace Valheim.DropThat.ConfigurationTypes
         // Inefficient, but will do for now.
         public int Index
         {
-            get 
+            get
             {
                 if (int.TryParse(SectionName, out int result))
                 {
-                    if(result < 0)
+                    if (result < 0)
                     {
                         return int.MaxValue;
                     }
@@ -104,5 +122,23 @@ namespace Valheim.DropThat.ConfigurationTypes
 
             return true;
         }
+    }
+
+    [Serializable]
+    public class DropModConfigCLLC : Config
+    {
+        public const string ModName = "CreatureLevelAndLootControl";
+
+        public ConfigurationEntry<string> ConditionBossAffix = new ConfigurationEntry<string>("", "Array (separated by ,) of boss affixes, for which item will drop.");
+
+        public ConfigurationEntry<string> ConditionNotBossAffix = new ConfigurationEntry<string>("", "Array (separated by ,) of boss affixes, for which item will not drop.");
+
+        public ConfigurationEntry<string> ConditionInfusion = new ConfigurationEntry<string>("", "Array (separated by ,) of creature infusions, for which item will drop.");
+
+        public ConfigurationEntry<string> ConditionNotInfusion = new ConfigurationEntry<string>("", "Array (separated by ,) of creature infusions, for which item will not drop.");
+
+        public ConfigurationEntry<string> ConditionExtraEffect = new ConfigurationEntry<string>("", "Array (separated by ,) of creature extra effects, for which item will drop.");
+
+        public ConfigurationEntry<string> ConditionNotExtraEffect = new ConfigurationEntry<string>("", "Array (separated by ,) of creature extra effects, for which item will not drop.");
     }
 }

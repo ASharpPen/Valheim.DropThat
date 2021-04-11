@@ -1,13 +1,14 @@
 ﻿
 using System.Runtime.CompilerServices;
+using Valheim.DropThat.Configuration.ConfigTypes;
 
-namespace Valheim.DropThat.ConfigurationTypes
+namespace Valheim.DropThat.Caches
 {
     public class DropExtended
     {
         private static ConditionalWeakTable<CharacterDrop.Drop, DropExtended> DropTable = new ConditionalWeakTable<CharacterDrop.Drop, DropExtended>();
 
-        public static void Set(CharacterDrop.Drop drop, DropConfiguration config)
+        public static void Set(CharacterDrop.Drop drop, DropItemConfiguration config)
         {
             DropTable.GetOrCreateValue(drop).Config = config;
         }
@@ -22,6 +23,6 @@ namespace Valheim.DropThat.ConfigurationTypes
             return null;
         }
 
-        public DropConfiguration Config { get; set; }
+        public DropItemConfiguration Config { get; set; }
     }
 }

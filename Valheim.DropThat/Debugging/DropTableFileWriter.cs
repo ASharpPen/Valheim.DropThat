@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using UnityEngine;
-using Valheim.DropThat.ConfigurationCore;
-using Valheim.DropThat.ConfigurationTypes;
+using Valheim.DropThat.Configuration.ConfigTypes;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Debugging
 {
@@ -29,13 +29,13 @@ namespace Valheim.DropThat.Debugging
                     var item = characterDrop.Item2.m_drops[i];
 
                     lines.Add($"[{characterDrop.Item1.name}.{i}]");
-                    lines.Add($"{nameof(DropConfiguration.ItemName)}={item.m_prefab?.name}");
-                    lines.Add($"{nameof(DropConfiguration.Enabled)}={true}");
-                    lines.Add($"{nameof(DropConfiguration.AmountMin)}={item.m_amountMin}");
-                    lines.Add($"{nameof(DropConfiguration.AmountMax)}={item.m_amountMax}");
-                    lines.Add($"{nameof(DropConfiguration.Chance)}={item.m_chance.ToString(CultureInfo.InvariantCulture)}");
-                    lines.Add($"{nameof(DropConfiguration.OnePerPlayer)}={item.m_onePerPlayer}");
-                    lines.Add($"{nameof(DropConfiguration.LevelMultiplier)}={item.m_levelMultiplier}");
+                    lines.Add($"{nameof(DropItemConfiguration.ItemName)}={item.m_prefab?.name}");
+                    lines.Add($"{nameof(DropItemConfiguration.Enabled)}={true}");
+                    lines.Add($"{nameof(DropItemConfiguration.AmountMin)}={item.m_amountMin}");
+                    lines.Add($"{nameof(DropItemConfiguration.AmountMax)}={item.m_amountMax}");
+                    lines.Add($"{nameof(DropItemConfiguration.Chance)}={item.m_chance.ToString(CultureInfo.InvariantCulture)}");
+                    lines.Add($"{nameof(DropItemConfiguration.OnePerPlayer)}={item.m_onePerPlayer}");
+                    lines.Add($"{nameof(DropItemConfiguration.LevelMultiplier)}={item.m_levelMultiplier}");
                     lines.Add("");
                 }
             }
