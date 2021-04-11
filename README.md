@@ -17,6 +17,8 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Configuration templates, for easy extension.
 - Add conditions for when a mob should drop an item
 - Server-side configs
+- Adds mod specific conditions for: 
+	- Creature Level and Loot Control
 
 # Manual Installation:
 
@@ -201,6 +203,81 @@ This allows for adding your own custom templates to Drop That. Eg. "drop_that.su
 
 The supplemental configuration expects the same structure as "drop_that.tables.cfg".
 
+# Mod specific configuration
+
+Mod-specific configs can be added to each configuration entry as `[<EntityPrepfabName>.<DropIndex>.<ModName>]`
+These are implemented soft-dependant, meaning if the mod is not present, the configuration will do nothing.
+
+## Creature Level and Loot Control
+
+Additional conditions for [Creature Level and Loot Control](https://www.nexusmods.com/valheim/mods/495).
+See the mod nexus page for more in-depth documentation for the options.
+
+``` INI
+
+## Array (separated by ,) of boss affixes, for which item will drop.
+ConditionBossAffix =
+
+## Array (separated by ,) of boss affixes, for which item will not drop.
+ConditionNotBossAffix =
+
+## Array (separated by ,) of creature infusions, for which item will drop.
+ConditionInfusion =
+
+## Array (separated by ,) of creature infusions, for which item will not drop.
+ConditionNotInfusion =
+
+## Array (separated by ,) of creature extra effects, for which item will drop.
+ConditionExtraEffect =
+
+## Array (separated by ,) of creature extra effects, for which item will not drop.
+ConditionNotExtraEffect =
+
+```
+
+Example for boar which will drop iron scraps only when it has an Infusion.
+
+``` INI
+[Boar.0]
+ItemName = IronScrap
+Enabled = true
+AmountMin = 1
+AmountMax = 1
+Chance = 1
+
+[Boar.0.CreatureLevelAndLootControl]
+ConditionNotInfusion = None
+
+```
+
+### Boss Affixes
+- None
+- Reflective
+- Shielded
+- Mending
+- Summoner
+- Elementalist
+- Enraged
+- Twin
+
+### Extra Effects
+- None
+- Aggressive
+- Quick
+- Regenerating
+- Curious
+- Splitting
+- Armored
+
+### Infusions
+- None
+- Lightning
+- Fire
+- Frost
+- Poison
+- Chaos
+- Spirit
+
 # Field options
 
 ## Biomes
@@ -246,28 +323,32 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 - Event
 
 # Changelog
-- v1.6.2
+- v1.7.0: 
+	- Added conditions for mod Creature Level and Loot Control.
+	- Improved config merging. Supplemental files interacting with same creature will now merge in item configs from each.
+	- Rewrote internal configuration management to support soft-dependant, mod-specific configurations.
+- v1.6.2: 
 	- Fixed option AlwaysAppend being ignored.
 	- Fixed drops with no configuration being discarded
-- v1.6.1 
+- v1.6.1: 
 	- Fixed empty ConditionHasItem not being considered "all allowed".
-- v1.6.0 
+- v1.6.0: 
 	- Added output file for creature items.
 	- Added conditions for creature items (eg. skeleton_bow)
 	- Added conditions for creature states (eg. tamed, event)
-- v1.5.0
+- v1.5.0: 
 	- Adding option in drop_that.cfg to generate a file containing all default drop table items. Long missing feature, I know.
-- v1.4.0
+- v1.4.0: 
 	- Server-to-client config synchronization added.
 	- Removed option "LoadDropTableConfigsOnWorldStart". This will be done by default now (including the general config).
-- v1.3.3
+- v1.3.3: 
 	- Fixed quality being set to 3 by mistake. Leftover from discarded feature, ups!
 	- Fixed readme example.
-- v1.3.0
+- v1.3.0: 
 	- Fixed lie about drop table configurations reloading on world start. It should work properly now!
 	- Added support for setting drop conditions on each item
 	- Added support for selecting whether to apply conditions at time of spawn or death.
-- v1.2.0
+- v1.2.0: 
 	- Port and rewrite of configuration system from [Custom Raids](https://valheim.thunderstore.io/package/ASharpPen/Custom_Raids/)
 	- Now supports loading of templates
 	- Additional general configuration options
