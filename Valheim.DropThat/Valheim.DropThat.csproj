@@ -53,6 +53,11 @@
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\BepInEx\core\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CreatureLevelControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>LibsStripped\CreatureLevelControl.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -81,6 +86,10 @@
     <Compile Include="Conditions\ConditionInventory.cs" />
     <Compile Include="Conditions\ConditionLevel.cs" />
     <Compile Include="Conditions\ICondition.cs" />
+    <Compile Include="Conditions\ModSpecific\CLLC\ConditionBossAffix.cs" />
+    <Compile Include="Conditions\ModSpecific\CLLC\ConditionInfusion.cs" />
+    <Compile Include="Conditions\ModSpecific\CLLC\ConditionCreatureExtraEffect.cs" />
+    <Compile Include="Conditions\ModSpecific\ConditionLoaderCLLC.cs" />
     <Compile Include="Configuration\ConfigTypes\GeneralConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Configuration\ConfigTypes\DropConfiguration.cs" />
@@ -115,14 +124,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Libs\assembly_utils.dll" />
-    <None Include="Libs\assembly_valheim.dll" />
-    <None Include="Libs\UnityEngine.CoreModule.dll" />
-    <None Include="Libs\UnityEngine.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Libs\0Harmony.dll" />
-    <None Include="Libs\BepInEx.dll" />
+    <None Include="LibsStripped\CreatureLevelControl.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

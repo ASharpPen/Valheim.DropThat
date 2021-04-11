@@ -127,6 +127,18 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
     [Serializable]
     public class DropModConfigCLLC : Config
     {
-        public const string ModName = "CLLC";
+        public const string ModName = "CreatureLevelAndLootControl";
+
+        public ConfigurationEntry<string> ConditionBossAffix = new ConfigurationEntry<string>("", "Array (separated by ,) of boss affixes, for which item will drop.");
+
+        public ConfigurationEntry<string> ConditionNotBossAffix = new ConfigurationEntry<string>("", "Array (separated by ,) of boss affixes, for which item will not drop.");
+
+        public ConfigurationEntry<string> ConditionInfusion = new ConfigurationEntry<string>("", "Array (separated by ,) of creature infusions, for which item will drop.");
+
+        public ConfigurationEntry<string> ConditionNotInfusion = new ConfigurationEntry<string>("", "Array (separated by ,) of creature infusions, for which item will not drop.");
+
+        public ConfigurationEntry<string> ConditionExtraEffect = new ConfigurationEntry<string>("", "Array (separated by ,) of creature extra effects, for which item will drop.");
+
+        public ConfigurationEntry<string> ConditionNotExtraEffect = new ConfigurationEntry<string>("", "Array (separated by ,) of creature extra effects, for which item will not drop.");
     }
 }

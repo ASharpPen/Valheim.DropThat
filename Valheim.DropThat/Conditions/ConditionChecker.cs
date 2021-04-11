@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Valheim.DropThat.Caches;
+using Valheim.DropThat.Conditions.ModSpecific;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Reset;
 
@@ -39,6 +40,14 @@ namespace Valheim.DropThat.Conditions
                 OnStartConditions.Add(ConditionBiome.Instance);
                 OnStartConditions.Add(ConditionEnvironments.Instance);
                 OnStartConditions.Add(ConditionGlobalKeys.Instance);
+
+                #region Mod specific
+
+                OnStartConditions.Add(ConditionLoaderCLLC.ConditionBossAffix);
+                OnStartConditions.Add(ConditionLoaderCLLC.ConditionInfusion);
+                OnStartConditions.Add(ConditionLoaderCLLC.ConditionCreatureExtraEffect);
+
+                #endregion
             }
             #endregion
 
@@ -54,6 +63,15 @@ namespace Valheim.DropThat.Conditions
                 OnDeathConditions.Add(ConditionBiome.Instance);
                 OnDeathConditions.Add(ConditionEnvironments.Instance);
                 OnDeathConditions.Add(ConditionGlobalKeys.Instance);
+
+                #region Mod specific
+
+                OnDeathConditions.Add(ConditionLoaderCLLC.ConditionBossAffix);
+                OnDeathConditions.Add(ConditionLoaderCLLC.ConditionInfusion);
+                OnDeathConditions.Add(ConditionLoaderCLLC.ConditionCreatureExtraEffect);
+
+                #endregion
+
             }
 
             #endregion
@@ -87,6 +105,11 @@ namespace Valheim.DropThat.Conditions
 
                 foreach (var condition in conditions)
                 {
+                    if(condition is null)
+                    {
+                        continue;
+                    }
+
                     if (condition.ShouldFilter(drop, dropExtended, characterDrop))
                     {
                         filterDrop = true;
