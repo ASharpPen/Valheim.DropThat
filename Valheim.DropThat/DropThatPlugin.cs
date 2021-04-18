@@ -5,6 +5,7 @@ using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat
 {
+    [BepInDependency("randyknapp.mods.epicloot", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("org.bepinex.plugins.creaturelevelcontrol", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.7.0")]
     public class DropThatPlugin : BaseUnityPlugin

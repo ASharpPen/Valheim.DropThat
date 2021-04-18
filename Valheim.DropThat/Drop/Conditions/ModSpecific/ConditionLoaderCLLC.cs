@@ -7,7 +7,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific
 {
     internal static class ConditionLoaderCLLC
     {
-        public static bool InstalledCLLC { get; } = AccessTools.TypeByName("CreatureLevelControl.API") is not null;
+        public static bool InstalledCLLC { get; } = Type.GetType("CreatureLevelControl.API, CreatureLevelControl") is not null;
 
         public static ConditionBossAffix ConditionBossAffix
         {

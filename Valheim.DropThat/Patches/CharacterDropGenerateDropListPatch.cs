@@ -7,12 +7,14 @@ using Valheim.DropThat.Conditions;
 
 namespace Valheim.DropThat.Patches
 {   
-    [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.GenerateDropList))]
-    public static class CharacterDropDropListPatch
+    [HarmonyPatch(typeof(CharacterDrop))]
+    public static class CharacterDropGenerateDropListPatch
     {
         private static MethodInfo DropFilter = AccessTools.Method(typeof(ConditionChecker), nameof(ConditionChecker.FilterOnDeath), new[] { typeof(CharacterDrop) });
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        [HarmonyPatch(nameof(CharacterDrop.GenerateDropList))]
+        [HarmonyTranspiler]
+        private static IEnumerable<CodeInstruction> FilterDrops(IEnumerable<CodeInstruction> instructions)
         {
             var operandToReplace = AccessTools.DeclaredField(typeof(CharacterDrop), nameof(CharacterDrop.m_drops));
 
