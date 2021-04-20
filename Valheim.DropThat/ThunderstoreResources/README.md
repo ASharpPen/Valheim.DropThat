@@ -17,8 +17,9 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Configuration templates, for easy extension.
 - Add conditions for when a mob should drop an item
 - Server-side configs
-- Adds mod specific conditions for: 
-	- Creature Level and Loot Control
+- Adds mod specific options for: 
+	- [Creature Level and Loot Control](https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/)
+	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) (Experimental as it is in beta. Tested against v7.6)
 
 # Manual Installation:
 
@@ -208,9 +209,56 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 Mod-specific configs can be added to each configuration entry as `[<EntityPrepfabName>.<DropIndex>.<ModName>]`
 These are implemented soft-dependant, meaning if the mod is not present, the configuration will do nothing.
 
+## Epic Loot
+
+Integrates to magic item roll system from [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/). Allows for making items magic. See the mod page for more in-depth description of the magic system.
+
+The items are first given a rarity level, based on the configured options.
+The roll is done as a weighted distribution, meaning if you gave Magic 100 and Legendary 100, it would be 50% chance to become one of them. If you added Rare as 100, it would be 33% for any of them.
+
+``` INI
+
+## Weight to use for rolling as a non-magic item.
+# Setting type: Single
+# Default value: 0
+RarityWeightNone = 0
+
+## Weight to use for rolling as rarity 'Magic'
+# Setting type: Single
+# Default value: 0
+RarityWeightMagic = 0
+
+## Weight to use for rolling as rarity 'Rare'
+# Setting type: Single
+# Default value: 0
+RarityWeightRare = 0
+
+## Weight to use for rolling as rarity 'Epic'
+# Setting type: Single
+# Default value: 0
+RarityWeightEpic = 0
+
+## Weight to use for rolling as rarity 'Legendary'
+# Setting type: Single
+# Default value: 0
+RarityWeightLegendary = 0
+
+```
+
+Example of bonemass set to always drop a pair of epic pants.
+
+``` INI
+[Bonemass.10]
+ItemName = ArmorBronzeLegs
+
+[Bonemass.10.EpicLoot]
+RarityWeightEpic = 1
+
+```
+
 ## Creature Level and Loot Control
 
-Additional conditions for [Creature Level and Loot Control](https://www.nexusmods.com/valheim/mods/495).
+Additional conditions for [Creature Level and Loot Control](https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/).
 See the mod nexus page for more in-depth documentation for the options.
 
 ``` INI
@@ -323,6 +371,8 @@ ConditionNotInfusion = None
 - Event
 
 # Changelog
+- v1.8.0 
+	- Added support for Epic Loot
 - v1.7.0: 
 	- Added conditions for mod Creature Level and Loot Control.
 	- Improved config merging. Supplemental files interacting with same creature will now merge in item configs from each.
