@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Valheim.DropThat.Caches;
+﻿using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Conditions
 {
@@ -21,17 +20,15 @@ namespace Valheim.DropThat.Conditions
         {
             if (!string.IsNullOrEmpty(dropExtended.Config.ConditionGlobalKeys.Value))
             {
-                var requiredKeys = dropExtended.Config.ConditionGlobalKeys.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var requiredKeys = dropExtended.Config.ConditionGlobalKeys.Value.SplitByComma();
 
-                if (requiredKeys.Length > 0)
+                if (requiredKeys.Count > 0)
                 {
-                    var keySet = new HashSet<string>(ZoneSystem.instance.GetGlobalKeys());
-
                     bool foundRequiredKey = false;
 
                     foreach (var key in requiredKeys)
                     {
-                        foundRequiredKey = keySet.Contains(key);
+                        foundRequiredKey = ZoneSystem.instance.GetGlobalKey(key);
 
                         if (foundRequiredKey)
                         {
