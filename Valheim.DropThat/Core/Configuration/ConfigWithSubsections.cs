@@ -23,6 +23,11 @@ namespace Valheim.DropThat.Core.Configuration
             }
         }
 
+        public bool TryGet(string key, out T value)
+        {
+            return Subsections.TryGetValue(key, out value);
+        }
+
         protected abstract T InstantiateSubsection(string subsectionName);
     }
 }

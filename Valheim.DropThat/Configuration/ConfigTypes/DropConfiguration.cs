@@ -32,6 +32,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             {
                 newModConfig = new DropModConfigCLLC();
             }
+            else if(subsectionName == DropModConfigEpicLoot.ModName)
+            {
+                newModConfig = new DropModConfigEpicLoot();
+            }
 
             return newModConfig;
         }
@@ -54,6 +58,14 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         #endregion
 
+        #region DropExtended Modifiers
+
+        public ConfigurationEntry<int> SetVariety = new ConfigurationEntry<int>();
+
+        public ConfigurationEntry<int> SetItemLevel = new ConfigurationEntry<int>();
+
+        #endregion
+
         #region DropExtended Conditions
 
         public ConfigurationEntry<int> ConditionMinLevel = new ConfigurationEntry<int>(-1, "Minimum level of mob for which item drops.");
@@ -70,6 +82,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<string> ConditionGlobalKeys = new ConfigurationEntry<string>("", "Array(separated by,) of global keys names that allow the item to drop while they are active.\nEg. defeated_eikthyr,defeated_gdking.Leave empty to always allow.");
 
+        public ConfigurationEntry<string> ConditionNotGlobalKeys = new ConfigurationEntry<string>("", "Array (separated by ,) of global key names that stop the item from dropping if any are detected.\nEg. defeated_eikthyr,defeated_gdking");
+
         public ConfigurationEntry<string> ConditionBiomes = new ConfigurationEntry<string>("", "Array(separated by,) of biome names that allow the item to drop while they are active.\nEg. Meadows, Swamp. Leave empty to always allow.");
 
         public ConfigurationEntry<string> ConditionCreatureStates = new ConfigurationEntry<string>("", "Array (separated by,) of creature states for which the item drop. If empty, allows all.\nEg. Default,Tamed,Event");
@@ -77,6 +91,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<string> ConditionNotCreatureStates = new ConfigurationEntry<string>("", "Array (separated by,) of creature states for which the item will not drop.\nEg. Default,Tamed,Event");
 
         public ConfigurationEntry<string> ConditionHasItem = new ConfigurationEntry<string>("", "Array of items (prefab names) that will enable this drop. If empty, allows all.\nEg. skeleton_bow");
+
+        public ConfigurationEntry<string> ConditionFaction = new ConfigurationEntry<string>();
+
+        public ConfigurationEntry<string> ConditionNotFaction = new ConfigurationEntry<string>();
 
         #endregion
 
@@ -140,5 +158,17 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<string> ConditionExtraEffect = new ConfigurationEntry<string>("", "Array (separated by ,) of creature extra effects, for which item will drop.");
 
         public ConfigurationEntry<string> ConditionNotExtraEffect = new ConfigurationEntry<string>("", "Array (separated by ,) of creature extra effects, for which item will not drop.");
+    }
+
+    [Serializable]
+    public class DropModConfigEpicLoot : Config
+    {
+        public const string ModName = "EpicLoot";
+
+        public ConfigurationEntry<float> RarityWeightNone = new ConfigurationEntry<float>(0, "Weight to use for rolling as a non-magic item.");
+        public ConfigurationEntry<float> RarityWeightMagic = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Magic'");
+        public ConfigurationEntry<float> RarityWeightRare = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Rare'");
+        public ConfigurationEntry<float> RarityWeightEpic = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Epic'");
+        public ConfigurationEntry<float> RarityWeightLegendary = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Legendary'");
     }
 }

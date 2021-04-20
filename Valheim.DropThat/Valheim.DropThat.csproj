@@ -58,6 +58,14 @@
       <HintPath>LibsStripped\CreatureLevelControl.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="EpicLoot">
+      <HintPath>LibsStripped\EpicLoot.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ExtendedItemDataFramework">
+      <HintPath>LibsStripped\ExtendedItemDataFramework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -77,19 +85,21 @@
   <ItemGroup>
     <Compile Include="Caches\CharacterCache.cs" />
     <Compile Include="Caches\CharacterExtended.cs" />
-    <Compile Include="Conditions\ConditionBiome.cs" />
-    <Compile Include="Conditions\ConditionChecker.cs" />
-    <Compile Include="Conditions\ConditionCreatureState.cs" />
-    <Compile Include="Conditions\ConditionDaytime.cs" />
-    <Compile Include="Conditions\ConditionEnvironments.cs" />
-    <Compile Include="Conditions\ConditionGlobalKeys.cs" />
-    <Compile Include="Conditions\ConditionInventory.cs" />
-    <Compile Include="Conditions\ConditionLevel.cs" />
-    <Compile Include="Conditions\ICondition.cs" />
-    <Compile Include="Conditions\ModSpecific\CLLC\ConditionBossAffix.cs" />
-    <Compile Include="Conditions\ModSpecific\CLLC\ConditionInfusion.cs" />
-    <Compile Include="Conditions\ModSpecific\CLLC\ConditionCreatureExtraEffect.cs" />
-    <Compile Include="Conditions\ModSpecific\ConditionLoaderCLLC.cs" />
+    <Compile Include="Caches\ItemDropCache.cs" />
+    <Compile Include="ConfigToItem\RagdollTransferConfigsPatch.cs" />
+    <Compile Include="Drop\Conditions\ConditionBiome.cs" />
+    <Compile Include="Drop\ConditionChecker.cs" />
+    <Compile Include="Drop\Conditions\ConditionCreatureState.cs" />
+    <Compile Include="Drop\Conditions\ConditionDaytime.cs" />
+    <Compile Include="Drop\Conditions\ConditionEnvironments.cs" />
+    <Compile Include="Drop\Conditions\ConditionGlobalKeys.cs" />
+    <Compile Include="Drop\Conditions\ConditionInventory.cs" />
+    <Compile Include="Drop\Conditions\ConditionLevel.cs" />
+    <Compile Include="Drop\Conditions\ICondition.cs" />
+    <Compile Include="Drop\Conditions\ModSpecific\CLLC\ConditionBossAffix.cs" />
+    <Compile Include="Drop\Conditions\ModSpecific\CLLC\ConditionInfusion.cs" />
+    <Compile Include="Drop\Conditions\ModSpecific\CLLC\ConditionCreatureExtraEffect.cs" />
+    <Compile Include="Drop\Conditions\ModSpecific\ConditionLoaderCLLC.cs" />
     <Compile Include="Configuration\ConfigTypes\GeneralConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Configuration\ConfigTypes\DropConfiguration.cs" />
@@ -107,12 +117,20 @@
     <Compile Include="Debugging\DropTableDumperPatch.cs" />
     <Compile Include="Debugging\DropTableFileWriter.cs" />
     <Compile Include="Caches\DropExtended.cs" />
-    <Compile Include="Patches\CharacterDropPatch.cs" />
+    <Compile Include="Drop\DropModificationManager.cs" />
+    <Compile Include="Drop\Modifiers\IDropModifier.cs" />
+    <Compile Include="Drop\Modifiers\ModSpecific\ModEpicLoot\ModifierMagicItem.cs" />
+    <Compile Include="Drop\Modifiers\ModSpecific\ModifierLoaderEpicLoot.cs" />
+    <Compile Include="ConfigToItem\CharacterDropCarryDropExtendedPatch.cs" />
+    <Compile Include="ConfigToItem\CharacterDropDropItemsPatch.cs" />
+    <Compile Include="Patches\CharacterDropStartPatch.cs" />
     <Compile Include="DropThatPlugin.cs" />
-    <Compile Include="Patches\DropTranspilePatch.cs" />
+    <Compile Include="Patches\CharacterDropGenerateDropListPatch.cs" />
+    <Compile Include="ConfigToItem\TempDropListCache.cs" />
     <Compile Include="Reset\WorldStartPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reset\StateResetter.cs" />
+    <Compile Include="Utilities\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -126,5 +144,6 @@
   <ItemGroup>
     <None Include="LibsStripped\CreatureLevelControl.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
