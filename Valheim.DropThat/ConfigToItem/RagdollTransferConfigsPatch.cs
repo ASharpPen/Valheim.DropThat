@@ -104,9 +104,11 @@ namespace Valheim.DropThat.ConfigToItem
 
         private static void LoadConfigReferences(ZDO zdo, List<KeyValuePair<GameObject, int>> dropList)
         {
+#if DEBUG
             Log.LogDebug($"Unpacking config references for zdo {zdo.m_uid}");
+#endif
 
-            if(dropList is null)
+            if (dropList is null)
             {
 #if DEBUG
                 Log.LogDebug($"Drop list is empty. Skipping unpacking of zdo {zdo.m_uid}");
@@ -118,7 +120,9 @@ namespace Valheim.DropThat.ConfigToItem
 
             if(serialized is null)
             {
+#if DEBUG
                 Log.LogDebug($"Found nothing to unpack for zdo {zdo.m_uid}");
+#endif
                 return;
             }
 
@@ -129,9 +133,8 @@ namespace Valheim.DropThat.ConfigToItem
 
                 if(responseObject is List<DropConfig> configPackage)
                 {
-                    Log.LogDebug($"Deserialized config package for zdo {zdo.m_uid}");
-
 #if DEBUG
+                    Log.LogDebug($"Deserialized config package for zdo {zdo.m_uid}");
                     Log.LogDebug($"\t" + configPackage.Join(x => $"{x.Index}:{x.ConfigKey}"));
 #endif
 
@@ -141,7 +144,7 @@ namespace Valheim.DropThat.ConfigToItem
 
                         if(configSections.Count != 2)
                         {
-                            Log.LogDebug($"Incorrect drop that config section header '{entry.ConfigKey}' for zdo {zdo.m_uid}");
+                            Log.LogWarning($"Incorrect Drop That config section header '{entry.ConfigKey}' for zdo {zdo.m_uid}");
                             return;
                         }
 
