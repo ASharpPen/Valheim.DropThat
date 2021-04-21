@@ -6,8 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration;
@@ -64,102 +62,116 @@ namespace Valheim.DropThat.ConfigToItem
 
         private static void StoreConfigReferences(ZDO zdo, CharacterDrop drop)
         {
-#if DEBUG
-            Log.LogDebug($"Packing config references for zdo {zdo.m_uid}");
-#endif
-
-            var cache = TempDropListCache.GetDrops(drop);
-
-            if (cache is null)
+            try
             {
 #if DEBUG
-                Log.LogDebug($"Found no drops for zdo {zdo.m_uid}");
+                Log.LogDebug($"Packing config references for zdo {zdo.m_uid}");
 #endif
-                return;
+
+                var cache = TempDropListCache.GetDrops(drop);
+
+                if (cache is null)
+                {
+#if DEBUG
+                    Log.LogDebug($"Found no drops for zdo {zdo.m_uid}");
+#endif
+                    return;
+                }
+
+                List<DropConfig> package = cache.ConfigByIndex
+                    .Select(x =>
+                        new DropConfig
+                        {
+                            Index = x.Key,
+                            ConfigKey = x.Value.Config.SectionKey
+                        })
+                    .ToList();
+
+                using (MemoryStream memStream = new MemoryStream())
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(memStream, package);
+
+                    byte[] serialized = memStream.ToArray();
+
+#if DEBUG
+                    Log.LogDebug($"Serialized and set drops for zdo {zdo.m_uid}");
+#endif
+
+                    zdo.Set(ZDOKey, serialized);
+                }
             }
-
-            List<DropConfig> package = cache.ConfigByIndex
-                .Select(x => 
-                    new DropConfig 
-                    { 
-                        Index = x.Key, 
-                        ConfigKey = x.Value.Config.SectionKey 
-                    })
-                .ToList();
-
-            using (MemoryStream memStream = new MemoryStream())
+            catch(Exception e)
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(memStream, package);
-
-                byte[] serialized = memStream.ToArray();
-
-#if DEBUG
-                Log.LogDebug($"Serialized and set drops for zdo {zdo.m_uid}");
-#endif
-
-                zdo.Set(ZDOKey, serialized);
+                Log.LogError("Error while attempting to store configurations for items to be dropped on ragdoll 'puff'.", e);
             }
         }
 
         private static void LoadConfigReferences(ZDO zdo, List<KeyValuePair<GameObject, int>> dropList)
         {
-#if DEBUG
-            Log.LogDebug($"Unpacking config references for zdo {zdo.m_uid}");
-#endif
-
-            if (dropList is null)
+            try
             {
 #if DEBUG
-                Log.LogDebug($"Drop list is empty. Skipping unpacking of zdo {zdo.m_uid}");
+                Log.LogDebug($"Unpacking config references for zdo {zdo.m_uid}");
 #endif
-                return;
-            }
 
-            var serialized = zdo.GetByteArray(ZDOKey);
-
-            if(serialized is null)
-            {
-#if DEBUG
-                Log.LogDebug($"Found nothing to unpack for zdo {zdo.m_uid}");
-#endif
-                return;
-            }
-
-            using (MemoryStream memStream = new MemoryStream(serialized))
-            {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                var responseObject = binaryFormatter.Deserialize(memStream);
-
-                if(responseObject is List<DropConfig> configPackage)
+                if (dropList is null)
                 {
 #if DEBUG
-                    Log.LogDebug($"Deserialized config package for zdo {zdo.m_uid}");
-                    Log.LogDebug($"\t" + configPackage.Join(x => $"{x.Index}:{x.ConfigKey}"));
+                    Log.LogDebug($"Drop list is empty. Skipping unpacking of zdo {zdo.m_uid}");
+#endif
+                    return;
+                }
+
+                var serialized = zdo.GetByteArray(ZDOKey);
+
+                if (serialized is null)
+                {
+#if DEBUG
+                    Log.LogDebug($"Found nothing to unpack for zdo {zdo.m_uid}");
+#endif
+                    return;
+                }
+
+                using (MemoryStream memStream = new MemoryStream(serialized))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    var responseObject = binaryFormatter.Deserialize(memStream);
+
+                    if (responseObject is List<DropConfig> configPackage)
+                    {
+#if DEBUG
+                        Log.LogDebug($"Deserialized config package for zdo {zdo.m_uid}");
+                        Log.LogDebug($"\t" + configPackage.Join(x => $"{x.Index}:{x.ConfigKey}"));
 #endif
 
-                    foreach (var entry in configPackage)
-                    {
-                        var configSections = entry.ConfigKey.SplitBy('.');
-
-                        if(configSections.Count != 2)
+                        foreach (var entry in configPackage)
                         {
-                            Log.LogWarning($"Incorrect Drop That config section header '{entry.ConfigKey}' for zdo {zdo.m_uid}");
-                            return;
-                        }
+                            var configSections = entry.ConfigKey.SplitBy('.');
 
-                        if (ConfigurationManager.DropConfigs.TryGet(configSections[0], out DropMobConfiguration mobConfig))
-                        {
-                            if (mobConfig.TryGet(configSections[1], out DropItemConfiguration itemConfig))
+                            if (configSections.Count != 2)
                             {
-                                TempDropListCache.SetDrop(dropList, entry.Index, new DropExtended
+                                Log.LogWarning($"Incorrect Drop That config section header '{entry.ConfigKey}' for zdo {zdo.m_uid}");
+                                return;
+                            }
+
+                            if (ConfigurationManager.DropConfigs.TryGet(configSections[0], out DropMobConfiguration mobConfig))
+                            {
+                                if (mobConfig.TryGet(configSections[1], out DropItemConfiguration itemConfig))
                                 {
-                                    Config = itemConfig,
-                                });
+                                    TempDropListCache.SetDrop(dropList, entry.Index, new DropExtended
+                                    {
+                                        Config = itemConfig,
+                                    });
+                                }
                             }
                         }
                     }
                 }
+            }
+            catch(Exception e)
+            {
+                Log.LogError("Error while attempting to attach and apply configurations to items.", e);
             }
         }
 

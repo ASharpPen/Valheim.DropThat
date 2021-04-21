@@ -49,7 +49,7 @@ namespace Valheim.DropThat.Drop
 
             foreach (var modifier in DropModifiers)
             {
-                modifier.Modify(item, extended);
+                modifier?.Modify(item, extended);
             }
         }
     }

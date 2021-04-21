@@ -7,7 +7,7 @@ namespace Valheim.DropThat
 {
     [BepInDependency("randyknapp.mods.epicloot", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("org.bepinex.plugins.creaturelevelcontrol", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.8.0")]
+    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "1.8.1")]
     public class DropThatPlugin : BaseUnityPlugin
     {
         // Awake is called once when both the game and the plug-in are loaded
