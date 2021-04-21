@@ -371,8 +371,10 @@ ConditionNotInfusion = None
 - Event
 
 # Changelog
-- v1.8.0 
-	- Added support for Epic Loot
+- v1.8.1: 
+	- Fixed endless drop and error spam when Epic Loot was NOT installed.
+- v1.8.0: 
+	- Added support for Epic Loot.
 - v1.7.0: 
 	- Added conditions for mod Creature Level and Loot Control.
 	- Improved config merging. Supplemental files interacting with same creature will now merge in item configs from each.
