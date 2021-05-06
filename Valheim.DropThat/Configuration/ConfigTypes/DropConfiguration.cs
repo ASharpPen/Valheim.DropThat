@@ -36,6 +36,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             {
                 newModConfig = new DropModConfigEpicLoot();
             }
+            else if(subsectionName == DropModConfigSpawnThat.ModName)
+            {
+                newModConfig = new DropModConfigSpawnThat();
+            }
 
             return newModConfig;
         }
@@ -170,5 +174,13 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<float> RarityWeightRare = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Rare'");
         public ConfigurationEntry<float> RarityWeightEpic = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Epic'");
         public ConfigurationEntry<float> RarityWeightLegendary = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Legendary'");
+    }
+
+    [Serializable]
+    public class DropModConfigSpawnThat : Config
+    {
+        public const string ModName = "SpawnThat";
+
+        public ConfigurationEntry<string> ConditionTemplateId = new ConfigurationEntry<string>("", "Array of Spawn That TemplateId values to enable to drop for.");
     }
 }
