@@ -25,10 +25,10 @@ namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
         private static MethodInfo InitializeMagicItem = AccessTools.Method(typeof(LootRoller), "InitializeMagicItem");
 
 
-        public void Modify(GameObject item, DropExtended extended)
+        public void Modify(DropContext context)
         {
             DropModConfigEpicLoot config;
-            if(extended.Config.TryGet(DropModConfigEpicLoot.ModName, out Config cfg) && cfg is DropModConfigEpicLoot modConfig)
+            if(context.Extended.Config.TryGet(DropModConfigEpicLoot.ModName, out Config cfg) && cfg is DropModConfigEpicLoot modConfig)
             {
                 config = modConfig;
             }
@@ -49,7 +49,7 @@ namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
                 return;
             }
 
-            var itemDrop = ItemDropCache.Get(item);
+            var itemDrop = ItemDropCache.Get(context.Item);
 
             if (EpicLoot.EpicLoot.CanBeMagicItem(itemDrop.m_itemData))
             {
@@ -65,7 +65,23 @@ namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
                 //Make magic.
                 MagicItemComponent magicComponent = extendedItemData.AddComponent<MagicItemComponent>();
 
-                MagicItem magicItem = LootRoller.RollMagicItem(rarity.Value, extendedItemData);
+                MagicItem magicItem;
+                try
+                {
+                    var luck = LootRoller.GetLuckFactor(context.Pos);
+                    magicItem = LootRoller.RollMagicItem(rarity.Value, extendedItemData, luck);
+                }
+                catch
+                {
+                    //Legacy support for pre 0.7.10
+                    var rollMagicItemMethod = AccessTools.Method(typeof(LootRoller), nameof(LootRoller.RollMagicItem), new[] { typeof(ItemRarity), typeof(ExtendedItemData) });
+                    magicItem = rollMagicItemMethod.Invoke(null, new object[] { rarity.Value, extendedItemData }) as MagicItem;
+
+                    if(magicItem is null)
+                    {
+                        return;
+                    }
+                }
 
                 magicComponent.SetMagicItem(magicItem);
                 itemDrop.m_itemData = extendedItemData;

@@ -10,6 +10,6 @@ namespace Valheim.DropThat.Drop.Modifiers
 {
     public interface IDropModifier
     {
-        void Modify(GameObject item, DropExtended extended);
+        void Modify(DropContext context);
     }
 }

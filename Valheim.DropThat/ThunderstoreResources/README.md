@@ -19,7 +19,7 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Server-side configs
 - Adds mod specific options for: 
 	- [Creature Level and Loot Control](https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/)
-	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) (Experimental as it is in beta. Tested against v7.6)
+	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) (Experimental as it is in beta. Tested against v0.7.10)
 
 # Manual Installation:
 
@@ -371,6 +371,8 @@ ConditionNotInfusion = None
 - Event
 
 # Changelog
+- v1.8.2: 
+	- Updated support for Epic Loot to v0.7.10. Added world luck factor to loot drops. Magic Items should no longer cause endless drops and error spam.
 - v1.8.1: 
 	- Fixed endless drop and error spam when Epic Loot was NOT installed.
 - v1.8.0: 

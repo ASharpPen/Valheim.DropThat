@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
@@ -36,7 +33,7 @@ namespace Valheim.DropThat.Drop
             DropModifiers.Add(ModifierLoaderEpicLoot.MagicItem);
         }
 
-        public void ApplyModifications(GameObject item, DropExtended extended)
+        public void ApplyModifications(GameObject item, DropExtended extended, Vector3 pos)
         {
             if(item is null || extended is null)
             {
@@ -47,9 +44,23 @@ namespace Valheim.DropThat.Drop
             Log.LogDebug($"Applying modifiers to item {item.name}");
 #endif
 
+            var context = new DropContext
+            {
+                Item = item,
+                Extended = extended,
+                Pos = pos
+            };
+
             foreach (var modifier in DropModifiers)
             {
-                modifier?.Modify(item, extended);
+                try
+                {
+                    modifier?.Modify(context);
+                }
+                catch(Exception e)
+                {
+                    Log.LogError($"Error while attempting to modify item drop {item.name}", e);
+                }
             }
         }
     }

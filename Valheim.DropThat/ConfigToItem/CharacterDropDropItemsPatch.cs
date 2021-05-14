@@ -13,7 +13,7 @@ namespace Valheim.DropThat.Patches
     [HarmonyPatch(typeof(CharacterDrop))]
     public static class CharacterDropDropItemsPatch
     {
-        private static MethodInfo OnSpawnedItemMethod = AccessTools.Method(typeof(CharacterDropDropItemsPatch), nameof(OnSpawnedItem), new[] { typeof(GameObject), typeof(List<KeyValuePair<GameObject, int>>) });
+        private static MethodInfo OnSpawnedItemMethod = AccessTools.Method(typeof(CharacterDropDropItemsPatch), nameof(OnSpawnedItem), new[] { typeof(GameObject), typeof(List<KeyValuePair<GameObject, int>>), typeof(Vector3) });
 
         [HarmonyPatch(nameof(CharacterDrop.DropItems))]
         [HarmonyTranspiler]
@@ -24,11 +24,12 @@ namespace Valheim.DropThat.Patches
                 .Advance(3)
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_S, 5))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
+                .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_1))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, OnSpawnedItemMethod))
                 .InstructionEnumeration();
         }
 
-        private static void OnSpawnedItem(GameObject item, List<KeyValuePair<GameObject, int>> drops)
+        private static void OnSpawnedItem(GameObject item, List<KeyValuePair<GameObject, int>> drops, Vector3 centerPos)
         {
 #if DEBUG
             Log.LogDebug($"Attempting to apply modifiers to item {item.name}:{drops.GetHashCode()}");
@@ -57,7 +58,7 @@ namespace Valheim.DropThat.Patches
             Log.LogDebug($"Found config, applying modifiers to item {item.name}");
 #endif
 
-            DropModificationManager.Instance.ApplyModifications(item, extendedData);
+            DropModificationManager.Instance.ApplyModifications(item, extendedData, centerPos);
 
             int GetIndex(int itemCount)
             {
