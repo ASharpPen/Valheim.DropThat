@@ -59,8 +59,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="EpicLoot">
-      <HintPath>LibsStripped\EpicLoot.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>C:\Users\MHS\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\Valheim - Drop That\BepInEx\plugins\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
     </Reference>
     <Reference Include="ExtendedItemDataFramework">
       <HintPath>LibsStripped\ExtendedItemDataFramework.dll</HintPath>
@@ -117,6 +116,7 @@
     <Compile Include="Debugging\DropTableDumperPatch.cs" />
     <Compile Include="Debugging\DropTableFileWriter.cs" />
     <Compile Include="Caches\DropExtended.cs" />
+    <Compile Include="Drop\DropContext.cs" />
     <Compile Include="Drop\DropModificationManager.cs" />
     <Compile Include="Drop\Modifiers\IDropModifier.cs" />
     <Compile Include="Drop\Modifiers\ModSpecific\ModEpicLoot\ModifierMagicItem.cs" />
