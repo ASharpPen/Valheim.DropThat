@@ -56,11 +56,11 @@ namespace Valheim.DropThat.Conditions
                     return true;
                 }
 
-                    if(!states.Any(x => HasState(character, x)))
-                    {
-                        Log.LogTrace($"{nameof(extended.Config.ConditionCreatureStates)}: Disabling drop {drop.m_prefab.name} due to not finding any of the requires creature states '{extended.Config.ConditionCreatureStates.Value}'.");
-                        return false;
-                    }
+                if(!states.Any(x => HasState(character, x)))
+                {
+                    Log.LogTrace($"{nameof(extended.Config.ConditionCreatureStates)}: Disabling drop {drop.m_prefab.name} due to not finding any of the requires creature states '{extended.Config.ConditionCreatureStates.Value}'.");
+                    return false;
+                }
             }
 
             return true;

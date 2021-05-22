@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Conditions.ModSpecific;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.Conditions;
 using Valheim.DropThat.Drop.Conditions.ModSpecific;
 using Valheim.DropThat.Reset;
 
@@ -54,6 +56,9 @@ namespace Valheim.DropThat.Conditions
             OnDeathConditions = new HashSet<ICondition>();
             OnDeathConditions.Add(ConditionCreatureState.Instance);
             OnDeathConditions.Add(ConditionLoaderSpawnThat.ConditionTemplateId);
+
+            OnDeathConditions.Add(ConditionFaction.Instance);
+            OnDeathConditions.Add(ConditionNotFaction.Instance);
 
             if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {
@@ -109,23 +114,7 @@ namespace Valheim.DropThat.Conditions
                     continue;
                 }
 
-                bool filterDrop = false;
-
-                foreach (var condition in conditions)
-                {
-                    if(condition is null)
-                    {
-                        continue;
-                    }
-
-                    if (condition.ShouldFilter(drop, dropExtended, characterDrop))
-                    {
-                        filterDrop = true;
-                        break;
-                    }
-                }
-
-                if (!filterDrop)
+                if(!conditions.Any(x => x?.ShouldFilter(drop, dropExtended, characterDrop) ?? false))
                 {
                     validDrops.Add(drop);
                 }
