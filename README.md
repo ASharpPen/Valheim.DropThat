@@ -209,6 +209,28 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 Mod-specific configs can be added to each configuration entry as `[<EntityPrepfabName>.<DropIndex>.<ModName>]`
 These are implemented soft-dependant, meaning if the mod is not present, the configuration will do nothing.
 
+## Spawn That
+
+Integrates features based on [Spawn That](https://valheim.thunderstore.io/package/ASharpPen/Spawn_That/).
+
+``` INI 
+## Array of Spawn That TemplateId values to enable to drop for.
+# Setting type: String
+ConditionTemplateId=
+```
+
+Example of Eikthyr dropping ore only when spawned by an existing spawn that template with an assigned template id.
+
+``` INI
+[Eikthyr.10]
+ItemName = CopperOre
+
+[Eikthyr.10.SpawnThat]
+ConditionTemplateId=SomeTemplateIdForEikthyr
+```
+
+Example files for setting up a loot goblin can be found in the github example [here](https://github.com/ASharpPen/Valheim.DropThat/Examples/Loot%20Goblin).
+
 ## Epic Loot
 
 Integrates to magic item roll system from [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/). Allows for making items magic. See the mod page for more in-depth description of the magic system.
@@ -220,27 +242,22 @@ The roll is done as a weighted distribution, meaning if you gave Magic 100 and L
 
 ## Weight to use for rolling as a non-magic item.
 # Setting type: Single
-# Default value: 0
 RarityWeightNone = 0
 
 ## Weight to use for rolling as rarity 'Magic'
 # Setting type: Single
-# Default value: 0
 RarityWeightMagic = 0
 
 ## Weight to use for rolling as rarity 'Rare'
 # Setting type: Single
-# Default value: 0
 RarityWeightRare = 0
 
 ## Weight to use for rolling as rarity 'Epic'
 # Setting type: Single
-# Default value: 0
 RarityWeightEpic = 0
 
 ## Weight to use for rolling as rarity 'Legendary'
 # Setting type: Single
-# Default value: 0
 RarityWeightLegendary = 0
 
 ```
@@ -371,6 +388,9 @@ ConditionNotInfusion = None
 - Event
 
 # Changelog
+- v1.9.0: 
+	- Added support for Spawn That condition "ConditionTemplateId", allowing for drops only for a specific template.
+	- Added sub-folder search for supplemental configs. It should now be possible to place Drop That supplemental files in any folder in the bepinex config folder.
 - v1.8.2: 
 	- Updated support for Epic Loot to v0.7.10. Added world luck factor to loot drops. Magic Items should no longer cause endless drops and error spam.
 - v1.8.1: 

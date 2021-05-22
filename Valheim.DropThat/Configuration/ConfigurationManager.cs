@@ -45,7 +45,7 @@ namespace Valheim.DropThat.Configuration
 
             if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
             {
-                var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, SupplementalPattern);
+                var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, SupplementalPattern, SearchOption.AllDirectories);
                 Log.LogDebug($"Found {supplementalFiles.Length} supplemental files");
 
                 foreach (var file in supplementalFiles)
