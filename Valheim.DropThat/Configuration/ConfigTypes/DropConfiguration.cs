@@ -96,9 +96,9 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<string> ConditionHasItem = new ConfigurationEntry<string>("", "Array of items (prefab names) that will enable this drop. If empty, allows all.\nEg. skeleton_bow");
 
-        public ConfigurationEntry<string> ConditionFaction = new ConfigurationEntry<string>();
+        public ConfigurationEntry<string> ConditionFaction = new ConfigurationEntry<string>("", "Array of factions that will enable this drop. If empty, allows all.\nEg. Undead, Boss");
 
-        public ConfigurationEntry<string> ConditionNotFaction = new ConfigurationEntry<string>();
+        public ConfigurationEntry<string> ConditionNotFaction = new ConfigurationEntry<string>("", "Array of factions that will disable this drop. If empty, this condition is ignored.\nEg. Undead, boss");
 
         #endregion
 
