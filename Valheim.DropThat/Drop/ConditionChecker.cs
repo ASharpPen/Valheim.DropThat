@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Conditions.ModSpecific;
 using Valheim.DropThat.Configuration;
+using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.Conditions;
+using Valheim.DropThat.Drop.Conditions.ModSpecific;
 using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Conditions
@@ -28,7 +33,7 @@ namespace Valheim.DropThat.Conditions
                 _instance = null;
             });
 
-            #region Add OnStart conditions
+            // Add OnStart conditions
 
             OnStartConditions = new HashSet<ICondition>();
             OnStartConditions.Add(ConditionInventory.Instance);
@@ -41,20 +46,19 @@ namespace Valheim.DropThat.Conditions
                 OnStartConditions.Add(ConditionEnvironments.Instance);
                 OnStartConditions.Add(ConditionGlobalKeys.Instance);
 
-                #region Mod specific
-
                 OnStartConditions.Add(ConditionLoaderCLLC.ConditionBossAffix);
                 OnStartConditions.Add(ConditionLoaderCLLC.ConditionInfusion);
                 OnStartConditions.Add(ConditionLoaderCLLC.ConditionCreatureExtraEffect);
-
-                #endregion
             }
-            #endregion
 
-            #region Add OnDeath conditions
+            // Add OnDeath conditions
 
             OnDeathConditions = new HashSet<ICondition>();
             OnDeathConditions.Add(ConditionCreatureState.Instance);
+            OnDeathConditions.Add(ConditionLoaderSpawnThat.ConditionTemplateId);
+
+            OnDeathConditions.Add(ConditionFaction.Instance);
+            OnDeathConditions.Add(ConditionNotFaction.Instance);
 
             if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {
@@ -64,27 +68,36 @@ namespace Valheim.DropThat.Conditions
                 OnDeathConditions.Add(ConditionEnvironments.Instance);
                 OnDeathConditions.Add(ConditionGlobalKeys.Instance);
 
-                #region Mod specific
-
                 OnDeathConditions.Add(ConditionLoaderCLLC.ConditionBossAffix);
                 OnDeathConditions.Add(ConditionLoaderCLLC.ConditionInfusion);
                 OnDeathConditions.Add(ConditionLoaderCLLC.ConditionCreatureExtraEffect);
-
-                #endregion
-
             }
-
-            #endregion
         }
 
         public static List<CharacterDrop.Drop> FilterOnStart(CharacterDrop characterDrop)
         {
-            return Instance.Filter(characterDrop, Instance.OnStartConditions);
+            try
+            {
+                return Instance.Filter(characterDrop, Instance.OnStartConditions);
+            }
+            catch(Exception e)
+            {
+                Log.LogError("Error while attempting to run OnStart conditions. Skipping filtering.", e);
+                return characterDrop.m_drops;
+            }
         }
 
         public static List<CharacterDrop.Drop> FilterOnDeath(CharacterDrop characterDrop)
         {
-            return Instance.Filter(characterDrop, Instance.OnDeathConditions);
+            try
+            {
+                return Instance.Filter(characterDrop, Instance.OnDeathConditions);
+            }
+            catch (Exception e)
+            {
+                Log.LogError("Error while attempting to run OnDeath conditions. Skipping filtering.", e);
+                return characterDrop.m_drops;
+            }
         }
 
         public List<CharacterDrop.Drop> Filter(CharacterDrop characterDrop, IEnumerable<ICondition> conditions)
@@ -101,23 +114,7 @@ namespace Valheim.DropThat.Conditions
                     continue;
                 }
 
-                bool filterDrop = false;
-
-                foreach (var condition in conditions)
-                {
-                    if(condition is null)
-                    {
-                        continue;
-                    }
-
-                    if (condition.ShouldFilter(drop, dropExtended, characterDrop))
-                    {
-                        filterDrop = true;
-                        break;
-                    }
-                }
-
-                if (!filterDrop)
+                if(!conditions.Any(x => x?.ShouldFilter(drop, dropExtended, characterDrop) ?? false))
                 {
                     validDrops.Add(drop);
                 }

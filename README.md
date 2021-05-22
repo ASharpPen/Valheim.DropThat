@@ -155,6 +155,13 @@ ConditionNotCreatureStates =
 ## Eg. skeleton_bow
 ConditionHasItem =
 
+## Array of factions that will enable this drop. If empty, allows all.
+## Eg. Undead, Boss
+ConditionFaction = 
+
+## Array of factions that will disable this drop. If empty, this condition is ignored.
+## Eg. Undead, boss
+ConditionNotFaction = 
 ```
   
 ## Example
@@ -209,6 +216,28 @@ The supplemental configuration expects the same structure as "drop_that.tables.c
 Mod-specific configs can be added to each configuration entry as `[<EntityPrepfabName>.<DropIndex>.<ModName>]`
 These are implemented soft-dependant, meaning if the mod is not present, the configuration will do nothing.
 
+## Spawn That
+
+Integrates features based on [Spawn That](https://valheim.thunderstore.io/package/ASharpPen/Spawn_That/).
+
+``` INI 
+## Array of Spawn That TemplateId values to enable to drop for.
+# Setting type: String
+ConditionTemplateId=
+```
+
+Example of Eikthyr dropping ore only when spawned by an existing spawn that template with an assigned template id.
+
+``` INI
+[Eikthyr.10]
+ItemName = CopperOre
+
+[Eikthyr.10.SpawnThat]
+ConditionTemplateId=SomeTemplateIdForEikthyr
+```
+
+Example files for setting up a loot goblin can be found in the github example [here](https://github.com/ASharpPen/Valheim.DropThat/Examples/Loot%20Goblin).
+
 ## Epic Loot
 
 Integrates to magic item roll system from [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/). Allows for making items magic. See the mod page for more in-depth description of the magic system.
@@ -217,32 +246,25 @@ The items are first given a rarity level, based on the configured options.
 The roll is done as a weighted distribution, meaning if you gave Magic 100 and Legendary 100, it would be 50% chance to become one of them. If you added Rare as 100, it would be 33% for any of them.
 
 ``` INI
-
 ## Weight to use for rolling as a non-magic item.
 # Setting type: Single
-# Default value: 0
 RarityWeightNone = 0
 
 ## Weight to use for rolling as rarity 'Magic'
 # Setting type: Single
-# Default value: 0
 RarityWeightMagic = 0
 
 ## Weight to use for rolling as rarity 'Rare'
 # Setting type: Single
-# Default value: 0
 RarityWeightRare = 0
 
 ## Weight to use for rolling as rarity 'Epic'
 # Setting type: Single
-# Default value: 0
 RarityWeightEpic = 0
 
 ## Weight to use for rolling as rarity 'Legendary'
 # Setting type: Single
-# Default value: 0
 RarityWeightLegendary = 0
-
 ```
 
 Example of bonemass set to always drop a pair of epic pants.
@@ -253,7 +275,6 @@ ItemName = ArmorBronzeLegs
 
 [Bonemass.10.EpicLoot]
 RarityWeightEpic = 1
-
 ```
 
 ## Creature Level and Loot Control
@@ -262,7 +283,6 @@ Additional conditions for [Creature Level and Loot Control](https://valheim.thun
 See the mod nexus page for more in-depth documentation for the options.
 
 ``` INI
-
 ## Array (separated by ,) of boss affixes, for which item will drop.
 ConditionBossAffix =
 
@@ -280,7 +300,6 @@ ConditionExtraEffect =
 
 ## Array (separated by ,) of creature extra effects, for which item will not drop.
 ConditionNotExtraEffect =
-
 ```
 
 Example for boar which will drop iron scraps only when it has an Infusion.
@@ -295,10 +314,10 @@ Chance = 1
 
 [Boar.0.CreatureLevelAndLootControl]
 ConditionNotInfusion = None
-
 ```
 
-### Boss Affixes
+### Boss Affixes 
+
 - None
 - Reflective
 - Shielded
@@ -308,7 +327,8 @@ ConditionNotInfusion = None
 - Enraged
 - Twin
 
-### Extra Effects
+### Extra Effects 
+
 - None
 - Aggressive
 - Quick
@@ -317,7 +337,8 @@ ConditionNotInfusion = None
 - Splitting
 - Armored
 
-### Infusions
+### Infusions 
+
 - None
 - Lightning
 - Fire
@@ -328,7 +349,8 @@ ConditionNotInfusion = None
 
 # Field options
 
-## Biomes
+## Biomes 
+
 - Meadows
 - Swamp
 - Mountain
@@ -339,7 +361,8 @@ ConditionNotInfusion = None
 - Ocean
 - Mistlands
 
-## Environments
+## Environments 
+
 - Clear
 - Twilight_Clear
 - Misty
@@ -364,13 +387,29 @@ ConditionNotInfusion = None
 - Crypt
 - SunkenCrypt
 
-## Creature state
+## Creature state 
 
 - Default
 - Tamed
 - Event
 
+## Factions 
+
+- Players
+- AnimalsVeg
+- ForestMonsters
+- Undead
+- Demon
+- MountainMonsters
+- SeaMonsters
+- PlainsMonsters
+- Boss
+
 # Changelog
+- v1.9.0: 
+	- Added conditions for creature faction.
+	- Added support for Spawn That condition "ConditionTemplateId", allowing for drops only for a specific template.
+	- Added sub-folder search for supplemental configs. It should now be possible to place Drop That supplemental files in any folder in the bepinex config folder.
 - v1.8.2: 
 	- Updated support for Epic Loot to v0.7.10. Added world luck factor to loot drops. Magic Items should no longer cause endless drops and error spam.
 - v1.8.1: 

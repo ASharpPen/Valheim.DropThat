@@ -80,8 +80,12 @@
       <HintPath>..\..\..\..\Games\Steam\steamapps\common\Valheim\valheim_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Valheim.SpawnThat">
+      <HintPath>LibsStripped\Valheim.SpawnThat.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caches\ZdoCache.cs" />
     <Compile Include="Caches\CharacterCache.cs" />
     <Compile Include="Caches\CharacterExtended.cs" />
     <Compile Include="Caches\ItemDropCache.cs" />
@@ -91,14 +95,18 @@
     <Compile Include="Drop\Conditions\ConditionCreatureState.cs" />
     <Compile Include="Drop\Conditions\ConditionDaytime.cs" />
     <Compile Include="Drop\Conditions\ConditionEnvironments.cs" />
+    <Compile Include="Drop\Conditions\ConditionFaction.cs" />
     <Compile Include="Drop\Conditions\ConditionGlobalKeys.cs" />
     <Compile Include="Drop\Conditions\ConditionInventory.cs" />
     <Compile Include="Drop\Conditions\ConditionLevel.cs" />
+    <Compile Include="Drop\Conditions\ConditionNotFaction.cs" />
     <Compile Include="Drop\Conditions\ICondition.cs" />
     <Compile Include="Drop\Conditions\ModSpecific\CLLC\ConditionBossAffix.cs" />
     <Compile Include="Drop\Conditions\ModSpecific\CLLC\ConditionInfusion.cs" />
     <Compile Include="Drop\Conditions\ModSpecific\CLLC\ConditionCreatureExtraEffect.cs" />
     <Compile Include="Drop\Conditions\ModSpecific\ConditionLoaderCLLC.cs" />
+    <Compile Include="Drop\Conditions\ModSpecific\SpawnThat\ConditionTemplateId.cs" />
+    <Compile Include="Drop\Conditions\ModSpecific\ConditionLoaderSpawnThat.cs" />
     <Compile Include="Configuration\ConfigTypes\GeneralConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="Configuration\ConfigTypes\DropConfiguration.cs" />

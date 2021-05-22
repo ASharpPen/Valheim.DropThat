@@ -36,6 +36,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             {
                 newModConfig = new DropModConfigEpicLoot();
             }
+            else if(subsectionName == DropModConfigSpawnThat.ModName)
+            {
+                newModConfig = new DropModConfigSpawnThat();
+            }
 
             return newModConfig;
         }
@@ -92,9 +96,9 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<string> ConditionHasItem = new ConfigurationEntry<string>("", "Array of items (prefab names) that will enable this drop. If empty, allows all.\nEg. skeleton_bow");
 
-        public ConfigurationEntry<string> ConditionFaction = new ConfigurationEntry<string>();
+        public ConfigurationEntry<string> ConditionFaction = new ConfigurationEntry<string>("", "Array of factions that will enable this drop. If empty, allows all.\nEg. Undead, Boss");
 
-        public ConfigurationEntry<string> ConditionNotFaction = new ConfigurationEntry<string>();
+        public ConfigurationEntry<string> ConditionNotFaction = new ConfigurationEntry<string>("", "Array of factions that will disable this drop. If empty, this condition is ignored.\nEg. Undead, boss");
 
         #endregion
 
@@ -170,5 +174,13 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<float> RarityWeightRare = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Rare'");
         public ConfigurationEntry<float> RarityWeightEpic = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Epic'");
         public ConfigurationEntry<float> RarityWeightLegendary = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Legendary'");
+    }
+
+    [Serializable]
+    public class DropModConfigSpawnThat : Config
+    {
+        public const string ModName = "SpawnThat";
+
+        public ConfigurationEntry<string> ConditionTemplateId = new ConfigurationEntry<string>("", "Array of Spawn That TemplateId values to enable to drop for.");
     }
 }
