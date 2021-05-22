@@ -155,6 +155,13 @@ ConditionNotCreatureStates =
 ## Eg. skeleton_bow
 ConditionHasItem =
 
+## Array of factions that will enable this drop. If empty, allows all.
+## Eg. Undead, Boss
+ConditionFaction = 
+
+## Array of factions that will disable this drop. If empty, this condition is ignored.
+## Eg. Undead, boss
+ConditionNotFaction = 
 ```
   
 ## Example
@@ -239,7 +246,6 @@ The items are first given a rarity level, based on the configured options.
 The roll is done as a weighted distribution, meaning if you gave Magic 100 and Legendary 100, it would be 50% chance to become one of them. If you added Rare as 100, it would be 33% for any of them.
 
 ``` INI
-
 ## Weight to use for rolling as a non-magic item.
 # Setting type: Single
 RarityWeightNone = 0
@@ -259,7 +265,6 @@ RarityWeightEpic = 0
 ## Weight to use for rolling as rarity 'Legendary'
 # Setting type: Single
 RarityWeightLegendary = 0
-
 ```
 
 Example of bonemass set to always drop a pair of epic pants.
@@ -270,7 +275,6 @@ ItemName = ArmorBronzeLegs
 
 [Bonemass.10.EpicLoot]
 RarityWeightEpic = 1
-
 ```
 
 ## Creature Level and Loot Control
@@ -279,7 +283,6 @@ Additional conditions for [Creature Level and Loot Control](https://valheim.thun
 See the mod nexus page for more in-depth documentation for the options.
 
 ``` INI
-
 ## Array (separated by ,) of boss affixes, for which item will drop.
 ConditionBossAffix =
 
@@ -297,7 +300,6 @@ ConditionExtraEffect =
 
 ## Array (separated by ,) of creature extra effects, for which item will not drop.
 ConditionNotExtraEffect =
-
 ```
 
 Example for boar which will drop iron scraps only when it has an Infusion.
@@ -312,10 +314,10 @@ Chance = 1
 
 [Boar.0.CreatureLevelAndLootControl]
 ConditionNotInfusion = None
-
 ```
 
-### Boss Affixes
+### Boss Affixes 
+
 - None
 - Reflective
 - Shielded
@@ -325,7 +327,8 @@ ConditionNotInfusion = None
 - Enraged
 - Twin
 
-### Extra Effects
+### Extra Effects 
+
 - None
 - Aggressive
 - Quick
@@ -334,7 +337,8 @@ ConditionNotInfusion = None
 - Splitting
 - Armored
 
-### Infusions
+### Infusions 
+
 - None
 - Lightning
 - Fire
@@ -345,7 +349,8 @@ ConditionNotInfusion = None
 
 # Field options
 
-## Biomes
+## Biomes 
+
 - Meadows
 - Swamp
 - Mountain
@@ -356,7 +361,8 @@ ConditionNotInfusion = None
 - Ocean
 - Mistlands
 
-## Environments
+## Environments 
+
 - Clear
 - Twilight_Clear
 - Misty
@@ -381,14 +387,27 @@ ConditionNotInfusion = None
 - Crypt
 - SunkenCrypt
 
-## Creature state
+## Creature state 
 
 - Default
 - Tamed
 - Event
 
+## Factions 
+
+- Players
+- AnimalsVeg
+- ForestMonsters
+- Undead
+- Demon
+- MountainMonsters
+- SeaMonsters
+- PlainsMonsters
+- Boss
+
 # Changelog
 - v1.9.0: 
+	- Added conditions for creature faction.
 	- Added support for Spawn That condition "ConditionTemplateId", allowing for drops only for a specific template.
 	- Added sub-folder search for supplemental configs. It should now be possible to place Drop That supplemental files in any folder in the bepinex config folder.
 - v1.8.2: 
