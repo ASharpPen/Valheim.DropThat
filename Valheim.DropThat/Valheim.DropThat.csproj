@@ -131,6 +131,7 @@
     <Compile Include="Drop\Modifiers\ModSpecific\ModifierLoaderEpicLoot.cs" />
     <Compile Include="ConfigToItem\CharacterDropCarryDropExtendedPatch.cs" />
     <Compile Include="ConfigToItem\CharacterDropDropItemsPatch.cs" />
+    <Compile Include="Drop\Modifiers\ModifierSetQualityLevel.cs" />
     <Compile Include="Patches\CharacterDropStartPatch.cs" />
     <Compile Include="DropThatPlugin.cs" />
     <Compile Include="Patches\CharacterDropGenerateDropListPatch.cs" />

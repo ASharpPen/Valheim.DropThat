@@ -64,9 +64,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         #region DropExtended Modifiers
 
-        public ConfigurationEntry<int> SetVariety = new ConfigurationEntry<int>();
-
-        public ConfigurationEntry<int> SetItemLevel = new ConfigurationEntry<int>();
+        public ConfigurationEntry<int> SetQualityLevel = new ConfigurationEntry<int>(-1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.");
 
         #endregion
 

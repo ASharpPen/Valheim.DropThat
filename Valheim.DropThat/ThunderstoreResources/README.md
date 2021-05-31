@@ -162,6 +162,9 @@ ConditionFaction =
 ## Array of factions that will disable this drop. If empty, this condition is ignored.
 ## Eg. Undead, boss
 ConditionNotFaction = 
+
+## Sets the quality level of the item. If 0 or less, this setting is ignored.
+SetQualityLevel = -1
 ```
   
 ## Example
@@ -416,6 +419,7 @@ ConditionNotInfusion = None
 
 # Changelog
 - v1.10.0: 
+	- Added setting "SetQualityLevel".
 	- Added additional options for Epic Loot to roll specific unique legendaries.
 - v1.9.0: 
 	- Added conditions for creature faction.
