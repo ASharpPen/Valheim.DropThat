@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Valheim.DropThat.Caches;
-using Valheim.DropThat.Conditions;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Configuration;

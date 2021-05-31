@@ -2,6 +2,7 @@
 using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.Conditions;
 
 namespace Valheim.DropThat.Conditions
 {
