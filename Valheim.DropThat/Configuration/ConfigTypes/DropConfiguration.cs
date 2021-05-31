@@ -174,6 +174,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<float> RarityWeightRare = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Rare'");
         public ConfigurationEntry<float> RarityWeightEpic = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Epic'");
         public ConfigurationEntry<float> RarityWeightLegendary = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Legendary'");
+        public ConfigurationEntry<float> RarityWeightUnique = new ConfigurationEntry<float>(0, "Weight to use for rolling unique items from the UniqueIDs array. If item rolls as unique, a single id will be selected randomly from the UniqueIDs.");
+        public ConfigurationEntry<string> UniqueIDs = new ConfigurationEntry<string>("", "Id's for unique legendaries from Epic Loot.\nEg: HeimdallTowerShield, RagnarBattleAxe");
     }
 
     [Serializable]
