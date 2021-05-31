@@ -99,6 +99,7 @@
     <Compile Include="Drop\Conditions\ConditionGlobalKeys.cs" />
     <Compile Include="Drop\Conditions\ConditionInventory.cs" />
     <Compile Include="Drop\Conditions\ConditionLevel.cs" />
+    <Compile Include="Drop\Conditions\ConditionLocation.cs" />
     <Compile Include="Drop\Conditions\ConditionNotFaction.cs" />
     <Compile Include="Drop\Conditions\ICondition.cs" />
     <Compile Include="Drop\Conditions\ModSpecific\CLLC\ConditionBossAffix.cs" />

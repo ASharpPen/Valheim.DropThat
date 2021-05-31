@@ -37,6 +37,7 @@ namespace Valheim.DropThat.Conditions
 
             OnStartConditions = new HashSet<ICondition>();
             OnStartConditions.Add(ConditionInventory.Instance);
+            OnStartConditions.Add(ConditionLocation.Instance);
 
             if (!ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {

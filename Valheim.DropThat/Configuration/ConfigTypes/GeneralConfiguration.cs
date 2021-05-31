@@ -32,6 +32,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<bool> EnableTraceLogging = new ConfigurationEntry<bool>(false, "Enables in-depth logging. Note, this might generate a LOT of log entries.");
         public ConfigurationEntry<bool> WriteDefaultDropTableToFile = new ConfigurationEntry<bool>(false, "When enabled, creates a file on world start, in the plugin folder containing the default mob drop tables.");
         public ConfigurationEntry<bool> WriteCreatureItemsToFile = new ConfigurationEntry<bool>(false, "When enabled, creates a file on world start, in the plugin folder containing items of mobs that have drop tables.");
+        public ConfigurationEntry<bool> WriteLocationsToFile = new ConfigurationEntry<bool>(false, "When enables, creates a file on world start in the plugin folder, containing the name of each location in the game.");
 
         #endregion
 
@@ -49,6 +50,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             DebugMode.Bind(Config, "General", "EnableDebug");
             WriteDefaultDropTableToFile.Bind(Config, "Debug", nameof(WriteDefaultDropTableToFile));
             WriteCreatureItemsToFile.Bind(Config, "Debug", nameof(WriteCreatureItemsToFile));
+            WriteLocationsToFile.Bind(Config, "Debug", nameof(WriteLocationsToFile));
 
             StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
             LoadSupplementalDropTables.Bind(Config, "General", nameof(LoadSupplementalDropTables));

@@ -88,7 +88,10 @@ EnableTraceLogging = false
 WriteDefaultDropTableToFile = false
 
 ## When enabled, creates a file on world start, in the plugin folder containing items of mobs that have drop tables.
-WriteCreatureItemsToFile = true
+WriteCreatureItemsToFile = false
+
+## When enables, creates a file on world start in the plugin folder, containing the name of each location in the game.
+WriteLocationsToFile = false
 
 ```
 
@@ -162,6 +165,10 @@ ConditionFaction =
 ## Array of factions that will disable this drop. If empty, this condition is ignored.
 ## Eg. Undead, boss
 ConditionNotFaction = 
+
+## Array of location names. When mob spawned in one of the listed locations, this drop is enabled.
+## Eg. Runestone_Boars, FireHole
+ConditionLocation=
 
 ## Sets the quality level of the item. If 0 or less, this setting is ignored.
 SetQualityLevel = -1
@@ -419,6 +426,7 @@ ConditionNotInfusion = None
 
 # Changelog
 - v1.10.0: 
+	- Added condition for spawn location, and general setting for outputting all location names in a file.
 	- Added setting "SetQualityLevel".
 	- Added additional options for Epic Loot to roll specific unique legendaries.
 - v1.9.0: 
