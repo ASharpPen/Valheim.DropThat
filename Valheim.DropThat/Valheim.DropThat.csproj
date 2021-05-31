@@ -132,6 +132,11 @@
     <Compile Include="ConfigToItem\CharacterDropCarryDropExtendedPatch.cs" />
     <Compile Include="ConfigToItem\CharacterDropDropItemsPatch.cs" />
     <Compile Include="Drop\Modifiers\ModifierSetQualityLevel.cs" />
+    <Compile Include="Locations\LocationHelper.cs" />
+    <Compile Include="Locations\SimpleLocation.cs" />
+    <Compile Include="Locations\SimpleLocationPackage.cs" />
+    <Compile Include="Locations\ZoneSystemMultiplayerPatch.cs" />
+    <Compile Include="Locations\ZoneSystemStartPatch.cs" />
     <Compile Include="Patches\CharacterDropStartPatch.cs" />
     <Compile Include="DropThatPlugin.cs" />
     <Compile Include="Patches\CharacterDropGenerateDropListPatch.cs" />
