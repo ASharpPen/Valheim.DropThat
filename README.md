@@ -265,6 +265,15 @@ RarityWeightEpic = 0
 ## Weight to use for rolling as rarity 'Legendary'
 # Setting type: Single
 RarityWeightLegendary = 0
+
+## Weight to use for rolling unique items from the UniqueIDs array. If item rolls as unique, a single id will be selected randomly from the UniqueIDs.
+# Setting type: Single
+RarityWeightUnique = 0
+
+## Id's for unique legendaries from Epic Loot. Will drop as a non-magic item if the legendary does not meet its requirements.
+## Eg. HeimdallLegs, RagnarLegs
+# Setting type: String
+UniqueIDs = 
 ```
 
 Example of bonemass set to always drop a pair of epic pants.
@@ -406,6 +415,8 @@ ConditionNotInfusion = None
 - Boss
 
 # Changelog
+- v1.10.0: 
+	- Added additional options for Epic Loot to roll specific unique legendaries.
 - v1.9.0: 
 	- Added conditions for creature faction.
 	- Added support for Spawn That condition "ConditionTemplateId", allowing for drops only for a specific template.
