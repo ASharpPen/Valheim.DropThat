@@ -170,8 +170,25 @@ ConditionNotFaction =
 ## Eg. Runestone_Boars, FireHole
 ConditionLocation=
 
+## Array of damage types that will enable this drop, if they were part of the final killing blow. If empty, this condition is ignored.
+## Eg. Blunt, Fire
+ConditionKilledByDamageType =
+
+## Array of statuses that mob had any of while dying, to enable this drop. If empty, this condition is ignored.
+## Eg. Burning, Smoked
+ConditionKilledWithStatus =
+
+## Array of statuses that mob must have had all of while dying, to enable this drop. If empty, this condition is ignored.
+## Eg. Burning, Smoked
+ConditionKilledWithStatuses =
+
+## Array of skill types that will enable this drop, if they were listed as the skill causing the damage of the final killing blow. If empty, this condition is ignored.
+## Eg. Swords, Unarmed
+ConditionKilledBySkillType =
+
 ## Sets the quality level of the item. If 0 or less, this setting is ignored.
 SetQualityLevel = -1
+
 ```
   
 ## Example
@@ -424,8 +441,71 @@ ConditionNotInfusion = None
 - PlainsMonsters
 - Boss
 
-# Changelog
+## Damage Types
+
+-	Blunt
+-	Slash
+-	Pierce
+-	Chop
+-	Pickaxe
+-	Fire
+-	Frost
+-	Lightning
+-	Poison
+-	Spirit
+-	Physical (Blunt, Slash, Pierce, Chop and Pickaxe)
+-	Elemental (Fire, Frost, Lightning)
+
+## Skill Types
+
+- Swords
+- Knives
+- Clubs
+- Polearms
+- Spears
+- Blocking
+- Axes
+- Bows
+- FireMagic
+- FrostMagic
+- Unarmed
+- Pickaxes
+- WoodCutting
+- Jump
+- Sneak
+- Run
+- Swim
+	
+## Status Effects 
+
+Valheim status effect options are not easily identified. But this is a list of at least some of the possibilities.
+
+- Burning
+- Spirit
+- Poison
+- Frost
+- Lightning
+- Smoked
+- Wet
+- Rested
+- Shelter
+- CampFire
+- Resting
+- Cold
+- Freezing
+- Encumbered
+- SoftDeath
+
+### Epic Loot status effects: 
+
+- Paralyze
+
+# Changelog 
+
 - v1.10.0: 
+	- Added conditions for killed while having specified statuses (eg. burning, smoked).
+	- Added condition for killed by skill type (eg. swords, unarmed).
+	- Added condition for killed by damage type (eg. blunt, fire).
 	- Added condition for spawn location, and general setting for outputting all location names in a file.
 	- Added setting "SetQualityLevel".
 	- Added additional options for Epic Loot to roll specific unique legendaries.
