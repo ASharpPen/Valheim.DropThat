@@ -28,8 +28,6 @@ namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
 
         private static MethodInfo InitializeMagicItem = AccessTools.Method(typeof(LootRoller), "InitializeMagicItem");
 
-        private static MethodInfo LegacyMagicItemRoller = AccessTools.Method(typeof(LootRoller), nameof(LootRoller.RollMagicItem), new[] { typeof(ItemRarity), typeof(ExtendedItemData) });
-
         public void Modify(DropContext context)
         {
             DropModConfigEpicLoot config;
@@ -160,22 +158,8 @@ namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
         {
             MagicItemComponent magicComponent = itemData.AddComponent<MagicItemComponent>();
 
-            MagicItem magicItem;
-            try
-            {
-                var luck = LootRoller.GetLuckFactor(position);
-                magicItem = LootRoller.RollMagicItem(rarity, itemData, luck);
-            }
-            catch
-            {
-                //Legacy support for pre 0.7.10
-                magicItem = LegacyMagicItemRoller.Invoke(null, new object[] { rarity, itemData }) as MagicItem;
-
-                if (magicItem is null)
-                {
-                    return;
-                }
-            }
+            var luck = LootRoller.GetLuckFactor(position);
+            MagicItem magicItem = magicItem = LootRoller.RollMagicItem(rarity, itemData, luck);
 
             magicComponent.SetMagicItem(magicItem);
             itemDrop.m_itemData = itemData;

@@ -60,6 +60,10 @@ namespace Valheim.DropThat.Conditions
 
             OnDeathConditions.Add(ConditionFaction.Instance);
             OnDeathConditions.Add(ConditionNotFaction.Instance);
+            OnDeathConditions.Add(ConditionKilledByDamageType.Instance);
+            OnDeathConditions.Add(ConditionKilledBySkillType.Instance);
+            OnDeathConditions.Add(ConditionKilledWithStatus.Instance);
+            OnDeathConditions.Add(ConditionKilledWithStatuses.Instance);
 
             if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {
