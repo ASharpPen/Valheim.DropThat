@@ -11,7 +11,7 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 # Table of content:
 - [Features](#Features)
 - [Manual Installation](#Manual-Installation)
-- [Client / Server](#client-/-server)
+- [Client / Server](#client--server)
 - [Configuration](#Configuration)
 	- [General](#General)
 	- [Drop Tables](#Drop-Tables)
@@ -33,7 +33,7 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 	- [Skill Types](#skill-types)
 	- [Status Effects](#status-effects)
 		- [Epic Loot status effects](#epic-loot-status-effects)
-- [Changelog]
+- [Changelog](#changelog)
 
 # Features
 
@@ -59,7 +59,7 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 
 # Client / Server
 
-Drop That needs to be installed on all clients to work.
+Drop That needs to be installed on all clients and on server to work.
 
 From v1.4.0 clients will request the configurations currently loaded by the server, and use those without affecting the clients config files.
 This means you should be able to have server-specific configurations, and the client can have its own setup for singleplayer.
@@ -251,7 +251,7 @@ ItemName = CopperOre
 ConditionTemplateId=SomeTemplateIdForEikthyr
 ```
 
-Example files for setting up a loot goblin can be found in the github example [here](https://github.com/ASharpPen/Valheim.DropThat/Examples/Loot%20Goblin).
+Example files for setting up a loot goblin can be found in the github example [here](https://github.com/ASharpPen/Valheim.DropThat/tree/master/Examples/Loot%20Goblin).
 
 ## Epic Loot
 
