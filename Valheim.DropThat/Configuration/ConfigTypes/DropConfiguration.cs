@@ -100,6 +100,14 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<string> ConditionLocation = new ConfigurationEntry<string>("", "Array of location names. When mob spawned in one of the listed locations, this drop is enabled.\nEg. Runestone_Boars");
 
+        public ConfigurationEntry<string> ConditionKilledByDamageType = new ConfigurationEntry<string>("", "Array of damage types that will enable this drop, if they were part of the final killing blow. If empty, this condition is ignored.\nEg. Blunt, Fire");
+
+        public ConfigurationEntry<string> ConditionKilledWithStatus = new ConfigurationEntry<string>("", "Array of statuses that mob had any of while dying, to enable this drop. If empty, this condition is ignored.\nEg. Burning, Smoked");
+
+        public ConfigurationEntry<string> ConditionKilledWithStatuses = new ConfigurationEntry<string>("", "Array of statuses that mob must have had all of while dying, to enable this drop. If empty, this condition is ignored.\nEg. Burning, Smoked");
+
+        public ConfigurationEntry<string> ConditionKilledBySkillType = new ConfigurationEntry<string>("", "Array of skill types that will enable this drop, if they were listed as the skill causing the damage of the final killing blow. If empty, this condition is ignored.\nEg. Swords, Unarmed");
+
         #endregion
 
         // Inefficient, but will do for now.
