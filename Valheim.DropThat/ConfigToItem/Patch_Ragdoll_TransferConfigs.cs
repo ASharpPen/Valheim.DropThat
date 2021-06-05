@@ -27,10 +27,10 @@ namespace Valheim.DropThat.ConfigToItem
     /// - To load the configs associated on "puff".
     /// </summary>
     [HarmonyPatch(typeof(Ragdoll))]
-    public static class RagdollTransferConfigsPatch
+    public static class Patch_Ragdoll_TransferConfigs
     {
-        private static MethodInfo StoreConfigsMethod = AccessTools.Method(typeof(RagdollTransferConfigsPatch), nameof(StoreConfigReferences));
-        private static MethodInfo LoadConfigsMethod = AccessTools.Method(typeof(RagdollTransferConfigsPatch), nameof(LoadConfigReferences));
+        private static MethodInfo StoreConfigsMethod = AccessTools.Method(typeof(Patch_Ragdoll_TransferConfigs), nameof(StoreConfigReferences));
+        private static MethodInfo LoadConfigsMethod = AccessTools.Method(typeof(Patch_Ragdoll_TransferConfigs), nameof(LoadConfigReferences));
 
         [HarmonyPatch("SaveLootList")]
         [HarmonyTranspiler]

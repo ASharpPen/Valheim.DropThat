@@ -8,7 +8,7 @@ using Valheim.DropThat.Conditions;
 namespace Valheim.DropThat.Patches
 {   
     [HarmonyPatch(typeof(CharacterDrop))]
-    public static class CharacterDropGenerateDropListPatch
+    public static class Patch_CharacterDrop_GenerateDropList_FilterDrops
     {
         private static MethodInfo DropFilter = AccessTools.Method(typeof(ConditionChecker), nameof(ConditionChecker.FilterOnDeath), new[] { typeof(CharacterDrop) });
 

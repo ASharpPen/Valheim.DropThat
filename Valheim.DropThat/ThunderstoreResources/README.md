@@ -20,6 +20,9 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Adds mod specific options for: 
 	- [Creature Level and Loot Control](https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/)
 	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) (Experimental as it is in beta. Tested against v0.7.10)
+- Performance improvements
+	- Drop stacks instead of individual items. Want to have a stack of coins, that isn't a massive lag tower of individual coins?
+	- Limit max amount to avoid those pesky world-crashing level 10 trolls.
 
 # Manual Installation:
 
@@ -92,6 +95,16 @@ WriteCreatureItemsToFile = false
 
 ## When enables, creates a file on world start in the plugin folder, containing the name of each location in the game.
 WriteLocationsToFile = false
+
+[Performance]
+
+## When enabled, will always attempt to create stacks of items when dropping, instead of creating items one by one.
+## Eg. 35 coin stack, instead of 35 individual 1 coin drops.
+AlwaysAutoStack = false
+
+## When greater than 0, will limit the maximum number of items dropped at a time. This is intended for guarding against multipliers.
+## Eg. if limit is 100, and attempting to drop 200 coins, only 100 will be dropped.
+DropLimit = -1
 
 ```
 
@@ -188,6 +201,12 @@ ConditionKilledBySkillType =
 
 ## Sets the quality level of the item. If 0 or less, this setting is ignored.
 SetQualityLevel = -1
+
+## Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.
+SetAmountLimit = -1
+
+## If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.
+SetAutoStack = false
 
 ```
   
@@ -503,6 +522,8 @@ Valheim status effect options are not easily identified. But this is a list of a
 # Changelog 
 
 - v1.10.0: 
+	- Added settings for dropping items in stacks. Both global and/or per item.
+	- Added settings for limiting max amount of a drop. Both global and/or per item.
 	- Added conditions for killed while having specified statuses (eg. burning, smoked).
 	- Added condition for killed by skill type (eg. swords, unarmed).
 	- Added condition for killed by damage type (eg. blunt, fire).

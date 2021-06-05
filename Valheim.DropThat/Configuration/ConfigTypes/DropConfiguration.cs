@@ -66,6 +66,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<int> SetQualityLevel = new ConfigurationEntry<int>(-1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.");
 
+        public ConfigurationEntry<int> SetAmountLimit = new ConfigurationEntry<int>(-1, "Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.");
+
+        public ConfigurationEntry<bool> SetAutoStack = new ConfigurationEntry<bool>(false, "If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.");
+
         #endregion
 
         #region DropExtended Conditions
