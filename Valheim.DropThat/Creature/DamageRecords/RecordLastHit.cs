@@ -9,7 +9,7 @@ namespace Valheim.DropThat.Creature.DamageRecords
     {
         private static ConditionalWeakTable<Character, DamageRecord> LastHits = new();
 
-        public static DamageRecord? GetLastHit(Character character)
+        public static DamageRecord GetLastHit(Character character)
         {
             if(LastHits.TryGetValue(character, out DamageRecord lastHit))
             {
