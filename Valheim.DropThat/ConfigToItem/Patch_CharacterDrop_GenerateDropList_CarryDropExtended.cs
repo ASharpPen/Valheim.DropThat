@@ -11,10 +11,10 @@ using Valheim.DropThat.Core;
 namespace Valheim.DropThat.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop))]
-    public static class CharacterDropCarryDropExtendedPatch
+    public static class Patch_CharacterDrop_GenerateDropList_CarryDropExtended
     {
         private static MethodInfo Anchor = AccessTools.Method(typeof(List<CharacterDrop.Drop>.Enumerator), "MoveNext");
-        private static MethodInfo CarryExtendedMethod = AccessTools.Method(typeof(CharacterDropCarryDropExtendedPatch), nameof(CarryExtended));
+        private static MethodInfo CarryExtendedMethod = AccessTools.Method(typeof(Patch_CharacterDrop_GenerateDropList_CarryDropExtended), nameof(CarryExtended));
 
         [HarmonyPatch(nameof(CharacterDrop.GenerateDropList))]
         [HarmonyTranspiler]
@@ -54,11 +54,12 @@ namespace Valheim.DropThat.Patches
             if (extended is not null && dropItems is not null)
             {
 #if DEBUG
-                Log.LogDebug($"Carrying configs for drop {extended.Config.SectionKey}:{characterDrop.GetHashCode()}");
+                //Log.LogDebug($"Carrying configs for drop {extended.Config.SectionKey}:{characterDrop.GetHashCode()}");
                 //Log.LogDebug($"Carrying configs for drop {drop.m_prefab.name}");
 #endif
                 TempDropListCache.SetDrop(characterDrop, dropItems.Count - 1, extended);
             }
+            /*
 #if DEBUG
             else if (dropItems is null)
             {
@@ -70,7 +71,7 @@ namespace Valheim.DropThat.Patches
                 Log.LogDebug($"Disregard. No config to carry for item {drop}:{drop.m_prefab?.name}");
             }
 #endif
-
+            */
         }
     }
 }
