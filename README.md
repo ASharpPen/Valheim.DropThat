@@ -459,6 +459,7 @@ Valheim status effect options are not easily identified. But this is a list of a
 # Changelog 
 
 - v1.10.0: 
+	- Optimized config sync.
 	- Added settings for dropping items in stacks. Both global and/or per item.
 	- Added settings for limiting max amount of a drop. Both global and/or per item.
 	- Added conditions for killed while having specified statuses (eg. burning, smoked).

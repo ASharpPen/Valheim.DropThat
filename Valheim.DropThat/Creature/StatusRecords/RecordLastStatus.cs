@@ -11,7 +11,7 @@ namespace Valheim.DropThat.Creature.StatusRecords
     {
         private static ConditionalWeakTable<Character, StatusRecord> LastStatus = new();
 
-        public static StatusRecord? GetLastStatus(Character character)
+        public static StatusRecord GetLastStatus(Character character)
         {
             if (LastStatus.TryGetValue(character, out StatusRecord cached))
             {

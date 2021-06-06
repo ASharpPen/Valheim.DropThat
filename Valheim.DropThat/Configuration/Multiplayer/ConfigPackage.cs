@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.Serialization.Formatters.Binary;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
@@ -25,10 +25,15 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
             using (MemoryStream memStream = new MemoryStream())
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(memStream, this);
+                using (var zipStream = new GZipStream(memStream, CompressionLevel.Optimal))
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(zipStream, this);
+                }
 
-                byte[] serialized = memStream.ToArray();
+                byte[] serialized = memStream.GetBuffer();
+
+                Log.LogTrace($"Serialized size: {serialized.Length} bytes");
 
                 package.Write(serialized);
             }
@@ -44,27 +49,29 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
             using (MemoryStream memStream = new MemoryStream(serialized))
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                var responseObject = binaryFormatter.Deserialize(memStream);
-
-                if (responseObject is ConfigPackage configPackage)
+                using (var zipStream = new GZipStream(memStream, CompressionMode.Decompress, true))
                 {
-                    Log.LogDebug("Received and deserialized config package");
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    var responseObject = binaryFormatter.Deserialize(zipStream);
 
-                    Log.LogTrace("Unpackaging general config.");
+                    if (responseObject is ConfigPackage configPackage)
+                    {
+                        Log.LogDebug("Received and deserialized config package");
 
-                    ConfigurationManager.GeneralConfig = configPackage.GeneralConfig;
+                        Log.LogTrace("Unpackaging configs.");
 
-                    Log.LogTrace("Successfully set general config.");
-                    Log.LogTrace("Unpackaging drop table configs.");
+                        ConfigurationManager.GeneralConfig = configPackage.GeneralConfig;
+                        ConfigurationManager.DropConfigs = configPackage.DropTableConfigs;
 
-                    ConfigurationManager.DropConfigs = configPackage.DropTableConfigs;
+                        Log.LogTrace("Successfully unpacked configs.");
 
-                    Log.LogTrace("Successfully set drop table configs.");
-                }
-                else
-                {
-                    Log.LogWarning("Received bad config package. Unable to load.");
+                        Log.LogDebug("Unpacked general config");
+                        Log.LogDebug($"Unpacked drops configurations for {ConfigurationManager.DropConfigs.Subsections.Count} creatures");
+                    }
+                    else
+                    {
+                        Log.LogWarning("Received bad config package. Unable to load.");
+                    }
                 }
             }
         }

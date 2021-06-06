@@ -13,8 +13,6 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 		{
 			if (ZNet.instance.IsServer())
 			{
-				ConfigurationManager.LoadAll();
-
 				Log.LogDebug("Registering server RPC for sending configs on request from client.");
 				peer.m_rpc.Register(nameof(RPC_RequestConfigsDropThat), new ZRpc.RpcMethod.Method(RPC_RequestConfigsDropThat));
 			}
