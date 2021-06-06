@@ -27,11 +27,20 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         #endregion
 
+        #region Performance
+
+        public ConfigurationEntry<bool> AlwaysAutoStack = new ConfigurationEntry<bool>(false, "When enabled, will always attempt to create stacks of items when dropping, instead of creating items one by one.\nEg. 35 coin stack, instead of 35 individual 1 coin drops.");
+
+        public ConfigurationEntry<int> DropLimit = new ConfigurationEntry<int>(-1, "When greater than 0, will limit the maximum number of items dropped at a time. This is intended for guarding against multipliers.\nEg. if limit is 100, and attempting to drop 200 coins, only 100 will be dropped.");
+
+        #endregion
+
         #region Debug
 
         public ConfigurationEntry<bool> EnableTraceLogging = new ConfigurationEntry<bool>(false, "Enables in-depth logging. Note, this might generate a LOT of log entries.");
         public ConfigurationEntry<bool> WriteDefaultDropTableToFile = new ConfigurationEntry<bool>(false, "When enabled, creates a file on world start, in the plugin folder containing the default mob drop tables.");
         public ConfigurationEntry<bool> WriteCreatureItemsToFile = new ConfigurationEntry<bool>(false, "When enabled, creates a file on world start, in the plugin folder containing items of mobs that have drop tables.");
+        public ConfigurationEntry<bool> WriteLocationsToFile = new ConfigurationEntry<bool>(false, "When enables, creates a file on world start in the plugin folder, containing the name of each location in the game.");
 
         #endregion
 
@@ -41,6 +50,9 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
             EnableTraceLogging.Bind(Config, "Debug", nameof(EnableTraceLogging));
 
+            AlwaysAutoStack.Bind(Config, "Performance", nameof(AlwaysAutoStack));
+            DropLimit.Bind(Config, "Performance", nameof(DropLimit));
+
             ClearAllExisting.Bind(Config, "DropTables", "ClearAllExisting");
             ClearAllExistingWhenModified.Bind(Config, "DropTables", "ClearAllExistingWhenModified");
             AlwaysAppend.Bind(Config, "DropTables", "AlwaysAppend");
@@ -49,6 +61,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             DebugMode.Bind(Config, "General", "EnableDebug");
             WriteDefaultDropTableToFile.Bind(Config, "Debug", nameof(WriteDefaultDropTableToFile));
             WriteCreatureItemsToFile.Bind(Config, "Debug", nameof(WriteCreatureItemsToFile));
+            WriteLocationsToFile.Bind(Config, "Debug", nameof(WriteLocationsToFile));
 
             StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
             LoadSupplementalDropTables.Bind(Config, "General", nameof(LoadSupplementalDropTables));

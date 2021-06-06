@@ -5,6 +5,7 @@ using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Configuration;
+using Valheim.DropThat.Drop.Conditions;
 
 namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
 {

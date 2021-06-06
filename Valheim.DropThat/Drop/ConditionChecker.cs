@@ -37,6 +37,7 @@ namespace Valheim.DropThat.Conditions
 
             OnStartConditions = new HashSet<ICondition>();
             OnStartConditions.Add(ConditionInventory.Instance);
+            OnStartConditions.Add(ConditionLocation.Instance);
 
             if (!ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {
@@ -59,6 +60,10 @@ namespace Valheim.DropThat.Conditions
 
             OnDeathConditions.Add(ConditionFaction.Instance);
             OnDeathConditions.Add(ConditionNotFaction.Instance);
+            OnDeathConditions.Add(ConditionKilledByDamageType.Instance);
+            OnDeathConditions.Add(ConditionKilledBySkillType.Instance);
+            OnDeathConditions.Add(ConditionKilledWithStatus.Instance);
+            OnDeathConditions.Add(ConditionKilledWithStatuses.Instance);
 
             if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {

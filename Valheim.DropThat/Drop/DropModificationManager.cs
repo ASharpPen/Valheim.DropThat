@@ -30,6 +30,8 @@ namespace Valheim.DropThat.Drop
                 _instance = null;
             });
 
+            DropModifiers.Add(ModifierSetQualityLevel.Instance);
+
             DropModifiers.Add(ModifierLoaderEpicLoot.MagicItem);
         }
 

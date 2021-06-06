@@ -4,9 +4,13 @@ using System.Reflection;
 using HarmonyLib;
 using ExtendedItemDataFramework;
 using EpicLoot;
-using Valheim.DropThat.Core;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core.Configuration;
+using Valheim.DropThat.Utilities;
+using EpicLoot.LegendarySystem;
+using Valheim.DropThat.Core;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
 {
@@ -23,7 +27,6 @@ namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
         }
 
         private static MethodInfo InitializeMagicItem = AccessTools.Method(typeof(LootRoller), "InitializeMagicItem");
-
 
         public void Modify(DropContext context)
         {
@@ -57,68 +60,199 @@ namespace Valheim.DropThat.Drop.Modifiers.ModSpecific.ModEpicLoot
 
                 var rarity = RollRarity(config);
 
-                if(rarity is null)
+                if(rarity is Rarity.None)
                 {
                     return;
                 }
 
-                //Make magic.
-                MagicItemComponent magicComponent = extendedItemData.AddComponent<MagicItemComponent>();
-
-                MagicItem magicItem;
-                try
+                if (rarity is Rarity.Unique)
                 {
-                    var luck = LootRoller.GetLuckFactor(context.Pos);
-                    magicItem = LootRoller.RollMagicItem(rarity.Value, extendedItemData, luck);
+                    MakeUnique(itemDrop, extendedItemData, modConfig);
                 }
-                catch
+                else
                 {
-                    //Legacy support for pre 0.7.10
-                    var rollMagicItemMethod = AccessTools.Method(typeof(LootRoller), nameof(LootRoller.RollMagicItem), new[] { typeof(ItemRarity), typeof(ExtendedItemData) });
-                    magicItem = rollMagicItemMethod.Invoke(null, new object[] { rarity.Value, extendedItemData }) as MagicItem;
-
-                    if(magicItem is null)
+                    //Make magic.
+                    var epicLootRarity = RarityToItemRarity(rarity);
+                    if (epicLootRarity is not null)
                     {
-                        return;
+                        MakeMagic(epicLootRarity.Value, itemDrop, extendedItemData, context.Pos);
                     }
                 }
-
-                magicComponent.SetMagicItem(magicItem);
-                itemDrop.m_itemData = extendedItemData;
-
-                InitializeMagicItem.Invoke(null, new[] { extendedItemData });
             }
         }
 
-        private ItemRarity? RollRarity(DropModConfigEpicLoot config)
+        private void MakeUnique(ItemDrop itemDrop, ExtendedItemData itemData, DropModConfigEpicLoot config)
         {
-            var sumWeight =
-                config.RarityWeightMagic +
-                config.RarityWeightRare +
-                config.RarityWeightEpic +
-                config.RarityWeightLegendary;
+            var uniqueIds = config.UniqueIDs.Value.SplitByComma();
+
+            if(uniqueIds.Count > 0)
+            {
+                var randomId = uniqueIds[Random.Range(0, uniqueIds.Count)];
+
+                if (UniqueLegendaryHelper.TryGetLegendaryInfo(randomId, out LegendaryInfo legendaryInfo))
+                {
+
+                    MagicItem magicItem = new MagicItem
+                    {
+                        Rarity = ItemRarity.Legendary,
+                        LegendaryID = legendaryInfo.ID,
+                        DisplayName = legendaryInfo.Name,
+                    };
+
+                    if(!legendaryInfo.Requirements.CheckRequirements(itemDrop.m_itemData, magicItem))
+                    {
+                        Log.LogWarning($"Attempted to roll Epic Loot unique legendary with id '{randomId}' for Drop That config entry '{config.SectionKey}' but requirements were not met. Skipping.");
+                        return;
+                    }
+
+                    if (legendaryInfo.IsSetItem)
+                    {
+                        magicItem.SetID = UniqueLegendaryHelper.GetSetForLegendaryItem(legendaryInfo);
+                    }
+
+                    if ((legendaryInfo.GuaranteedMagicEffects?.Count ?? 0) > 0)
+                    {
+                        foreach (var effect in legendaryInfo.GuaranteedMagicEffects)
+                        {
+                            if (MagicItemEffectDefinitions.AllDefinitions.TryGetValue(effect.Type, out MagicItemEffectDefinition effectDefinition))
+                            {
+                                MagicItemEffect itemEffect = LootRoller.RollEffect(effectDefinition, ItemRarity.Legendary, effect.Values);
+                                magicItem.Effects.Add(itemEffect);
+                            }
+                            else
+                            {
+                                Log.LogWarning($"Unable to find a guaranteed Epic Loot magic effect '{effect.Type}' while rolling unique legendary with id '{randomId}'. Skipping effect.");
+                            }
+                        }
+                    }
+
+                    var randomEffectCount = LootRoller.RollEffectCountPerRarity(ItemRarity.Legendary) - magicItem.Effects.Count;
+
+                    if (randomEffectCount > 0)
+                    {
+                        List<MagicItemEffectDefinition> availableEffects = MagicItemEffectDefinitions.GetAvailableEffects(itemData, magicItem, -1);
+
+                        for (int i = 0; i < randomEffectCount; ++i)
+                        {
+                            MagicItemEffectDefinition effectDefinition = RollWeightedEffect(availableEffects, false);
+                            MagicItemEffect itemEffect = LootRoller.RollEffect(effectDefinition, ItemRarity.Legendary);
+                            magicItem.Effects.Add(itemEffect);
+                        }
+                    }
+
+                    MagicItemComponent magicComponent = itemData.AddComponent<MagicItemComponent>();
+
+                    magicComponent.SetMagicItem(magicItem);
+                    itemDrop.m_itemData = itemData;
+
+                    InitializeMagicItem.Invoke(null, new[] { itemData });
+                }
+                else
+                {
+                    Log.LogWarning($"Attempted to roll Epic Loot unique legendary with id '{randomId}' but was unable to find matching info registered in Epic Loot.");
+                }
+            }
+        }
+
+        private void MakeMagic(ItemRarity rarity, ItemDrop itemDrop, ExtendedItemData itemData, Vector3 position)
+        {
+            MagicItemComponent magicComponent = itemData.AddComponent<MagicItemComponent>();
+
+            var luck = LootRoller.GetLuckFactor(position);
+            MagicItem magicItem = magicItem = LootRoller.RollMagicItem(rarity, itemData, luck);
+
+            magicComponent.SetMagicItem(magicItem);
+            itemDrop.m_itemData = itemData;
+
+            InitializeMagicItem.Invoke(null, new[] { itemData });
+        }
+
+        private MagicItemEffectDefinition RollWeightedEffect(List<MagicItemEffectDefinition> magicEffects, bool removeSelected)
+        {
+            var sumWeight = magicEffects.Sum(x => x.SelectionWeight);
 
             var random = Random.Range(0, sumWeight);
 
             float ongoingSum = 0;
-            
+
+            for(int i = 0; i < magicEffects.Count; ++i)
+            {
+                var magicEffect = magicEffects[i];
+
+                ongoingSum += magicEffect.SelectionWeight;
+                if(random <= ongoingSum)
+                { 
+                    if(removeSelected)
+                    {
+                        magicEffects.RemoveAt(i);
+                    }
+
+                    return magicEffect;
+                }
+            }
+
+            return magicEffects.Last();
+        }
+
+        private Rarity RollRarity(DropModConfigEpicLoot config)
+        {
+            var sumWeight =
+                config.RarityWeightNone +
+                config.RarityWeightMagic +
+                config.RarityWeightRare +
+                config.RarityWeightEpic +
+                config.RarityWeightLegendary +
+                config.RarityWeightUnique;
+
+            var random = Random.Range(0, sumWeight);
+
+            float ongoingSum = 0;
+
+            ongoingSum += config.RarityWeightUnique;
+            if (random <= ongoingSum)
+                return Rarity.Unique;
+
             ongoingSum += config.RarityWeightLegendary;
             if (random <= ongoingSum)
-                return ItemRarity.Legendary;
+                return Rarity.Legendary;
 
             ongoingSum += config.RarityWeightEpic;
             if (random <= ongoingSum)
-                return ItemRarity.Epic;
+                return Rarity.Epic;
 
             ongoingSum += config.RarityWeightRare;
             if (random <= ongoingSum)
-                return ItemRarity.Rare;
+                return Rarity.Rare;
 
             ongoingSum += config.RarityWeightMagic;
             if (random <= ongoingSum)
-                return ItemRarity.Magic;
+                return Rarity.Magic;
 
-            return null;
+            return Rarity.None;
         }
+
+        private ItemRarity? RarityToItemRarity(Rarity rarity)
+        {
+            return rarity switch
+            {
+                Rarity.None => null,
+                Rarity.Magic => ItemRarity.Magic,
+                Rarity.Rare => ItemRarity.Rare,
+                Rarity.Epic => ItemRarity.Epic,
+                Rarity.Legendary => ItemRarity.Legendary,
+                Rarity.Unique => ItemRarity.Legendary,
+                _ => null,
+            };
+        }
+    }
+
+    public enum Rarity
+    {
+        None,
+        Magic,
+        Rare,
+        Epic,
+        Legendary,
+        Unique
     }
 }

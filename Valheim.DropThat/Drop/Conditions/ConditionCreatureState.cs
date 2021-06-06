@@ -2,9 +2,10 @@
 using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.Conditions;
 
 namespace Valheim.DropThat.Conditions
-{    
+{
     internal class ConditionCreatureState : ICondition
     {
         private static ConditionCreatureState _instance;

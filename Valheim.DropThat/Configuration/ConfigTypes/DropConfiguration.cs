@@ -64,9 +64,11 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         #region DropExtended Modifiers
 
-        public ConfigurationEntry<int> SetVariety = new ConfigurationEntry<int>();
+        public ConfigurationEntry<int> SetQualityLevel = new ConfigurationEntry<int>(-1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.");
 
-        public ConfigurationEntry<int> SetItemLevel = new ConfigurationEntry<int>();
+        public ConfigurationEntry<int> SetAmountLimit = new ConfigurationEntry<int>(-1, "Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.");
+
+        public ConfigurationEntry<bool> SetAutoStack = new ConfigurationEntry<bool>(false, "If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.");
 
         #endregion
 
@@ -99,6 +101,16 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<string> ConditionFaction = new ConfigurationEntry<string>("", "Array of factions that will enable this drop. If empty, allows all.\nEg. Undead, Boss");
 
         public ConfigurationEntry<string> ConditionNotFaction = new ConfigurationEntry<string>("", "Array of factions that will disable this drop. If empty, this condition is ignored.\nEg. Undead, boss");
+
+        public ConfigurationEntry<string> ConditionLocation = new ConfigurationEntry<string>("", "Array of location names. When mob spawned in one of the listed locations, this drop is enabled.\nEg. Runestone_Boars");
+
+        public ConfigurationEntry<string> ConditionKilledByDamageType = new ConfigurationEntry<string>("", "Array of damage types that will enable this drop, if they were part of the final killing blow. If empty, this condition is ignored.\nEg. Blunt, Fire");
+
+        public ConfigurationEntry<string> ConditionKilledWithStatus = new ConfigurationEntry<string>("", "Array of statuses that mob had any of while dying, to enable this drop. If empty, this condition is ignored.\nEg. Burning, Smoked");
+
+        public ConfigurationEntry<string> ConditionKilledWithStatuses = new ConfigurationEntry<string>("", "Array of statuses that mob must have had all of while dying, to enable this drop. If empty, this condition is ignored.\nEg. Burning, Smoked");
+
+        public ConfigurationEntry<string> ConditionKilledBySkillType = new ConfigurationEntry<string>("", "Array of skill types that will enable this drop, if they were listed as the skill causing the damage of the final killing blow. If empty, this condition is ignored.\nEg. Swords, Unarmed");
 
         #endregion
 
@@ -174,6 +186,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<float> RarityWeightRare = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Rare'");
         public ConfigurationEntry<float> RarityWeightEpic = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Epic'");
         public ConfigurationEntry<float> RarityWeightLegendary = new ConfigurationEntry<float>(0, "Weight to use for rolling as rarity 'Legendary'");
+        public ConfigurationEntry<float> RarityWeightUnique = new ConfigurationEntry<float>(0, "Weight to use for rolling unique items from the UniqueIDs array. If item rolls as unique, a single id will be selected randomly from the UniqueIDs.");
+        public ConfigurationEntry<string> UniqueIDs = new ConfigurationEntry<string>("", "Id's for unique legendaries from Epic Loot. Will drop as a non-magic item if the legendary does not meet its requirements.\nEg. HeimdallLegs, RagnarLegs");
     }
 
     [Serializable]

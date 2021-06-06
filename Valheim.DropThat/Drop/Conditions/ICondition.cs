@@ -1,7 +1,6 @@
-﻿
-using Valheim.DropThat.Caches;
+﻿using Valheim.DropThat.Caches;
 
-namespace Valheim.DropThat.Conditions
+namespace Valheim.DropThat.Drop.Conditions
 {
     public interface ICondition
     {
