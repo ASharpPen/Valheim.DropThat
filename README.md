@@ -457,7 +457,8 @@ Valheim status effect options are not easily identified. But this is a list of a
 - Paralyze
 
 # Changelog 
-
+- v1.10.1: 
+	- Fixed unintended references to Spawn That, causing errors when not installed.
 - v1.10.0: 
 	- Optimized config sync.
 	- Added settings for dropping items in stacks. Both global and/or per item.
