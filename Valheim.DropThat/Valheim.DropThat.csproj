@@ -89,6 +89,7 @@
     <Compile Include="Caches\CharacterCache.cs" />
     <Compile Include="Caches\CharacterExtended.cs" />
     <Compile Include="Caches\ItemDropCache.cs" />
+    <Compile Include="Debugging\Patch_CharacterDrop.cs" />
     <Compile Include="Patches\Patch_CharacterDrop_DropItems.cs" />
     <Compile Include="Patches\Patch_CharacterDrop_GenerateDropList_CarryDropExtended.cs" />
     <Compile Include="Patches\Patch_Ragdoll_TransferConfigs.cs" />

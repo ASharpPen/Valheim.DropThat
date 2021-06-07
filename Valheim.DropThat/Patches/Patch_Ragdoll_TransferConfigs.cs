@@ -41,6 +41,7 @@ namespace Valheim.DropThat.ConfigToItem
                 .Advance(1)
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_1))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_1))
+                .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_0))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, StoreConfigsMethod))
                 .InstructionEnumeration();
         }
@@ -60,7 +61,7 @@ namespace Valheim.DropThat.ConfigToItem
 
         private const string ZDOKey = "DropThatConfigs";
 
-        private static void StoreConfigReferences(ZDO zdo, CharacterDrop drop)
+        private static void StoreConfigReferences(ZDO zdo, CharacterDrop drop, List<KeyValuePair<GameObject, int>> drops)
         {
             try
             {
@@ -68,7 +69,8 @@ namespace Valheim.DropThat.ConfigToItem
                 Log.LogDebug($"Packing config references for zdo {zdo.m_uid}");
 #endif
 
-                var cache = TempDropListCache.GetDrops(drop);
+                var cache = TempDropListCache.GetDrops(drops);
+                cache ??= TempDropListCache.GetDrops(drop); // If we somehow failed to keep a consistent list reference (probably mod conflict). Attempt with the original CharacterDrop instead.
 
                 if (cache is null)
                 {

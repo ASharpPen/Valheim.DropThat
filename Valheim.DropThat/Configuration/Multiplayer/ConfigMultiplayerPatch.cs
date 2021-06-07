@@ -44,7 +44,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
 				rpc.Invoke(nameof(RPC_ReceiveConfigsDropThat), new object[] { zpack });
 
-				Log.LogTrace("Finished sending config package.");
+				Log.LogInfo("Finished sending config package.");
 			}
 			catch (Exception e)
             {
@@ -54,7 +54,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
 		private static void RPC_ReceiveConfigsDropThat(ZRpc rpc, ZPackage pkg)
 		{
-			Log.LogTrace("Received package.");
+			Log.LogInfo("Received package.");
 			try
 			{
 				ConfigPackage.Unpack(pkg);

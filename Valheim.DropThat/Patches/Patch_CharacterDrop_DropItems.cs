@@ -16,7 +16,7 @@ namespace Valheim.DropThat.Patches
     public static class Patch_CharacterDrop_DropItems
     {
         private static MethodInfo OnSpawnedItemMethod = AccessTools.Method(typeof(Patch_CharacterDrop_DropItems), nameof(OnSpawnedItem), new[] { typeof(GameObject), typeof(List<KeyValuePair<GameObject, int>>), typeof(Vector3) });
-        private static MethodInfo OnSpawnLoopMethod = AccessTools.Method(typeof(Patch_CharacterDrop_DropItems), nameof(OnSpawnLoop));
+        private static MethodInfo AfterSpawnedItemMethod = AccessTools.Method(typeof(Patch_CharacterDrop_DropItems), nameof(AfterSpawnedItem));
 
         [HarmonyPatch(nameof(CharacterDrop.DropItems))]
         [HarmonyTranspiler]
@@ -34,12 +34,12 @@ namespace Valheim.DropThat.Patches
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_S, 5))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_2))
-                .InsertAndAdvance(new CodeInstruction(OpCodes.Call, OnSpawnLoopMethod))
+                .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AfterSpawnedItemMethod))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Stloc_2)) // Overwrite existing loop index
                 .InstructionEnumeration();
         }
 
-        private static int OnSpawnLoop(GameObject item, List<KeyValuePair<GameObject, int>> drops, int index)
+        private static int AfterSpawnedItem(GameObject item, List<KeyValuePair<GameObject, int>> drops, int index)
         {
             var resultIndex = index;
 
@@ -49,13 +49,13 @@ namespace Valheim.DropThat.Patches
                 int itemIndex = GetIndex(drops, count);
 
 #if DEBUG
-                Log.LogDebug($"[OnSpawnLoop] Count: {count}, Index: {itemIndex}");
+                Log.LogDebug($"[AfterSpawnedItem] Count: {count}, Index: {itemIndex}");
 #endif
 
                 if (itemIndex >= drops.Count)
                 {
 #if DEBUG
-                    Log.LogWarning($"You fucked up. Attempting to access drop index {itemIndex} in drop list with count {drops.Count}");
+                    Log.LogWarning($"Ups. Attempting to access drop index {itemIndex} in drop list with count {drops.Count}");
 #endif
                     return resultIndex;
                 }
