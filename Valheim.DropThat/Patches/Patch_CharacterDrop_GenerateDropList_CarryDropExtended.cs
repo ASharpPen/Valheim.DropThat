@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-
 namespace Valheim.DropThat.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop))]

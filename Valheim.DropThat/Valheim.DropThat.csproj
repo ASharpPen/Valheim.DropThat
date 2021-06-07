@@ -89,9 +89,9 @@
     <Compile Include="Caches\CharacterCache.cs" />
     <Compile Include="Caches\CharacterExtended.cs" />
     <Compile Include="Caches\ItemDropCache.cs" />
-    <Compile Include="ConfigToItem\Patch_CharacterDrop_DropItems.cs" />
-    <Compile Include="ConfigToItem\Patch_CharacterDrop_GenerateDropList_CarryDropExtended.cs" />
-    <Compile Include="ConfigToItem\Patch_Ragdoll_TransferConfigs.cs" />
+    <Compile Include="Patches\Patch_CharacterDrop_DropItems.cs" />
+    <Compile Include="Patches\Patch_CharacterDrop_GenerateDropList_CarryDropExtended.cs" />
+    <Compile Include="Patches\Patch_Ragdoll_TransferConfigs.cs" />
     <Compile Include="Creature\Patch_Character_RecordHit.cs" />
     <Compile Include="Creature\DamageRecords\DamageRecord.cs" />
     <Compile Include="Creature\DamageRecords\RecordLastHit.cs" />
@@ -149,7 +149,7 @@
     <Compile Include="Locations\ZoneSystemMultiplayerPatch.cs" />
     <Compile Include="Locations\ZoneSystemStartPatch.cs" />
     <Compile Include="DropThatPlugin.cs" />
-    <Compile Include="ConfigToItem\TempDropListCache.cs" />
+    <Compile Include="Patches\TempDropListCache.cs" />
     <Compile Include="Patches\Patch_CharacterDrop_GenerateDropList_FilterDrops.cs" />
     <Compile Include="Patches\Patch_CharacterDrop_LimitDrops.cs" />
     <Compile Include="Patches\Patch_CharacterDrop_Start.cs" />

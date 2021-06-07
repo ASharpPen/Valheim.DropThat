@@ -10,7 +10,7 @@ using Valheim.DropThat.Debugging;
 namespace Valheim.DropThat.Locations
 {
     [HarmonyPatch(typeof(ZoneSystem))]
-    public static class ZoneSystemStartPatch
+    internal static class ZoneSystemStartPatch
     {
         [HarmonyPatch(nameof(ZoneSystem.Load))]
         [HarmonyPostfix]

@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop;
 
