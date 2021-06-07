@@ -458,6 +458,7 @@ Valheim status effect options are not easily identified. But this is a list of a
 
 # Changelog 
 - v1.10.1: 
+	- Fixed issue with Oozer not spawning more blobs when modified with Drop That. Turns out, not all drops are items. I encourage creative use of this knowledge, but wash my hands of the consequences.
 	- Fixed unintended references to Spawn That, causing errors when not installed.
 - v1.10.0: 
 	- Optimized config sync.
