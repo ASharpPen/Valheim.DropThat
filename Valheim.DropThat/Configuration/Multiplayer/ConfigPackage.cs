@@ -45,7 +45,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
         {
             var serialized = package.ReadByteArray();
 
-            Log.LogTrace("Deserializing package.");
+            Log.LogTrace($"Deserializing package size: {serialized.Length} bytes");
 
             using (MemoryStream memStream = new MemoryStream(serialized))
             {
@@ -63,10 +63,10 @@ namespace Valheim.DropThat.Configuration.Multiplayer
                         ConfigurationManager.GeneralConfig = configPackage.GeneralConfig;
                         ConfigurationManager.DropConfigs = configPackage.DropTableConfigs;
 
-                        Log.LogTrace("Successfully unpacked configs.");
-
                         Log.LogDebug("Unpacked general config");
                         Log.LogDebug($"Unpacked drops configurations for {ConfigurationManager.DropConfigs.Subsections.Count} creatures");
+
+                        Log.LogInfo("Successfully unpacked configs.");
                     }
                     else
                     {
