@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Valheim.SpawnThat.Core;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Locations
 {

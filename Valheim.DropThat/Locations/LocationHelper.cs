@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Valheim.SpawnThat.Core;
-using Valheim.SpawnThat.Reset;
+using Valheim.DropThat.Core;
+using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Locations
 {
