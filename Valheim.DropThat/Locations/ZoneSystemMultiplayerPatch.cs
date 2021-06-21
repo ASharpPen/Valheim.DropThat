@@ -6,13 +6,13 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using Valheim.SpawnThat.Core;
-using Valheim.SpawnThat.Reset;
+using Valheim.DropThat.Core;
+using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Locations
 {
     [HarmonyPatch(typeof(ZNet))]
-    public static class ZoneSystemMultiplayerPatch
+    internal static class ZoneSystemMultiplayerPatch
     {
         private static FieldInfo _zoneSystemLocations = AccessTools.Field(typeof(ZoneSystem), "m_locationInstances");
 

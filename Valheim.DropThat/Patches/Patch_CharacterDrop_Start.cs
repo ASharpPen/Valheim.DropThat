@@ -15,6 +15,7 @@ namespace Valheim.DropThat
     {
         private static GeneralConfiguration GeneralConfig => ConfigurationManager.GeneralConfig;
 
+        [HarmonyPriority(Priority.Last)]
         private static void Postfix(CharacterDrop __instance)
         {
             if(ConfigurationManager.DropConfigs == null)
@@ -55,6 +56,7 @@ namespace Valheim.DropThat
                     }
 
                     GameObject item = ObjectDB.instance.GetItemPrefab(dropConfig.ItemName?.Value);
+                    item ??= ZNetScene.instance.GetPrefab(dropConfig.ItemName.Value);
 
                     if (item == null)
                     {

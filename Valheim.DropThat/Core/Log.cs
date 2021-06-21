@@ -4,7 +4,7 @@ using Valheim.DropThat.Configuration;
 
 namespace Valheim.DropThat.Core
 {
-    public class Log
+    internal static class Log
     {
         internal static ManualLogSource Logger;
 

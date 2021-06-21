@@ -24,6 +24,15 @@ namespace Valheim.DropThat.Caches
 
         public static TempDropListCache GetDrops(object key)
         {
+#if DEBUG
+            Log.LogDebug($"Getting temp drop cache {key.GetHashCode()}");
+#endif
+
+            if(key is null)
+            { 
+                return null;
+            }
+
             if (DropListTable.TryGetValue(key, out TempDropListCache cache))
             {
                 return cache;
