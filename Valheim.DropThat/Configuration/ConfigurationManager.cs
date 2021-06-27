@@ -14,13 +14,21 @@ namespace Valheim.DropThat.Configuration
 
         public static DropConfiguration DropConfigs = null;
 
+        public static DropTableConfiguration DropTableConfigs = null;
+
         public const string DefaultConfigFile = "drop_that.cfg";
         public const string DefaultDropFile = "drop_that.tables.cfg";
         public const string SupplementalPattern = "drop_that.supplemental.*";
 
+        public const string DefaultDropTablesFile = "drop_that.drop_tables.cfg";
+        public const string SupplementalDropTablePattern = "drop_that.drop_tables.*.cfg";
+
+
         public static void LoadAll()
         {
             LoadGeneralConfigurations();
+
+            LoadAllCharacterDropConfigurations();
 
             LoadAllDropTableConfigurations();
         }
@@ -35,13 +43,13 @@ namespace Valheim.DropThat.Configuration
             GeneralConfig.Load(new ConfigFile(generalConfig, true));
         }
 
-        public static void LoadAllDropTableConfigurations()
+        public static void LoadAllCharacterDropConfigurations()
         {
-            Log.LogInfo("Loading drop configurations");
+            Log.LogInfo("Loading creature drop configurations");
 
             string configPath = Path.Combine(Paths.ConfigPath, DefaultDropFile);
 
-            var configs = LoadDropTableConfig(configPath);
+            var configs = LoadCharacterDropConfig(configPath);
 
             if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
             {
@@ -52,7 +60,7 @@ namespace Valheim.DropThat.Configuration
                 {
                     try
                     {
-                        var supplementalConfig = LoadDropTableConfig(file);
+                        var supplementalConfig = LoadCharacterDropConfig(file);
 
                         supplementalConfig.MergeInto(configs);
                     }
@@ -68,7 +76,7 @@ namespace Valheim.DropThat.Configuration
             Log.LogDebug("Finished loading drop configurations");
         }
 
-        private static DropConfiguration LoadDropTableConfig(string configPath)
+        private static DropConfiguration LoadCharacterDropConfig(string configPath)
         {
             Log.LogDebug($"Loading drop table configurations from {configPath}.");
 
@@ -77,6 +85,53 @@ namespace Valheim.DropThat.Configuration
             if (GeneralConfig?.StopTouchingMyConfigs?.Value != null) configFile.SaveOnConfigSet = !GeneralConfig.StopTouchingMyConfigs.Value;
 
             return ConfigurationLoader.LoadConfiguration<DropConfiguration>(configFile);
+        }
+
+        public static void LoadAllDropTableConfigurations()
+        {
+            Log.LogInfo("Loading drop table configurations");
+
+            string configPath = Path.Combine(Paths.ConfigPath, DefaultDropTablesFile);
+
+            var configs = LoadDropTableConfig(configPath);
+
+            if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
+            {
+                var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, SupplementalDropTablePattern, SearchOption.AllDirectories);
+                Log.LogDebug($"Found {supplementalFiles.Length} supplemental files");
+
+                foreach (var file in supplementalFiles)
+                {
+                    try
+                    {
+                        var supplementalConfig = LoadDropTableConfig(file);
+
+                        supplementalConfig.MergeInto(configs);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.LogError($"Failed to load supplemental config '{file}'.", e);
+                    }
+                }
+            }
+
+            DropTableConfigs = configs;
+
+            Log.LogDebug("Finished loading drop configurations");
+        }
+
+        private static DropTableConfiguration LoadDropTableConfig(string configPath)
+        {
+            Log.LogDebug($"Loading drop table configurations from {configPath}");
+
+            var configFile = new ConfigFile(configPath, true);
+
+            if (GeneralConfig?.StopTouchingMyConfigs?.Value != null)
+            {
+                configFile.SaveOnConfigSet = !GeneralConfig.StopTouchingMyConfigs;
+            }
+
+            return ConfigurationLoader.LoadConfiguration<DropTableConfiguration>(configFile);
         }
     }
 }

@@ -3,6 +3,9 @@ using Valheim.DropThat.Core.Configuration;
 
 namespace Valheim.DropThat.Configuration.ConfigTypes
 {
+    /// <summary>
+    /// CharacterDrop configurations
+    /// </summary>
     [Serializable]
     public class DropConfiguration : ConfigWithSubsections<DropMobConfiguration>, IConfigFile
     {

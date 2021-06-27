@@ -27,6 +27,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         #endregion
 
+        public ConfigurationEntry<bool> ClearAllExistingDropTables = new (false);
+        public ConfigurationEntry<bool> ClearAllExistingDropTablesWhenModified = new (false);
+        public ConfigurationEntry<bool> AlwaysAppendDropTables = new (false);
+
         #region Performance
 
         public ConfigurationEntry<bool> AlwaysAutoStack = new ConfigurationEntry<bool>(false, "When enabled, will always attempt to create stacks of items when dropping, instead of creating items one by one.\nEg. 35 coin stack, instead of 35 individual 1 coin drops.");
@@ -41,6 +45,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<bool> WriteDefaultDropTableToFile = new ConfigurationEntry<bool>(false, "When enabled, creates a file on world start, in the plugin folder containing the default mob drop tables.");
         public ConfigurationEntry<bool> WriteCreatureItemsToFile = new ConfigurationEntry<bool>(false, "When enabled, creates a file on world start, in the plugin folder containing items of mobs that have drop tables.");
         public ConfigurationEntry<bool> WriteLocationsToFile = new ConfigurationEntry<bool>(false, "When enables, creates a file on world start in the plugin folder, containing the name of each location in the game.");
+        public ConfigurationEntry<bool> WriteDropTablesToFiles = new(false, "When enabled, creates files on world start, in the Debug folder, containing the default drop tables of non-creatures.");
 
         #endregion
 
@@ -53,15 +58,22 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             AlwaysAutoStack.Bind(Config, "Performance", nameof(AlwaysAutoStack));
             DropLimit.Bind(Config, "Performance", nameof(DropLimit));
 
+            // TODO: Move all of these to a different naming scheme, so we avoid overlap for CharacterDrop configs.
             ClearAllExisting.Bind(Config, "DropTables", "ClearAllExisting");
             ClearAllExistingWhenModified.Bind(Config, "DropTables", "ClearAllExistingWhenModified");
             AlwaysAppend.Bind(Config, "DropTables", "AlwaysAppend");
             ApplyConditionsOnDeath.Bind(Config, "DropTables", nameof(ApplyConditionsOnDeath));
 
+            // TODO: Rename so that we don't repeat the "DropTable" part of the name
+            ClearAllExistingDropTables.Bind(Config, "DropTables", nameof(ClearAllExistingDropTables));
+            ClearAllExistingDropTablesWhenModified.Bind(Config, "DropTables", nameof(ClearAllExistingDropTablesWhenModified));
+            AlwaysAppendDropTables.Bind(Config, "DropTables", nameof(AlwaysAppendDropTables));
+
             DebugMode.Bind(Config, "General", "EnableDebug");
             WriteDefaultDropTableToFile.Bind(Config, "Debug", nameof(WriteDefaultDropTableToFile));
             WriteCreatureItemsToFile.Bind(Config, "Debug", nameof(WriteCreatureItemsToFile));
             WriteLocationsToFile.Bind(Config, "Debug", nameof(WriteLocationsToFile));
+            WriteDropTablesToFiles.Bind(Config, "Debug", nameof(WriteDropTablesToFiles));
 
             StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
             LoadSupplementalDropTables.Bind(Config, "General", nameof(LoadSupplementalDropTables));
