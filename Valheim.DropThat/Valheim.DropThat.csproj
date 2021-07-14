@@ -282,6 +282,7 @@
     <Compile Include="Caches\CharacterCache.cs" />
     <Compile Include="Caches\CharacterExtended.cs" />
     <Compile Include="Configuration\ConfigTypes\EpicLootItemConfiguration.cs" />
+    <Compile Include="Debugging\PrintDebugFile.cs" />
     <Compile Include="Drop\CharacterDropSystem\Caches\ItemDropCache.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableConfiguration.cs" />
     <Compile Include="Debugging\Patch_CharacterDrop.cs" />

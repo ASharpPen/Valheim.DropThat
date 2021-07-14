@@ -47,7 +47,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<bool> WriteLocationsToFile = new ConfigurationEntry<bool>(false, "When enables, creates a file on world start in the debug folder, containing the name of each location in the game.");
         public ConfigurationEntry<bool> WriteDropTablesToFiles = new(false, "When enabled, creates files on world start, in the debug folder, containing the default drop tables of non-creatures.");
 
-        public ConfigurationEntry<string> WriteDebugFilesToFolder = new("Debug", "Folder path to write to. Root folder is BepInEx.");
+        public ConfigurationEntry<string> DebugFileFolder = new("Debug", "Folder path to write to. Root folder is BepInEx.");
 
         #endregion
 
@@ -77,7 +77,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             WriteLocationsToFile.Bind(Config, "Debug", nameof(WriteLocationsToFile));
             WriteDropTablesToFiles.Bind(Config, "Debug", nameof(WriteDropTablesToFiles));
 
-
+            DebugFileFolder.Bind(Config, "Debug", nameof(DebugFileFolder));
 
             StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
             LoadSupplementalDropTables.Bind(Config, "General", nameof(LoadSupplementalDropTables));

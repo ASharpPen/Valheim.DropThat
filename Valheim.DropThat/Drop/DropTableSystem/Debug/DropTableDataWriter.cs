@@ -2,12 +2,12 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Configuration.ConfigTypes;
+using Valheim.DropThat.Debugging;
 using Valheim.DropThat.Utilities;
 using Valheim.DropThat.Utilities.Valheim;
 
@@ -121,9 +121,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
             }
 
-            var path = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", "drop_that.drop_tables.dungeons.txt");
-
-            File.WriteAllLines(path, tableData);
+            PrintDebugFile.PrintFile(tableData, "drop_that.drop_tables.dungeons.txt", "drop tables for dungeons");
         }
 
         internal static void PrintLocationDropTables()
@@ -146,9 +144,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                 tableData.AddRange(Extract(locPrefab, $"Biome: {location.m_biome.GetNames()}", $"Location: {location.m_prefabName}"));
             }
 
-            var path = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", "drop_that.drop_tables.locations.txt");
-
-            File.WriteAllLines(path, tableData);
+            PrintDebugFile.PrintFile(tableData, "drop_that.drop_tables.locations.txt", "drop tables for locations");
         }
 
         internal static void PrintPrefabDropTables()
@@ -160,14 +156,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                 tableData.AddRange(Extract(prefab));
             }
 
-            if (!Directory.Exists(Path.Combine(Paths.BepInExRootPath, "Debug")))
-            {
-                Directory.CreateDirectory(Path.Combine(Paths.BepInExRootPath, "Debug"));
-            }
-
-            var path = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", "drop_that.drop_tables.prefabs.txt");
-
-            File.WriteAllLines(path, tableData);
+            PrintDebugFile.PrintFile(tableData, "drop_that.drop_tables.prefabs.txt", "drop tables for prefabs");
         }
 
         private static List<string> Extract(GameObject prefab, params string[] additionalHeaders)

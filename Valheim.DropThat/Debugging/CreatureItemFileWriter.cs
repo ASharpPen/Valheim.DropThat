@@ -1,11 +1,8 @@
-﻿using BepInEx;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 
@@ -83,11 +80,7 @@ namespace Valheim.DropThat.Debugging
                 lines.Add("");
             }
 
-            string filePath = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", FileName);
-
-            Log.LogInfo($"Writing default creature items to file {filePath}.");
-
-            File.WriteAllLines(filePath, lines);
+            PrintDebugFile.PrintFile(lines, FileName, "default creature items");
         }
     }
 }
