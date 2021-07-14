@@ -121,7 +121,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
             }
 
-            var path = Path.Combine(Paths.BepInExRootPath, "Debug", "drop_that.drop_tables.dungeons.txt");
+            var path = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", "drop_that.drop_tables.dungeons.txt");
 
             File.WriteAllLines(path, tableData);
         }
@@ -146,7 +146,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                 tableData.AddRange(Extract(locPrefab, $"Biome: {location.m_biome.GetNames()}", $"Location: {location.m_prefabName}"));
             }
 
-            var path = Path.Combine(Paths.BepInExRootPath, "Debug", "drop_that.drop_tables.locations.txt");
+            var path = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", "drop_that.drop_tables.locations.txt");
 
             File.WriteAllLines(path, tableData);
         }
@@ -165,7 +165,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                 Directory.CreateDirectory(Path.Combine(Paths.BepInExRootPath, "Debug"));
             }
 
-            var path = Path.Combine(Paths.BepInExRootPath, "Debug", "drop_that.drop_tables.prefabs.txt");
+            var path = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", "drop_that.drop_tables.prefabs.txt");
 
             File.WriteAllLines(path, tableData);
         }

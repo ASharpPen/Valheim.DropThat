@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using UnityEngine;
+using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 
@@ -40,7 +41,7 @@ namespace Valheim.DropThat.Debugging
                 }
             }
 
-            string filePath = Path.Combine(Paths.PluginPath, FileName);
+            string filePath = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", FileName);
 
             Log.LogInfo($"Writing default drop tables to file {filePath}.");
 

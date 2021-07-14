@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Debugging
@@ -54,7 +55,7 @@ namespace Valheim.DropThat.Debugging
                 }
             }
 
-            string filePath = Path.Combine(Paths.PluginPath, FileName);
+            string filePath = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.WriteDebugFilesToFolder ?? "Debug", FileName);
 
             Log.LogInfo($"Writing locations to {filePath}");
 
