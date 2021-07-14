@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Valheim.DropThat.Locations
 {
-    internal class SimpleLocation
+    public class SimpleLocation
     {
         public Vector3 Position;
 

@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using UnityEngine;
 using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Debugging
 {
@@ -40,12 +38,7 @@ namespace Valheim.DropThat.Debugging
                 }
             }
 
-            string filePath = Path.Combine(Paths.PluginPath, FileName);
-
-            Log.LogInfo($"Writing default drop tables to file {filePath}.");
-
-            File.WriteAllLines(filePath, lines);
+            PrintDebugFile.PrintFile(lines, FileName, "default creature drop tables");
         }
-
     }
 }

@@ -1,10 +1,7 @@
-﻿using BepInEx;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Debugging
 {
@@ -54,11 +51,7 @@ namespace Valheim.DropThat.Debugging
                 }
             }
 
-            string filePath = Path.Combine(Paths.PluginPath, FileName);
-
-            Log.LogInfo($"Writing locations to {filePath}");
-
-            File.WriteAllText(filePath, stringBuilder.ToString());
+            PrintDebugFile.PrintFile(stringBuilder.ToString(), FileName, "locations");
         }
 
         private static List<Heightmap.Biome> SplitBiome(Heightmap.Biome bitmaskedBiome)
