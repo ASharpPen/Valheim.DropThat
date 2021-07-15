@@ -16,6 +16,9 @@ namespace Valheim.DropThat.Configuration
 
         public static DropTableConfiguration DropTableConfigs = null;
 
+        public static CharacterDropListConfigurationFile CharacterDropLists = null;
+        public static DropTableListConfigurationFile DropTableLists = null;
+
         public const string DefaultConfigFile = "drop_that.cfg";
         public const string DefaultDropFile = "drop_that.tables.cfg";
         public const string SupplementalPattern = "drop_that.supplemental.*";
@@ -23,12 +26,18 @@ namespace Valheim.DropThat.Configuration
         public const string DefaultDropTablesFile = "drop_that.drop_tables.cfg";
         public const string SupplementalDropTablePattern = "drop_that.drop_tables.*.cfg";
 
+        public const string CharacterDropListsFiles = "drop_that.creature_drop_lists.*.cfg";
+        public const string DropTableListsFiles = "drop_that.drop_table_lists.*.cfg";
 
         public static void LoadAll()
         {
             LoadGeneralConfigurations();
 
+            LoadAllCharacterDropLists();
+
             LoadAllCharacterDropConfigurations();
+
+            LoadAllDropTableLists();
 
             LoadAllDropTableConfigurations();
         }
@@ -43,13 +52,41 @@ namespace Valheim.DropThat.Configuration
             GeneralConfig.Load(new ConfigFile(generalConfig, true));
         }
 
+        public static void LoadAllCharacterDropLists()
+        {
+            Log.LogInfo("Loading creature drop lists");
+
+            var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropListsFiles, SearchOption.AllDirectories);
+            Log.LogDebug($"Found {supplementalFiles.Length} files");
+
+            CharacterDropListConfigurationFile configs = new();
+
+            foreach (var file in supplementalFiles)
+            {
+                try
+                {
+                    var supplementalConfig = LoadConfigFile<CharacterDropListConfigurationFile>(file);
+
+                    supplementalConfig.MergeInto(configs);
+                }
+                catch (Exception e)
+                {
+                    Log.LogError($"Failed to load config file '{file}'.", e);
+                }
+            }
+
+            CharacterDropLists = configs;
+
+            Log.LogDebug("Finished loading creature drop list");
+        }
+
         public static void LoadAllCharacterDropConfigurations()
         {
             Log.LogInfo("Loading creature drop configurations");
 
             string configPath = Path.Combine(Paths.ConfigPath, DefaultDropFile);
 
-            var configs = LoadCharacterDropConfig(configPath);
+            var configs = LoadConfigFile<DropConfiguration>(configPath);
 
             if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
             {
@@ -60,7 +97,7 @@ namespace Valheim.DropThat.Configuration
                 {
                     try
                     {
-                        var supplementalConfig = LoadCharacterDropConfig(file);
+                        var supplementalConfig = LoadConfigFile<DropConfiguration>(file);
 
                         supplementalConfig.MergeInto(configs);
                     }
@@ -76,15 +113,35 @@ namespace Valheim.DropThat.Configuration
             Log.LogDebug("Finished loading drop configurations");
         }
 
-        private static DropConfiguration LoadCharacterDropConfig(string configPath)
+        public static void LoadAllDropTableLists()
         {
-            Log.LogDebug($"Loading drop table configurations from {configPath}.");
+            Log.LogInfo("Loading drop table lists");
 
-            var configFile = new ConfigFile(configPath, true);
+            var configs = new DropTableListConfigurationFile();
 
-            if (GeneralConfig?.StopTouchingMyConfigs?.Value != null) configFile.SaveOnConfigSet = !GeneralConfig.StopTouchingMyConfigs.Value;
+            if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
+            {
+                var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, DropTableListsFiles, SearchOption.AllDirectories);
+                Log.LogDebug($"Found {supplementalFiles.Length} files");
 
-            return ConfigurationLoader.LoadConfiguration<DropConfiguration>(configFile);
+                foreach (var file in supplementalFiles)
+                {
+                    try
+                    {
+                        var supplementalConfig = LoadConfigFile<DropTableListConfigurationFile>(file);
+
+                        supplementalConfig.MergeInto(configs);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.LogError($"Failed to load config file '{file}'.", e);
+                    }
+                }
+            }
+
+            DropTableLists = configs;
+
+            Log.LogDebug("Finished drop table lists");
         }
 
         public static void LoadAllDropTableConfigurations()
@@ -93,7 +150,7 @@ namespace Valheim.DropThat.Configuration
 
             string configPath = Path.Combine(Paths.ConfigPath, DefaultDropTablesFile);
 
-            var configs = LoadDropTableConfig(configPath);
+            var configs = LoadConfigFile<DropTableConfiguration>(configPath);
 
             if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
             {
@@ -104,7 +161,7 @@ namespace Valheim.DropThat.Configuration
                 {
                     try
                     {
-                        var supplementalConfig = LoadDropTableConfig(file);
+                        var supplementalConfig = LoadConfigFile<DropTableConfiguration>(file);
 
                         supplementalConfig.MergeInto(configs);
                     }
@@ -120,9 +177,10 @@ namespace Valheim.DropThat.Configuration
             Log.LogDebug("Finished loading drop configurations");
         }
 
-        private static DropTableConfiguration LoadDropTableConfig(string configPath)
+
+        private static TConfig LoadConfigFile<TConfig>(string configPath) where TConfig : Config, IConfigFile
         {
-            Log.LogDebug($"Loading drop table configurations from {configPath}");
+            Log.LogDebug($"Loading file {configPath}");
 
             var configFile = new ConfigFile(configPath, true);
 
@@ -131,7 +189,7 @@ namespace Valheim.DropThat.Configuration
                 configFile.SaveOnConfigSet = !GeneralConfig.StopTouchingMyConfigs;
             }
 
-            return ConfigurationLoader.LoadConfiguration<DropTableConfiguration>(configFile);
+            return ConfigurationLoader.LoadConfiguration<TConfig>(configFile);
         }
     }
 }

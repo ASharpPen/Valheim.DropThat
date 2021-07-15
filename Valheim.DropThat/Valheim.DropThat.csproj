@@ -281,6 +281,8 @@
     <Compile Include="Caches\ZdoCache.cs" />
     <Compile Include="Caches\CharacterCache.cs" />
     <Compile Include="Caches\CharacterExtended.cs" />
+    <Compile Include="Configuration\ConfigTypes\CharacterDropListConfigurationFile.cs" />
+    <Compile Include="Configuration\ConfigTypes\DropTableListConfigurationFile.cs" />
     <Compile Include="Configuration\ConfigTypes\EpicLootItemConfiguration.cs" />
     <Compile Include="Debugging\PrintDebugFile.cs" />
     <Compile Include="Drop\CharacterDropSystem\Caches\ItemDropCache.cs" />
@@ -331,7 +333,7 @@
     <Compile Include="Core\Configuration\IHaveSubsections.cs" />
     <Compile Include="Core\Log.cs" />
     <Compile Include="Debugging\CreatureItemFileWriter.cs" />
-    <Compile Include="Debugging\DropTableDumperPatch.cs" />
+    <Compile Include="Debugging\Patch_ZoneSystem_Start.cs" />
     <Compile Include="Debugging\DropTableFileWriter.cs" />
     <Compile Include="Drop\CharacterDropSystem\Caches\DropExtended.cs" />
     <Compile Include="Drop\CharacterDropSystem\DropContext.cs" />

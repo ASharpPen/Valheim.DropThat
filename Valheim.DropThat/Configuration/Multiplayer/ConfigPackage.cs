@@ -12,14 +12,24 @@ namespace Valheim.DropThat.Configuration.Multiplayer
     {
         public GeneralConfiguration GeneralConfig;
 
-        public DropConfiguration DropTableConfigs;
+        public DropConfiguration CharacterDropConfigs;
+
+        public CharacterDropListConfigurationFile CharacterDropLists;
+
+        public DropTableConfiguration DropTableConfigs;
+
+        public DropTableListConfigurationFile DropTableLists;
 
         public ZPackage Pack()
         {
             ZPackage package = new ZPackage();
 
             GeneralConfig = ConfigurationManager.GeneralConfig;
-            DropTableConfigs = ConfigurationManager.DropConfigs;
+            CharacterDropConfigs = ConfigurationManager.DropConfigs;
+            CharacterDropLists = ConfigurationManager.CharacterDropLists;
+
+            DropTableConfigs = ConfigurationManager.DropTableConfigs;
+            DropTableLists = ConfigurationManager.DropTableLists;
 
             Log.LogTrace("Serializing configs.");
 
@@ -33,7 +43,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
                 byte[] serialized = memStream.GetBuffer();
 
-                Log.LogTrace($"Serialized size: {serialized.Length} bytes");
+                Log.LogDebug($"Serialized size: {serialized.Length} bytes");
 
                 package.Write(serialized);
             }
@@ -45,7 +55,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
         {
             var serialized = package.ReadByteArray();
 
-            Log.LogTrace($"Deserializing package size: {serialized.Length} bytes");
+            Log.LogDebug($"Deserializing package size: {serialized.Length} bytes");
 
             using (MemoryStream memStream = new MemoryStream(serialized))
             {
@@ -61,10 +71,16 @@ namespace Valheim.DropThat.Configuration.Multiplayer
                         Log.LogTrace("Unpackaging configs.");
 
                         ConfigurationManager.GeneralConfig = configPackage.GeneralConfig;
-                        ConfigurationManager.DropConfigs = configPackage.DropTableConfigs;
+                        ConfigurationManager.DropConfigs = configPackage.CharacterDropConfigs;
+                        ConfigurationManager.CharacterDropLists = configPackage.CharacterDropLists;
+                        ConfigurationManager.DropTableConfigs = configPackage.DropTableConfigs;
+                        ConfigurationManager.DropTableLists = configPackage.DropTableLists;
 
                         Log.LogDebug("Unpacked general config");
-                        Log.LogDebug($"Unpacked drops configurations for {ConfigurationManager.DropConfigs.Subsections.Count} creatures");
+                        Log.LogDebug($"Unpacked creature configurations: {ConfigurationManager.DropConfigs.Subsections.Count}");
+                        Log.LogDebug($"Unpacked creature drop lists: {ConfigurationManager.CharacterDropLists.Subsections.Count}");
+                        Log.LogDebug($"Unpacked drop table configurations: {ConfigurationManager.DropTableConfigs.Subsections.Count}");
+                        Log.LogDebug($"Unpacked drop table lists: {ConfigurationManager.DropTableLists.Subsections.Count}");
 
                         Log.LogInfo("Successfully unpacked configs.");
                     }

@@ -48,11 +48,24 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
         {
             List<DropTemplate> drops = new List<DropTemplate>();
 
+            // Find drop list
+            string dropListName = context.EntityConfig?.UseDropList?.Value;
+
+            DropTableListConfiguration listConfig = null;
+
+            if (!string.IsNullOrWhiteSpace(dropListName) &&
+                ConfigurationManager.DropTableLists is not null &&
+                ConfigurationManager.DropTableLists.TryGet(dropListName, out DropTableListConfiguration dropList))
+            {
+                listConfig = dropList;
+            }
+
             bool skipExisting = false;
 
             if (GeneralConfig.ClearAllExistingDropTables ||
                 GeneralConfig.ClearAllExistingDropTablesWhenModified &&
-                context.EntityConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true)
+                context.EntityConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true &&
+                listConfig?.Subsections?.Any() == true)
             {
                 skipExisting = true;
             }
@@ -79,72 +92,84 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
                 return drops;
             }
 
-            // Go through all the config entries
-            foreach (var dropEntry in context.EntityConfig.Subsections.OrderBy(x => x.Value.Index))
+            // Apply drop lists if any
+            if (listConfig is not null)
             {
-                var itemConfig = dropEntry.Value;
-
-                if (!itemConfig.EnableConfig)
+                foreach (var dropEntry in listConfig.Subsections.OrderBy(x => x.Value.Index))
                 {
-                    continue;
-                }
-
-                if (itemConfig.SetTemplateWeight <= 0)
-                {
-                    continue;
-                }
-
-                // Find the drop prefab, whereever it may be.
-                GameObject item = ObjectDB.instance.GetItemPrefab(itemConfig.PrefabName.Value);
-                item ??= ZNetScene.instance.GetPrefab(itemConfig.PrefabName.Value);
-
-                if (item is null)
-                {
-                    Log.LogWarning($"Unable to find prefab '{itemConfig.PrefabName.Value}' for '{itemConfig.SectionKey}'.");
-                    continue;
-                }
-
-                DropTemplate newTemplate = new DropTemplate
-                {
-                    Drop = new DropTable.DropData
-                    {
-                        m_item = item,
-                        m_weight = itemConfig.SetTemplateWeight,
-                        m_stackMin = itemConfig.SetAmountMin,
-                        m_stackMax = itemConfig.SetAmountMax,
-                    },
-                    Conditions = ExtractConditions(itemConfig),
-                    Modifiers = ExtractModifiers(itemConfig),
-                    Config = itemConfig,
-                    EntityConfig = context.EntityConfig
-                };
-
-                if (GeneralConfig.AlwaysAppend)
-                {
-                    drops.Add(newTemplate);
-                }
-                else
-                {
-                    int index = itemConfig.Index;
-
-                    if (drops.Count > index && index >= 0)
-                    {
-                        drops.RemoveAt(index);
-                    }
-
-                    if (index >= 0 &&
-                        index <= drops.Count)
-                    {
-                        drops.Insert(index, newTemplate);
-                    }
-                    else
-                    {
-                        drops.Add(newTemplate);
-                    }
+                    InsertDrop(drops, dropEntry.Value, context.EntityConfig);
                 }
             }
 
+            // Go through all the config entries
+            foreach (var dropEntry in context.EntityConfig.Subsections.OrderBy(x => x.Value.Index))
+            {
+                InsertDrop(drops, dropEntry.Value, context.EntityConfig);
+            }
+
             return drops;
+        }
+
+        private static void InsertDrop(List<DropTemplate> drops, DropTableItemConfiguration itemConfig, DropTableEntityConfiguration entityConfig)
+        {
+            if (!itemConfig.EnableConfig)
+            {
+                return;
+            }
+
+            if (itemConfig.SetTemplateWeight <= 0)
+            {
+                return;
+            }
+
+            // Find the drop prefab, whereever it may be.
+            GameObject item = ObjectDB.instance.GetItemPrefab(itemConfig.PrefabName.Value);
+            item ??= ZNetScene.instance.GetPrefab(itemConfig.PrefabName.Value);
+
+            if (item is null)
+            {
+                Log.LogWarning($"Unable to find prefab '{itemConfig.PrefabName.Value}' for '{itemConfig.SectionKey}'.");
+                return;
+            }
+
+            DropTemplate newTemplate = new DropTemplate
+            {
+                Drop = new DropTable.DropData
+                {
+                    m_item = item,
+                    m_weight = itemConfig.SetTemplateWeight,
+                    m_stackMin = itemConfig.SetAmountMin,
+                    m_stackMax = itemConfig.SetAmountMax,
+                },
+                Conditions = ExtractConditions(itemConfig),
+                Modifiers = ExtractModifiers(itemConfig),
+                Config = itemConfig,
+                EntityConfig = entityConfig
+            };
+
+            if (GeneralConfig.AlwaysAppend)
+            {
+                drops.Add(newTemplate);
+            }
+            else
+            {
+                int index = itemConfig.Index;
+
+                if (drops.Count > index && index >= 0)
+                {
+                    drops.RemoveAt(index);
+                }
+
+                if (index >= 0 &&
+                    index <= drops.Count)
+                {
+                    drops.Insert(index, newTemplate);
+                }
+                else
+                {
+                    drops.Add(newTemplate);
+                }
+            }
         }
 
         private static List<IDropTableCondition> ExtractConditions(DropTableItemConfiguration config)

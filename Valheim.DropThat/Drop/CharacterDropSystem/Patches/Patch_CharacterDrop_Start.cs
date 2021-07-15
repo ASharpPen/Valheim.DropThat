@@ -26,7 +26,7 @@ namespace Valheim.DropThat
 
             string name = __instance.gameObject.name;
 
-            var configMatch = FindConfigMatch(name);
+            DropMobConfiguration configMatch = FindConfigMatch(name);
 
             if (GeneralConfig.ClearAllExisting.Value && __instance.m_drops.Count > 0)
             {
