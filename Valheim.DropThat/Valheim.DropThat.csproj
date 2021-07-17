@@ -324,7 +324,7 @@
     <Compile Include="Drop\CharacterDropSystem\Conditions\ModSpecific\ConditionLoaderSpawnThat.cs" />
     <Compile Include="Configuration\ConfigTypes\GeneralConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationManager.cs" />
-    <Compile Include="Configuration\ConfigTypes\DropConfiguration.cs" />
+    <Compile Include="Configuration\ConfigTypes\CharacterDropConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationMerger.cs" />
     <Compile Include="Configuration\Multiplayer\ConfigMultiplayerPatch.cs" />
     <Compile Include="Configuration\Multiplayer\ConfigPackage.cs" />
@@ -337,7 +337,7 @@
     <Compile Include="Core\Log.cs" />
     <Compile Include="Debugging\CreatureItemFileWriter.cs" />
     <Compile Include="Debugging\Patch_ZoneSystem_Start.cs" />
-    <Compile Include="Debugging\DropTableFileWriter.cs" />
+    <Compile Include="Debugging\CharacterDropFileWriter.cs" />
     <Compile Include="Drop\CharacterDropSystem\Caches\DropExtended.cs" />
     <Compile Include="Drop\CharacterDropSystem\DropContext.cs" />
     <Compile Include="Drop\CharacterDropSystem\DropModificationManager.cs" />

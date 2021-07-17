@@ -34,7 +34,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
             return true;
         }
 
-        public bool IsValid(Character character, DropItemConfiguration config)
+        public bool IsValid(Character character, CharacterDropItemConfiguration config)
         {
             if (character is null)
             {

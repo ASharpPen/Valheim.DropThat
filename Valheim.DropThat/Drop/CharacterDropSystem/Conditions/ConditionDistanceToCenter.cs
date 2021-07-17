@@ -27,7 +27,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
             return true;
         }
 
-        public bool IsValid(Vector3 position, DropItemConfiguration config)
+        public bool IsValid(Vector3 position, CharacterDropItemConfiguration config)
         {
             var distance = position.magnitude;
 

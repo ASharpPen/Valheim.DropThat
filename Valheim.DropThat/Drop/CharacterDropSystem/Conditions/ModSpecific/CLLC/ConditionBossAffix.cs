@@ -35,7 +35,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
                 return false;
             }
 
-            if (extended.Config.Subsections.TryGetValue(DropModConfigCLLC.ModName, out Config config) && config is DropModConfigCLLC cllcConfig)
+            if (extended.Config.Subsections.TryGetValue(CharacterDropModConfigCLLC.ModName, out Config config) && config is CharacterDropModConfigCLLC cllcConfig)
             {
                 if (!ValidConditionBossAffix(drop, cllcConfig, character))
                 {
@@ -51,7 +51,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
             return false;
         }
 
-        public static bool ValidConditionBossAffix(CharacterDrop.Drop drop, DropModConfigCLLC config, Character character)
+        public static bool ValidConditionBossAffix(CharacterDrop.Drop drop, CharacterDropModConfigCLLC config, Character character)
         {
             if (config.ConditionBossAffix.Value.Length > 0)
             {
@@ -76,7 +76,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
             return true;
         }
 
-        public static bool ValidConditionNotBossAffix(CharacterDrop.Drop drop, DropModConfigCLLC config, Character character)
+        public static bool ValidConditionNotBossAffix(CharacterDrop.Drop drop, CharacterDropModConfigCLLC config, Character character)
         {
             if (config.ConditionNotBossAffix.Value.Length > 0)
             {

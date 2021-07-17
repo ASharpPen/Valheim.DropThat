@@ -121,7 +121,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
             }
 
-            PrintDebugFile.PrintFile(tableData, "drop_that.drop_tables.dungeons.txt", "drop tables for dungeons");
+            PrintDebugFile.PrintFile(tableData, "drop_that.drop_table.dungeons.txt", "drop tables for dungeons");
         }
 
         internal static void PrintLocationDropTables()
@@ -144,7 +144,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                 tableData.AddRange(Extract(locPrefab, $"Biome: {location.m_biome.GetNames()}", $"Location: {location.m_prefabName}"));
             }
 
-            PrintDebugFile.PrintFile(tableData, "drop_that.drop_tables.locations.txt", "drop tables for locations");
+            PrintDebugFile.PrintFile(tableData, "drop_that.drop_table.locations.txt", "drop tables for locations");
         }
 
         internal static void PrintPrefabDropTables()
@@ -156,7 +156,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                 tableData.AddRange(Extract(prefab));
             }
 
-            PrintDebugFile.PrintFile(tableData, "drop_that.drop_tables.prefabs.txt", "drop tables for prefabs");
+            PrintDebugFile.PrintFile(tableData, "drop_that.drop_table.prefabs.txt", "drop tables for prefabs");
         }
 
         private static List<string> Extract(GameObject prefab, params string[] additionalHeaders)

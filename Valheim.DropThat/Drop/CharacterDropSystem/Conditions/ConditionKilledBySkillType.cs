@@ -45,7 +45,7 @@ namespace Valheim.DropThat.Drop.Conditions
             return true;
         }
 
-        public bool ValidConditionKilledBySkillType(CharacterDrop.Drop drop, DropItemConfiguration config, Character character)
+        public bool ValidConditionKilledBySkillType(CharacterDrop.Drop drop, CharacterDropItemConfiguration config, Character character)
         {
             if (config.ConditionKilledBySkillType.Value.Length > 0)
             {

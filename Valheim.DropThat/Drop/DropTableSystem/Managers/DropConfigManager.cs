@@ -144,7 +144,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
                 EntityConfig = entityConfig
             };
 
-            if (GeneralConfig.AlwaysAppend)
+            if (GeneralConfig.AlwaysAppendCharacterDrops)
             {
                 drops.Add(newTemplate);
             }

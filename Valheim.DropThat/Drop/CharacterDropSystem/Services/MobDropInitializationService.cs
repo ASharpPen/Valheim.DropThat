@@ -6,15 +6,15 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Services
 {
     internal static class MobDropInitializationService
     {
-        public static IEnumerable<DropItemConfiguration> PrepareInsertion(CharacterDropListConfiguration listConfig, DropMobConfiguration mobConfig)
+        public static IEnumerable<CharacterDropItemConfiguration> PrepareInsertion(CharacterDropListConfiguration listConfig, CharacterDropMobConfiguration mobConfig)
         {
-            Dictionary<int, DropItemConfiguration> result = new();
+            Dictionary<int, CharacterDropItemConfiguration> result = new();
 
             if (listConfig is not null)
             {
                 foreach (var config in listConfig.Subsections.Values)
                 {
-                    if (config.Enabled)
+                    if (config.EnableConfig)
                     {
                         result[config.Index] = config;
                     }
@@ -25,7 +25,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Services
             {
                 foreach (var config in mobConfig.Subsections.Values)
                 {
-                    if (config.Enabled)
+                    if (config.EnableConfig)
                     {
                         result[config.Index] = config;
                     }

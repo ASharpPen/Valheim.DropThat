@@ -13,11 +13,11 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
     }
 
     [Serializable]
-    public class CharacterDropListConfiguration : ConfigWithSubsections<DropItemConfiguration>
+    public class CharacterDropListConfiguration : ConfigWithSubsections<CharacterDropItemConfiguration>
     {
-        protected override DropItemConfiguration InstantiateSubsection(string subsectionName)
+        protected override CharacterDropItemConfiguration InstantiateSubsection(string subsectionName)
         {
-            return new DropItemConfiguration();
+            return new CharacterDropItemConfiguration();
         }
     }
 }

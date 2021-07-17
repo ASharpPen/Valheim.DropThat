@@ -12,7 +12,7 @@ namespace Valheim.DropThat.Configuration
     {
         public static GeneralConfiguration GeneralConfig = null;
 
-        public static DropConfiguration DropConfigs = null;
+        public static CharacterDropConfiguration DropConfigs = null;
 
         public static DropTableConfiguration DropTableConfigs = null;
 
@@ -20,14 +20,14 @@ namespace Valheim.DropThat.Configuration
         public static DropTableListConfigurationFile DropTableLists = null;
 
         public const string DefaultConfigFile = "drop_that.cfg";
-        public const string DefaultDropFile = "drop_that.tables.cfg";
-        public const string SupplementalPattern = "drop_that.supplemental.*";
+        public const string DefaultDropFile = "drop_that.character_drop.cfg";
+        public const string SupplementalPattern = "drop_that.character_drop.*.cfg";
 
-        public const string DefaultDropTablesFile = "drop_that.drop_tables.cfg";
-        public const string SupplementalDropTablePattern = "drop_that.drop_tables.*.cfg";
+        public const string DefaultDropTablesFile = "drop_that.drop_table.cfg";
+        public const string SupplementalDropTablePattern = "drop_that.drop_table.*.cfg";
 
-        public const string CharacterDropListsFiles = "drop_that.creature_drop_lists.*.cfg";
-        public const string DropTableListsFiles = "drop_that.drop_table_lists.*.cfg";
+        public const string CharacterDropListsFiles = "drop_that.character_drop_list.*.cfg";
+        public const string DropTableListsFiles = "drop_that.drop_table_list.*.cfg";
 
         public static void LoadAll()
         {
@@ -86,7 +86,7 @@ namespace Valheim.DropThat.Configuration
 
             string configPath = Path.Combine(Paths.ConfigPath, DefaultDropFile);
 
-            var configs = LoadConfigFile<DropConfiguration>(configPath);
+            var configs = LoadConfigFile<CharacterDropConfiguration>(configPath);
 
             if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
             {
@@ -97,7 +97,7 @@ namespace Valheim.DropThat.Configuration
                 {
                     try
                     {
-                        var supplementalConfig = LoadConfigFile<DropConfiguration>(file);
+                        var supplementalConfig = LoadConfigFile<CharacterDropConfiguration>(file);
 
                         supplementalConfig.MergeInto(configs);
                     }

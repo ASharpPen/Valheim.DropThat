@@ -42,7 +42,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             OnStartConditions.Add(ConditionLocation.Instance);
             OnStartConditions.Add(ConditionDistanceToCenter.Instance);
 
-            if (!ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
+            if (!ConfigurationManager.GeneralConfig.ApplyConditionsOnDeathCharacterDrops.Value)
             {
                 OnStartConditions.Add(ConditionLevel.Instance);
                 OnStartConditions.Add(ConditionDaytime.Instance);
@@ -69,7 +69,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             OnDeathConditions.Add(ConditionKilledWithStatuses.Instance);
             OnDeathConditions.Add(ConditionKilledByEntityType.Instance);
 
-            if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
+            if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeathCharacterDrops.Value)
             {
                 OnDeathConditions.Add(ConditionLevel.Instance);
                 OnDeathConditions.Add(ConditionDaytime.Instance);

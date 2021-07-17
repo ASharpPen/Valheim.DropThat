@@ -30,8 +30,8 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpi
 
         public void Modify(DropContext context)
         {
-            DropModConfigEpicLoot config;
-            if (context.Extended.Config.TryGet(DropModConfigEpicLoot.ModName, out Config cfg) && cfg is DropModConfigEpicLoot modConfig)
+            CharacterDropModConfigEpicLoot config;
+            if (context.Extended.Config.TryGet(CharacterDropModConfigEpicLoot.ModName, out Config cfg) && cfg is CharacterDropModConfigEpicLoot modConfig)
             {
                 config = modConfig;
             }
@@ -81,7 +81,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpi
             }
         }
 
-        private void MakeUnique(ItemDrop itemDrop, ExtendedItemData itemData, DropModConfigEpicLoot config)
+        private void MakeUnique(ItemDrop itemDrop, ExtendedItemData itemData, CharacterDropModConfigEpicLoot config)
         {
             var uniqueIds = config.UniqueIDs.Value.SplitByComma();
 
@@ -194,7 +194,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpi
             return magicEffects.Last();
         }
 
-        private Rarity RollRarity(DropModConfigEpicLoot config)
+        private Rarity RollRarity(CharacterDropModConfigEpicLoot config)
         {
             var sumWeight =
                 config.RarityWeightNone +

@@ -157,9 +157,9 @@ namespace Valheim.DropThat.ConfigToItem
                                 return;
                             }
 
-                            if (ConfigurationManager.DropConfigs.TryGet(configSections[0], out DropMobConfiguration mobConfig))
+                            if (ConfigurationManager.DropConfigs.TryGet(configSections[0], out CharacterDropMobConfiguration mobConfig))
                             {
-                                if (mobConfig.TryGet(configSections[1], out DropItemConfiguration itemConfig))
+                                if (mobConfig.TryGet(configSections[1], out CharacterDropItemConfiguration itemConfig))
                                 {
                                     TempDropListCache.SetDrop(dropList, entry.Index, new DropExtended
                                     {

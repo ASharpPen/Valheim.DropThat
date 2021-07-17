@@ -10,7 +10,7 @@ namespace Valheim.DropThat.Debugging
 {
     internal static class CreatureItemFileWriter
     {
-        private const string FileName = "drop_that_items.txt";
+        private const string FileName = "drop_that.character_drop.items.txt";
 
         public static void WriteToFile(List<Tuple<GameObject, CharacterDrop>> characters)
         {
@@ -76,7 +76,7 @@ namespace Valheim.DropThat.Debugging
                 }
 #endif
                 lines.Add($"[{characterDrop.Item1.name}.0]");
-                lines.Add($"{nameof(DropItemConfiguration.ConditionHasItem)}={inventoryItems?.Join()}");
+                lines.Add($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}={inventoryItems?.Join()}");
                 lines.Add("");
             }
 

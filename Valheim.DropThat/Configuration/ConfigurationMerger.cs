@@ -5,7 +5,7 @@ namespace Valheim.DropThat.Configuration
 {
     public static class ConfigurationMerger
     {
-        public static void MergeInto(this DropConfiguration source, DropConfiguration target)
+        public static void MergeInto(this CharacterDropConfiguration source, CharacterDropConfiguration target)
         {
             foreach(var sourceMob in source.Subsections)
             {
