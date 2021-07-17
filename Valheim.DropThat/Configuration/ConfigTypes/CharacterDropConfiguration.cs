@@ -55,8 +55,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<bool> EnableConfig = new ConfigurationEntry<bool>(true, "Enable/disable this specific drop configuration.");
         public ConfigurationEntry<int> SetAmountMin = new ConfigurationEntry<int>(1, "Minimum amount dropped.");
         public ConfigurationEntry<int> SetAmountMax = new ConfigurationEntry<int>(1, "Maximum amount dropped.");
-
-        public ConfigurationEntry<float> SetChanceToDrop = new ConfigurationEntry<float>(1, "Chance to drop. 1 is 100%.\nExample values: 0, 0.5, 1, 1.0");
+        public ConfigurationEntry<float> SetChanceToDrop = new ConfigurationEntry<float>(100, "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15");
         public ConfigurationEntry<bool> SetDropOnePerPlayer = new ConfigurationEntry<bool>(false, "If set, will drop one of this item per player. Ignoring other factors such as SetAmountMin / Max.");
         public ConfigurationEntry<bool> SetScaleByLevel = new ConfigurationEntry<bool>(true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.");
 

@@ -93,7 +93,7 @@ namespace Valheim.DropThat
                 m_prefab = item,
                 m_amountMax = dropConfig.SetAmountMax.Value,
                 m_amountMin = dropConfig.SetAmountMin.Value,
-                m_chance = dropConfig.SetChanceToDrop.Value,
+                m_chance = dropConfig.SetChanceToDrop.Value / 100,
                 m_levelMultiplier = dropConfig.SetScaleByLevel.Value,
                 m_onePerPlayer = dropConfig.SetDropOnePerPlayer.Value,
             };
