@@ -29,10 +29,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<int> SetDropMin = new(1, "Minimum of randomly selected entries from drop list. Entries can be picked more than once.");
         public ConfigurationEntry<int> SetDropMax = new(1, "Maximum of randomly selected entries from drop list. Entries can be picked more than once.");
-        public ConfigurationEntry<float> SetDropChance = new(1, "Chance to drop anything at all.");
+        public ConfigurationEntry<float> SetDropChance = new(100, "Chance to drop anything at all.");
         public ConfigurationEntry<bool> SetDropOnlyOnce = new(false, "If true, will ensure that when selecting entries from drop list, same entry will only be picked once.");
 
-        public ConfigurationEntry<string> UseDropList = new("", "Name of drop list to load for this entity. List items will be overriden by other drops listed here, if index is the same.");
+        public ConfigurationEntry<string> UseDropList = new("", "Name of drop list to load for this entity. List items will be overridden by other drops listed here, if index is the same.");
     }
 
     [Serializable]
@@ -82,18 +82,16 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<bool> EnableConfig = new(true, "Toggle this specific config entry on/off.");
         public ConfigurationEntry<bool> Enable = new(true, "Toggle this specific drop. This can be used to disable existing drops.");
 
-        public ConfigurationEntry<int> SetAmountMin = new(1);
-        public ConfigurationEntry<int> SetAmountMax = new(1);
-        public ConfigurationEntry<float> SetTemplateWeight = new(1, "Set weight for this template. Used to control how likely it is that this item will be selected when rolling for drops. Note, same template can be selected multiple times during drop rolling.");
+        public ConfigurationEntry<int> SetAmountMin = new(1, "Sets minimum amount pr drop. Behaviour depends on entity and item.");
+        public ConfigurationEntry<int> SetAmountMax = new(1, "Sets maximum amount pr drop. Behaviour depends on entity and item.");
+        public ConfigurationEntry<float> SetTemplateWeight = new(1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.");
 
-        public ConfigurationEntry<bool> SetAutoStack = new(false);
-
-        public ConfigurationEntry<float> ConditionAltitudeMin = new(-10000, "");
-        public ConfigurationEntry<float> ConditionAltitudeMax = new(10000, "");
-        public ConfigurationEntry<string> ConditionBiomes = new("");
-        public ConfigurationEntry<bool> ConditionNotDay = new(false);
-        public ConfigurationEntry<bool> ConditionNotNight = new(false);
-        public ConfigurationEntry<bool> ConditionNotAfternoon = new(false);
+        public ConfigurationEntry<float> ConditionAltitudeMin = new(-10000, "Minimum distance above or below sea-level for drop to be enabled.");
+        public ConfigurationEntry<float> ConditionAltitudeMax = new(10000, "Maximum distance above or below sea-level for drop to be enabled.");
+        public ConfigurationEntry<string> ConditionBiomes = new("", "Biomes in which drop is enabled. If empty, condition will be ignored.");
+        public ConfigurationEntry<bool> ConditionNotDay = new(false, "If true, will not drop during daytime.");
+        public ConfigurationEntry<bool> ConditionNotNight = new(false, "If true, will not drop during afternoon.");
+        public ConfigurationEntry<bool> ConditionNotAfternoon = new(false, "If true, will not drop during afternoon.");
         public ConfigurationEntry<string> ConditionEnvironments = new("", "Array of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.");
         public ConfigurationEntry<string> ConditionGlobalKeys = new("", "Array of global keys names that allow the item to drop while they are active.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.");
         public ConfigurationEntry<string> ConditionLocations = new("", "Array of location names. When spawned in one of the listed locations, this drop is enabled.\nEg. Runestone_Boars");
