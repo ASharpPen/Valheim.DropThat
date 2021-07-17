@@ -179,6 +179,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
             conditions.Add(ConditionEnvironments.Instance);
             conditions.Add(ConditionGlobalKeysRequired.Instance);
             conditions.Add(ConditionLocation.Instance);
+            conditions.Add(ConditionDistanceToCenter.Instance);
 
             return conditions;
         }

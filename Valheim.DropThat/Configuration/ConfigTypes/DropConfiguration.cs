@@ -109,6 +109,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<string> ConditionLocation = new ConfigurationEntry<string>("", "Array of location names. When mob spawned in one of the listed locations, this drop is enabled.\nEg. Runestone_Boars");
 
+        public ConfigurationEntry<float> ConditionDistanceToCenterMin = new(0, "Minimum distance to center of map, for drop to be enabled.");
+
+        public ConfigurationEntry<float> ConditionDistanceToCenterMax = new(0, "Maximum distance to center of map, within which drop is enabled. 0 means limitless.");
+
         public ConfigurationEntry<string> ConditionKilledByDamageType = new ConfigurationEntry<string>("", "Array of damage types that will enable this drop, if they were part of the final killing blow. If empty, this condition is ignored.\nEg. Blunt, Fire");
 
         public ConfigurationEntry<string> ConditionKilledWithStatus = new ConfigurationEntry<string>("", "Array of statuses that mob had any of while dying, to enable this drop. If empty, this condition is ignored.\nEg. Burning, Smoked");
