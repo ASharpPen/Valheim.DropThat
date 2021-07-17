@@ -7,7 +7,7 @@ namespace Valheim.DropThat.Debugging
 {
     internal static class LocationsFileWriter
     {
-        private const string FileName = "drop_that_locations.txt";
+        private const string FileName = "drop_that.locations.txt";
 
         public static void WriteToList(List<ZoneSystem.ZoneLocation> zoneLocations)
         {

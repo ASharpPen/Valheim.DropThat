@@ -30,7 +30,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
 
             var character = CharacterCache.GetCharacter(characterDrop);
 
-            if (extended.Config.Subsections.TryGetValue(DropModConfigCLLC.ModName, out Config config) && config is DropModConfigCLLC cllcConfig)
+            if (extended.Config.Subsections.TryGetValue(CharacterDropModConfigCLLC.ModName, out Config config) && config is CharacterDropModConfigCLLC cllcConfig)
             {
                 if (!ValidConditionInfusion(drop, cllcConfig, character))
                 {
@@ -46,7 +46,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
             return false;
         }
 
-        public static bool ValidConditionInfusion(CharacterDrop.Drop drop, DropModConfigCLLC config, Character character)
+        public static bool ValidConditionInfusion(CharacterDrop.Drop drop, CharacterDropModConfigCLLC config, Character character)
         {
             if (config.ConditionInfusion.Value.Length > 0)
             {
@@ -71,7 +71,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
             return true;
         }
 
-        public static bool ValidConditionNotInfusion(CharacterDrop.Drop drop, DropModConfigCLLC config, Character character)
+        public static bool ValidConditionNotInfusion(CharacterDrop.Drop drop, CharacterDropModConfigCLLC config, Character character)
         {
             if (config.ConditionNotInfusion.Value.Length > 0)
             {

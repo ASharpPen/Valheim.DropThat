@@ -7,43 +7,43 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
     /// CharacterDrop configurations
     /// </summary>
     [Serializable]
-    public class DropConfiguration : ConfigWithSubsections<DropMobConfiguration>, IConfigFile
+    public class CharacterDropConfiguration : ConfigWithSubsections<CharacterDropMobConfiguration>, IConfigFile
     {
-        protected override DropMobConfiguration InstantiateSubsection(string subsectionName)
+        protected override CharacterDropMobConfiguration InstantiateSubsection(string subsectionName)
         {
-            return new DropMobConfiguration();
+            return new CharacterDropMobConfiguration();
         }
     }
 
     [Serializable]
-    public class DropMobConfiguration : ConfigWithSubsections<DropItemConfiguration>
+    public class CharacterDropMobConfiguration : ConfigWithSubsections<CharacterDropItemConfiguration>
     {
-        protected override DropItemConfiguration InstantiateSubsection(string subsectionName)
+        protected override CharacterDropItemConfiguration InstantiateSubsection(string subsectionName)
         {
-            return new DropItemConfiguration();
+            return new CharacterDropItemConfiguration();
         }
 
         public ConfigurationEntry<string> UseDropList = new("", "Name of drop list to load for this entity. List items will be overriden by other drops listed here, if index is the same.");
     }
 
     [Serializable]
-    public class DropItemConfiguration : ConfigWithSubsections<Config>
+    public class CharacterDropItemConfiguration : ConfigWithSubsections<Config>
     {
         protected override Config InstantiateSubsection(string subsectionName)
         {
             Config newModConfig = null;
 
-            if(subsectionName == DropModConfigCLLC.ModName)
+            if(subsectionName == CharacterDropModConfigCLLC.ModName)
             {
-                newModConfig = new DropModConfigCLLC();
+                newModConfig = new CharacterDropModConfigCLLC();
             }
-            else if(subsectionName == DropModConfigEpicLoot.ModName)
+            else if(subsectionName == CharacterDropModConfigEpicLoot.ModName)
             {
-                newModConfig = new DropModConfigEpicLoot();
+                newModConfig = new CharacterDropModConfigEpicLoot();
             }
-            else if(subsectionName == DropModConfigSpawnThat.ModName)
+            else if(subsectionName == CharacterDropModConfigSpawnThat.ModName)
             {
-                newModConfig = new DropModConfigSpawnThat();
+                newModConfig = new CharacterDropModConfigSpawnThat();
             }
 
             return newModConfig;
@@ -51,19 +51,19 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         #region CharacterDrop.Drop
 
-        public ConfigurationEntry<string> ItemName = new ConfigurationEntry<string>("", "Prefab name of item to drop.");
+        public ConfigurationEntry<string> PrefabName = new ConfigurationEntry<string>("", "Prefab name of item to drop.");
 
-        public ConfigurationEntry<bool> Enabled = new ConfigurationEntry<bool>(true, "Enable/disable this specific drop configuration.");
+        public ConfigurationEntry<bool> EnableConfig = new ConfigurationEntry<bool>(true, "Enable/disable this specific drop configuration.");
 
-        public ConfigurationEntry<int> AmountMin = new ConfigurationEntry<int>(1, "Minimum amount dropped.");
+        public ConfigurationEntry<int> SetAmountMin = new ConfigurationEntry<int>(1, "Minimum amount dropped.");
 
-        public ConfigurationEntry<int> AmountMax = new ConfigurationEntry<int>(1, "Maximum amount dropped.");
+        public ConfigurationEntry<int> SetAmountMax = new ConfigurationEntry<int>(1, "Maximum amount dropped.");
 
-        public ConfigurationEntry<float> Chance = new ConfigurationEntry<float>(1, "Chance to drop. 1 is 100%.\nExample values: 0, 0.5, 1, 1.0");
+        public ConfigurationEntry<float> SetChanceToDrop = new ConfigurationEntry<float>(1, "Chance to drop. 1 is 100%.\nExample values: 0, 0.5, 1, 1.0");
 
-        public ConfigurationEntry<bool> OnePerPlayer = new ConfigurationEntry<bool>(false, "If set, will drop one of this item per player. Ignoring other factors.");
+        public ConfigurationEntry<bool> SetDropOnePerPlayer = new ConfigurationEntry<bool>(false, "If set, will drop one of this item per player. Ignoring other factors such as SetAmountMin / Max.");
 
-        public ConfigurationEntry<bool> LevelMultiplier = new ConfigurationEntry<bool>(true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.");
+        public ConfigurationEntry<bool> SetScaleByLevel = new ConfigurationEntry<bool>(true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.");
 
         #endregion
 
@@ -145,17 +145,17 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public bool IsValid()
         {
-            if (ItemName == null || string.IsNullOrEmpty(ItemName.Value))
+            if (PrefabName == null || string.IsNullOrEmpty(PrefabName.Value))
             {
                 return false;
             }
 
-            if (AmountMin == null || AmountMin.Value < 0)
+            if (SetAmountMin == null || SetAmountMin.Value < 0)
             {
                 return false;
             }
 
-            if (AmountMax == null || AmountMax.Value < 0 || AmountMax.Value < AmountMin.Value)
+            if (SetAmountMax == null || SetAmountMax.Value < 0 || SetAmountMax.Value < SetAmountMin.Value)
             {
                 return false;
             }
@@ -165,7 +165,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
     }
 
     [Serializable]
-    public class DropModConfigCLLC : Config
+    public class CharacterDropModConfigCLLC : Config
     {
         public const string ModName = "CreatureLevelAndLootControl";
 
@@ -183,7 +183,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
     }
 
     [Serializable]
-    public class DropModConfigEpicLoot : Config
+    public class CharacterDropModConfigEpicLoot : Config
     {
         public const string ModName = "EpicLoot";
 
@@ -197,7 +197,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
     }
 
     [Serializable]
-    public class DropModConfigSpawnThat : Config
+    public class CharacterDropModConfigSpawnThat : Config
     {
         public const string ModName = "SpawnThat";
 

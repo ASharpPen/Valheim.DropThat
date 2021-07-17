@@ -7,9 +7,9 @@ using Valheim.DropThat.Configuration.ConfigTypes;
 
 namespace Valheim.DropThat.Debugging
 {
-    public static class DropTableFileWriter
+    public static class CharacterDropFileWriter
     {
-        private const string FileName = "drop_table_defaults.txt";
+        private const string FileName = "drop_that.character_drop.default.txt";
 
         public static void WriteToFile(List<Tuple<GameObject, CharacterDrop>> characters)
         {
@@ -27,13 +27,13 @@ namespace Valheim.DropThat.Debugging
                     var item = characterDrop.Item2.m_drops[i];
 
                     lines.Add($"[{characterDrop.Item1.name}.{i}]");
-                    lines.Add($"{nameof(DropItemConfiguration.ItemName)}={item.m_prefab?.name}");
-                    lines.Add($"{nameof(DropItemConfiguration.Enabled)}={true}");
-                    lines.Add($"{nameof(DropItemConfiguration.AmountMin)}={item.m_amountMin}");
-                    lines.Add($"{nameof(DropItemConfiguration.AmountMax)}={item.m_amountMax}");
-                    lines.Add($"{nameof(DropItemConfiguration.Chance)}={item.m_chance.ToString(CultureInfo.InvariantCulture)}");
-                    lines.Add($"{nameof(DropItemConfiguration.OnePerPlayer)}={item.m_onePerPlayer}");
-                    lines.Add($"{nameof(DropItemConfiguration.LevelMultiplier)}={item.m_levelMultiplier}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.PrefabName)}={item.m_prefab?.name}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.EnableConfig)}={true}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMin)}={item.m_amountMin}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMax)}={item.m_amountMax}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetChanceToDrop)}={item.m_chance.ToString(CultureInfo.InvariantCulture)}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetDropOnePerPlayer)}={item.m_onePerPlayer}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetScaleByLevel)}={item.m_levelMultiplier}");
                     lines.Add("");
                 }
             }

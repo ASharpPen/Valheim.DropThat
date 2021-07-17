@@ -8,7 +8,7 @@ namespace Valheim.DropThat.Caches
     {
         private static ConditionalWeakTable<CharacterDrop.Drop, DropExtended> DropTable = new ConditionalWeakTable<CharacterDrop.Drop, DropExtended>();
 
-        public static void Set(CharacterDrop.Drop drop, DropItemConfiguration config)
+        public static void Set(CharacterDrop.Drop drop, CharacterDropItemConfiguration config)
         {
             DropTable.GetOrCreateValue(drop).Config = config;
         }
@@ -23,6 +23,6 @@ namespace Valheim.DropThat.Caches
             return null;
         }
 
-        public DropItemConfiguration Config { get; set; }
+        public CharacterDropItemConfiguration Config { get; set; }
     }
 }

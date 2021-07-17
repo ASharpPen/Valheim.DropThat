@@ -10,7 +10,7 @@ namespace Valheim.DropThat.Core
 
         public static void LogDebug(string message)
         {
-            if (ConfigurationManager.GeneralConfig?.DebugMode?.Value == true)
+            if (ConfigurationManager.GeneralConfig?.EnableDebugLogging?.Value == true)
             { 
                 Logger.LogInfo($"{message}");
             }

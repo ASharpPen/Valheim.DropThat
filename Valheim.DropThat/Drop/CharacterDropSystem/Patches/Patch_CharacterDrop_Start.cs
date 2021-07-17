@@ -27,7 +27,7 @@ namespace Valheim.DropThat
 
             string name = __instance.gameObject.name;
 
-            DropMobConfiguration configMatch = FindConfigMatch(name);
+            CharacterDropMobConfiguration configMatch = FindConfigMatch(name);
 
             // Find drop list
             string dropListName = configMatch?.UseDropList?.Value;
@@ -43,10 +43,10 @@ namespace Valheim.DropThat
 
             bool skipExisting = false;
 
-            if (GeneralConfig.ClearAllExisting ||
+            if (GeneralConfig.ClearAllExistingCharacterDrops ||
                 GeneralConfig.ClearAllExistingDropTablesWhenModified &&
-                (configMatch?.Subsections?.Any(x => x.Value.Enabled) == true ||
-                listConfig?.Subsections?.Any(x => x.Value.Enabled) == true))
+                (configMatch?.Subsections?.Any(x => x.Value.EnableConfig) == true ||
+                listConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true))
             {
                 skipExisting = true;
             }
@@ -68,7 +68,7 @@ namespace Valheim.DropThat
             __instance.m_drops = ConditionChecker.FilterOnStart(__instance);
         }
 
-        private static void InsertDrops(CharacterDrop instance, DropItemConfiguration dropConfig)
+        private static void InsertDrops(CharacterDrop instance, CharacterDropItemConfiguration dropConfig)
         {
             //Sanity checks
             if (!dropConfig.IsValid())
@@ -79,28 +79,28 @@ namespace Valheim.DropThat
                 return;
             }
 
-            GameObject item = ObjectDB.instance.GetItemPrefab(dropConfig.ItemName?.Value);
-            item ??= ZNetScene.instance.GetPrefab(dropConfig.ItemName.Value);
+            GameObject item = ObjectDB.instance.GetItemPrefab(dropConfig.PrefabName?.Value);
+            item ??= ZNetScene.instance.GetPrefab(dropConfig.PrefabName.Value);
 
             if (item == null)
             {
-                Log.LogWarning($"[{dropConfig.SectionKey}]: No item '{dropConfig.ItemName}' exists");
+                Log.LogWarning($"[{dropConfig.SectionKey}]: No item '{dropConfig.PrefabName}' exists");
                 return;
             }
 
             CharacterDrop.Drop newDrop = new CharacterDrop.Drop
             {
                 m_prefab = item,
-                m_amountMax = dropConfig.AmountMax.Value,
-                m_amountMin = dropConfig.AmountMin.Value,
-                m_chance = dropConfig.Chance.Value,
-                m_levelMultiplier = dropConfig.LevelMultiplier.Value,
-                m_onePerPlayer = dropConfig.OnePerPlayer.Value,
+                m_amountMax = dropConfig.SetAmountMax.Value,
+                m_amountMin = dropConfig.SetAmountMin.Value,
+                m_chance = dropConfig.SetChanceToDrop.Value,
+                m_levelMultiplier = dropConfig.SetScaleByLevel.Value,
+                m_onePerPlayer = dropConfig.SetDropOnePerPlayer.Value,
             };
 
             DropExtended.Set(newDrop, dropConfig);
 
-            if (!GeneralConfig.AlwaysAppend.Value)
+            if (!GeneralConfig.AlwaysAppendCharacterDrops.Value)
             {
                 int index = dropConfig.Index;
 
@@ -115,23 +115,23 @@ namespace Valheim.DropThat
             Insert(instance, dropConfig, newDrop);
         }
 
-        private static void Insert(CharacterDrop __instance, DropItemConfiguration config, CharacterDrop.Drop drop)
+        private static void Insert(CharacterDrop __instance, CharacterDropItemConfiguration config, CharacterDrop.Drop drop)
         {
             int index = config.Index;
-            if (index >= 0 && __instance.m_drops.Count >= index && !ConfigurationManager.GeneralConfig.AlwaysAppend.Value)
+            if (index >= 0 && __instance.m_drops.Count >= index && !ConfigurationManager.GeneralConfig.AlwaysAppendCharacterDrops.Value)
             {
-                Log.LogDebug($"[{__instance.gameObject.name}]: Inserting drop {config.ItemName.Value} at index '{index}'.");
+                Log.LogDebug($"[{__instance.gameObject.name}]: Inserting drop {config.PrefabName.Value} at index '{index}'.");
 
                 __instance.m_drops.Insert(index, drop);
             }
             else
             {
-                Log.LogDebug($"[{__instance.gameObject.name}]: Adding item {config.ItemName.Value}.");
+                Log.LogDebug($"[{__instance.gameObject.name}]: Adding item {config.PrefabName.Value}.");
                 __instance.m_drops.Add(drop);
             }
         }
 
-        private static DropMobConfiguration FindConfigMatch(string prefabName)
+        private static CharacterDropMobConfiguration FindConfigMatch(string prefabName)
         {
             if((ConfigurationManager.DropConfigs?.Subsections?.Count ?? 0) == 0)
             {
@@ -154,7 +154,7 @@ namespace Valheim.DropThat
                 return null;
             }
 
-            if (ConfigurationManager.DropConfigs.Subsections.TryGetValue(cleanedName, out DropMobConfiguration mobConfig))
+            if (ConfigurationManager.DropConfigs.Subsections.TryGetValue(cleanedName, out CharacterDropMobConfiguration mobConfig))
             {
                 return mobConfig;
             }

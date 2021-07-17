@@ -23,12 +23,12 @@ namespace Valheim.DropThat.Drop.Conditions.ModSpecific.SpawnThat
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {
-            if(!extended.Config.Subsections.TryGetValue(DropModConfigSpawnThat.ModName, out Config modConfig))
+            if(!extended.Config.Subsections.TryGetValue(CharacterDropModConfigSpawnThat.ModName, out Config modConfig))
             {
                 return false;
             }
 
-            var config = modConfig as DropModConfigSpawnThat;
+            var config = modConfig as CharacterDropModConfigSpawnThat;
 
             if(config is null || string.IsNullOrWhiteSpace(config.ConditionTemplateId.Value))
             {

@@ -12,7 +12,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
     {
         public GeneralConfiguration GeneralConfig;
 
-        public DropConfiguration CharacterDropConfigs;
+        public CharacterDropConfiguration CharacterDropConfigs;
 
         public CharacterDropListConfigurationFile CharacterDropLists;
 

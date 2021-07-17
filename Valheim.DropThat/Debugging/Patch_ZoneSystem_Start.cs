@@ -31,9 +31,9 @@ namespace Valheim.DropThat.Debugging
                     }
                 }
 
-                if (ConfigurationManager.GeneralConfig?.WriteDefaultDropTableToFile?.Value == true)
+                if (ConfigurationManager.GeneralConfig?.WriteCharacterDropsToFile?.Value == true)
                 {
-                    DropTableFileWriter.WriteToFile(prefabsWithDropTables);
+                    CharacterDropFileWriter.WriteToFile(prefabsWithDropTables);
                 }
 
                 if (ConfigurationManager.GeneralConfig?.WriteCreatureItemsToFile?.Value == true)

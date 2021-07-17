@@ -53,7 +53,7 @@ namespace Valheim.DropThat.Conditions
             if (!items.Any(x => inventoryItems.Contains(x.Trim().ToUpperInvariant())))
             {
                 //No inventory items matched an item in condition list.
-                Log.LogTrace($"{nameof(DropItemConfiguration.ConditionHasItem)}: Found none of the required items in inventory.");
+                Log.LogTrace($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}: Found none of the required items in inventory.");
 
                 return true;
             }

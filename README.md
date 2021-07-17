@@ -51,6 +51,34 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 	- Drop stacks instead of individual items. Want to have a stack of coins, that isn't a massive lag tower of individual coins?
 	- Limit max amount to avoid those pesky world-crashing level 10 trolls.
 
+# V2.0.0
+
+## Breaking changes:
+
+The new support for additional drop tables resulted in some issues with regards to naming. The newly supported tables have a completely different structure and way of behaving. Due to this, Drop That need to use different config formats for each type of drop table. Therefore, while it may be somewhat confusing to the user, configs will now be named according to the internal type they provide configuration options for.
+
+File name and pattern changes:
+- `drop_that.tables.cfg` => `drop_that.character_drop.cfg`
+- `drop_that.supplemental.*` => `drop_that.character_drop.*.cfg`
+
+From the beginning, Drop That had a bit of a confusing naming schemes for its settings. Some of the names were simply the original setting names, while in other cases a more clear or standardized name was assigned.
+
+This will be the first time existing settings changes name, and hopefully it can be avoided again in the future. In general, Drop That will (or at least, should) continue only changing existing setting names for major patches like this.
+
+Setting changes in `drop_that.character_drop.cfg`:
+- `ItemName` => `PrefabName`
+- `Enabled` => `EnableConfig`
+- `AmountMin` => `SetAmountMin`
+- `AmountMax` => `SetAmountMax`
+- `Chance` => `SetChanceToDrop`
+- `OnePerPlayer` => `SetDropOnePerPlayer`
+- `LevelMultiplier` => `SetScaleByLevel`
+
+Setting changes in `drop_that.cg`:
+- Moved old settings from `[DropTables]` To `[CharacterDrop]`. [DropTables] will now contain the settings for, well... DropTable configurations.
+- `[General] EnableDebug` moved to `[Debug] EnableDebugLogging`
+- `WriteDefaultDropTableToFile` => `WriteCharacterDropsToFile`
+
 # Manual Installation:
 
 1. Install the [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
