@@ -97,7 +97,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<string> ConditionEnvironments = new("", "Array of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.");
         public ConfigurationEntry<string> ConditionGlobalKeys = new("", "Array of global keys names that allow the item to drop while they are active.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.");
         public ConfigurationEntry<string> ConditionLocations = new("", "Array of location names. When spawned in one of the listed locations, this drop is enabled.\nEg. Runestone_Boars");
-
+        public ConfigurationEntry<float> ConditionDistanceToCenterMin = new(0, "Minimum distance to center of map, for drop to be enabled.");
+        public ConfigurationEntry<float> ConditionDistanceToCenterMax = new(0, "Maximum distance to center of map, within which drop is enabled. 0 means limitless.");
 
         // ItemDrop.ItemData options
 

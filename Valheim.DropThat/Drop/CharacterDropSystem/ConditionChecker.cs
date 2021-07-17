@@ -40,6 +40,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             OnStartConditions = new HashSet<ICondition>();
             OnStartConditions.Add(ConditionInventory.Instance);
             OnStartConditions.Add(ConditionLocation.Instance);
+            OnStartConditions.Add(ConditionDistanceToCenter.Instance);
 
             if (!ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {
