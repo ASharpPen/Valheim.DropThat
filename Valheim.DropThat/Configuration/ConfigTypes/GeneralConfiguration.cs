@@ -56,7 +56,6 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             ClearAllExistingCharacterDrops.Bind(Config, "CharacterDrop", "ClearAllExisting");
             ClearAllExistingCharacterDropsWhenModified.Bind(Config, "CharacterDrop", "ClearAllExistingWhenModified");
             AlwaysAppendCharacterDrops.Bind(Config, "CharacterDrop", "AlwaysAppend");
-            ApplyConditionsOnDeathCharacterDrops.Bind(Config, "CharacterDrop", "ApplyConditionsOnDeath");
 
             ClearAllExistingDropTables.Bind(Config, "DropTable", "ClearAllExisting");
             ClearAllExistingDropTablesWhenModified.Bind(Config, "DropTable", "ClearAllExistingWhenModified");
