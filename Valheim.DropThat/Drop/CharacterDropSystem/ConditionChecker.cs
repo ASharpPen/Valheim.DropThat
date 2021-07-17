@@ -66,6 +66,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             OnDeathConditions.Add(ConditionKilledBySkillType.Instance);
             OnDeathConditions.Add(ConditionKilledWithStatus.Instance);
             OnDeathConditions.Add(ConditionKilledWithStatuses.Instance);
+            OnDeathConditions.Add(ConditionKilledByEntityType.Instance);
 
             if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeath.Value)
             {

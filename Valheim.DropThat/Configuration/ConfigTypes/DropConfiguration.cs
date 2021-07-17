@@ -117,6 +117,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public ConfigurationEntry<string> ConditionKilledBySkillType = new ConfigurationEntry<string>("", "Array of skill types that will enable this drop, if they were listed as the skill causing the damage of the final killing blow. If empty, this condition is ignored.\nEg. Swords, Unarmed");
 
+        public ConfigurationEntry<string> ConditionKilledByEntityType = new("", "Array of entity types that if causing the last hit, will enable this drop. If empty, this condition is ignored.\nEg. Player, Creature, Other");
+
         #endregion
 
         // Inefficient, but will do for now.
