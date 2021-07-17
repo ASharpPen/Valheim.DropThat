@@ -1,6 +1,7 @@
 ﻿using System;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
 using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.Conditions

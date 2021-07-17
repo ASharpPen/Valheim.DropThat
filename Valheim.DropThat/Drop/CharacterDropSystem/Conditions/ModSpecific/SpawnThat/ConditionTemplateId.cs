@@ -3,6 +3,7 @@ using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Configuration;
+using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
 using Valheim.DropThat.Utilities;
 using Valheim.SpawnThat.Spawners.SpawnerSpawnSystem.SpawnModifiers.General;
 
