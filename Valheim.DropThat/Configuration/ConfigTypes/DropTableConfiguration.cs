@@ -31,6 +31,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<int> SetDropMax = new(1, "Maximum of randomly selected entries from drop list. Entries can be picked more than once.");
         public ConfigurationEntry<float> SetDropChance = new(1, "Chance to drop anything at all.");
         public ConfigurationEntry<bool> SetDropOnlyOnce = new(false, "If true, will ensure that when selecting entries from drop list, same entry will only be picked once.");
+
+        public ConfigurationEntry<string> UseDropList = new("", "Name of drop list to load for this entity. List items will be overriden by other drops listed here, if index is the same.");
     }
 
     [Serializable]

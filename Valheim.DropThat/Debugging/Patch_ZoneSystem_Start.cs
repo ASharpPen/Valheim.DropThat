@@ -11,7 +11,7 @@ namespace Valheim.DropThat.Debugging
     /// but we want to be later to let other mods fill in their prefabs.
     /// </summary>
     [HarmonyPatch(typeof(ZoneSystem))]
-    public static class DropTableDumperPatch
+    internal static class Patch_ZoneSystem_Start
     {
         [HarmonyPatch("Start")]
         [HarmonyPostfix]

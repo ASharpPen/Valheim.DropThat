@@ -22,6 +22,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         {
             return new DropItemConfiguration();
         }
+
+        public ConfigurationEntry<string> UseDropList = new("", "Name of drop list to load for this entity. List items will be overriden by other drops listed here, if index is the same.");
     }
 
     [Serializable]
@@ -137,11 +139,6 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public bool IsValid()
         {
-            if (Enabled == null || !Enabled.Value)
-            {
-                return false;
-            }
-
             if (ItemName == null || string.IsNullOrEmpty(ItemName.Value))
             {
                 return false;
