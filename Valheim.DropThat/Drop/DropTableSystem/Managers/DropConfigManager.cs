@@ -64,8 +64,8 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
 
             if (GeneralConfig.ClearAllExistingDropTables ||
                 GeneralConfig.ClearAllExistingDropTablesWhenModified &&
-                context.EntityConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true &&
-                listConfig?.Subsections?.Any() == true)
+                (context.EntityConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true ||
+                listConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true))
             {
                 skipExisting = true;
             }
@@ -92,13 +92,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
                 return drops;
             }
 
-            // Apply drop lists if any
-            if (listConfig is not null)
+            var configs = MergeAndOrder(listConfig, context.EntityConfig);
+            foreach (var config in configs)
             {
-                foreach (var dropEntry in listConfig.Subsections.OrderBy(x => x.Value.Index))
-                {
-                    InsertDrop(drops, dropEntry.Value, context.EntityConfig);
-                }
+                InsertDrop(drops, config, context.EntityConfig);
             }
 
             // Go through all the config entries
@@ -201,6 +198,35 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
             }
 
             return modifiers;
+        }
+
+        private static IEnumerable<DropTableItemConfiguration> MergeAndOrder(DropTableListConfiguration list, DropTableEntityConfiguration entity)
+        {
+            Dictionary<int, DropTableItemConfiguration> templatesByIndex = new();
+
+            if (list is not null)
+            {
+                foreach(var template in list.Subsections.Values)
+                {
+                    if (template.EnableConfig)
+                    {
+                        templatesByIndex[template.Index] = template;
+                    }
+                }
+            }
+
+            if (entity is not null)
+            {
+                foreach (var template in entity.Subsections.Values)
+                {
+                    if (template.EnableConfig)
+                    {
+                        templatesByIndex[template.Index] = template;
+                    }
+                }
+            }
+
+            return templatesByIndex.Values.OrderBy(x => x.Index);
         }
     }
 }

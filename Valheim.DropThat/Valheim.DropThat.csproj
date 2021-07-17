@@ -342,6 +342,7 @@
     <Compile Include="Drop\CharacterDropSystem\Modifiers\ModSpecific\ModEpicLoot\ModifierMagicItem.cs" />
     <Compile Include="Drop\CharacterDropSystem\Modifiers\ModSpecific\ModifierLoaderEpicLoot.cs" />
     <Compile Include="Drop\CharacterDropSystem\Modifiers\ModifierSetQualityLevel.cs" />
+    <Compile Include="Drop\CharacterDropSystem\Services\MobDropInitializationService.cs" />
     <Compile Include="Drop\DropTableSystem\Caches\DropLinkCache.cs" />
     <Compile Include="Drop\DropTableSystem\Caches\DropTemplateCache.cs" />
     <Compile Include="Drop\DropTableSystem\Conditions\ConditionAltitude.cs" />
@@ -400,6 +401,8 @@
   <ItemGroup>
     <None Include="LibsStripped\CreatureLevelControl.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Drop\DropTableSystem\Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -139,11 +139,6 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         public bool IsValid()
         {
-            if (Enabled == null || !Enabled.Value)
-            {
-                return false;
-            }
-
             if (ItemName == null || string.IsNullOrEmpty(ItemName.Value))
             {
                 return false;

@@ -7,6 +7,7 @@ using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Drop.CharacterDropSystem;
+using Valheim.DropThat.Drop.CharacterDropSystem.Services;
 
 namespace Valheim.DropThat
 {
@@ -28,72 +29,90 @@ namespace Valheim.DropThat
 
             DropMobConfiguration configMatch = FindConfigMatch(name);
 
-            if (GeneralConfig.ClearAllExisting.Value && __instance.m_drops.Count > 0)
+            // Find drop list
+            string dropListName = configMatch?.UseDropList?.Value;
+
+            CharacterDropListConfiguration listConfig = null;
+
+            if (!string.IsNullOrWhiteSpace(dropListName) &&
+                ConfigurationManager.CharacterDropLists is not null &&
+                ConfigurationManager.CharacterDropLists.TryGet(dropListName, out CharacterDropListConfiguration dropList))
             {
-                Log.LogDebug($"[{name}]: Clearing '{__instance.m_drops.Count}'");
+                listConfig = dropList;
+            }
+
+            bool skipExisting = false;
+
+            if (GeneralConfig.ClearAllExisting ||
+                GeneralConfig.ClearAllExistingDropTablesWhenModified &&
+                (configMatch?.Subsections?.Any(x => x.Value.Enabled) == true ||
+                listConfig?.Subsections?.Any(x => x.Value.Enabled) == true))
+            {
+                skipExisting = true;
+            }
+
+            if (skipExisting && __instance.m_drops.Count > 0)
+            {
+                Log.LogTrace($"[{name}]: Clearing '{__instance.m_drops.Count}'");
                 __instance.m_drops.Clear();
             }
 
-            if (configMatch is not null)
+            // Merge list and mob config
+            var configs = MobDropInitializationService.PrepareInsertion(listConfig, configMatch);
+ 
+            foreach (var config in configs)
             {
-                if(GeneralConfig.ClearAllExistingWhenModified.Value && __instance.m_drops.Count > 0)
-                {
-                    Log.LogDebug($"[{name}]: Clearing '{__instance.m_drops.Count}'");
-                    __instance.m_drops.Clear();
-                }
-
-                foreach (var dropEntry in configMatch.Subsections.OrderBy(x => x.Value.Index))
-                {
-                    var dropConfig = dropEntry.Value;
-
-                    //Sanity checks
-                    if (dropConfig is null || !dropConfig.IsValid())
-                    {
-#if DEBUG
-                        Log.LogDebug($"Drop config {dropConfig.SectionKey} is not valid or enabled.");
-#endif
-                        continue;
-                    }
-
-                    GameObject item = ObjectDB.instance.GetItemPrefab(dropConfig.ItemName?.Value);
-                    item ??= ZNetScene.instance.GetPrefab(dropConfig.ItemName.Value);
-
-                    if (item == null)
-                    {
-                        Log.LogWarning($"Couldn't find item '{dropConfig.ItemName}' for configuration '{configMatch.SectionName}'");
-                        continue;
-                    }
-
-                    CharacterDrop.Drop newDrop = new CharacterDrop.Drop
-                    {
-                        m_prefab = item,
-                        m_amountMax = dropConfig.AmountMax.Value,
-                        m_amountMin = dropConfig.AmountMin.Value,
-                        m_chance = dropConfig.Chance.Value,
-                        m_levelMultiplier = dropConfig.LevelMultiplier.Value,
-                        m_onePerPlayer = dropConfig.OnePerPlayer.Value,
-                    };
-
-                    DropExtended.Set(newDrop, dropConfig);
-
-                    Log.LogDebug($"[{name}]: {__instance.m_drops.Count} existing drops in table.");
-
-                    if(!GeneralConfig.AlwaysAppend.Value)
-                    {
-                        int index = dropConfig.Index;
-
-                        if (__instance.m_drops.Count > index)
-                        {
-                            Log.LogDebug($"[{configMatch.SectionName}]: Removing overriden item '{__instance.m_drops[index].m_prefab.name}' at index '{index}'.");
-                            __instance.m_drops.RemoveAt(index);
-                        }
-                    }
-
-                    Insert(__instance, dropConfig, newDrop);
-                }
+                InsertDrops(__instance, config);
             }
 
             __instance.m_drops = ConditionChecker.FilterOnStart(__instance);
+        }
+
+        private static void InsertDrops(CharacterDrop instance, DropItemConfiguration dropConfig)
+        {
+            //Sanity checks
+            if (!dropConfig.IsValid())
+            {
+#if DEBUG
+                Log.LogDebug($"Drop config {dropConfig.SectionKey} is not valid or enabled.");
+#endif
+                return;
+            }
+
+            GameObject item = ObjectDB.instance.GetItemPrefab(dropConfig.ItemName?.Value);
+            item ??= ZNetScene.instance.GetPrefab(dropConfig.ItemName.Value);
+
+            if (item == null)
+            {
+                Log.LogWarning($"[{dropConfig.SectionKey}]: No item '{dropConfig.ItemName}' exists");
+                return;
+            }
+
+            CharacterDrop.Drop newDrop = new CharacterDrop.Drop
+            {
+                m_prefab = item,
+                m_amountMax = dropConfig.AmountMax.Value,
+                m_amountMin = dropConfig.AmountMin.Value,
+                m_chance = dropConfig.Chance.Value,
+                m_levelMultiplier = dropConfig.LevelMultiplier.Value,
+                m_onePerPlayer = dropConfig.OnePerPlayer.Value,
+            };
+
+            DropExtended.Set(newDrop, dropConfig);
+
+            if (!GeneralConfig.AlwaysAppend.Value)
+            {
+                int index = dropConfig.Index;
+
+                if (instance.m_drops.Count > index)
+                {
+                    Log.LogDebug($"[{dropConfig.SectionKey}]: Removing overriden item '{instance.m_drops[index].m_prefab.name}' at index '{index}'.");
+
+                    instance.m_drops.RemoveAt(index);
+                }
+            }
+
+            Insert(instance, dropConfig, newDrop);
         }
 
         private static void Insert(CharacterDrop __instance, DropItemConfiguration config, CharacterDrop.Drop drop)
