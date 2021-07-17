@@ -278,6 +278,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caches\ComponentCache.cs" />
     <Compile Include="Caches\ZdoCache.cs" />
     <Compile Include="Caches\CharacterCache.cs" />
     <Compile Include="Caches\CharacterExtended.cs" />
@@ -288,6 +289,7 @@
     <Compile Include="Drop\CharacterDropSystem\Caches\ItemDropCache.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableConfiguration.cs" />
     <Compile Include="Debugging\Patch_CharacterDrop.cs" />
+    <Compile Include="Drop\CharacterDropSystem\Conditions\ConditionKilledByEntityType.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_CharacterDrop_DropItems.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_CharacterDrop_GenerateDropList_CarryDropExtended.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_Ragdoll_TransferConfigs.cs" />

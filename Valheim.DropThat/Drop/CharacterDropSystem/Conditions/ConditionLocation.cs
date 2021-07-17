@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
 using Valheim.DropThat.Locations;
 using Valheim.DropThat.Utilities;
 

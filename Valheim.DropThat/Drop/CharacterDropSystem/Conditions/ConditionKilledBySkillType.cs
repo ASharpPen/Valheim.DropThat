@@ -6,6 +6,7 @@ using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Creature.DamageRecords;
+using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
 using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.Conditions

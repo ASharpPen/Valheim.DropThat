@@ -1,6 +1,6 @@
 ﻿using Valheim.DropThat.Caches;
 
-namespace Valheim.DropThat.Drop.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     public interface ICondition
     {
