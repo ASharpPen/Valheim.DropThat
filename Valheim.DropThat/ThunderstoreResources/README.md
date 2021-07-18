@@ -29,7 +29,33 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 
 Documentation can be found on the [Drop That! wiki](https://github.com/ASharpPen/Valheim.DropThat/wiki).
 
-# v2.0.0 Breaking changes:
+# v2.0.0 Details
+
+## New loot tables supported:
+
+Valheim uses multiple types of loot tables, which each works very differently. Until now, Drop That has only supported the most used type for creatures, CharacterDrop.
+With v2.0.0, there will now be support for the much more complicated and generally used loot system DropTable.
+
+This table is used for a variety of scenarios. Amongst them are:
+- Seagals
+- Treasure chest loot
+- Drops on destroyed objects
+- Tree logs
+- Rocks
+- Beehives
+
+All default loot tables supported can be printed as usual, so that all the defaults can be explored, copy-pasted and modified.
+
+So whats not supported yet?
+- A lot of objects and creatures are customly configured to drop items on death/destruction, these are not covered by any of the loot table systems.
+- Pickable objects, like mushrooms
+
+## Drop Lists:
+A feature that has been requested often, is the ability to make a list of drops and then re-use that list multiple times, without having to copy-paste everything.
+
+With v2.0.0, a new format and setting have been added for making named lists, that can be referenced by each entity (both mobs and objects) to work as a default.
+
+## Breaking changes:
 
 The new support for additional drop tables resulted in some issues with regards to naming. The newly supported tables have a completely different structure and way of behaving. Due to this, Drop That need to use different config formats for each type of drop table. Therefore, while it may be somewhat confusing to the user, configs will now be named according to the internal type they provide configuration options for.
 
