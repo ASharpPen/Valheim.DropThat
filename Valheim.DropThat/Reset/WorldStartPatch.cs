@@ -40,7 +40,9 @@ namespace Valheim.DropThat.Reset
             Log.LogDebug("ParseServerArguments - Resetting configurations");
             StateResetter.Reset();
             ConfigurationManager.LoadAllCharacterDropConfigurations();
+            ConfigurationManager.LoadAllCharacterDropLists();
             ConfigurationManager.LoadAllDropTableConfigurations();
+            ConfigurationManager.LoadAllDropTableLists();
         }
     }
 }

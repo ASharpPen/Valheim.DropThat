@@ -157,7 +157,7 @@ namespace Valheim.DropThat.ConfigToItem
                                 return;
                             }
 
-                            if (ConfigurationManager.DropConfigs.TryGet(configSections[0], out CharacterDropMobConfiguration mobConfig))
+                            if (ConfigurationManager.CharacterDropConfigs.TryGet(configSections[0], out CharacterDropMobConfiguration mobConfig))
                             {
                                 if (mobConfig.TryGet(configSections[1], out CharacterDropItemConfiguration itemConfig))
                                 {

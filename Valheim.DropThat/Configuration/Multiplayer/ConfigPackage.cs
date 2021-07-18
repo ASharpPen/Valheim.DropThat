@@ -25,7 +25,8 @@ namespace Valheim.DropThat.Configuration.Multiplayer
             ZPackage package = new ZPackage();
 
             GeneralConfig = ConfigurationManager.GeneralConfig;
-            CharacterDropConfigs = ConfigurationManager.DropConfigs;
+
+            CharacterDropConfigs = ConfigurationManager.CharacterDropConfigs;
             CharacterDropLists = ConfigurationManager.CharacterDropLists;
 
             DropTableConfigs = ConfigurationManager.DropTableConfigs;
@@ -71,16 +72,16 @@ namespace Valheim.DropThat.Configuration.Multiplayer
                         Log.LogTrace("Unpackaging configs.");
 
                         ConfigurationManager.GeneralConfig = configPackage.GeneralConfig;
-                        ConfigurationManager.DropConfigs = configPackage.CharacterDropConfigs;
+                        ConfigurationManager.CharacterDropConfigs = configPackage.CharacterDropConfigs;
                         ConfigurationManager.CharacterDropLists = configPackage.CharacterDropLists;
                         ConfigurationManager.DropTableConfigs = configPackage.DropTableConfigs;
                         ConfigurationManager.DropTableLists = configPackage.DropTableLists;
 
                         Log.LogDebug("Unpacked general config");
-                        Log.LogDebug($"Unpacked creature configurations: {ConfigurationManager.DropConfigs.Subsections.Count}");
-                        Log.LogDebug($"Unpacked creature drop lists: {ConfigurationManager.CharacterDropLists.Subsections.Count}");
-                        Log.LogDebug($"Unpacked drop table configurations: {ConfigurationManager.DropTableConfigs.Subsections.Count}");
-                        Log.LogDebug($"Unpacked drop table lists: {ConfigurationManager.DropTableLists.Subsections.Count}");
+                        Log.LogDebug($"Unpacked creature configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
+                        Log.LogDebug($"Unpacked creature drop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
+                        Log.LogDebug($"Unpacked drop table configurations: {ConfigurationManager.DropTableConfigs?.Subsections?.Count ?? 0}");
+                        Log.LogDebug($"Unpacked drop table lists: {ConfigurationManager.DropTableLists?.Subsections?.Count ?? 0}");
 
                         Log.LogInfo("Successfully unpacked configs.");
                     }

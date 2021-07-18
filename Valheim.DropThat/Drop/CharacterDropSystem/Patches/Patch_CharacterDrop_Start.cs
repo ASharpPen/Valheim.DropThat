@@ -19,7 +19,7 @@ namespace Valheim.DropThat
         [HarmonyPriority(Priority.Last)]
         private static void Postfix(CharacterDrop __instance)
         {
-            if(ConfigurationManager.DropConfigs == null)
+            if(ConfigurationManager.CharacterDropConfigs == null)
             {
                 Log.LogDebug("Loading drop tables");
                 ConfigurationManager.LoadAllCharacterDropConfigurations();
@@ -133,7 +133,7 @@ namespace Valheim.DropThat
 
         private static CharacterDropMobConfiguration FindConfigMatch(string prefabName)
         {
-            if((ConfigurationManager.DropConfigs?.Subsections?.Count ?? 0) == 0)
+            if((ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0) == 0)
             {
 #if DEBUG
                 Log.LogDebug("No drop configs found to match.");
@@ -154,7 +154,7 @@ namespace Valheim.DropThat
                 return null;
             }
 
-            if (ConfigurationManager.DropConfigs.Subsections.TryGetValue(cleanedName, out CharacterDropMobConfiguration mobConfig))
+            if (ConfigurationManager.CharacterDropConfigs.Subsections.TryGetValue(cleanedName, out CharacterDropMobConfiguration mobConfig))
             {
                 return mobConfig;
             }

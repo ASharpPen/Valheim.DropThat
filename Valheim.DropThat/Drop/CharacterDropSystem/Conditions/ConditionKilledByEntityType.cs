@@ -46,9 +46,6 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 
             if (string.IsNullOrWhiteSpace(config.ConditionKilledByEntityType.Value))
             {
-#if DEBUG
-                Log.LogTrace("[ConditionKilledByEntityType] No setting found.");
-#endif
                 return true;
             }
 

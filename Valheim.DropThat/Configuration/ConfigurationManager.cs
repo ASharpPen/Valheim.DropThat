@@ -12,7 +12,7 @@ namespace Valheim.DropThat.Configuration
     {
         public static GeneralConfiguration GeneralConfig = null;
 
-        public static CharacterDropConfiguration DropConfigs = null;
+        public static CharacterDropConfiguration CharacterDropConfigs = null;
 
         public static DropTableConfiguration DropTableConfigs = null;
 
@@ -108,7 +108,7 @@ namespace Valheim.DropThat.Configuration
                 }
             }
 
-            DropConfigs = configs;
+            CharacterDropConfigs = configs;
 
             Log.LogDebug("Finished loading drop configurations");
         }
