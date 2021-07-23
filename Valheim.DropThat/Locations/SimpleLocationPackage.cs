@@ -5,7 +5,7 @@ using Valheim.DropThat.Core;
 namespace Valheim.DropThat.Locations
 {
     [Serializable]
-    internal struct SimpleLocationPackage
+    public struct SimpleLocationPackage
     {
         public string[] LocationNames;
 

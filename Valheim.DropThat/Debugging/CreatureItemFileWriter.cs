@@ -1,8 +1,6 @@
-﻿using BepInEx;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using Valheim.DropThat.Configuration.ConfigTypes;
@@ -12,7 +10,7 @@ namespace Valheim.DropThat.Debugging
 {
     internal static class CreatureItemFileWriter
     {
-        private const string FileName = "drop_that_items.txt";
+        private const string FileName = "drop_that.character_drop.items.txt";
 
         public static void WriteToFile(List<Tuple<GameObject, CharacterDrop>> characters)
         {
@@ -78,15 +76,11 @@ namespace Valheim.DropThat.Debugging
                 }
 #endif
                 lines.Add($"[{characterDrop.Item1.name}.0]");
-                lines.Add($"{nameof(DropItemConfiguration.ConditionHasItem)}={inventoryItems?.Join()}");
+                lines.Add($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}={inventoryItems?.Join()}");
                 lines.Add("");
             }
 
-            string filePath = Path.Combine(Paths.PluginPath, FileName);
-
-            Log.LogInfo($"Writing default creature items to file {filePath}.");
-
-            File.WriteAllLines(filePath, lines);
+            PrintDebugFile.PrintFile(lines, FileName, "default creature items");
         }
     }
 }

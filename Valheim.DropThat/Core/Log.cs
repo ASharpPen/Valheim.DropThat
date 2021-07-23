@@ -10,9 +10,9 @@ namespace Valheim.DropThat.Core
 
         public static void LogDebug(string message)
         {
-            if (ConfigurationManager.GeneralConfig?.DebugMode?.Value == true)
+            if (ConfigurationManager.GeneralConfig?.EnableDebugLogging?.Value == true)
             { 
-                Logger.LogInfo($"{message}");
+                Logger?.LogInfo($"{message}");
             }
         }
 
@@ -20,14 +20,14 @@ namespace Valheim.DropThat.Core
         {
             if (ConfigurationManager.GeneralConfig?.EnableTraceLogging?.Value == true)
             {
-                Logger.LogDebug($"{message}");
+                Logger?.LogDebug($"{message}");
             }
         }
 
-        public static void LogInfo(string message) => Logger.LogMessage($"{message}");
+        public static void LogInfo(string message) => Logger?.LogMessage($"{message}");
 
-        public static void LogWarning(string message) => Logger.LogWarning($"{message}");
+        public static void LogWarning(string message) => Logger?.LogWarning($"{message}");
 
-        public static void LogError(string message, Exception e = null) => Logger.LogError($"{message}; {e?.Message ?? ""}");
+        public static void LogError(string message, Exception e = null) => Logger?.LogError($"{message}; {e?.Message ?? ""}");
     }
 }

@@ -80,8 +80,12 @@ namespace Valheim.DropThat.Core.Configuration
             currentConfig.SectionKey = sectionKey;
 
             //Check if we have reached the end
-            if(depth == sectionParts.Count - 1)
+            if(depth == sectionParts.Count - 1 && currentConfig is not IConfigFile)
             {
+#if DEBUG
+                Log.LogTrace($"Binding entries for {sectionKey}:{currentConfig.GetType().Name}");
+#endif
+
                 BindObjectEntries(configFile, currentConfig, sectionKey);
                 return;
             }

@@ -1,16 +1,13 @@
-﻿using BepInEx;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Debugging
 {
     internal static class LocationsFileWriter
     {
-        private const string FileName = "drop_that_locations.txt";
+        private const string FileName = "drop_that.locations.txt";
 
         public static void WriteToList(List<ZoneSystem.ZoneLocation> zoneLocations)
         {
@@ -54,11 +51,7 @@ namespace Valheim.DropThat.Debugging
                 }
             }
 
-            string filePath = Path.Combine(Paths.PluginPath, FileName);
-
-            Log.LogInfo($"Writing locations to {filePath}");
-
-            File.WriteAllText(filePath, stringBuilder.ToString());
+            PrintDebugFile.PrintFile(stringBuilder.ToString(), FileName, "locations");
         }
 
         private static List<Heightmap.Biome> SplitBiome(Heightmap.Biome bitmaskedBiome)
