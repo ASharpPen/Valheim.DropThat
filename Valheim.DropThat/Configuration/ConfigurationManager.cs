@@ -54,7 +54,7 @@ namespace Valheim.DropThat.Configuration
 
         public static void LoadAllCharacterDropLists()
         {
-            Log.LogInfo("Loading creature drop lists");
+            Log.LogInfo("Loading character drop lists");
 
             var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropListsFiles, SearchOption.AllDirectories);
             Log.LogDebug($"Found {supplementalFiles.Length} files");
@@ -77,12 +77,12 @@ namespace Valheim.DropThat.Configuration
 
             CharacterDropLists = configs;
 
-            Log.LogDebug("Finished loading creature drop list");
+            Log.LogDebug("Finished loading character drop list");
         }
 
         public static void LoadAllCharacterDropConfigurations()
         {
-            Log.LogInfo("Loading creature drop configurations");
+            Log.LogInfo("Loading character drop configurations");
 
             string configPath = Path.Combine(Paths.ConfigPath, DefaultDropFile);
 
