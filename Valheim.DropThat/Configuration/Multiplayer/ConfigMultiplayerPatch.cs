@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Transfer;
 
 namespace Valheim.DropThat.Configuration.Multiplayer
 {
@@ -42,9 +43,10 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
 				Log.LogTrace("Sending config package.");
 
-				rpc.Invoke(nameof(RPC_ReceiveConfigsDropThat), new object[] { zpack });
+				DataTransferService.Service.AddToQueue(zpack, nameof(RPC_ReceiveConfigsDropThat), rpc);
 
-				Log.LogInfo("Finished sending config package.");
+#if false && DEBUG
+#endif
 			}
 			catch (Exception e)
             {

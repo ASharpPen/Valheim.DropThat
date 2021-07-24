@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Transfer;
 using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Locations
@@ -68,7 +69,7 @@ namespace Valheim.DropThat.Locations
 
 				Log.LogDebug("Sending locations package.");
 
-				rpc.Invoke(nameof(RPC_ReceiveLocationsDropThat), new object[] { package });
+				DataTransferService.Service.AddToQueue(package, nameof(RPC_ReceiveLocationsDropThat), rpc);
 
 				Log.LogDebug("Finished sending locations package.");
 			}

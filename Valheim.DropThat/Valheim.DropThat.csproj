@@ -285,6 +285,8 @@
     <Compile Include="Configuration\ConfigTypes\CharacterDropListConfigurationFile.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableListConfigurationFile.cs" />
     <Compile Include="Configuration\ConfigTypes\EpicLootItemConfiguration.cs" />
+    <Compile Include="Core\Transfer\DataTransferService.cs" />
+    <Compile Include="Core\Transfer\DataTransferServiceTest.cs" />
     <Compile Include="Debugging\PrintDebugFile.cs" />
     <Compile Include="Drop\CharacterDropSystem\Caches\ItemDropCache.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableConfiguration.cs" />

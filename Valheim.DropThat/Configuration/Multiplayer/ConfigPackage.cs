@@ -49,6 +49,13 @@ namespace Valheim.DropThat.Configuration.Multiplayer
                 package.Write(serialized);
             }
 
+
+            Log.LogDebug("Packaged general config");
+            Log.LogDebug($"Packaged creature configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
+            Log.LogDebug($"Packaged creature drop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
+            Log.LogDebug($"Packaged drop table configurations: {ConfigurationManager.DropTableConfigs?.Subsections?.Count ?? 0}");
+            Log.LogDebug($"Packaged drop table lists: {ConfigurationManager.DropTableLists?.Subsections?.Count ?? 0}");
+
             return package;
         }
 

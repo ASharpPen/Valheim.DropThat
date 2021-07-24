@@ -28,6 +28,8 @@ namespace Valheim.DropThat.Core
 
         public static void LogWarning(string message) => Logger?.LogWarning($"{message}");
 
+        public static void LogWarning(string message, Exception e) => Logger.LogWarning($"{message}\n{e}");
+
         public static void LogError(string message, Exception e = null) => Logger?.LogError($"{message}; {e?.Message ?? ""}");
     }
 }
