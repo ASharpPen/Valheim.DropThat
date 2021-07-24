@@ -84,6 +84,8 @@ Setting changes in `drop_that.cg`:
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
 # Changelog
+- v2.0.1:
+	- Fixed potential issue when drop tables woke up before configs were loaded / synced. Default drops will be used for that table until object is reloaded (eg. moving far away and coming back).
 - v2.0.0:
 	- Massive increase in supported loot tables. Finally you can access those seagals!
 	- Breaking change: Configuration renaming and changes
