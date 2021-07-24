@@ -10,14 +10,14 @@ namespace Valheim.DropThat.Configuration
 {
     public static class ConfigurationManager
     {
-        public static GeneralConfiguration GeneralConfig = null;
+        public static GeneralConfiguration GeneralConfig;
 
-        public static CharacterDropConfiguration CharacterDropConfigs = null;
+        public static CharacterDropConfiguration CharacterDropConfigs = new();
 
-        public static DropTableConfiguration DropTableConfigs = null;
+        public static DropTableConfiguration DropTableConfigs = new();
 
-        public static CharacterDropListConfigurationFile CharacterDropLists = null;
-        public static DropTableListConfigurationFile DropTableLists = null;
+        public static CharacterDropListConfigurationFile CharacterDropLists = new();
+        public static DropTableListConfigurationFile DropTableLists = new();
 
         public const string DefaultConfigFile = "drop_that.cfg";
         public const string DefaultDropFile = "drop_that.character_drop.cfg";
