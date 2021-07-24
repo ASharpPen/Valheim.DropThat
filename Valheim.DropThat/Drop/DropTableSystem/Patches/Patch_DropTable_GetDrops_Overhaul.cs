@@ -91,7 +91,6 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                 .InstructionEnumeration();
         }
 
-        //TODO: Consider ignoring this.
         private static bool UseOriginal(DropTable dropTable)
         {
             return DropLinkCache.GetLink(dropTable) is null;

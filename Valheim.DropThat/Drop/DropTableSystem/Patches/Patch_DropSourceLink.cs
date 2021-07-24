@@ -88,6 +88,11 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
 
         private static void CreateLink(DropTable dropTable, GameObject source)
         {
+            if (dropTable is null || source is null)
+            {
+                return;
+            }
+
             DropSourceTemplateLink link = new()
             {
                 Source = source,
@@ -98,6 +103,13 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
 #if FALSE && DEBUG
             Log.LogTrace($"Linking entity to config: '{source}':'{sourceName}'");
 #endif
+
+            // Configs haven't arrived yet.
+            if (ConfigurationManager.DropTableConfigs is null)
+            {
+                Log.LogDebug($"{source} woke before configs were loaded. Skipping config for '{source}'");
+                return;
+            }
 
             if (ConfigurationManager.DropTableConfigs.TryGet(sourceName, out var config))
             {
