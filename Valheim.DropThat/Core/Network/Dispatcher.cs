@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,19 +28,25 @@ namespace Valheim.DropThat.Core.Network
         public static Dispatcher Instance => _instance ??= new();
 
         [HarmonyPatch(typeof(ZNet))]
-        internal static class Patch_ZSteamSocket_Dispatcher
+        internal static class Patch_ZNet_Update_Dispatcher
         {
 
             [HarmonyPatch(nameof(ZNet.Update))]
             [HarmonyPostfix]
             private static void Dispatch()
             {
-                int sockets = ZSteamSocket.m_sockets.Count;
+                var currentSockets = ZNet.instance
+                    .GetPeers()
+                    .Select(x => x.m_socket)
+                    .ToList();
+
+                int sockets = currentSockets.Count;
+
                 Task[] socketTasks = new Task[sockets];
 
                 for (int i = 0; i < sockets; ++i)
                 {
-                    socketTasks[i] = Instance.DispatchSocket(ZSteamSocket.m_sockets[i]);
+                    socketTasks[i] = Instance.DispatchSocket(currentSockets[i]);
                 }
 
                 Task.WaitAll(socketTasks);
@@ -48,9 +55,14 @@ namespace Valheim.DropThat.Core.Network
 
         private static Task Completed = Task.CompletedTask;
 
-        private Task DispatchSocket(ZSteamSocket __instance)
+        private Task DispatchSocket(ISocket socket)
         {
-            var socketQueueIdentifier = __instance.GetEndPointString();
+            if (socket is null)
+            {
+                return Completed;
+            }
+
+            var socketQueueIdentifier = socket.GetEndPointString();
 
             Queue<QueueItem> queue;
             lock (SocketQueues)
@@ -68,8 +80,8 @@ namespace Valheim.DropThat.Core.Network
             }
 
             // Check if socket is ready for new packages.
-            int queueSize = __instance.GetSendQueueSize();
-            if (__instance.GetSendQueueSize() > MaxQueueSizeForDispatch)
+            int queueSize = socket.GetSendQueueSize();
+            if (socket.GetSendQueueSize() > MaxQueueSizeForDispatch)
             {
 #if DEBUG
                 Log.LogTrace("Package queue size: " + queueSize);
@@ -108,16 +120,16 @@ namespace Valheim.DropThat.Core.Network
             return Completed;
         }
 
-        [HarmonyPatch(typeof(ZSteamSocket))]
+        [HarmonyPatch(typeof(ZNetPeer))]
         internal static class Cleanup
         {
             private static Dictionary<string, Queue<QueueItem>> SocketQueues => DataTransferService.Service.SocketQueues;
 
-            [HarmonyPatch(nameof(ZSteamSocket.Dispose))]
+            [HarmonyPatch(nameof(ZNetPeer.Dispose))]
             [HarmonyPrefix]
-            private static void Dispose(ZSteamSocket __instance)
+            private static void Dispose(ZNetPeer __instance)
             {
-                var socketQueueIdentifier = __instance.GetEndPointString();
+                var socketQueueIdentifier = __instance.m_socket.GetEndPointString();
 
                 lock (SocketQueues)
                 {
