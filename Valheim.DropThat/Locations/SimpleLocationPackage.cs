@@ -1,7 +1,5 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Network;
 

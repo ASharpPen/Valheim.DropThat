@@ -99,6 +99,8 @@ namespace Valheim.DropThat.Core.Network
             try
             {
                 item.ZRpc.Invoke(item.Target, new object[] { item.Package });
+
+                Log.LogTrace($"Sending package with size '{item.Package.Size()}' to '{item.Target}'");
             }
             catch (Exception e)
             {

@@ -38,15 +38,11 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
 				Log.LogInfo("Received request for configs.");
 
-				var configPackage = new ConfigPackage();
-				var zpack = configPackage.Pack();
+				DataTransferService.Service.AddToQueue(new GeneralConfigPackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
+				DataTransferService.Service.AddToQueue(new CharacterDropConfigPackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
+				DataTransferService.Service.AddToQueue(new DropTablePackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
 
-				Log.LogTrace("Sending config package.");
-
-				DataTransferService.Service.AddToQueue(zpack, nameof(RPC_ReceiveConfigsDropThat), rpc);
-
-#if false && DEBUG
-#endif
+				Log.LogTrace("Sending config packages.");
 			}
 			catch (Exception e)
             {
@@ -59,7 +55,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 			Log.LogInfo("Received package.");
 			try
 			{
-				ConfigPackage.Unpack(pkg);
+				CompressedPackage.Unpack(pkg);
 			}
 			catch(Exception e)
             {
