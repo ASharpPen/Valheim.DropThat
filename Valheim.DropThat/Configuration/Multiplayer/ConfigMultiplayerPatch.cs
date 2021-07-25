@@ -1,10 +1,11 @@
 ﻿using HarmonyLib;
 using System;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Network;
 
 namespace Valheim.DropThat.Configuration.Multiplayer
 {
-	[HarmonyPatch(typeof(ZNet))]
+    [HarmonyPatch(typeof(ZNet))]
 	public class ConfigMultiplayerPatch
 	{
 		[HarmonyPatch("OnNewConnection")]
@@ -37,14 +38,11 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
 				Log.LogInfo("Received request for configs.");
 
-				var configPackage = new ConfigPackage();
-				var zpack = configPackage.Pack();
+				DataTransferService.Service.AddToQueue(new GeneralConfigPackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
+				DataTransferService.Service.AddToQueue(new CharacterDropConfigPackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
+				DataTransferService.Service.AddToQueue(new DropTablePackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
 
-				Log.LogTrace("Sending config package.");
-
-				rpc.Invoke(nameof(RPC_ReceiveConfigsDropThat), new object[] { zpack });
-
-				Log.LogInfo("Finished sending config package.");
+				Log.LogTrace("Sending config packages.");
 			}
 			catch (Exception e)
             {
@@ -57,7 +55,7 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 			Log.LogInfo("Received package.");
 			try
 			{
-				ConfigPackage.Unpack(pkg);
+				CompressedPackage.Unpack(pkg);
 			}
 			catch(Exception e)
             {

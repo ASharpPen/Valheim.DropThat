@@ -285,6 +285,14 @@
     <Compile Include="Configuration\ConfigTypes\CharacterDropListConfigurationFile.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableListConfigurationFile.cs" />
     <Compile Include="Configuration\ConfigTypes\EpicLootItemConfiguration.cs" />
+    <Compile Include="Configuration\Multiplayer\CharacterDropConfigPackage.cs" />
+    <Compile Include="Configuration\Multiplayer\DropTablePackage.cs" />
+    <Compile Include="Configuration\Multiplayer\GeneralConfigPackage.cs" />
+    <Compile Include="Core\Network\CompressedPackage.cs" />
+    <Compile Include="Core\Network\DataTransferService.cs" />
+    <Compile Include="Core\Network\DataTransferServiceTest.cs" />
+    <Compile Include="Core\Network\Dispatcher.cs" />
+    <Compile Include="Core\Network\QueueItem.cs" />
     <Compile Include="Debugging\PrintDebugFile.cs" />
     <Compile Include="Drop\CharacterDropSystem\Caches\ItemDropCache.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableConfiguration.cs" />
@@ -327,7 +335,6 @@
     <Compile Include="Configuration\ConfigTypes\CharacterDropConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationMerger.cs" />
     <Compile Include="Configuration\Multiplayer\ConfigMultiplayerPatch.cs" />
-    <Compile Include="Configuration\Multiplayer\ConfigPackage.cs" />
     <Compile Include="Core\Configuration\Config.cs" />
     <Compile Include="Core\Configuration\ConfigurationEntry.cs" />
     <Compile Include="Core\Configuration\ConfigurationLoader.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Valheim.SpawnThat.Core;
-using Valheim.SpawnThat.Reset;
+using Valheim.DropThat.Core;
+using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Locations
 {
@@ -22,13 +22,13 @@ namespace Valheim.DropThat.Locations
             if (_simpleLocationsByZone is null)
             {
 #if DEBUG
-                Log.LogDebug($"Instantiating new dictionary for SimpleLocations.");
+                Log.LogTrace($"Instantiating new dictionary for SimpleLocations.");
 #endif
                 _simpleLocationsByZone = new Dictionary<Vector2i, SimpleLocation>();
             }
 
 #if DEBUG
-            Log.LogDebug($"Assigning locations.");
+            Log.LogTrace($"Assigning locations.");
 #endif
 
             foreach (var location in locations)
