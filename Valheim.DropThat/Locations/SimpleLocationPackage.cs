@@ -1,18 +1,23 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Network;
 
 namespace Valheim.DropThat.Locations
 {
     [Serializable]
-    public struct SimpleLocationPackage
+    internal class SimpleLocationPackage : CompressedPackage
     {
         public string[] LocationNames;
 
         public SimpleLocationDTO[] Locations;
 
-        public SimpleLocationPackage(Dictionary<Vector2i, ZoneSystem.LocationInstance> locationInstances)
+        protected override void BeforePack()
         {
+            var locationInstances = ZoneSystem.instance.m_locationInstances;
+
             Dictionary<string, ushort> locationNameIndexes = new Dictionary<string, ushort>();
 
             List<string> locationNames = new List<string>();
@@ -45,26 +50,29 @@ namespace Valheim.DropThat.Locations
             Log.LogTrace($"Packed {Locations.Length} locations");
         }
 
-        public List<SimpleLocation> Unpack()
+        protected override void AfterUnpack(object responseObject)
         {
-            Log.LogTrace($"Unpacking {LocationNames.Length} location names");
-            Log.LogTrace($"Unpacking {Locations.Length} locations");
-
-            List<SimpleLocation> simpleLocations = new List<SimpleLocation>(Locations.Length);
-
-            foreach (var location in Locations)
+            if (responseObject is SimpleLocationPackage)
             {
-                var position = new Vector2i(location.PositionX, location.PositionY);
+                Log.LogTrace($"Unpacking {LocationNames.Length} location names");
+                Log.LogTrace($"Unpacking {Locations.Length} locations");
 
-                simpleLocations.Add(new SimpleLocation
+                List<SimpleLocation> simpleLocations = new List<SimpleLocation>(Locations.Length);
+
+                foreach (var location in Locations)
                 {
-                    LocationName = LocationNames[location.Location],
-                    Position = ZoneSystem.instance.GetZonePos(position),
-                    ZonePosition = position
-                });
-            }
+                    var position = new Vector2i(location.PositionX, location.PositionY);
 
-            return simpleLocations;
+                    simpleLocations.Add(new SimpleLocation
+                    {
+                        LocationName = LocationNames[location.Location],
+                        Position = ZoneSystem.instance.GetZonePos(position),
+                        ZonePosition = position
+                    });
+                }
+
+                LocationHelper.SetLocations(simpleLocations);
+            }
         }
     }
 

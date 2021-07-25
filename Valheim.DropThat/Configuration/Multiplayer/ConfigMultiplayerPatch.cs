@@ -1,11 +1,11 @@
 ﻿using HarmonyLib;
 using System;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Transfer;
+using Valheim.DropThat.Core.Network;
 
 namespace Valheim.DropThat.Configuration.Multiplayer
 {
-	[HarmonyPatch(typeof(ZNet))]
+    [HarmonyPatch(typeof(ZNet))]
 	public class ConfigMultiplayerPatch
 	{
 		[HarmonyPatch("OnNewConnection")]

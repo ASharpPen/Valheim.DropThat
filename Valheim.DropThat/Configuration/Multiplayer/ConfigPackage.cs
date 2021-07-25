@@ -1,14 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.IO.Compression;
-using System.Runtime.Serialization.Formatters.Binary;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Network;
 
 namespace Valheim.DropThat.Configuration.Multiplayer
 {
     [Serializable]
-    public class ConfigPackage
+    internal class ConfigPackage : CompressedPackage
     {
         public GeneralConfiguration GeneralConfig;
 
@@ -20,10 +18,8 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
         public DropTableListConfigurationFile DropTableLists;
 
-        public ZPackage Pack()
+        protected override void BeforePack()
         {
-            ZPackage package = new ZPackage();
-
             GeneralConfig = ConfigurationManager.GeneralConfig;
 
             CharacterDropConfigs = ConfigurationManager.CharacterDropConfigs;
@@ -32,71 +28,40 @@ namespace Valheim.DropThat.Configuration.Multiplayer
             DropTableConfigs = ConfigurationManager.DropTableConfigs;
             DropTableLists = ConfigurationManager.DropTableLists;
 
-            Log.LogTrace("Serializing configs.");
-
-            using (MemoryStream memStream = new MemoryStream())
-            {
-                using (var zipStream = new GZipStream(memStream, CompressionLevel.Optimal))
-                {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(zipStream, this);
-                }
-
-                byte[] serialized = memStream.GetBuffer();
-
-                Log.LogDebug($"Serialized size: {serialized.Length} bytes");
-
-                package.Write(serialized);
-            }
-
-
             Log.LogDebug("Packaged general config");
             Log.LogDebug($"Packaged creature configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
             Log.LogDebug($"Packaged creature drop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
             Log.LogDebug($"Packaged drop table configurations: {ConfigurationManager.DropTableConfigs?.Subsections?.Count ?? 0}");
             Log.LogDebug($"Packaged drop table lists: {ConfigurationManager.DropTableLists?.Subsections?.Count ?? 0}");
 
-            return package;
+            Log.LogTrace("Serializing configs.");
         }
 
-        public static void Unpack(ZPackage package)
+        protected override void AfterUnpack(object responseObject)
         {
-            var serialized = package.ReadByteArray();
-
-            Log.LogDebug($"Deserializing package size: {serialized.Length} bytes");
-
-            using (MemoryStream memStream = new MemoryStream(serialized))
+            if (responseObject is ConfigPackage configPackage)
             {
-                using (var zipStream = new GZipStream(memStream, CompressionMode.Decompress, true))
-                {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    var responseObject = binaryFormatter.Deserialize(zipStream);
+                Log.LogDebug("Received and deserialized config package");
 
-                    if (responseObject is ConfigPackage configPackage)
-                    {
-                        Log.LogDebug("Received and deserialized config package");
+                Log.LogTrace("Unpackaging configs.");
 
-                        Log.LogTrace("Unpackaging configs.");
+                ConfigurationManager.GeneralConfig = configPackage.GeneralConfig;
+                ConfigurationManager.CharacterDropConfigs = configPackage.CharacterDropConfigs;
+                ConfigurationManager.CharacterDropLists = configPackage.CharacterDropLists;
+                ConfigurationManager.DropTableConfigs = configPackage.DropTableConfigs;
+                ConfigurationManager.DropTableLists = configPackage.DropTableLists;
 
-                        ConfigurationManager.GeneralConfig = configPackage.GeneralConfig;
-                        ConfigurationManager.CharacterDropConfigs = configPackage.CharacterDropConfigs;
-                        ConfigurationManager.CharacterDropLists = configPackage.CharacterDropLists;
-                        ConfigurationManager.DropTableConfigs = configPackage.DropTableConfigs;
-                        ConfigurationManager.DropTableLists = configPackage.DropTableLists;
+                Log.LogDebug("Unpacked general config");
+                Log.LogDebug($"Unpacked creature configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
+                Log.LogDebug($"Unpacked creature drop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
+                Log.LogDebug($"Unpacked drop table configurations: {ConfigurationManager.DropTableConfigs?.Subsections?.Count ?? 0}");
+                Log.LogDebug($"Unpacked drop table lists: {ConfigurationManager.DropTableLists?.Subsections?.Count ?? 0}");
 
-                        Log.LogDebug("Unpacked general config");
-                        Log.LogDebug($"Unpacked creature configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
-                        Log.LogDebug($"Unpacked creature drop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
-                        Log.LogDebug($"Unpacked drop table configurations: {ConfigurationManager.DropTableConfigs?.Subsections?.Count ?? 0}");
-                        Log.LogDebug($"Unpacked drop table lists: {ConfigurationManager.DropTableLists?.Subsections?.Count ?? 0}");
-
-                        Log.LogInfo("Successfully unpacked configs.");
-                    }
-                    else
-                    {
-                        Log.LogWarning("Received bad config package. Unable to load.");
-                    }
-                }
+                Log.LogInfo("Successfully unpacked configs.");
+            }
+            else
+            {
+                Log.LogWarning("Received bad config package. Unable to load.");
             }
         }
     }

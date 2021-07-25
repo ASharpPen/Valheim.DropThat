@@ -1,17 +1,12 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Transfer;
+using Valheim.DropThat.Core.Network;
 using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Locations
 {
-	[HarmonyPatch(typeof(ZNet))]
+    [HarmonyPatch(typeof(ZNet))]
 	public static class ZoneSystemMultiplayerPatch
 	{
 		private static bool HaveReceivedLocations = false;
@@ -55,23 +50,19 @@ namespace Valheim.DropThat.Locations
 
 				Log.LogInfo($"Sending location data.");
 
-				ZPackage package = new ZPackage();
-
-				var locations = ZoneSystem.instance.m_locationInstances;
-
-				if (locations is null)
+				if (ZoneSystem.instance.m_locationInstances is null)
 				{
 					Log.LogWarning("Unable to get locations from zonesystem to send to client.");
 					return;
 				}
 
-				package.Write(SerializeLocationInfo(locations));
+				var pck = new SimpleLocationPackage();
 
-				Log.LogDebug("Sending locations package.");
+				ZPackage package = pck.Pack();
 
 				DataTransferService.Service.AddToQueue(package, nameof(RPC_ReceiveLocationsDropThat), rpc);
 
-				Log.LogDebug("Finished sending locations package.");
+				Log.LogInfo("Finished sending locations package.");
 			}
 			catch (Exception e)
 			{
@@ -81,7 +72,7 @@ namespace Valheim.DropThat.Locations
 
 		private static void RPC_ReceiveLocationsDropThat(ZRpc rpc, ZPackage pkg)
 		{
-			Log.LogDebug("Received locations package.");
+			Log.LogInfo("Received locations package.");
 			try
 			{
 				if (HaveReceivedLocations)
@@ -90,65 +81,14 @@ namespace Valheim.DropThat.Locations
 					return;
 				}
 
-				var serialized = pkg.ReadByteArray();
-
-				LoadLocationInfo(serialized);
+				CompressedPackage.Unpack(pkg);
 				HaveReceivedLocations = true;
 
-				Log.LogDebug("Successfully received locations package.");
+				Log.LogInfo("Successfully received and unpacked locations package.");
 			}
 			catch (Exception e)
 			{
 				Log.LogError("Error while attempting to read received locations package.", e);
-			}
-		}
-
-		private static void LoadLocationInfo(byte[] serialized)
-		{
-			Log.LogTrace($"Deserializing {serialized.Length} bytes of location data.");
-
-			using (MemoryStream memStream = new MemoryStream(serialized))
-			{
-				using (var zipStream = new GZipStream(memStream, CompressionMode.Decompress, true))
-				{
-					BinaryFormatter binaryFormatter = new BinaryFormatter();
-					var responseObject = binaryFormatter.Deserialize(zipStream);
-
-					if (responseObject is SimpleLocationPackage package)
-					{
-						var locations = package.Unpack();
-
-						Log.LogDebug($"Deserialized {locations.Count} locations.");
-
-						LocationHelper.SetLocations(locations);
-#if DEBUG
-						Log.LogDebug($"Assigning locations: " + locations.Select(x => x.LocationName).Distinct().Join());
-#endif
-					}
-				}
-			}
-		}
-
-		private static byte[] SerializeLocationInfo(Dictionary<Vector2i, ZoneSystem.LocationInstance> locationInstances)
-		{
-#if DEBUG
-			Log.LogDebug($"Serializing {locationInstances.Count} location instances.");
-#endif
-
-			SimpleLocationPackage package = new SimpleLocationPackage(locationInstances);
-
-			using (MemoryStream memStream = new MemoryStream())
-			{
-				using (var zipStream = new GZipStream(memStream, CompressionLevel.Optimal))
-				{
-					BinaryFormatter binaryFormatter = new BinaryFormatter();
-					binaryFormatter.Serialize(zipStream, package);
-				}
-
-				byte[] serializedLocations = memStream.ToArray();
-
-				Log.LogDebug($"Serialized {serializedLocations.Length} bytes of locations.");
-				return serializedLocations;
 			}
 		}
 	}
