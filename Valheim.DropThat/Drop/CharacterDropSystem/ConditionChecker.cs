@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Conditions;
-using Valheim.DropThat.Conditions.ModSpecific;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
-using Valheim.DropThat.Drop.Conditions;
-using Valheim.DropThat.Drop.Conditions.ModSpecific;
+using Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific;
 using Valheim.DropThat.Reset;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem

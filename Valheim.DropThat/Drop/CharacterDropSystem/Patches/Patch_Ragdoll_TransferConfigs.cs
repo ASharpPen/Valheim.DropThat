@@ -7,13 +7,13 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.ConfigToItem
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
     /// <summary>
     /// Turns out, ragdoll rules the drops when a creature dies.
@@ -103,7 +103,7 @@ namespace Valheim.DropThat.ConfigToItem
                     zdo.Set(ZDOKey, serialized);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.LogError("Error while attempting to store configurations for items to be dropped on ragdoll 'puff'.", e);
             }
@@ -171,7 +171,7 @@ namespace Valheim.DropThat.ConfigToItem
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.LogError("Error while attempting to attach and apply configurations to items.", e);
             }

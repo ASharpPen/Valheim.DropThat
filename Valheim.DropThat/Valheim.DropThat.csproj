@@ -290,11 +290,10 @@
     <Compile Include="Configuration\Multiplayer\GeneralConfigPackage.cs" />
     <Compile Include="Core\Network\CompressedPackage.cs" />
     <Compile Include="Core\Network\DataTransferService.cs" />
-    <Compile Include="Core\Network\DataTransferServiceTest.cs" />
+    <Compile Include="Core\Network\Debug\DataTransferServiceTest.cs" />
     <Compile Include="Core\Network\Dispatcher.cs" />
     <Compile Include="Core\Network\QueueItem.cs" />
     <Compile Include="Debugging\PrintDebugFile.cs" />
-    <Compile Include="Drop\CharacterDropSystem\Caches\ItemDropCache.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableConfiguration.cs" />
     <Compile Include="Debugging\Patch_CharacterDrop.cs" />
     <Compile Include="Drop\CharacterDropSystem\Conditions\ConditionDistanceToCenter.cs" />

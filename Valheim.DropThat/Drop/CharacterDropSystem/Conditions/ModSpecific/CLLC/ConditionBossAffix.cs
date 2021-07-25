@@ -5,9 +5,9 @@ using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC
 {
     internal class ConditionBossAffix : ICondition
     {
@@ -23,7 +23,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {
-            if(extended?.Config?.Subsections is null)
+            if (extended?.Config?.Subsections is null)
             {
                 return false;
             }
@@ -42,7 +42,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
                     return true;
                 }
 
-                if(!ValidConditionNotBossAffix(drop, cllcConfig, character))
+                if (!ValidConditionNotBossAffix(drop, cllcConfig, character))
                 {
                     return true;
                 }
@@ -105,7 +105,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
         {
             if (Enum.TryParse(state.Trim(), true, out BossAffix bossAffix))
             {
-                return CreatureLevelControl.API.GetAffixBoss(character) == bossAffix;
+                return API.GetAffixBoss(character) == bossAffix;
             }
             else
             {

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionEnvironments : ICondition
     {
@@ -19,11 +18,11 @@ namespace Valheim.DropThat.Conditions
                 var envMan = EnvMan.instance;
                 var currentEnv = envMan.GetCurrentEnvironment();
 
-                var environments = dropExtended.Config.ConditionEnvironments.Value.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+                var environments = dropExtended.Config.ConditionEnvironments.Value.SplitByComma(true);
 
-                if (environments.Length > 0)
+                if (environments.Count > 0)
                 {
-                    var requiredSet = new HashSet<string>(environments.Select(x => x.Trim().ToUpperInvariant()));
+                    var requiredSet = new HashSet<string>(environments);
 
                     if (!requiredSet.Contains(currentEnv.m_name.Trim().ToUpperInvariant()))
                     {

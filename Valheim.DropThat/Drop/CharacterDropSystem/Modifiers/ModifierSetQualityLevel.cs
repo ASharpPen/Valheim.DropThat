@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Valheim.DropThat.Caches;
+﻿using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers
@@ -12,13 +7,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers
     {
         private static ModifierSetQualityLevel _instance;
 
-        public static ModifierSetQualityLevel Instance
-        {
-            get
-            {
-                return _instance ??= new ModifierSetQualityLevel();
-            }
-        }
+        public static ModifierSetQualityLevel Instance => _instance ??= new();
 
         public void Modify(DropContext context)
         {
@@ -32,7 +21,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers
                 return;
             }
 
-            var itemDrop = ItemDropCache.Get(context.Item);
+            var itemDrop = ComponentCache.GetComponent<ItemDrop>(context.Item);
 
             Log.LogTrace($"Setting level of item '{context.Item.name}' to {context.Extended.Config.SetQualityLevel.Value}");
             itemDrop.m_itemData.m_quality = context.Extended.Config.SetQualityLevel;

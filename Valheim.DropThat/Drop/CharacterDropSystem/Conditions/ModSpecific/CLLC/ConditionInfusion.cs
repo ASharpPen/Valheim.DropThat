@@ -5,9 +5,9 @@ using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC
 {
     internal class ConditionInfusion : ICondition
     {
@@ -37,7 +37,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
                     return true;
                 }
 
-                if(!ValidConditionNotInfusion(drop, cllcConfig, character))
+                if (!ValidConditionNotInfusion(drop, cllcConfig, character))
                 {
                     return true;
                 }
@@ -100,7 +100,7 @@ namespace Valheim.DropThat.Conditions.ModSpecific.CLLC
         {
             if (Enum.TryParse(state.Trim(), true, out CreatureInfusion infusion))
             {
-                return CreatureLevelControl.API.GetInfusionCreature(character) == infusion;
+                return API.GetInfusionCreature(character) == infusion;
             }
             else
             {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers;
 using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific;
 using Valheim.DropThat.Reset;
