@@ -1,22 +1,16 @@
 ﻿using System;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionNotFaction : ICondition
     {
         private static ConditionNotFaction _instance;
 
-        public static ConditionNotFaction Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionNotFaction();
-            }
-        }
+        public static ConditionNotFaction Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {
@@ -43,7 +37,7 @@ namespace Valheim.DropThat.Drop.Conditions
 
             foreach (var requiredNotFaction in requiredNotFactions)
             {
-                if (Enum.TryParse(requiredNotFaction, out Character.Faction faction))
+                if (Enum.TryParse(requiredNotFaction, true, out Character.Faction faction))
                 {
                     if (characterFaction == faction)
                     {

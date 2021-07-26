@@ -1,9 +1,8 @@
-﻿using HarmonyLib;
-using System;
-using Valheim.DropThat.Conditions.ModSpecific.CLLC;
+﻿using System;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-namespace Valheim.DropThat.Conditions.ModSpecific
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific
 {
     internal static class ConditionLoaderCLLC
     {

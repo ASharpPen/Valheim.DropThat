@@ -2,9 +2,10 @@
 using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionCreatureState : ICondition
     {
@@ -44,11 +45,11 @@ namespace Valheim.DropThat.Conditions
 
         public static bool ValidConditionCreatureStates(CharacterDrop.Drop drop, DropExtended extended, Character character)
         {
-            if(extended.Config.ConditionCreatureStates.Value.Length > 0)
+            if (extended.Config.ConditionCreatureStates.Value.Length > 0)
             {
-                var states = extended.Config.ConditionCreatureStates.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var states = extended.Config.ConditionCreatureStates.Value.SplitByComma();
 
-                if((states?.Length?? 0) == 0)
+                if (states.Count == 0)
                 {
 #if DEBUG
                     Log.LogDebug("No conditions for creature state were found.");
@@ -57,7 +58,7 @@ namespace Valheim.DropThat.Conditions
                     return true;
                 }
 
-                if(!states.Any(x => HasState(character, x)))
+                if (!states.Any(x => HasState(character, x)))
                 {
                     Log.LogTrace($"{nameof(extended.Config.ConditionCreatureStates)}: Disabling drop {drop.m_prefab.name} due to not finding any of the requires creature states '{extended.Config.ConditionCreatureStates.Value}'.");
                     return false;
@@ -71,9 +72,9 @@ namespace Valheim.DropThat.Conditions
         {
             if (extended.Config.ConditionNotCreatureStates.Value.Length > 0)
             {
-                var states = extended.Config.ConditionNotCreatureStates.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var states = extended.Config.ConditionNotCreatureStates.Value.SplitByComma();
 
-                if ((states?.Length ?? 0) == 0)
+                if (states.Count == 0)
                 {
 #if DEBUG
                     Log.LogDebug("No conditions for not having a creature state were found.");

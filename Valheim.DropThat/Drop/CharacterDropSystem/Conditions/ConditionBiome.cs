@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
@@ -8,13 +9,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
     {
         private static ConditionBiome _instance;
 
-        public static ConditionBiome Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionBiome();
-            }
-        }
+        public static ConditionBiome Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
         {

@@ -8,9 +8,8 @@ using UnityEngine;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem;
 
-namespace Valheim.DropThat.Patches
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop))]
     public static class Patch_CharacterDrop_DropItems
@@ -55,7 +54,7 @@ namespace Valheim.DropThat.Patches
                 if (itemIndex >= drops.Count)
                 {
 #if DEBUG
-                   // Log.LogWarning($"Ups. Attempting to access drop index {itemIndex} in drop list with count {drops.Count}");
+                    // Log.LogWarning($"Ups. Attempting to access drop index {itemIndex} in drop list with count {drops.Count}");
 #endif
                     return resultIndex;
                 }
@@ -90,7 +89,7 @@ namespace Valheim.DropThat.Patches
                     if (stackSize > 1)
                     {
                         // Apply stack to item, and skip loop equivalently.
-                        var itemDrop = ItemDropCache.Get(item);
+                        var itemDrop = ComponentCache.GetComponent<ItemDrop>(item);
 
                         Log.LogTrace($"Stacking item '{drop.Key.name}' {stackSize} times out of maximum {maxStack}.");
 
@@ -106,7 +105,7 @@ namespace Valheim.DropThat.Patches
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.LogError($"Error while attempting to stack item '{item.name}'. Skipping stacking.", e);
             }
@@ -115,9 +114,9 @@ namespace Valheim.DropThat.Patches
 
             int GetMaxStackSize(GameObject item)
             {
-                var itemDrop = ItemDropCache.Get(item);
+                var itemDrop = ComponentCache.GetComponent<ItemDrop>(item);
 
-                if(itemDrop?.m_itemData?.m_shared is null)
+                if (itemDrop?.m_itemData?.m_shared is null)
                 {
                     return -1;
                 }
@@ -143,7 +142,7 @@ namespace Valheim.DropThat.Patches
 
             var extendedData = TempDropListCache.GetDrop(drops, index);
 
-            if(extendedData is null)
+            if (extendedData is null)
             {
 #if DEBUG
                 //Log.LogDebug($"No config for item {item.name} at index {index}");
@@ -198,7 +197,7 @@ namespace Valheim.DropThat.Patches
 
             public static int GetCount(object obj)
             {
-                if(LoopCounterTable.TryGetValue(obj, out LoopCounter counter))
+                if (LoopCounterTable.TryGetValue(obj, out LoopCounter counter))
                 {
                     return counter.Count;
                 }

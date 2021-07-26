@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
-using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Patches
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
     /// <summary>
     /// This part of the code is extremely busy with a number of mods wanting in on the item drop action.
@@ -66,7 +66,7 @@ namespace Valheim.DropThat.Patches
 
         private static void CarryExtended(List<KeyValuePair<GameObject, int>> dropItems, CharacterDrop.Drop drop, CharacterDrop characterDrop)
         {
-            if(dropItems is null)
+            if (dropItems is null)
             {
 #if DEBUG
                 Log.LogWarning("Unable to carry drop due to dropitems being null.");
@@ -91,14 +91,14 @@ namespace Valheim.DropThat.Patches
 #endif
                 TempDropListCache.SetDrop(characterDrop, dropItems.Count - 1, extended);
             }
-            
+
 #if DEBUG
             else if (dropItems is null)
             {
                 Log.LogDebug("Disregard. No items to carry");
                 //Log.LogDebug($"Carrying configs for drop {drop.m_prefab.name}");
             }
-            else if(extended is null)
+            else if (extended is null)
             {
                 Log.LogDebug($"Disregard. No config to carry for item {drop}:{drop.m_prefab?.name}");
             }

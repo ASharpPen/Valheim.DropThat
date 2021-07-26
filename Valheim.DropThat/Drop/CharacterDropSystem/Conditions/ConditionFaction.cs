@@ -1,38 +1,32 @@
 ﻿using System;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionFaction : ICondition
     {
         private static ConditionFaction _instance;
 
-        public static ConditionFaction Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionFaction();
-            }
-        }
+        public static ConditionFaction Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {
-            if(drop is null || extended is null || !characterDrop || characterDrop is null)
+            if (drop is null || extended is null || !characterDrop || characterDrop is null)
             {
                 return false;
             }
 
-            if(string.IsNullOrEmpty(extended.Config.ConditionFaction.Value))
+            if (string.IsNullOrEmpty(extended.Config.ConditionFaction.Value))
             {
                 return false;
             }
 
             var character = CharacterCache.GetCharacter(characterDrop);
 
-            if(!character || character is null)
+            if (!character || character is null)
             {
                 return false;
             }
@@ -43,9 +37,9 @@ namespace Valheim.DropThat.Drop.Conditions
 
             foreach (var requiredFaction in requiredFactions)
             {
-                if(Enum.TryParse(requiredFaction, out Character.Faction faction))
+                if (Enum.TryParse(requiredFaction, true, out Character.Faction faction))
                 {
-                    if(characterFaction == faction)
+                    if (characterFaction == faction)
                     {
                         return false;
                     }

@@ -1,20 +1,14 @@
 ﻿using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionLevel : ICondition
     {
         private static ConditionLevel _instance;
 
-        public static ConditionLevel Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionLevel();
-            }
-        }
+        public static ConditionLevel Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
         {

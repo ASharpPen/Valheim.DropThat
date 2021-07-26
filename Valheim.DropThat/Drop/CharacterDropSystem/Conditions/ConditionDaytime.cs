@@ -1,20 +1,13 @@
-﻿using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+﻿using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionDaytime : ICondition
     {
         private static ConditionDaytime _instance;
 
-        public static ConditionDaytime Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionDaytime();
-            }
-        }
+        public static ConditionDaytime Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
         {

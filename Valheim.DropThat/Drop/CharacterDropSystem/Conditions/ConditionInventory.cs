@@ -4,28 +4,23 @@ using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionInventory : ICondition
     {
         private static ConditionInventory _instance;
 
-        public static ConditionInventory Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionInventory();
-            }
-        }
+        public static ConditionInventory Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {
             var character = CharacterCache.GetCharacter(characterDrop);
             var inventory = CharacterCache.GetInventory(character);
 
-            if(inventory is null)
+            if (inventory is null)
             {
 #if DEBUG
                 Log.LogDebug("No inventory for creature were found.");
@@ -35,9 +30,9 @@ namespace Valheim.DropThat.Conditions
                 return false;
             }
 
-            var items = extended.Config.ConditionHasItem.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var items = extended.Config.ConditionHasItem.Value.SplitByComma(true);
 
-            if((items?.Length ?? 0) == 0)
+            if (items.Count == 0)
             {
                 return false;
             }
@@ -50,7 +45,7 @@ namespace Valheim.DropThat.Conditions
 #if DEBUG
             Log.LogTrace("Inventory: " + inventoryItems.Join());
 #endif
-            if (!items.Any(x => inventoryItems.Contains(x.Trim().ToUpperInvariant())))
+            if (!items.Any(x => inventoryItems.Contains(x)))
             {
                 //No inventory items matched an item in condition list.
                 Log.LogTrace($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}: Found none of the required items in inventory.");

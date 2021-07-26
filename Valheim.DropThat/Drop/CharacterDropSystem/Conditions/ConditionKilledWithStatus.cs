@@ -1,29 +1,19 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Creature.StatusRecords;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionKilledWithStatus : ICondition
     {
         private static ConditionKilledWithStatus _instance;
 
-        public static ConditionKilledWithStatus Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionKilledWithStatus();
-            }
-        }
+        public static ConditionKilledWithStatus Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {
@@ -71,7 +61,7 @@ namespace Valheim.DropThat.Drop.Conditions
                 Log.LogTrace($"Looking for statuses '{config.ConditionKilledWithStatus}' among '{lastStatusRecord.Statuses.Join()}'");
 #endif
 
-                if(statuses.Any(x => lastStatusRecord.HasStatus(x)))
+                if (statuses.Any(x => lastStatusRecord.HasStatus(x)))
                 {
                     return true;
                 }

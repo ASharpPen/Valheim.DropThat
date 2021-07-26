@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Caches
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
     /// <summary>
     /// Temporary caching for carrying config information between CharacterDrop.GenerateDropList and CharacterDrop.DropItems.
@@ -28,8 +28,8 @@ namespace Valheim.DropThat.Caches
             Log.LogDebug($"Getting temp drop cache {key.GetHashCode()}");
 #endif
 
-            if(key is null)
-            { 
+            if (key is null)
+            {
                 return null;
             }
 
@@ -43,7 +43,7 @@ namespace Valheim.DropThat.Caches
 
         public static DropExtended GetDrop(object key, int index)
         {
-            if(DropListTable.TryGetValue(key, out TempDropListCache cache))
+            if (DropListTable.TryGetValue(key, out TempDropListCache cache))
             {
 #if DEBUG
                 Log.LogDebug($"Found temp drop cache for {key.GetHashCode()}");

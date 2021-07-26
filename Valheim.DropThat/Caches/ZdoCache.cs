@@ -14,7 +14,8 @@ namespace Valheim.DropThat.Caches
                 return existing;
             }
 
-            var znetView = gameObject.GetComponent<ZNetView>();
+            var znetView = ComponentCache.GetComponent<ZNetView>(gameObject);
+
             if (!znetView || znetView is null)
             {
                 return null;

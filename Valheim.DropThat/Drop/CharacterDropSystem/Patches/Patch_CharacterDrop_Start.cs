@@ -5,11 +5,10 @@ using Valheim.DropThat.Configuration.ConfigTypes;
 using System;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Drop.CharacterDropSystem;
 using Valheim.DropThat.Drop.CharacterDropSystem.Services;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop), "Start")]
     public static class Patch_CharacterDrop_Start
@@ -19,7 +18,7 @@ namespace Valheim.DropThat
         [HarmonyPriority(Priority.Last)]
         private static void Postfix(CharacterDrop __instance)
         {
-            if(ConfigurationManager.CharacterDropConfigs == null)
+            if (ConfigurationManager.CharacterDropConfigs == null)
             {
                 Log.LogDebug("Loading drop tables");
                 ConfigurationManager.LoadAllCharacterDropConfigurations();
@@ -59,7 +58,7 @@ namespace Valheim.DropThat
 
             // Merge list and mob config
             var configs = MobDropInitializationService.PrepareInsertion(listConfig, configMatch);
- 
+
             foreach (var config in configs)
             {
                 InsertDrops(__instance, config);
@@ -133,7 +132,7 @@ namespace Valheim.DropThat
 
         private static CharacterDropMobConfiguration FindConfigMatch(string prefabName)
         {
-            if((ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0) == 0)
+            if ((ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0) == 0)
             {
 #if DEBUG
                 Log.LogDebug("No drop configs found to match.");
@@ -145,7 +144,7 @@ namespace Valheim.DropThat
                 .Split(new[] { '(' }, StringSplitOptions.RemoveEmptyEntries)?
                 .FirstOrDefault();
 
-            if((cleanedName?.Length ?? 0) == 0)
+            if ((cleanedName?.Length ?? 0) == 0)
             {
 #if DEBUG
                 Log.LogDebug($"Prefabname {prefabName} was empty after cleaning.");
