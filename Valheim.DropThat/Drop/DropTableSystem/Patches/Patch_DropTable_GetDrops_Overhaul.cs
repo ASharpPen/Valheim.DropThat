@@ -93,7 +93,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
 
         private static bool UseOriginal(DropTable dropTable)
         {
-            return DropLinkCache.GetLink(dropTable) is null;
+            return DropLinkCache.GetLink(dropTable)?.EntityConfig is null;
         }
 
         private static List<ItemDrop.ItemData> GetDropListItems(DropTable dropTable)
