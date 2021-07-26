@@ -8,8 +8,8 @@ using UnityEngine;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Debugging;
-using Valheim.DropThat.Utilities;
 using Valheim.DropThat.Utilities.Valheim;
+using Valheim.DropThat.Wrapper;
 
 namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 {

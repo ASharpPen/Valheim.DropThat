@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using Valheim.DropThat.Core;
 
-namespace Valheim.DropThat.Utilities
+namespace Valheim.DropThat.Wrapper
 {
     public static class GameObjectExtensions
     {
@@ -12,12 +13,13 @@ namespace Valheim.DropThat.Utilities
 
         public static GameObject Wrap(this GameObject gameObject)
         {
-            if(WrapperTable.TryGetValue(gameObject, out GameObject cached))
+            if (WrapperTable.TryGetValue(gameObject, out GameObject cached))
             {
                 return cached;
             }
 
-            GameObject wrapper = new GameObject(WrapperName);
+            GameObject wrapper = new GameObject(WrapperName + ";" + gameObject.name.GetStableHashCode());
+            wrapper.AddComponent<WrapperComponent>();
 
             WrapperTable.Add(wrapper, gameObject);
 
@@ -26,9 +28,9 @@ namespace Valheim.DropThat.Utilities
 
         public static GameObject Unwrap(this GameObject gameObject)
         {
-            if (gameObject.name == WrapperName)
+            if (gameObject.name.StartsWith(WrapperName))
             {
-                if(WrapperTable.TryGetValue(gameObject, out GameObject wrapped))
+                if (WrapperTable.TryGetValue(gameObject, out GameObject wrapped))
                 {
                     return wrapped;
                 }

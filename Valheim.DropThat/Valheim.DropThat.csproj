@@ -394,10 +394,11 @@
     <Compile Include="Reset\StateResetter.cs" />
     <Compile Include="Utilities\Valheim\BiomeExtensions.cs" />
     <Compile Include="Utilities\CodeMatcherExtensions.cs" />
-    <Compile Include="Utilities\GameObjectExtensions.cs" />
+    <Compile Include="Wrapper\GameObjectExtensions.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Utilities\ReflectionUtils.cs" />
     <Compile Include="Utilities\Valheim\HitDataExtensions.cs" />
+    <Compile Include="Wrapper\WrapperComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
