@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using UnityEngine;
-using Valheim.DropThat.Core;
 
-namespace Valheim.DropThat.Wrapper
+namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 {
-    public static class GameObjectExtensions
+    public static class WrapperGameObjectExtensions
     {
         public const string WrapperName = "SpawnThat_Wrapper";
 
@@ -37,18 +35,6 @@ namespace Valheim.DropThat.Wrapper
             }
 
             return gameObject;
-        }
-
-        public static string GetCleanedName(this GameObject gameObject)
-        {
-            string cleanedName = gameObject.name
-                .Split(new char[] { '(' }, System.StringSplitOptions.RemoveEmptyEntries)
-                .FirstOrDefault()?
-                .Trim();
-
-            return string.IsNullOrWhiteSpace(cleanedName)
-                ? gameObject.name
-                : cleanedName;
         }
     }
 }

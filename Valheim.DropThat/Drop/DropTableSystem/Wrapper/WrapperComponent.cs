@@ -2,7 +2,7 @@
 using UnityEngine;
 using Valheim.DropThat.Core;
 
-namespace Valheim.DropThat.Wrapper
+namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 {
     /// <summary>
     /// Self destroying component, that tries to instantiate a wrapped object.
@@ -19,10 +19,10 @@ namespace Valheim.DropThat.Wrapper
             // Grab the real object and instantiate instead as a holdover.
             var gameObject = this.gameObject.Unwrap();
 
-            if (!gameObject.name.StartsWith(GameObjectExtensions.WrapperName))
+            if (!gameObject.name.StartsWith(WrapperGameObjectExtensions.WrapperName))
             {
                 Log.LogDebug("Carrier object instantiated. Creating real object instead, but might miss modifiers.");
-                Object.Instantiate(gameObject, transform.position, transform.rotation);
+                Instantiate(gameObject, transform.position, transform.rotation);
             }
             else
             {
@@ -36,13 +36,11 @@ namespace Valheim.DropThat.Wrapper
                     if (prefab is not null)
                     {
                         Log.LogDebug("Carrier object instantiated. Creating real object instead, but might miss modifiers.");
-                        var newObject = Object.Instantiate(prefab, transform.position, transform.rotation);
-
-                        
+                        Instantiate(prefab, transform.position, transform.rotation);
                     }
                 }
             }
-            
+
             // Then destroy this monstrosity.
             Destroy(this.gameObject);
         }

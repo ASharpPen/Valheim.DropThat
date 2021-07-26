@@ -5,7 +5,7 @@ using UnityEngine;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.DropTableSystem.Caches;
 using Valheim.DropThat.Drop.DropTableSystem.Managers;
-using Valheim.DropThat.Wrapper;
+using Valheim.DropThat.Drop.DropTableSystem.Wrapper;
 
 namespace Valheim.DropThat.Drop.DropTableSystem
 {
