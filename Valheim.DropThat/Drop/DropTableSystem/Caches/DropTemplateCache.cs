@@ -1,27 +1,28 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Drop.DropTableSystem.Caches
 {
     internal class DropTemplateCache
     {
-        private static ConditionalWeakTable<object, DropTemplateCache> DropTemplateTable = new();
+        private static ManagedCache<DropTemplate> DropTemplates { get; } = new();
+        private static ConditionalWeakTable<ItemDrop.ItemData, DropTemplateCache> ItemTemplates { get; } = new();
 
         public static void RegisterTemplate(GameObject drop, DropTemplate template)
         {
-            var dropExtended = DropTemplateTable.GetOrCreateValue(drop);
-            dropExtended.Template = template;
+            DropTemplates.Set(drop, template);
         }
 
         public static void RegisterTemplate(ItemDrop.ItemData item, DropTemplate template)
         {
-            var dropExtended = DropTemplateTable.GetOrCreateValue(item);
+            var dropExtended = ItemTemplates.GetOrCreateValue(item);
             dropExtended.Template = template;
         }
 
         public static DropTemplate GetTemplate(ItemDrop.ItemData item)
         {
-            if (DropTemplateTable.TryGetValue(item, out DropTemplateCache extended))
+            if (ItemTemplates.TryGetValue(item, out DropTemplateCache extended))
             {
                 return extended.Template;
             }
@@ -31,9 +32,9 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Caches
 
         public static DropTemplate GetTemplate(GameObject drop)
         {
-            if (DropTemplateTable.TryGetValue(drop, out DropTemplateCache extended))
+            if (DropTemplates.TryGet(drop, out DropTemplate cached))
             {
-                return extended.Template;
+                return cached;
             }
 
             return null;

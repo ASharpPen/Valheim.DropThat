@@ -1,15 +1,15 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Caches
 {
     public static class CharacterCache
     {
-        private static ConditionalWeakTable<Character, CharacterExtended> CharacterTable = new ConditionalWeakTable<Character, CharacterExtended>();
-        private static ConditionalWeakTable<CharacterDrop, Character> CharacterFromDropTable = new ConditionalWeakTable<CharacterDrop, Character>();
+        private static ManagedCache<CharacterExtended> CharacterExtendedTable { get; } = new();
+        private static ManagedCache<Character> CharacterDropTable { get; } = new();
 
         public static CharacterExtended GetData(Character character)
         {
-            if (CharacterTable.TryGetValue(character, out CharacterExtended extended))
+            if (CharacterExtendedTable.TryGet(character.gameObject, out CharacterExtended extended))
             {
                 return extended;
             }
@@ -19,37 +19,37 @@ namespace Valheim.DropThat.Caches
 
         public static Character GetCharacter(CharacterDrop characterDrop)
         {
-            if(CharacterFromDropTable.TryGetValue(characterDrop, out Character character))
+            if(CharacterDropTable.TryGet(characterDrop.gameObject, out Character cached))
             {
-                return character;
+                return cached;
             }
 
             var component = characterDrop.GetComponent<Character>();
-            CharacterFromDropTable.Add(characterDrop, component);
+            CharacterDropTable.Set(characterDrop.gameObject, component);
 
             return component;
         }
 
         public static MonsterAI GetMonsterAI(Character character)
         {
-            var extended = CharacterTable.GetOrCreateValue(character);
+            CharacterExtended cache = CharacterExtendedTable.GetOrCreate(character.gameObject);
 
-            if (extended.HasMonsterAI.HasValue)
+            if (cache.HasMonsterAI.HasValue)
             {
-                return extended.HasMonsterAI.Value
-                    ? extended.MonsterAI
+                return cache.HasMonsterAI.Value
+                    ? cache.MonsterAI
                     : null;
             }
 
-            extended.MonsterAI = character.GetComponent<MonsterAI>();
-            extended.HasMonsterAI = extended.MonsterAI is not null;
+            cache.MonsterAI = character.GetComponent<MonsterAI>();
+            cache.HasMonsterAI = cache.MonsterAI || cache.MonsterAI is not null;
 
-            return extended.MonsterAI;
+            return cache.MonsterAI;
         }
 
         public static Inventory GetInventory(Character character)
         {
-            var extended = CharacterTable.GetOrCreateValue(character);
+            var extended = CharacterExtendedTable.GetOrCreate(character.gameObject);
 
             if(extended.HasInventory.HasValue)
             {

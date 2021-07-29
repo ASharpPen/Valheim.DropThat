@@ -3,7 +3,7 @@ using UnityEngine;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.DropTableSystem.Caches;
-using Valheim.DropThat.Drop.DropTableSystem.Wrapper;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.DropTableSystem.Patches
 {
