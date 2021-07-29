@@ -139,7 +139,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                     return new(0);
                 }
 
-                return DropTableManager.GetDrops(dropTable, context, dropCount);
+                return DropTableManager.GetDrops(dropTable, context);
             }
             catch (Exception e)
             {

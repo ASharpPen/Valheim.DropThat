@@ -50,6 +50,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
             {
                 newModConfig = new DropTableModConfigSpawnThat();
             }
+            else if (subsectionName == DropTableModConfigCLLC.ModName)
+            {
+                newModConfig = new DropTableModConfigCLLC();
+            }
 
             return newModConfig;
         }
@@ -111,5 +115,14 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         //Might not be relevant. Need to verify if Spawn That applies the template id to all prefabs with a zdo, or just characters.
         public ConfigurationEntry<string> ConditionTemplateId = new ConfigurationEntry<string>("", "Array of Spawn That TemplateId values to enable to drop for.");
+    }
+
+    [Serializable]
+    public class DropTableModConfigCLLC : Config
+    {
+        public const string ModName = "CreatureLevelAndLootControl";
+
+        public ConfigurationEntry<int> ConditionWorldLevelMin = new(0, "Minimum CLLC world level, for which item will drop.");
+        public ConfigurationEntry<int> ConditionWorldLevelMax = new(0, "Maximum CLLC world level, for which item will drop. 0 or less means no max.");
     }
 }

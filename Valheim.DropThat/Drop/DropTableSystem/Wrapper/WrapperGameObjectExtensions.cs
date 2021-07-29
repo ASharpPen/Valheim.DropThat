@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 {
@@ -7,11 +8,11 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
     {
         public const string WrapperName = "SpawnThat_Wrapper";
 
-        private static ConditionalWeakTable<GameObject, GameObject> WrapperTable = new();
+        private static ManagedCache<GameObject> WrapperTable { get; } = new();
 
         public static GameObject Wrap(this GameObject gameObject)
         {
-            if (WrapperTable.TryGetValue(gameObject, out GameObject cached))
+            if (WrapperTable.TryGet(gameObject, out GameObject cached))
             {
                 return cached;
             }
@@ -19,7 +20,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
             GameObject wrapper = new GameObject(WrapperName + ";" + gameObject.name.GetStableHashCode());
             wrapper.AddComponent<WrapperComponent>();
 
-            WrapperTable.Add(wrapper, gameObject);
+            WrapperTable.Set(wrapper, gameObject);
 
             return wrapper;
         }
@@ -28,7 +29,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
         {
             if (gameObject.name.StartsWith(WrapperName))
             {
-                if (WrapperTable.TryGetValue(gameObject, out GameObject wrapped))
+                if (WrapperTable.TryGet(gameObject, out GameObject wrapped))
                 {
                     return wrapped;
                 }

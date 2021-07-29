@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
@@ -38,26 +37,14 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             OnStartConditions.Add(ConditionInventory.Instance);
             OnStartConditions.Add(ConditionLocation.Instance);
             OnStartConditions.Add(ConditionDistanceToCenter.Instance);
-
-            if (!ConfigurationManager.GeneralConfig.ApplyConditionsOnDeathCharacterDrops.Value)
-            {
-                OnStartConditions.Add(ConditionLevel.Instance);
-                OnStartConditions.Add(ConditionDaytime.Instance);
-                OnStartConditions.Add(ConditionBiome.Instance);
-                OnStartConditions.Add(ConditionEnvironments.Instance);
-                OnStartConditions.Add(ConditionGlobalKeys.Instance);
-
-                OnStartConditions.Add(ConditionLoaderCLLC.ConditionBossAffix);
-                OnStartConditions.Add(ConditionLoaderCLLC.ConditionInfusion);
-                OnStartConditions.Add(ConditionLoaderCLLC.ConditionCreatureExtraEffect);
-            }
+            OnStartConditions.Add(ConditionBiome.Instance);
 
             // Add OnDeath conditions
 
             OnDeathConditions = new HashSet<ICondition>();
+
             OnDeathConditions.Add(ConditionCreatureState.Instance);
             OnDeathConditions.Add(ConditionLoaderSpawnThat.ConditionTemplateId);
-
             OnDeathConditions.Add(ConditionFaction.Instance);
             OnDeathConditions.Add(ConditionNotFaction.Instance);
             OnDeathConditions.Add(ConditionKilledByDamageType.Instance);
@@ -65,19 +52,15 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             OnDeathConditions.Add(ConditionKilledWithStatus.Instance);
             OnDeathConditions.Add(ConditionKilledWithStatuses.Instance);
             OnDeathConditions.Add(ConditionKilledByEntityType.Instance);
+            OnDeathConditions.Add(ConditionEnvironments.Instance);
+            OnDeathConditions.Add(ConditionGlobalKeys.Instance);
+            OnDeathConditions.Add(ConditionLevel.Instance);
+            OnDeathConditions.Add(ConditionDaytime.Instance);
 
-            if (ConfigurationManager.GeneralConfig.ApplyConditionsOnDeathCharacterDrops.Value)
-            {
-                OnDeathConditions.Add(ConditionLevel.Instance);
-                OnDeathConditions.Add(ConditionDaytime.Instance);
-                OnDeathConditions.Add(ConditionBiome.Instance);
-                OnDeathConditions.Add(ConditionEnvironments.Instance);
-                OnDeathConditions.Add(ConditionGlobalKeys.Instance);
-
-                OnDeathConditions.Add(ConditionLoaderCLLC.ConditionBossAffix);
-                OnDeathConditions.Add(ConditionLoaderCLLC.ConditionInfusion);
-                OnDeathConditions.Add(ConditionLoaderCLLC.ConditionCreatureExtraEffect);
-            }
+            OnDeathConditions.Add(ConditionLoaderCLLC.ConditionBossAffix);
+            OnDeathConditions.Add(ConditionLoaderCLLC.ConditionInfusion);
+            OnDeathConditions.Add(ConditionLoaderCLLC.ConditionCreatureExtraEffect);
+            OnDeathConditions.Add(ConditionLoaderCLLC.ConditionWorldLevel);
         }
 
         public static List<CharacterDrop.Drop> FilterOnStart(CharacterDrop characterDrop)

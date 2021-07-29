@@ -85,6 +85,8 @@ Setting changes in `drop_that.cg`:
 
 # Changelog
 - v2.1.0:
+	- Added cllc conditions ConditionWorldLevelMin/Max.
+	- Fixed DropTable SetAmountMin/Max not being used for some entities.
 	- Added fallback for DropTable when other mods take control of the item instantiation. This should reduce compatibility issues, although full functionality is not always possible.
 	- Fixed unmodified DropTable's being affected by Drop That.
 	- Added internal buffer and dispatcher for packages. Should hopefully reduce server lag and disconnects when joining.

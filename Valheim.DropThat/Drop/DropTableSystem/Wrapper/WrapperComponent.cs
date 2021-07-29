@@ -13,7 +13,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
     {
         private static Regex PrefabHashRegex = new Regex(@"(?<=^.+;)(-?\d+)", RegexOptions.Compiled);
 
-        public void Awake()
+        public void Start()
         {
             // Oh shit, we are in the bad place.
             // Grab the real object and instantiate instead as a holdover.
@@ -21,7 +21,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 
             if (!gameObject.name.StartsWith(WrapperGameObjectExtensions.WrapperName))
             {
-                Log.LogDebug("Carrier object instantiated. Creating real object instead, but might miss modifiers.");
+                Log.LogDebug("Dummy object instantiated. Creating real object instead, but might miss modifiers.");
                 Instantiate(gameObject, transform.position, transform.rotation);
             }
             else
@@ -35,7 +35,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 
                     if (prefab is not null)
                     {
-                        Log.LogDebug("Carrier object instantiated. Creating real object instead, but might miss modifiers.");
+                        Log.LogDebug("Dummy object instantiated. Creating real object instead, but might miss modifiers.");
                         Instantiate(prefab, transform.position, transform.rotation);
                     }
                 }
