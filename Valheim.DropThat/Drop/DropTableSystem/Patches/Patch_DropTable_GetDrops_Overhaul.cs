@@ -93,7 +93,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
 
         private static bool UseOriginal(DropTable dropTable)
         {
-            return DropLinkCache.GetLink(dropTable) is null;
+            return DropLinkCache.GetLink(dropTable)?.EntityConfig is null;
         }
 
         private static List<ItemDrop.ItemData> GetDropListItems(DropTable dropTable)
@@ -139,7 +139,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                     return new(0);
                 }
 
-                return DropTableManager.GetDrops(dropTable, context, dropCount);
+                return DropTableManager.GetDrops(dropTable, context);
             }
             catch (Exception e)
             {

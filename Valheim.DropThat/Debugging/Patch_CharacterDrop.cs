@@ -4,8 +4,8 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
-using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Patches;
 
 namespace Valheim.DropThat.Debugging
 {

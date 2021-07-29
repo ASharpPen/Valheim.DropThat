@@ -5,7 +5,7 @@ using UnityEngine;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.DropTableSystem.Caches;
 using Valheim.DropThat.Drop.DropTableSystem.Managers;
-using Valheim.DropThat.Utilities;
+using Valheim.DropThat.Drop.DropTableSystem.Wrapper;
 
 namespace Valheim.DropThat.Drop.DropTableSystem
 {
@@ -26,9 +26,9 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             return drops;
         }
 
-        public static List<GameObject> GetDrops(DropTable dropTable, DropSourceTemplateLink context, int dropCount)
+        public static List<GameObject> GetDrops(DropTable dropTable, DropSourceTemplateLink context)
         {
-            var drops = GetDrops(dropTable, context, ConvertTemplateToDrop, dropCount);
+            var drops = GetDrops(dropTable, context, ConvertTemplateToDrop);
 
 #if DEBUG
             Log.LogDebug($"Dropping {drops.Count} items:");
@@ -40,7 +40,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             return drops;
         }
 
-        private static List<T> GetDrops<T>(DropTable dropTable, DropSourceTemplateLink context, Func<DropTemplate, IEnumerable<T>> DropConverter, int? amount = null) where T : class
+        private static List<T> GetDrops<T>(DropTable dropTable, DropSourceTemplateLink context, Func<DropTemplate, IEnumerable<T>> DropConverter) where T : class
         {
             var dropTemplates = DropConfigManager.GetPossibleDrops(context, dropTable);
 
@@ -81,8 +81,8 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             float sumWeight = workingList.Sum(x => x.Drop.m_weight);
 
             int dropCount = entityConfig is null
-                ? amount ?? UnityEngine.Random.Range(dropTable.m_dropMin, dropTable.m_dropMax + 1)
-                : amount ?? UnityEngine.Random.Range(entityConfig.SetDropMin, entityConfig.SetDropMax + 1);
+                ? UnityEngine.Random.Range(dropTable.m_dropMin, dropTable.m_dropMax + 1)
+                : UnityEngine.Random.Range(entityConfig.SetDropMin, entityConfig.SetDropMax + 1);
 
             bool dropOnlyOnce = entityConfig is null
                 ? dropTable.m_oneOfEach
@@ -132,7 +132,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
                 }
                 catch(Exception e)
                 {
-
+                    Log.LogWarning("Error while rolling drop. Skipping roll\n", e);
                 }
             }
 

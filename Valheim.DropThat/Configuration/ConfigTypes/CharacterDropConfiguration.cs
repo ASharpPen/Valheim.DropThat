@@ -146,6 +146,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<string> ConditionNotInfusion = new ("", "Array of creature infusions, for which item will not drop.");
         public ConfigurationEntry<string> ConditionExtraEffect = new ("", "Array of creature extra effects, for which item will drop.");
         public ConfigurationEntry<string> ConditionNotExtraEffect = new ("", "Array of creature extra effects, for which item will not drop.");
+        public ConfigurationEntry<int> ConditionWorldLevelMin = new(0, "Minimum CLLC world level, for which item will drop.");
+        public ConfigurationEntry<int> ConditionWorldLevelMax = new(0, "Maximum CLLC world level, for which item will drop. 0 or less means no max.");
     }
 
     [Serializable]

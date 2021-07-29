@@ -7,6 +7,7 @@ using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Configuration;
 using Valheim.DropThat.Drop.DropTableSystem.Conditions;
+using Valheim.DropThat.Drop.DropTableSystem.Conditions.ModSpecific;
 using Valheim.DropThat.Drop.DropTableSystem.Modifiers;
 using Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot;
 using Valheim.DropThat.Integrations;
@@ -180,6 +181,8 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
             conditions.Add(ConditionGlobalKeysRequired.Instance);
             conditions.Add(ConditionLocation.Instance);
             conditions.Add(ConditionDistanceToCenter.Instance);
+
+            conditions.Add(ConditionLoaderCLLC.ConditionWorldLevel);
 
             return conditions;
         }

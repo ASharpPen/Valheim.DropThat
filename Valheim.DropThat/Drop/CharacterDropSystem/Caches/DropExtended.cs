@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Valheim.DropThat.Configuration.ConfigTypes;
 
-namespace Valheim.DropThat.Caches
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Caches
 {
     public class DropExtended
     {
@@ -15,7 +15,7 @@ namespace Valheim.DropThat.Caches
 
         public static DropExtended GetExtension(CharacterDrop.Drop drop)
         {
-            if(DropTable.TryGetValue(drop, out DropExtended dropExtended))
+            if (DropTable.TryGetValue(drop, out DropExtended dropExtended))
             {
                 return dropExtended;
             }

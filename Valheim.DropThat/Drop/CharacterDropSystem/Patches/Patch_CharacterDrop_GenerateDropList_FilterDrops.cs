@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Valheim.DropThat.Drop.CharacterDropSystem;
 
-namespace Valheim.DropThat.Patches
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop))]
     public static class Patch_CharacterDrop_GenerateDropList_FilterDrops

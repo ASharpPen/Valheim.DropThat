@@ -1,27 +1,28 @@
-﻿using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Caches
 {
     public static class ZdoCache
     {
-        private static ConditionalWeakTable<GameObject, ZDO> SpawnZdoTable = new();
+        private static ManagedCache<ZDO> ZdoTable { get; } = new();
 
         public static ZDO GetZDO(GameObject gameObject)
         {
-            if (SpawnZdoTable.TryGetValue(gameObject, out ZDO existing))
+            if (ZdoTable.TryGet(gameObject, out ZDO cached))
             {
-                return existing;
+                return cached;
             }
 
-            var znetView = gameObject.GetComponent<ZNetView>();
+            var znetView = ComponentCache.GetComponent<ZNetView>(gameObject);
+
             if (!znetView || znetView is null)
             {
                 return null;
             }
 
             var zdo = znetView.GetZDO();
-            SpawnZdoTable.Add(gameObject, zdo);
+            ZdoTable.Set(gameObject, zdo);
             return zdo;
         }
     }

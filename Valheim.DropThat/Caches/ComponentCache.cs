@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Caches
 {
     public class ComponentCache
     {
-        private static ConditionalWeakTable<GameObject, ComponentCache> Cache { get; } = new();
+        private static ManagedCache<ComponentCache> CacheTable { get; } = new();
 
         public static T GetComponent<T>(GameObject obj) where T : Component
         {
-            var cache = Cache.GetOrCreateValue(obj);
+            ComponentCache cache = CacheTable.GetOrCreate(obj);
 
             Type componentType = typeof(T);
 

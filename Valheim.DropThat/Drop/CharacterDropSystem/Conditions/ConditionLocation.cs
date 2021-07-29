@@ -1,23 +1,17 @@
 ﻿using System.Linq;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Locations;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionLocation : ICondition
     {
         private static ConditionLocation _instance;
 
-        public static ConditionLocation Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionLocation();
-            }
-        }
+        public static ConditionLocation Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
         {
@@ -39,7 +33,7 @@ namespace Valheim.DropThat.Drop.Conditions
 
             if (locations.Count > 0)
             {
-                if(currentLocation is null)
+                if (currentLocation is null)
                 {
                     Log.LogTrace($"{nameof(dropExtended.Config.ConditionLocation)}: Disabling drop {drop.m_prefab.name} due to not being in required location.");
                     return true;
@@ -47,7 +41,7 @@ namespace Valheim.DropThat.Drop.Conditions
 
                 var currentLocationName = currentLocation.LocationName.Trim().ToUpperInvariant();
 
-                if(locations.Any(x => x == currentLocationName))
+                if (locations.Any(x => x == currentLocationName))
                 {
                     return false;
                 }

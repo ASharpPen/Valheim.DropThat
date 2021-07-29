@@ -1,21 +1,14 @@
-﻿using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+﻿using Valheim.DropThat.Core;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionGlobalKeys : ICondition
     {
         private static ConditionGlobalKeys _instance;
 
-        public static ConditionGlobalKeys Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionGlobalKeys();
-            }
-        }
+        public static ConditionGlobalKeys Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
         {

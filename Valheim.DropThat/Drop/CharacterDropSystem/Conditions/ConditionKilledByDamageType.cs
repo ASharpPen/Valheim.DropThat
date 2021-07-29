@@ -4,22 +4,16 @@ using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Creature.DamageRecords;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionKilledByDamageType : ICondition
     {
         private static ConditionKilledByDamageType _instance;
 
-        public static ConditionKilledByDamageType Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionKilledByDamageType();
-            }
-        }
+        public static ConditionKilledByDamageType Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
         {
@@ -66,7 +60,7 @@ namespace Valheim.DropThat.Drop.Conditions
                 var causesDamageType = ConvertToBitmask(causes);
 
 #if DEBUG
-                Log.LogTrace($"Searching for damage types '{causes}' as {causesDamageType} among '{lastHit.DamageType}' with result '{(causesDamageType & lastHit.DamageType)}'");
+                Log.LogTrace($"Searching for damage types '{causes}' as {causesDamageType} among '{lastHit.DamageType}' with result '{causesDamageType & lastHit.DamageType}'");
 #endif
 
                 if ((causesDamageType & lastHit.DamageType) == 0)
@@ -83,9 +77,9 @@ namespace Valheim.DropThat.Drop.Conditions
         {
             HitData.DamageType result = 0;
 
-            foreach(var type in damageTypes)
+            foreach (var type in damageTypes)
             {
-                if(Enum.TryParse(type, true, out HitData.DamageType damageType))
+                if (Enum.TryParse(type, true, out HitData.DamageType damageType))
                 {
                     result |= damageType;
                 }

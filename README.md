@@ -1,8 +1,8 @@
 # Drop That! 
 
-This mod enables configuration of any mob loot table.
+Drop That! is a mod that enables changing existing loot tables through configuration files. It can either add or replace existing drops.
 
-This solution is set up to easily (well, somewhat) configure any "character" drop table in the game. It can either add or replace existing drops.
+The goal is a reasonably simple tool for either players or modders to set up the loot they want, when they want it.
 
 See the [Valheim wiki](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Table) to get a list of item names which can be used.
 
@@ -10,12 +10,12 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 
 # Features
 
-- Override any existing potential drop of a mob, by specifying the index (0 based) of the item you want changed.
+- Override any existing potential drop of a mob, by specifying the index of the item you want changed.
 - Add as many additional drops with their own drop chance or drop range as you want
 - Discard all existing drop tables
 - Discard all existing drop tables for entities modified.
 - Configuration templates, for easy extension.
-- Add conditions for when a mob should drop an item
+- Add a variety of conditions for when an item should be dropped
 - Server-side configs
 - Adds mod specific options for: 
 	- [Creature Level and Loot Control](https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/)
@@ -84,6 +84,13 @@ Setting changes in `drop_that.cg`:
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
 # Changelog
+- v2.1.0:
+	- Added cllc conditions ConditionWorldLevelMin/Max.
+	- Fixed DropTable SetAmountMin/Max not being used for some entities.
+	- Added fallback for DropTable when other mods take control of the item instantiation. This should reduce compatibility issues, although full functionality is not always possible.
+	- Fixed unmodified DropTable's being affected by Drop That.
+	- Added internal buffer and dispatcher for packages. Should hopefully reduce server lag and disconnects when joining.
+	- Splitting config packages based on type, to reduce risk of them growing too big.
 - v2.0.1:
 	- Fixed potential issue when drop tables woke up before configs were loaded / synced. Default drops will be used for that table until object is reloaded (eg. moving far away and coming back).
 - v2.0.0:

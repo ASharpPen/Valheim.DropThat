@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Caches;
 using System.Reflection;
 using HarmonyLib;
 using ExtendedItemDataFramework;
@@ -11,6 +10,7 @@ using EpicLoot.LegendarySystem;
 using Valheim.DropThat.Core;
 using System.Collections.Generic;
 using System.Linq;
+using Valheim.DropThat.Caches;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpicLoot
 {
@@ -18,13 +18,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpi
     {
         private static ModifierMagicItem _instance;
 
-        public static ModifierMagicItem Instance
-        {
-            get
-            {
-                return _instance ??= new ModifierMagicItem();
-            }
-        }
+        public static ModifierMagicItem Instance => _instance ??= new();
 
         private static MethodInfo InitializeMagicItem = AccessTools.Method(typeof(LootRoller), "InitializeMagicItem");
 
@@ -52,7 +46,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpi
                 return;
             }
 
-            var itemDrop = ItemDropCache.Get(context.Item);
+            var itemDrop = ComponentCache.GetComponent<ItemDrop>(context.Item);
 
             if (EpicLoot.EpicLoot.CanBeMagicItem(itemDrop.m_itemData))
             {

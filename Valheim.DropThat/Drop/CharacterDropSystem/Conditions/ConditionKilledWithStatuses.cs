@@ -3,22 +3,16 @@ using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Creature.StatusRecords;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.Conditions
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionKilledWithStatuses : ICondition
     {
         private static ConditionKilledWithStatuses _instance;
 
-        public static ConditionKilledWithStatuses Instance
-        {
-            get
-            {
-                return _instance ??= new ConditionKilledWithStatuses();
-            }
-        }
+        public static ConditionKilledWithStatuses Instance => _instance ??= new();
 
         public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
         {

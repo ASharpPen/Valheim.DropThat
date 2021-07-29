@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
 
-namespace Valheim.DropThat.Patches
+namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop))]
     internal static class Patch_CharacterDrop_LimitDrops

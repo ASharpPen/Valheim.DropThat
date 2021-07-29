@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using Valheim.DropThat.Caches;
+using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem
 {
