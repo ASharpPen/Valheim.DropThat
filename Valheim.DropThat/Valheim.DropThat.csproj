@@ -288,6 +288,8 @@
     <Compile Include="Configuration\Multiplayer\CharacterDropConfigPackage.cs" />
     <Compile Include="Configuration\Multiplayer\DropTablePackage.cs" />
     <Compile Include="Configuration\Multiplayer\GeneralConfigPackage.cs" />
+    <Compile Include="Core\Cache\CacheCleaner.cs" />
+    <Compile Include="Core\Cache\ManagedCache.cs" />
     <Compile Include="Core\Network\CompressedPackage.cs" />
     <Compile Include="Core\Network\DataTransferService.cs" />
     <Compile Include="Core\Network\Debug\DataTransferServiceTest.cs" />
@@ -392,13 +394,14 @@
     <Compile Include="Reset\WorldStartPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reset\StateResetter.cs" />
+    <Compile Include="Utilities\GameObjectExtensions.cs" />
     <Compile Include="Utilities\Valheim\BiomeExtensions.cs" />
     <Compile Include="Utilities\CodeMatcherExtensions.cs" />
-    <Compile Include="Wrapper\GameObjectExtensions.cs" />
+    <Compile Include="Drop\DropTableSystem\Wrapper\WrapperGameObjectExtensions.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Utilities\ReflectionUtils.cs" />
     <Compile Include="Utilities\Valheim\HitDataExtensions.cs" />
-    <Compile Include="Wrapper\WrapperComponent.cs" />
+    <Compile Include="Drop\DropTableSystem\Wrapper\WrapperComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
