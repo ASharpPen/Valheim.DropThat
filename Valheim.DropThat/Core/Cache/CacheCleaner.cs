@@ -63,6 +63,10 @@ namespace Valheim.DropThat.Core
                         }
                     }
                 }
+                catch (ThreadAbortException)
+                {
+                    // All good. Expected to happen on shutdown for background threads.
+                }
                 catch (Exception e)
                 {
 #if DEBUG
