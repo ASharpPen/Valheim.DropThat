@@ -44,5 +44,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific
                 return null;
             }
         }
+
+        public static ConditionWorldLevel ConditionWorldLevel => (InstalledCLLC) ? ConditionWorldLevel.Instance : null;
     }
 }
