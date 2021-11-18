@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat", "Valheim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat.BossMetal", "Valheim.DropThat.BossMetal\Valheim.DropThat.BossMetal.csproj", "{740949B6-6174-4D2A-AE27-6ACA7E15B647}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat.Tests", "Valheim.DropThat.Tests\Valheim.DropThat.Tests.csproj", "{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{740949B6-6174-4D2A-AE27-6ACA7E15B647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{740949B6-6174-4D2A-AE27-6ACA7E15B647}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{740949B6-6174-4D2A-AE27-6ACA7E15B647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -84,6 +84,8 @@ Setting changes in `drop_that.cg`:
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
 # Changelog
+- v2.1.1:
+	- Fixed CharacterDrop configuration "ClearAllExistingWhenModified=true" not properly clearing modified tables.
 - v2.1.0:
 	- Added cllc conditions ConditionWorldLevelMin/Max.
 	- Fixed DropTable SetAmountMin/Max not being used for some entities.
