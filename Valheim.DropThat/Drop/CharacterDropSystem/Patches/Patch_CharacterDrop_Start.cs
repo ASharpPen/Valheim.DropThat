@@ -43,7 +43,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
             bool skipExisting = false;
 
             if (GeneralConfig.ClearAllExistingCharacterDrops ||
-                GeneralConfig.ClearAllExistingDropTablesWhenModified &&
+                GeneralConfig.ClearAllExistingCharacterDropsWhenModified &&
                 (configMatch?.Subsections?.Any(x => x.Value.EnableConfig) == true ||
                 listConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true))
             {
