@@ -147,23 +147,23 @@ namespace Valheim.DropThat.Integrations.EpicLootIntegration
             float ongoingSum = 0;
 
             ongoingSum += config.RarityWeightUnique;
-            if (random <= ongoingSum)
+            if (config.RarityWeightUnique > 0 && random <= ongoingSum)
                 return Rarity.Unique;
 
             ongoingSum += config.RarityWeightLegendary;
-            if (random <= ongoingSum)
+            if (config.RarityWeightLegendary > 0 && random <= ongoingSum)
                 return Rarity.Legendary;
 
             ongoingSum += config.RarityWeightEpic;
-            if (random <= ongoingSum)
+            if (config.RarityWeightEpic > 0 && random <= ongoingSum)
                 return Rarity.Epic;
 
             ongoingSum += config.RarityWeightRare;
-            if (random <= ongoingSum)
+            if (config.RarityWeightRare > 0 && random <= ongoingSum)
                 return Rarity.Rare;
 
             ongoingSum += config.RarityWeightMagic;
-            if (random <= ongoingSum)
+            if (config.RarityWeightMagic > 0 && random <= ongoingSum)
                 return Rarity.Magic;
 
             return Rarity.None;
