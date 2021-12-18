@@ -85,7 +85,8 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
                         new DropConfig
                         {
                             Index = x.Key,
-                            ConfigKey = x.Value.Config.SectionKey
+                            ConfigKey = x.Value.Config.SectionKey,
+                            IsList = x.Value.Config.IsFromNamedList,
                         })
                     .ToList();
 
@@ -157,7 +158,20 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
                                 return;
                             }
 
-                            if (ConfigurationManager.CharacterDropConfigs.TryGet(configSections[0], out CharacterDropMobConfiguration mobConfig))
+                            if (entry.IsList)
+                            {
+                                if (ConfigurationManager.CharacterDropLists.TryGet(configSections[0], out CharacterDropListConfiguration listConfig))
+                                {
+                                    if (listConfig.TryGet(configSections[1], out CharacterDropItemConfiguration itemConfig))
+                                    {
+                                        TempDropListCache.SetDrop(dropList, entry.Index, new DropExtended
+                                        {
+                                            Config = itemConfig,
+                                        });
+                                    }
+                                }
+                            }
+                            else if (ConfigurationManager.CharacterDropConfigs.TryGet(configSections[0], out CharacterDropMobConfiguration mobConfig))
                             {
                                 if (mobConfig.TryGet(configSections[1], out CharacterDropItemConfiguration itemConfig))
                                 {
@@ -182,6 +196,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
         {
             public int Index;
             public string ConfigKey;
+            public bool IsList;
         }
     }
 }
