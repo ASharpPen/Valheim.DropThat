@@ -17,7 +17,10 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
     {
         protected override CharacterDropItemConfiguration InstantiateSubsection(string subsectionName)
         {
-            return new CharacterDropItemConfiguration();
+            return new CharacterDropItemConfiguration()
+            {
+                IsFromNamedList = true,
+            };
         }
     }
 }

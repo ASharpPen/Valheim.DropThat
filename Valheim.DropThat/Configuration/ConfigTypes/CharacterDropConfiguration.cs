@@ -96,6 +96,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         #endregion
 
+        public bool IsFromNamedList { get; set; }
+
         // Inefficient, but will do for now.
         public int Index
         {
