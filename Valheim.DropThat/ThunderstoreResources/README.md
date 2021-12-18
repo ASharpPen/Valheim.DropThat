@@ -84,6 +84,9 @@ Setting changes in `drop_that.cg`:
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
 # Changelog
+- v2.1.2:
+	- Fixed CharacterDrop named lists not applying modifiers correctly for ragdolled creatures. Eg., EpicLoot settings skipped.
+	- Fixed rarity rolling for EpicLoot not skipping rarities with weight 0.
 - v2.1.1:
 	- Fixed CharacterDrop configuration "ClearAllExistingWhenModified=true" not properly clearing modified tables.
 - v2.1.0:
