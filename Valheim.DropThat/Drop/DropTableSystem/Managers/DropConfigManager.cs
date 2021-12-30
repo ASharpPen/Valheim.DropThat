@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Valheim.DropThat.Configuration;
@@ -12,6 +11,7 @@ using Valheim.DropThat.Drop.DropTableSystem.Modifiers;
 using Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot;
 using Valheim.DropThat.Integrations;
 using Valheim.DropThat.Reset;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.DropTableSystem.Managers
 {
@@ -174,15 +174,15 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
         {
             List<IDropTableCondition> conditions = new();
 
-            conditions.Add(ConditionBiome.Instance);
-            conditions.Add(ConditionAltitude.Instance);
-            conditions.Add(ConditionDaytime.Instance);
-            conditions.Add(ConditionEnvironments.Instance);
-            conditions.Add(ConditionGlobalKeysRequired.Instance);
-            conditions.Add(ConditionLocation.Instance);
-            conditions.Add(ConditionDistanceToCenter.Instance);
+            conditions.AddNullSafe(ConditionBiome.Instance);
+            conditions.AddNullSafe(ConditionAltitude.Instance);
+            conditions.AddNullSafe(ConditionDaytime.Instance);
+            conditions.AddNullSafe(ConditionEnvironments.Instance);
+            conditions.AddNullSafe(ConditionGlobalKeysRequired.Instance);
+            conditions.AddNullSafe(ConditionLocation.Instance);
+            conditions.AddNullSafe(ConditionDistanceToCenter.Instance);
 
-            conditions.Add(ConditionLoaderCLLC.ConditionWorldLevel);
+            conditions.AddNullSafe(ConditionLoaderCLLC.ConditionWorldLevel);
 
             return conditions;
         }
@@ -191,13 +191,13 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
         {
             List<IDropTableModifier> modifiers = new();
 
-            modifiers.Add(ModifierSetQualityLevel.Instance);
+            modifiers.AddNullSafe(ModifierSetQualityLevel.Instance);
 
             if (InstallationManager.EpicLootInstalled)
             {
                 if (config.TryGet(EpicLootItemConfiguration.ModName, out Config modConfig) && modConfig is EpicLootItemConfiguration epicLootConfig)
                 {
-                    modifiers.Add(ModifierMagicItem.Instance);
+                    modifiers.AddNullSafe(ModifierMagicItem.Instance);
                 }
             }
 
