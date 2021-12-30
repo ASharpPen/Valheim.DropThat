@@ -6,6 +6,7 @@ using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers;
 using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific;
 using Valheim.DropThat.Reset;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem
 {
@@ -30,9 +31,9 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
                 _instance = null;
             });
 
-            DropModifiers.Add(ModifierSetQualityLevel.Instance);
+            DropModifiers.AddNullSafe(ModifierSetQualityLevel.Instance);
 
-            DropModifiers.Add(ModifierLoaderEpicLoot.MagicItem);
+            DropModifiers.AddNullSafe(ModifierLoaderEpicLoot.MagicItem);
         }
 
         public void ApplyModifications(GameObject item, DropExtended extended, Vector3 pos)
