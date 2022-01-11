@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Creature.DamageRecords
 {
@@ -7,11 +8,11 @@ namespace Valheim.DropThat.Creature.DamageRecords
     /// </summary>
     public static class RecordLastHit
     {
-        private static ConditionalWeakTable<Character, DamageRecord> LastHits = new();
+        private static ManagedCache<DamageRecord> LastHits = new();
 
         public static DamageRecord GetLastHit(Character character)
         {
-            if(LastHits.TryGetValue(character, out DamageRecord lastHit))
+            if(LastHits.TryGet(character, out DamageRecord lastHit))
             {
                 return lastHit;
             }
@@ -21,7 +22,7 @@ namespace Valheim.DropThat.Creature.DamageRecords
 
         public static void SetLastHit(Character character, HitData hitData)
         {
-            var lastHit = LastHits.GetOrCreateValue(character);
+            var lastHit = LastHits.GetOrCreate(character);
             lastHit.Hit = hitData;
         }
     }

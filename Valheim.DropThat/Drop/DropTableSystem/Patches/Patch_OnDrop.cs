@@ -111,9 +111,17 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
 
         private static GameObject UnwrapDrop(GameObject wrappedDrop)
         {
-            _currentWrapped = wrappedDrop;
+            try 
+            {
+                _currentWrapped = wrappedDrop;
 
-            return wrappedDrop.Unwrap();
+                return wrappedDrop.Unwrap();
+            }
+            catch(Exception e)
+            {
+                Log.LogError("Error while attempting to unwrap drop", e);
+                return wrappedDrop;
+            }
         }
 
         private static void ModifyDrop(GameObject drop)
@@ -161,7 +169,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                 if (template is null)
                 {
 #if DEBUG
-                    Log.LogDebug($"Failed to find template for {item}");
+                    Log.LogDebug($"Failed to find template for {item?.m_dropPrefab}");
 #endif
                     return item;
                 }

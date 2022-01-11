@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using Valheim.DropThat.Core;
 
@@ -15,34 +16,42 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 
         public void Start()
         {
-            // Oh shit, we are in the bad place.
-            // Grab the real object and instantiate instead as a holdover.
-            var gameObject = this.gameObject.Unwrap();
-
-            if (!gameObject.name.StartsWith(WrapperGameObjectExtensions.WrapperName))
+            try
             {
-                Log.LogDebug("Dummy object instantiated. Creating real object instead, but might miss modifiers.");
-                Instantiate(gameObject, transform.position, transform.rotation);
-            }
-            else
-            {
-                // Time for the desperation move! Lets just see if we can get the prefab and drop that!
-                var prefabHash = PrefabHashRegex.Match(gameObject.name).Value;
+                // Oh shit, we are in the bad place.
+                // Grab the real object and instantiate instead as a holdover.
+                var gameObject = this.gameObject.Unwrap();
 
-                if (int.TryParse(prefabHash, out int hash))
+                if (!gameObject.name.StartsWith(WrapperGameObjectExtensions.WrapperName))
                 {
-                    var prefab = ZNetScene.instance.GetPrefab(hash);
+                    Log.LogDebug("Dummy object instantiated. Creating real object instead, but might miss modifiers.");
+                    Instantiate(gameObject, transform.position, transform.rotation);
+                }
+                else
+                {
+                    // Time for the desperation move! Lets just see if we can get the prefab and drop that!
+                    var prefabHash = PrefabHashRegex.Match(gameObject.name).Value;
 
-                    if (prefab is not null)
+                    if (int.TryParse(prefabHash, out int hash))
                     {
-                        Log.LogDebug("Dummy object instantiated. Creating real object instead, but might miss modifiers.");
-                        Instantiate(prefab, transform.position, transform.rotation);
+                        var prefab = ZNetScene.instance.GetPrefab(hash);
+
+                        if (prefab is not null)
+                        {
+                            Log.LogDebug("Dummy object instantiated. Creating real object instead, but might miss modifiers.");
+                            Instantiate(prefab, transform.position, transform.rotation);
+                        }
                     }
                 }
-            }
 
-            // Then destroy this monstrosity.
-            Destroy(this.gameObject);
+                // Then destroy this monstrosity.
+                Destroy(this.gameObject);
+            }
+            catch(Exception e)
+            {
+                Log.LogError("Error during Wrapper.Start", e);
+                Destroy(this.gameObject);
+            }
         }
     }
 }

@@ -27,6 +27,11 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 
         public static GameObject Unwrap(this GameObject gameObject)
         {
+            if (gameObject == null || !gameObject)
+            {
+                return gameObject;
+            }
+
             if (gameObject.name.StartsWith(WrapperName))
             {
                 if (WrapperTable.TryGet(gameObject, out GameObject wrapped))

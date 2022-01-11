@@ -84,8 +84,12 @@ Setting changes in `drop_that.cg`:
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
 # Changelog
+- v2.1.4:
+	- Added RRR compatibility for ConditionHasItem. Previously did not take into account RRR renaming items with a custom pattern.
+	- Added additional error handling.
+	- Reduced debug logs on config load.
 - v2.1.3:
-	- Fixed potential null-reference errors during DropTable condition checks.
+	- Fixed potential null-reference errors during DropTable condition checks.  
 - v2.1.2:
 	- Fixed CharacterDrop named lists not applying modifiers correctly for ragdolled creatures. Eg., EpicLoot settings skipped.
 	- Fixed rarity rolling for EpicLoot not skipping rarities with weight 0.
