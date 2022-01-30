@@ -1,46 +1,48 @@
-﻿using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 using Valheim.DropThat.Core;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
+namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper;
+
+public static class WrapperGameObjectExtensions
 {
-    public static class WrapperGameObjectExtensions
+    public static GameObject Wrap(this GameObject gameObject)
     {
-        public const string WrapperName = "SpawnThat_Wrapper";
+        var cached = WrapperCache.Get(gameObject);
 
-        private static ManagedCache<GameObject> WrapperTable { get; } = new();
-
-        public static GameObject Wrap(this GameObject gameObject)
+        if (cached is not null)
         {
-            if (WrapperTable.TryGet(gameObject, out GameObject cached))
-            {
-                return cached;
-            }
-
-            GameObject wrapper = new GameObject(WrapperName + ";" + gameObject.name.GetStableHashCode());
-            wrapper.AddComponent<WrapperComponent>();
-
-            WrapperTable.Set(wrapper, gameObject);
-
-            return wrapper;
-        }
-
-        public static GameObject Unwrap(this GameObject gameObject)
-        {
-            if (gameObject == null || !gameObject)
-            {
-                return gameObject;
-            }
-
-            if (gameObject.name.StartsWith(WrapperName))
-            {
-                if (WrapperTable.TryGet(gameObject, out GameObject wrapped))
-                {
-                    return wrapped;
-                }
-            }
-
+            // Object is already a wrapper.
             return gameObject;
         }
+
+        GameObject wrapper = new GameObject(gameObject.name);
+        wrapper.AddComponent<WrapperComponent>();
+
+        WrapperCache.Set(wrapper, gameObject);
+
+        return wrapper;
+    }
+
+    public static GameObject Unwrap(this GameObject gameObject)
+    {
+        if (gameObject == null || !gameObject)
+        {
+            return gameObject;
+        }
+
+        var cached = WrapperCache.Get(gameObject);
+
+        if (cached is not null)
+        {
+#if DEBUG
+            Log.LogTrace($"Unwrapped '{cached.Wrapped.name}'");
+#endif
+            // Mark as successfully unwrapping to tell the WrapperComponent that everything is fine.
+            cached.Unwrapped = true;
+
+            return cached.Wrapped;
+        }
+
+        return gameObject;
     }
 }

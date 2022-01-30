@@ -1,6 +1,6 @@
 {
   "name": "Drop_That",
-  "version_number": "2.1.4",
+  "version_number": "2.1.5",
   "website_url": "https://github.com/ASharpPen/Valheim.DropThat",
   "description": "Tool for configuring loot tables.",
   "dependencies": [

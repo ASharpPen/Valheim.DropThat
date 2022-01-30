@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
+using System;
 using System.Reflection.Emit;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Utilities
 {
@@ -15,6 +17,38 @@ namespace Valheim.DropThat.Utilities
         {
             label = new Label();
             codeMatcher.AddLabels(new[] { label });
+            return codeMatcher;
+        }
+
+        internal static CodeMatcher Print(this CodeMatcher codeMatcher, int before, int after)
+        {
+#if DEBUG
+        for (int i = -before; i <= after; ++i)
+        {
+            int currentOffset = i;
+            int index = codeMatcher.Pos + currentOffset;
+
+            if (index <= 0)
+            {
+                continue;
+            }
+
+            if (index >= codeMatcher.Length)
+            {
+                break;
+            }
+
+            try
+            {
+                var line = codeMatcher.InstructionAt(currentOffset);
+                Log.LogTrace($"[{currentOffset}] " + line.ToString());
+            }
+            catch (Exception e)
+            {
+                Log.LogTrace(e.Message);
+            }
+        }
+#endif
             return codeMatcher;
         }
     }
