@@ -383,6 +383,7 @@
     <Compile Include="Drop\DropTableSystem\Patches\Patch_DropSourceLink.cs" />
     <Compile Include="Drop\DropTableSystem\Patches\Patch_DropTable_GetDrops_Overhaul.cs" />
     <Compile Include="Drop\DropTableSystem\Patches\Patch_OnDrop.cs" />
+    <Compile Include="Drop\DropTableSystem\Wrapper\WrapperCache.cs" />
     <Compile Include="Integrations\EpicLootIntegration\ItemService.cs" />
     <Compile Include="Integrations\EpicLootIntegration\ItemRoller.cs" />
     <Compile Include="Integrations\EpicLootIntegration\Rarity.cs" />
