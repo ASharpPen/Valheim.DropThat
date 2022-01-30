@@ -427,5 +427,8 @@
   <ItemGroup>
     <Folder Include="Drop\DropTableSystem\Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="LibsStripped\Readme.md" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

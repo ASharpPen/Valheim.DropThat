@@ -19,7 +19,7 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Server-side configs
 - Adds mod specific options for: 
 	- [Creature Level and Loot Control](https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/)
-	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) (Experimental as it is in beta. Tested against v0.8.7)
+	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) (Experimental as it is in beta. Tested against v0.8.8)
 	- [Spawn That](https://valheim.thunderstore.io/package/ASharpPen/Spawn_That/)
 - Performance improvements
 	- Drop stacks instead of individual items. Want to have a stack of coins, that isn't a massive lag tower of individual coins?
@@ -84,6 +84,8 @@ Setting changes in `drop_that.cg`:
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
 # Changelog
+- v2.1.5:
+	- Fixed bug with DropTable configured loot dropping at (0,0).
 - v2.1.4:
 	- Added RRR compatibility for ConditionHasItem. Previously did not take into account RRR renaming items with a custom pattern.
 	- Added additional error handling.
