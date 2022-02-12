@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Drop.DropTableSystem.Conditions;
 using Valheim.DropThat.Drop.DropTableSystem.Modifiers;

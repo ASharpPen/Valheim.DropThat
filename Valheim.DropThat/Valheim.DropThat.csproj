@@ -304,6 +304,7 @@
     <Compile Include="Drop\CharacterDropSystem\Conditions\ConditionDistanceToCenter.cs" />
     <Compile Include="Drop\CharacterDropSystem\Conditions\ConditionKilledByEntityType.cs" />
     <Compile Include="Drop\CharacterDropSystem\Conditions\ModSpecific\CLLC\ConditionWorldLevel.cs" />
+    <Compile Include="Drop\CharacterDropSystem\Modifiers\ModifierSetDurability.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_CharacterDrop_DropItems.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_CharacterDrop_GenerateDropList_CarryDropExtended.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_Ragdoll_TransferConfigs.cs" />
@@ -378,6 +379,7 @@
     <Compile Include="Drop\DropTableSystem\Managers\DropTableManager.cs" />
     <Compile Include="Drop\DropTableSystem\DropTemplate.cs" />
     <Compile Include="Drop\DropTableSystem\Modifiers\IDropTableModifier.cs" />
+    <Compile Include="Drop\DropTableSystem\Modifiers\ModifierSetDurability.cs" />
     <Compile Include="Drop\DropTableSystem\Modifiers\ModifierSetQualityLevel.cs" />
     <Compile Include="Drop\DropTableSystem\Modifiers\ModSpecific\ModEpicLoot\ModifierMagicItem.cs" />
     <Compile Include="Drop\DropTableSystem\Patches\Patch_DropSourceLink.cs" />

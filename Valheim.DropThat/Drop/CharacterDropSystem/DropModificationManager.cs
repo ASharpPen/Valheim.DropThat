@@ -32,8 +32,10 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             });
 
             DropModifiers.AddNullSafe(ModifierSetQualityLevel.Instance);
-
             DropModifiers.AddNullSafe(ModifierLoaderEpicLoot.MagicItem);
+
+            // Should run AFTER epic loot modifier
+            DropModifiers.AddNullSafe(ModifierSetDurability.Instance);
         }
 
         public void ApplyModifications(GameObject item, DropExtended extended, Vector3 pos)

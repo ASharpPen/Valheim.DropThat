@@ -201,6 +201,9 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
                 }
             }
 
+            // Should run AFTER epic loot modifier
+            modifiers.AddNullSafe(ModifierSetDurability.Instance);
+
             return modifiers;
         }
 
