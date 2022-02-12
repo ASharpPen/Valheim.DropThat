@@ -1,4 +1,6 @@
-﻿using BepInEx.Configuration;
+﻿//# define VERBOSE
+
+using BepInEx.Configuration;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -54,14 +56,16 @@ namespace Valheim.DropThat.Core.Configuration
 
             foreach (var sectionHead in sectionHeaders)
             {
+#if VERBOSE
                 Log.LogTrace($"Loading config entries for {sectionHead}.");
+#endif
 
                 //Identify header components
                 var components = sectionHead.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (components.Length < 1 || string.IsNullOrEmpty(components[0]))
                 {
-#if DEBUG
+#if DEBUG && VERBOSE
                     Log.LogTrace("Early stop. 0 components found.");
 #endif
 
@@ -82,7 +86,7 @@ namespace Valheim.DropThat.Core.Configuration
             //Check if we have reached the end
             if(depth == sectionParts.Count - 1 && currentConfig is not IConfigFile)
             {
-#if DEBUG
+#if DEBUG && VERBOSE
                 Log.LogTrace($"Binding entries for {sectionKey}:{currentConfig.GetType().Name}");
 #endif
 
@@ -119,7 +123,9 @@ namespace Valheim.DropThat.Core.Configuration
 
             foreach (var field in fields)
             {
+#if VERBOSE
                 Log.LogTrace($"Creating and binding entry for '{sectionHeader}:{field.Name}'");
+#endif
 
                 var entry = (IConfigurationEntry)field.GetValue(config);
 
@@ -131,7 +137,9 @@ namespace Valheim.DropThat.Core.Configuration
 
                 entry.Bind(configFile, sectionHeader, field.Name);
 
+#if VERBOSE
                 Log.LogTrace($"[{sectionHeader}]: Loaded {field.Name}:{entry}");
+#endif
             }
         }
 
@@ -142,7 +150,9 @@ namespace Valheim.DropThat.Core.Configuration
                 return new List<string>();
             }
 
+#if VERBOSE
             Log.LogTrace($"Scanning config sections in {configFile}");
+#endif
 
             //Scan for headers
             var lines = File.ReadAllLines(configFile);
@@ -157,7 +167,9 @@ namespace Valheim.DropThat.Core.Configuration
                 {
                     var sectionHeader = sectionMatch.Value;
 
+#if VERBOSE
                     Log.LogTrace($"Found section '{sectionHeader}'");
+#endif
 
                     sectionHeaders.Add(sectionHeader);
                 }

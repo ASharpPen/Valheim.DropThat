@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
-using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Integrations;
 using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
@@ -37,10 +39,43 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
                 return false;
             }
 
-            var inventoryItems = inventory
-                .GetAllItems()
-                .Select(x => x.m_dropPrefab.name.Trim().ToUpperInvariant())
-                .ToHashSet();
+            HashSet<string> inventoryItems;
+
+            if (InstallationManager.RRRInstalled && character.name.StartsWith("RRR"))
+            {
+                // This is an RRR creature, item names will have been set with a specific pattern.
+                inventoryItems = new();
+
+                foreach (var item in inventory.GetAllItems())
+                {
+                    var firstSection = item.m_dropPrefab.name.IndexOf('@');
+
+                    if (firstSection < 0)
+                    {
+                        // Unformatted item, add as is
+                        inventoryItems.Add(PrepareName(item.m_dropPrefab));
+                        continue;
+                    }
+
+                    var endSection = item.m_dropPrefab.name.IndexOf('@', firstSection + 1);
+
+                    if (endSection < 0)
+                    {
+                        inventoryItems.Add(CleanName(item.m_dropPrefab.name.Substring(firstSection + 1)));
+                    }
+                    else
+                    {
+                        inventoryItems.Add(CleanName(item.m_dropPrefab.name.Substring(firstSection + 1, endSection - firstSection - 1)));
+                    }
+                }
+            }
+            else
+            {
+                inventoryItems = inventory
+                    .GetAllItems()
+                    .Select(x => x.m_dropPrefab.name.Trim().ToUpperInvariant())
+                    .ToHashSet();
+            }
 
 #if DEBUG
             Log.LogTrace("Inventory: " + inventoryItems.Join());
@@ -48,12 +83,22 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
             if (!items.Any(x => inventoryItems.Contains(x)))
             {
                 //No inventory items matched an item in condition list.
-                Log.LogTrace($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}: Found none of the required items in inventory.");
+                Log.LogTrace($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}: Found none of the required items '{items.Join()}' in inventory.");
 
                 return true;
             }
 
             return false;
+        }
+
+        private static string CleanName(string str)
+        {
+            return str.Trim().ToUpperInvariant();
+        }
+
+        private static string PrepareName(GameObject go)
+        {
+            return go.name.Trim().ToUpperInvariant();
         }
     }
 }

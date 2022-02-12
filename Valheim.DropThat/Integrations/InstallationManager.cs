@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Valheim.DropThat.Integrations
 {
     public static class InstallationManager
     {
-        public static bool EpicLootInstalled = Type.GetType("EpicLoot.EpicLoot, EpicLoot") is not null;
+        private static bool? _epicLootInstalled = null;
+        private static bool? _rrrInstalled = null;
+
+        public static bool EpicLootInstalled => _epicLootInstalled ??= Type.GetType("EpicLoot.EpicLoot, EpicLoot") is not null;
+
+        public static bool RRRInstalled => _rrrInstalled ??= Type.GetType("RRRCore.Plugin, RRRCore") is not null;
     }
 }
