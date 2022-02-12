@@ -104,8 +104,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
 
         // ItemDrop.ItemData options
 
-        public ConfigurationEntry<float> SetDurability = new(-1);
-        public ConfigurationEntry<int> SetQualityLevel = new(1);
+        public ConfigurationEntry<float> SetDurability = new(-1, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.");
+        public ConfigurationEntry<int> SetQualityLevel = new(1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.");
     }
 
     [Serializable]

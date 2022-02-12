@@ -84,6 +84,8 @@ Setting changes in `drop_that.cg`:
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
 # Changelog
+- v2.2.0:
+	- Added modifier SetDurability to CharacterDrop and DropTable.
 - v2.1.5:
 	- Fixed bug with DropTable configured loot dropping at (0,0).
 - v2.1.4:
