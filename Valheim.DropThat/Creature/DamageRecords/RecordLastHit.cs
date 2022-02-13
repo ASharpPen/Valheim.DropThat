@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Creature.DamageRecords
 {
@@ -24,6 +25,11 @@ namespace Valheim.DropThat.Creature.DamageRecords
         {
             var lastHit = LastHits.GetOrCreate(character);
             lastHit.Hit = hitData;
+            
+            if (ZNet.instance.IsNotNull())
+            {
+                lastHit.Timestamp = ZNet.instance.GetTimeSeconds();
+            }
         }
     }
 }

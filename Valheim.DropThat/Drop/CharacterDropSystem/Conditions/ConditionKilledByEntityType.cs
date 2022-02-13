@@ -7,6 +7,7 @@ using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Creature.DamageRecords;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Drop.CharacterDropSystem.Models;
 using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
@@ -113,13 +114,6 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
             }
 
             return result;
-        }
-
-        public enum EntityType
-        {
-            Player,
-            Creature,
-            Other
         }
     }
 }

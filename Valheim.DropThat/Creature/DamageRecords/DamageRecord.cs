@@ -17,5 +17,10 @@ namespace Valheim.DropThat.Creature.DamageRecords
         }
 
         public Skills.SkillType SkillType => Hit?.m_skill ?? Skills.SkillType.None;
+
+        /// <summary>
+        /// Znet time when hit was recorded.
+        /// </summary>
+        public double Timestamp { get; set; }
     }
 }
