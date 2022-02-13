@@ -1,9 +1,9 @@
-﻿using BepInEx;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using Valheim.DropThat.Configuration.ConfigTypes;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Debugging
 {
@@ -17,8 +17,9 @@ namespace Valheim.DropThat.Debugging
 
             foreach (var characterDrop in characters)
             {
-                if ((characterDrop.Item2?.m_drops?.Count ?? 0) == 0)
-                {
+                if (characterDrop.Item2.IsNull() ||
+                    (characterDrop.Item2.m_drops?.Count ?? 0) == 0)
+                { 
                     continue;
                 }
 
@@ -27,7 +28,7 @@ namespace Valheim.DropThat.Debugging
                     var item = characterDrop.Item2.m_drops[i];
 
                     lines.Add($"[{characterDrop.Item1.name}.{i}]");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.PrefabName)}={item.m_prefab?.name}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.PrefabName)}={item.m_prefab.GetCleanedName()}");
                     lines.Add($"{nameof(CharacterDropItemConfiguration.EnableConfig)}={true}");
                     lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMin)}={item.m_amountMin}");
                     lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMax)}={item.m_amountMax}");

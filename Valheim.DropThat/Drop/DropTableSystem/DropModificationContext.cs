@@ -18,7 +18,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
 
         public CachedComponent<ItemDrop> ItemDrop { get; }
 
-        public class CachedComponent<T> where T : class
+        public class CachedComponent<T> where T : Component
         {
             private T Component;
 

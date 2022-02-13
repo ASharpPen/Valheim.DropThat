@@ -122,9 +122,13 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
 
             // Find the drop prefab, whereever it may be.
             GameObject item = ObjectDB.instance.GetItemPrefab(itemConfig.PrefabName.Value);
-            item ??= ZNetScene.instance.GetPrefab(itemConfig.PrefabName.Value);
 
-            if (item is null)
+            if (item.IsNull())
+            {
+                item = ZNetScene.instance.GetPrefab(itemConfig.PrefabName.Value);
+            }
+
+            if (item.IsNull())
             {
                 Log.LogWarning($"Unable to find prefab '{itemConfig.PrefabName.Value}' for '{itemConfig.SectionKey}'.");
                 return;
