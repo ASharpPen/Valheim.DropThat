@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches

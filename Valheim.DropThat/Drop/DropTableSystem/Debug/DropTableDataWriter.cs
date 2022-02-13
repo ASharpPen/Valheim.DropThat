@@ -65,7 +65,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
                 sBuilder.AppendLine();
                 sBuilder.AppendLine($"[{sourceName}.{i}]");
-                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.PrefabName)}={drop.m_item?.name ?? ""}");
+                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.PrefabName)}={(drop.m_item.IsNotNull() ? drop.m_item.name : "")}");
                 sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetTemplateWeight)}={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
                 sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMin)}={drop.m_stackMin}");
                 sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMax)}={drop.m_stackMax}");

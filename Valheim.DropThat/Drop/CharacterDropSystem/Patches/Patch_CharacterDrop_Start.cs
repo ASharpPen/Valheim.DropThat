@@ -19,53 +19,60 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
         [HarmonyPriority(Priority.Last)]
         private static void Postfix(CharacterDrop __instance)
         {
-            if (ConfigurationManager.CharacterDropConfigs == null)
+            try
             {
-                Log.LogDebug("Loading drop tables");
-                ConfigurationManager.LoadAllCharacterDropConfigurations();
+                if (ConfigurationManager.CharacterDropConfigs == null)
+                {
+                    Log.LogDebug("Loading drop tables");
+                    ConfigurationManager.LoadAllCharacterDropConfigurations();
+                }
+
+                string name = __instance.gameObject.name;
+
+                CharacterDropMobConfiguration configMatch = FindConfigMatch(name);
+
+                // Find drop list
+                string dropListName = configMatch?.UseDropList?.Value;
+
+                CharacterDropListConfiguration listConfig = null;
+
+                if (!string.IsNullOrWhiteSpace(dropListName) &&
+                    ConfigurationManager.CharacterDropLists is not null &&
+                    ConfigurationManager.CharacterDropLists.TryGet(dropListName, out CharacterDropListConfiguration dropList))
+                {
+                    listConfig = dropList;
+                }
+
+                bool skipExisting = false;
+
+                if (GeneralConfig.ClearAllExistingCharacterDrops ||
+                    GeneralConfig.ClearAllExistingCharacterDropsWhenModified &&
+                    (configMatch?.Subsections?.Any(x => x.Value.EnableConfig) == true ||
+                    listConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true))
+                {
+                    skipExisting = true;
+                }
+
+                if (skipExisting && __instance.m_drops.Count > 0)
+                {
+                    Log.LogTrace($"[{name}]: Clearing '{__instance.m_drops.Count}'");
+                    __instance.m_drops.Clear();
+                }
+
+                // Merge list and mob config
+                var configs = MobDropInitializationService.PrepareInsertion(listConfig, configMatch);
+
+                foreach (var config in configs)
+                {
+                    InsertDrops(__instance, config);
+                }
+
+                __instance.m_drops = ConditionChecker.FilterOnStart(__instance);
             }
-
-            string name = __instance.gameObject.name;
-
-            CharacterDropMobConfiguration configMatch = FindConfigMatch(name);
-
-            // Find drop list
-            string dropListName = configMatch?.UseDropList?.Value;
-
-            CharacterDropListConfiguration listConfig = null;
-
-            if (!string.IsNullOrWhiteSpace(dropListName) &&
-                ConfigurationManager.CharacterDropLists is not null &&
-                ConfigurationManager.CharacterDropLists.TryGet(dropListName, out CharacterDropListConfiguration dropList))
+            catch (Exception e)
             {
-                listConfig = dropList;
+                Log.LogError("Error while attempting to configure creature drops.", e);
             }
-
-            bool skipExisting = false;
-
-            if (GeneralConfig.ClearAllExistingCharacterDrops ||
-                GeneralConfig.ClearAllExistingCharacterDropsWhenModified &&
-                (configMatch?.Subsections?.Any(x => x.Value.EnableConfig) == true ||
-                listConfig?.Subsections?.Any(x => x.Value.EnableConfig) == true))
-            {
-                skipExisting = true;
-            }
-
-            if (skipExisting && __instance.m_drops.Count > 0)
-            {
-                Log.LogTrace($"[{name}]: Clearing '{__instance.m_drops.Count}'");
-                __instance.m_drops.Clear();
-            }
-
-            // Merge list and mob config
-            var configs = MobDropInitializationService.PrepareInsertion(listConfig, configMatch);
-
-            foreach (var config in configs)
-            {
-                InsertDrops(__instance, config);
-            }
-
-            __instance.m_drops = ConditionChecker.FilterOnStart(__instance);
         }
 
         private static void InsertDrops(CharacterDrop instance, CharacterDropItemConfiguration dropConfig)

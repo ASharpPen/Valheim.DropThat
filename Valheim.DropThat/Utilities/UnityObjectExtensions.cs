@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace Valheim.DropThat.Utilities;
 
@@ -28,6 +30,22 @@ public static class UnityObjectExtensions
 
     public static string GetCleanedName(this UnityEngine.Object obj, bool toUpper = false)
     {
+        if (obj.IsNotNull())
+        {
+            return null;
+        }
+
+        string cleanedName = obj.name
+            .Split(new char[] { '(' }, System.StringSplitOptions.RemoveEmptyEntries)
+            .FirstOrDefault()?
+            .Trim();
+
+        return string.IsNullOrWhiteSpace(cleanedName)
+            ? obj.name
+            : cleanedName;
+
+        // TODO: Figure out why/if the below solution causes problems.
+        /*
         if (obj.IsNull())
         {
             return null;
@@ -50,5 +68,6 @@ public static class UnityObjectExtensions
         }
 
         return cleanedName;
+        */
     }
 }
