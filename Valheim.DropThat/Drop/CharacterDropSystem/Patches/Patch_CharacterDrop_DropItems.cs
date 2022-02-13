@@ -142,21 +142,28 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
             //Log.LogDebug($"[OnSpawnedItem] Count: {count}, Index: {index}");
 #endif
 
-            var extendedData = TempDropListCache.GetDrop(drops, index);
-
-            if (extendedData is null)
+            try
             {
+                var extendedData = TempDropListCache.GetDrop(drops, index);
+
+                if (extendedData is null)
+                {
 #if DEBUG
                 //Log.LogDebug($"No config for item {item.name} at index {index}");
 #endif
-                return;
-            }
+                    return;
+                }
 
 #if DEBUG
             //Log.LogDebug($"Found config, applying modifiers to item {item.name}");
 #endif
 
-            DropModificationManager.Instance.ApplyModifications(item, extendedData, centerPos);
+                DropModificationManager.Instance.ApplyModifications(item, extendedData, centerPos);
+            }
+            catch (Exception e)
+            {
+                Log.LogError("Error during drop modification.", e);
+            }
         }
 
         private static int GetIndex(List<KeyValuePair<GameObject, int>> drops, int itemCount)
