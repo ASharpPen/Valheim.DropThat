@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Creature.StatusRecords
 {
     public static class RecordLastStatus
     {
-        private static ConditionalWeakTable<Character, StatusRecord> LastStatus = new();
+        private static ManagedCache<StatusRecord> LastStatus = new();
 
         public static StatusRecord GetLastStatus(Character character)
         {
-            if (LastStatus.TryGetValue(character, out StatusRecord cached))
+            if (LastStatus.TryGet(character, out StatusRecord cached))
             {
                 return cached;
             }
@@ -23,7 +19,7 @@ namespace Valheim.DropThat.Creature.StatusRecords
 
         public static void SetLastStatus(Character character)
         {
-            var statusRecord = LastStatus.GetOrCreateValue(character);
+            var statusRecord = LastStatus.GetOrCreate(character);
             statusRecord.Statuses = character
                 .GetSEMan()?
                 .GetStatusEffects()?

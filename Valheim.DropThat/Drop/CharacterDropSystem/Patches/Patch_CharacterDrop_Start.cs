@@ -7,6 +7,7 @@ using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.CharacterDropSystem.Services;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
@@ -79,9 +80,13 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
             }
 
             GameObject item = ObjectDB.instance.GetItemPrefab(dropConfig.PrefabName?.Value);
-            item ??= ZNetScene.instance.GetPrefab(dropConfig.PrefabName.Value);
 
-            if (item == null)
+            if (item.IsNull())
+            {
+                item = ZNetScene.instance.GetPrefab(dropConfig.PrefabName.Value);
+            }
+
+            if (item.IsNull())
             {
                 Log.LogWarning($"[{dropConfig.SectionKey}]: No item '{dropConfig.PrefabName}' exists");
                 return;

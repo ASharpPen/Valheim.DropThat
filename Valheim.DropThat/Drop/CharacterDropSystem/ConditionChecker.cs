@@ -57,6 +57,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem
             OnDeathConditions.AddNullSafe(ConditionGlobalKeys.Instance);
             OnDeathConditions.AddNullSafe(ConditionLevel.Instance);
             OnDeathConditions.AddNullSafe(ConditionDaytime.Instance);
+            OnDeathConditions.AddNullSafe(ConditionHitByEntityTypeRecently.Instance);
 
             OnDeathConditions.AddNullSafe(ConditionLoaderCLLC.ConditionBossAffix);
             OnDeathConditions.AddNullSafe(ConditionLoaderCLLC.ConditionInfusion);

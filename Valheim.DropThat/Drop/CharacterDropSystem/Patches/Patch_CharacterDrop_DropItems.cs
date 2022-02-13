@@ -8,6 +8,7 @@ using UnityEngine;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
@@ -116,7 +117,8 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
             {
                 var itemDrop = ComponentCache.GetComponent<ItemDrop>(item);
 
-                if (itemDrop?.m_itemData?.m_shared is null)
+                if (itemDrop.IsNull() ||
+                    itemDrop.m_itemData?.m_shared is null)
                 {
                     return -1;
                 }
