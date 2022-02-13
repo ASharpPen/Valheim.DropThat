@@ -298,12 +298,15 @@
     <Compile Include="Core\Network\Debug\DataTransferServiceTest.cs" />
     <Compile Include="Core\Network\Dispatcher.cs" />
     <Compile Include="Core\Network\QueueItem.cs" />
+    <Compile Include="Creature\DamageRecords\RecordRecentHits.cs" />
     <Compile Include="Debugging\PrintDebugFile.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableConfiguration.cs" />
     <Compile Include="Debugging\Patch_CharacterDrop.cs" />
     <Compile Include="Drop\CharacterDropSystem\Conditions\ConditionDistanceToCenter.cs" />
+    <Compile Include="Drop\CharacterDropSystem\Conditions\ConditionHitByEntityTypeRecently.cs" />
     <Compile Include="Drop\CharacterDropSystem\Conditions\ConditionKilledByEntityType.cs" />
     <Compile Include="Drop\CharacterDropSystem\Conditions\ModSpecific\CLLC\ConditionWorldLevel.cs" />
+    <Compile Include="Drop\CharacterDropSystem\Models\EntityType.cs" />
     <Compile Include="Drop\CharacterDropSystem\Modifiers\ModifierSetDurability.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_CharacterDrop_DropItems.cs" />
     <Compile Include="Drop\CharacterDropSystem\Patches\Patch_CharacterDrop_GenerateDropList_CarryDropExtended.cs" />
