@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Valheim.DropThat.Configuration.ConfigTypes;
+using Valheim.DropThat.Core;
 using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Debugging;

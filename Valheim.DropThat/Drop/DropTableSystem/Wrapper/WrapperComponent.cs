@@ -51,9 +51,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
 
                 // Time for the desperation move! Lets just see if we can get the prefab and drop that!
                 var name = this.gameObject.GetCleanedName();
+
                 var prefab = ZNetScene.instance.GetPrefab(name);
 
-                if (prefab is not null && prefab)
+                if (prefab.IsNotNull())
                 {
                     var pos = this.gameObject.transform.position;
 #if DEBUG
