@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Utilities;
 
@@ -30,7 +32,7 @@ public static class UnityObjectExtensions
 
     public static string GetCleanedName(this UnityEngine.Object obj, bool toUpper = false)
     {
-        if (obj.IsNotNull())
+        if (obj.IsNull())
         {
             return null;
         }
