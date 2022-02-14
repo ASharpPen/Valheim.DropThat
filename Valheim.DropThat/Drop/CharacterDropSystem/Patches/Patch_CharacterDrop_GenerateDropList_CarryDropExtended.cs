@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using UnityEngine;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
@@ -110,7 +111,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
             }
             else if (extended is null)
             {
-                Log.LogDebug($"Disregard. No config to carry for item {drop}:{drop.m_prefab?.name}");
+                Log.LogDebug($"Disregard. No config to carry for item {drop}:{(drop.m_prefab.IsNull() ? "" : drop.m_prefab.name)}");
             }
 #endif
             }

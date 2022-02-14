@@ -91,7 +91,10 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
-
+- v2.3.2:
+	- Null checks null checks null checks. 
+	- Fixed issue with debug file creation breaking during startup, due to unexpected empty objects.
+	- Fixed dumb mistake in 2.3.1 fix.
 - v2.3.1:
 	- Additional error handling and checks for empty objects.
 - v2.3.0:
