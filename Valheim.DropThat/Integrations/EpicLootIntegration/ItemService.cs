@@ -97,7 +97,11 @@ namespace Valheim.DropThat.Integrations.EpicLootIntegration
             MagicItemComponent magicComponent = itemData.AddComponent<MagicItemComponent>();
 
             var luck = LootRoller.GetLuckFactor(position);
-            MagicItem magicItem = magicItem = LootRoller.RollMagicItem(rarity, itemData, luck);
+            MagicItem magicItem = LootRoller.RollMagicItem(rarity, itemData, luck);
+
+#if DEBUG
+            Log.LogTrace("\t" + magicItem.Effects.Join(x => x.EffectType));
+#endif
 
             magicComponent.SetMagicItem(magicItem);
             InitializeMagicItem.Invoke(null, new[] { itemData });

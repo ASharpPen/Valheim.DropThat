@@ -1,6 +1,7 @@
 ﻿using ExtendedItemDataFramework;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using UnityEngine;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Integrations.EpicLootIntegration
 {
@@ -10,12 +11,19 @@ namespace Valheim.DropThat.Integrations.EpicLootIntegration
         {
             if (!EpicLoot.EpicLoot.CanBeMagicItem(itemData))
             {
+#if DEBUG
+                Log.LogTrace($"Item '{itemData.m_shared.m_name}' can't be made magic.");
+#endif
                 return null;
             }
 
             var extendedItemData = new ExtendedItemData(itemData);
 
             var rarity = ItemService.RollRarity(config);
+
+#if DEBUG
+            Log.LogTrace($"Item '{itemData.m_shared.m_name}' rolled rarity '{rarity}'.");
+#endif
 
             if (rarity is Rarity.None)
             {
