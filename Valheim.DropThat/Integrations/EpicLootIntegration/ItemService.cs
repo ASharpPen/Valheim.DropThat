@@ -106,7 +106,7 @@ namespace Valheim.DropThat.Integrations.EpicLootIntegration
             magicComponent.SetMagicItem(magicItem);
             InitializeMagicItem.Invoke(null, new[] { itemData });
 
-            return itemDrop;
+            return itemData;
         }
 
         private static MagicItemEffectDefinition RollWeightedEffect(List<MagicItemEffectDefinition> magicEffects, bool removeSelected)
