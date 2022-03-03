@@ -18,6 +18,9 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
 
             if (config is null)
             {
+#if DEBUG
+                Log.LogDebug("Found no config for drop template.");
+#endif
                 return;
             }
 
@@ -49,6 +52,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
 
             if (config is null)
             {
+#if DEBUG
+                Log.LogDebug("Found no config for drop template.");
+#endif
+
                 return;
             }
 
@@ -68,6 +75,9 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
 
             if (magicItemData is not null)
             {
+#if DEBUG
+                Log.LogTrace($"Assigning magickified drop '{drop.m_shared.m_name}'.");
+#endif
                 drop = magicItemData;
             }
         }

@@ -99,12 +99,6 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
                 InsertDrop(drops, config, context.EntityConfig);
             }
 
-            // Go through all the config entries
-            foreach (var dropEntry in context.EntityConfig.Subsections.OrderBy(x => x.Value.Index))
-            {
-                InsertDrop(drops, dropEntry.Value, context.EntityConfig);
-            }
-
             return drops;
         }
 
