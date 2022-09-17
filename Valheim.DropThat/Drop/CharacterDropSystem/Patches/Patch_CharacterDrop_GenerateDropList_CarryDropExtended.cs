@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
@@ -52,45 +54,54 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
         [HarmonyPriority(Priority.Last)]
         private static void MoveConfigReferenceFromComponentToDrop(CharacterDrop __instance, List<KeyValuePair<GameObject, int>> __result)
         {
-            var instanceReferences = TempDropListCache.GetDrops(__instance);
-
-            if (instanceReferences is not null)
+            try
             {
-                //Re-associate result with configs.
-                foreach (var reference in instanceReferences.ConfigByIndex)
+                var instanceReferences = TempDropListCache.GetDrops(__instance);
+
+                if (instanceReferences is not null)
                 {
-                    TempDropListCache.SetDrop(__result, reference.Key, reference.Value);
+                    //Re-associate result with configs.
+                    foreach (var reference in instanceReferences.ConfigByIndex)
+                    {
+                        TempDropListCache.SetDrop(__result, reference.Key, reference.Value);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Log.LogWarning("Error while attempting to keep track of drops.", e);
             }
         }
 
         private static void CarryExtended(List<KeyValuePair<GameObject, int>> dropItems, CharacterDrop.Drop drop, CharacterDrop characterDrop)
         {
-            if (dropItems is null)
+            try
             {
+                if (dropItems is null)
+                {
 #if DEBUG
                 Log.LogWarning("Unable to carry drop due to dropitems being null.");
 #endif
-            }
+                }
 
-            if (drop is null)
-            {
+                if (drop is null)
+                {
 #if DEBUG
                 Log.LogWarning($"Unable to carry drop due to being null for {characterDrop}.");
 #endif
-                return;
-            }
+                    return;
+                }
 
-            var extended = DropExtended.GetExtension(drop);
+                var extended = DropExtended.GetExtension(drop);
 
-            if (extended is not null && dropItems is not null)
-            {
+                if (extended is not null && dropItems is not null)
+                {
 #if DEBUG
                 Log.LogDebug($"Carrying configs for drop {extended.Config.SectionKey}:{characterDrop.GetHashCode()}");
                 Log.LogDebug($"Carrying configs for drop {drop.m_prefab.name}");
 #endif
-                TempDropListCache.SetDrop(characterDrop, dropItems.Count - 1, extended);
-            }
+                    TempDropListCache.SetDrop(characterDrop, dropItems.Count - 1, extended);
+                }
 
 #if DEBUG
             else if (dropItems is null)
@@ -100,9 +111,14 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
             }
             else if (extended is null)
             {
-                Log.LogDebug($"Disregard. No config to carry for item {drop}:{drop.m_prefab?.name}");
+                Log.LogDebug($"Disregard. No config to carry for item {drop}:{(drop.m_prefab.IsNull() ? "" : drop.m_prefab.name)}");
             }
 #endif
+            }
+            catch (Exception e)
+            {
+                Log.LogWarning("Error while attempting to keep track of drops.", e);
+            }
         }
     }
 }

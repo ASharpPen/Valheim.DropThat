@@ -6,7 +6,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific
 {
     internal static class ConditionLoaderSpawnThat
     {
-        public static bool InstalledSpawnThat { get; } = Type.GetType("Valheim.SpawnThat.SpawnThatPlugin, Valheim.SpawnThat") is not null;
+        public static bool InstalledSpawnThat { get; } = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("asharppen.valheim.spawn_that");
 
         public static ConditionTemplateId ConditionTemplateId
         {

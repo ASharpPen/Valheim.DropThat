@@ -2,6 +2,7 @@
 using UnityEngine;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Reset;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Locations
 {
@@ -39,7 +40,7 @@ namespace Valheim.DropThat.Locations
 
         public static SimpleLocation FindLocation(Vector3 position)
         {
-            if (ZoneSystem.instance is null)
+            if (ZoneSystem.instance.IsNull())
             {
                 Log.LogWarning("Attempting to retrieve location before ZoneSystem is initialized.");
                 return null;
@@ -47,7 +48,8 @@ namespace Valheim.DropThat.Locations
 
             var zoneId = ZoneSystem.instance.GetZone(position);
 
-            if ((ZoneSystem.instance?.m_locationInstances?.Count ?? 0) > 0)
+            if (ZoneSystem.instance.IsNotNull() &&
+                (ZoneSystem.instance.m_locationInstances?.Count ?? 0) > 0)
             {
                 if (ZoneSystem.instance.m_locationInstances.TryGetValue(zoneId, out ZoneSystem.LocationInstance defaultLocation))
                 {

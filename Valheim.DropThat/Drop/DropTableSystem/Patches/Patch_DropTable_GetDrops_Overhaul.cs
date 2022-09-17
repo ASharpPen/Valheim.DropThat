@@ -48,16 +48,16 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
     {
         [HarmonyPatch(nameof(DropTable.GetDropListItems))]
         [HarmonyTranspiler]
-        private static IEnumerable<CodeInstruction> DropListItemsOverhaul(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> DropListItemsOverhaul(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            return new CodeMatcher(instructions)
+            return new CodeMatcher(instructions, generator)
                 // Move to start, and insert overhaul
                 .Start()
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_DropTable_GetDrops_Overhaul), nameof(GetDropListItems))))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ret))
                 // Set label for where the original code would have started to run.
-                .AddLabel(out Label originalStart)
+                .CreateLabel(out Label originalStart)
                 // Move back again to start, and insert check and skip of overhaul.
                 .Start()
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
@@ -68,9 +68,9 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
 
         [HarmonyPatch("GetDropList", new[] {typeof(int)})]
         [HarmonyTranspiler]
-        private static IEnumerable<CodeInstruction> DropListOverhaul(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> DropListOverhaul(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            return new CodeMatcher(instructions)
+            return new CodeMatcher(instructions, generator)
                 // Move to start, and insert overhaul
                 .Start()
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
@@ -78,7 +78,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_DropTable_GetDrops_Overhaul), nameof(GetDropList))))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ret))
                 // Set label for where the original code would have started to run.
-                .AddLabel(out Label originalStart) 
+                .CreateLabel(out Label originalStart) 
                 // Move back again to start, and insert check and skip of overhaul.
                 .Start()
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))

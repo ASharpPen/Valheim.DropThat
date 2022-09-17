@@ -1,4 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using UnityEngine;
+using Valheim.DropThat.Core;
 
 namespace Valheim.DropThat.Utilities;
 
@@ -33,6 +37,22 @@ public static class UnityObjectExtensions
             return null;
         }
 
+        string cleanedName = obj.name
+            .Split(new char[] { '(' }, System.StringSplitOptions.RemoveEmptyEntries)
+            .FirstOrDefault()?
+            .Trim();
+
+        return string.IsNullOrWhiteSpace(cleanedName)
+            ? obj.name
+            : cleanedName;
+
+        // TODO: Figure out why/if the below solution causes problems.
+        /*
+        if (obj.IsNull())
+        {
+            return null;
+        }
+
         var match = NameRegex.Match(obj.name);
 
         if (!match.Success)
@@ -50,5 +70,6 @@ public static class UnityObjectExtensions
         }
 
         return cleanedName;
+        */
     }
 }

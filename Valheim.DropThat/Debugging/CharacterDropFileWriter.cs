@@ -27,8 +27,21 @@ namespace Valheim.DropThat.Debugging
                 {
                     var item = characterDrop.Item2.m_drops[i];
 
-                    lines.Add($"[{characterDrop.Item1.name}.{i}]");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.PrefabName)}={item.m_prefab.GetCleanedName()}");
+                    if (item is null)
+                    {
+                        continue;
+                    }
+
+                    string itemName = characterDrop.Item1.IsNull() 
+                        ? "MissingNo" 
+                        : characterDrop.Item1.name;
+
+                    string itemPrefabName = item.m_prefab.IsNull()
+                        ? ""
+                        : item.m_prefab.GetCleanedName();
+
+                    lines.Add($"[{itemName}.{i}]");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.PrefabName)}={itemPrefabName}");
                     lines.Add($"{nameof(CharacterDropItemConfiguration.EnableConfig)}={true}");
                     lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMin)}={item.m_amountMin}");
                     lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMax)}={item.m_amountMax}");

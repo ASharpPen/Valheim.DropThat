@@ -1,4 +1,5 @@
 ﻿using Valheim.DropThat.Core;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Caches
 {
@@ -58,7 +59,11 @@ namespace Valheim.DropThat.Caches
                     : null;
             }
 
-            var inventory = character.GetComponent<Humanoid>()?.GetInventory();
+            var humanoid = character.GetComponent<Humanoid>();
+
+            var inventory = humanoid.IsNotNull()
+                ? humanoid.GetInventory()
+                : null;
 
             extended.Inventory = inventory;
             extended.HasInventory = inventory is not null;

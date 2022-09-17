@@ -51,6 +51,7 @@ So whats not supported yet?
 - Pickable objects, like mushrooms
 
 ## Drop Lists:
+
 A feature that has been requested often, is the ability to make a list of drops and then re-use that list multiple times, without having to copy-paste everything.
 
 With v2.0.0, a new format and setting have been added for making named lists, that can be referenced by each entity (both mobs and objects) to work as a default.
@@ -83,8 +84,24 @@ Setting changes in `drop_that.cg`:
 - `WriteDefaultDropTableToFile` => `WriteCharacterDropsToFile`
 - Removed `ApplyConditionsOnDeath`. Conditions are being applied when it makes the most sense, instead of arbitrarily picking which one behaves according to this setting and which doesn't.
 
+# Support
+
+If you feel like it
+
+<a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
+
 # Changelog
-- v2.3.0
+- v2.3.3:
+	- Fixed DropTable Epic Loot modifier. Items should now properly be able to roll with non-unique rarity.
+	- Fixed detection of Spawn That installation.
+	- Fixed potential transpiler conflict.
+- v2.3.2:
+	- Null checks null checks null checks. 
+	- Fixed issue with debug file creation breaking during startup, due to unexpected empty objects.
+	- Fixed dumb mistake in 2.3.1 fix.
+- v2.3.1:
+	- Additional error handling and checks for empty objects.
+- v2.3.0:
 	- Added condition ConditionHitByEntityTypeRecently to CharacterDrop, to help with issue of ConditionKilledByEntityType handling status effect deaths as "Other".
 - v2.2.0:
 	- Added modifier SetDurability to CharacterDrop and DropTable.

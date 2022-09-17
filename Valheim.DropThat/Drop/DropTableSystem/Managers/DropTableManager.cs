@@ -19,7 +19,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             Log.LogDebug($"Dropping {drops.Count} items:");
             foreach(var drop in drops)
             {
-                Log.LogDebug($"\t{drop}");
+                Log.LogDebug($"\t{drop.m_shared.m_name}");
             }
 #endif
 

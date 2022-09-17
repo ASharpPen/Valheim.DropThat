@@ -178,6 +178,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                 {
                     try
                     {
+#if DEBUG
+                        Log.LogTrace($"Applying modifier '{modifier.GetType().Name}'");
+#endif
+
                         modifier.Modify(ref item, template, container.transform.position);
                     }
                     catch (Exception e)

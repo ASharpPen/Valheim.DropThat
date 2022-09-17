@@ -50,6 +50,11 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
             string sourceName = source.gameObject.GetCleanedName();
 
+            if (string.IsNullOrWhiteSpace(sourceName))
+            {
+                return "";
+            }
+
             sBuilder.AppendLine();
             sBuilder.AppendLine($"## DropTable Source: {source.GetType().Name}; " + additionalHeaders.Join(delimiter: "; "));
             sBuilder.AppendLine($"[{sourceName}]");
@@ -65,7 +70,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
                 sBuilder.AppendLine();
                 sBuilder.AppendLine($"[{sourceName}.{i}]");
-                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.PrefabName)}={drop.m_item?.name ?? ""}");
+                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.PrefabName)}={(drop.m_item.IsNotNull() ? drop.m_item.name : "")}");
                 sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetTemplateWeight)}={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
                 sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMin)}={drop.m_stackMin}");
                 sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMax)}={drop.m_stackMax}");
@@ -136,7 +141,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
             {
                 var locPrefab = location.m_prefab;
 
-                if (locPrefab is null)
+                if (locPrefab.IsNull())
                 {
                     continue;
                 }
@@ -164,43 +169,43 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
             var tableData = new List<string>();
 
             var containerComponent = prefab.GetComponentInChildren<Container>();
-            if (containerComponent is not null && containerComponent)
+            if (containerComponent.IsNotNull() && containerComponent)
             {
                 tableData.Add(GetData(containerComponent, containerComponent.m_defaultItems, additionalHeaders));
             }
 
             var dropOnDestroyedComponent = prefab.GetComponentInChildren<DropOnDestroyed>();
-            if (dropOnDestroyedComponent is not null && dropOnDestroyedComponent)
+            if (dropOnDestroyedComponent.IsNotNull() && dropOnDestroyedComponent)
             {
                 tableData.Add(GetData(dropOnDestroyedComponent, dropOnDestroyedComponent.m_dropWhenDestroyed, additionalHeaders));
             }
 
             var lootSpawnerComponent = prefab.GetComponentInChildren<LootSpawner>();
-            if (lootSpawnerComponent is not null && lootSpawnerComponent)
+            if (lootSpawnerComponent.IsNotNull() && lootSpawnerComponent)
             {
                 tableData.Add(GetData(lootSpawnerComponent, lootSpawnerComponent.m_items, additionalHeaders));
             }
 
             var treeBaseComponent = prefab.GetComponentInChildren<TreeBase>();
-            if (treeBaseComponent is not null && treeBaseComponent)
+            if (treeBaseComponent.IsNotNull() && treeBaseComponent)
             {
                 tableData.Add(GetData(treeBaseComponent, treeBaseComponent.m_dropWhenDestroyed, additionalHeaders));
             }
 
             var treeLogComponent = prefab.GetComponentInChildren<TreeLog>();
-            if (treeLogComponent is not null && treeLogComponent)
+            if (treeLogComponent.IsNotNull() && treeLogComponent)
             {
                 tableData.Add(GetData(treeLogComponent, treeLogComponent.m_dropWhenDestroyed, additionalHeaders));
             }
 
             var mineRockComponent = prefab.GetComponentInChildren<MineRock>();
-            if (mineRockComponent is not null && mineRockComponent)
+            if (mineRockComponent.IsNotNull() && mineRockComponent)
             {
                 tableData.Add(GetData(mineRockComponent, mineRockComponent.m_dropItems, additionalHeaders));
             }
 
             var mineRock5Component = prefab.GetComponentInChildren<MineRock5>();
-            if (mineRock5Component is not null && mineRock5Component)
+            if (mineRock5Component.IsNotNull() && mineRock5Component)
             {
                 tableData.Add(GetData(mineRock5Component, mineRock5Component.m_dropItems, additionalHeaders));
             }
