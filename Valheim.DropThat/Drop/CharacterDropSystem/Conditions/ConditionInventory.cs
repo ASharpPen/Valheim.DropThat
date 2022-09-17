@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Integrations;
 using DropThat.Core.Extensions;
+using DropThat.Configuration.ConfigTypes.Old;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions
 {

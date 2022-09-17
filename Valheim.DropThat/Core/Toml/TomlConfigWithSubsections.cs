@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DropThat.Core.Toml;
 
-internal abstract class TomlConfigWithSubsections<T> : TomlConfig, IHaveSubsections
+public abstract class TomlConfigWithSubsections<T> : TomlConfig, IHaveSubsections
     where T : TomlConfig
 {
     public Dictionary<string, T> Subsections { get; set; } = new Dictionary<string, T>();

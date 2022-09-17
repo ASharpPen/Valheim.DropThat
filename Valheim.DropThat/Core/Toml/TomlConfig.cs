@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DropThat.Core.Toml;
 
-internal abstract class TomlConfig
+public abstract class TomlConfig
 {
     private Dictionary<string, ITomlConfigEntry> EntryFields { get; } = new();
 

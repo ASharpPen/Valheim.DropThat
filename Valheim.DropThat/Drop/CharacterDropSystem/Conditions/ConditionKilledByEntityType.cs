@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Core.Extensions;
+using DropThat.Drop.CharacterDropSystem.Configurations;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -67,7 +67,7 @@ public class ConditionKilledByEntityType : ICondition
         if (lastHit is null)
         {
 #if DEBUG
-            Log.LogTrace($"{nameof(config.ConditionKilledByDamageType)}: Disabling drop {config.SectionKey} due to not finding any last hit data.");
+            Log.LogTrace($"{nameof(config.ConditionKilledByDamageType)}: Disabling drop {config.SectionPath} due to not finding any last hit data.");
 #endif
             return false;
         }

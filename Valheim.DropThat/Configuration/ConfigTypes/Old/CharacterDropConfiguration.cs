@@ -1,7 +1,7 @@
 ﻿using System;
 using DropThat.Core.Configuration;
 
-namespace DropThat.Configuration.ConfigTypes
+namespace DropThat.Configuration.ConfigTypes.Old
 {
     /// <summary>
     /// CharacterDrop configurations
@@ -33,15 +33,15 @@ namespace DropThat.Configuration.ConfigTypes
         {
             Config newModConfig = null;
 
-            if(subsectionName == CharacterDropModConfigCLLC.ModName)
+            if (subsectionName == CharacterDropModConfigCLLC.ModName)
             {
                 newModConfig = new CharacterDropModConfigCLLC();
             }
-            else if(subsectionName == CharacterDropModConfigEpicLoot.ModName)
+            else if (subsectionName == CharacterDropModConfigEpicLoot.ModName)
             {
                 newModConfig = new CharacterDropModConfigEpicLoot();
             }
-            else if(subsectionName == CharacterDropModConfigSpawnThat.ModName)
+            else if (subsectionName == CharacterDropModConfigSpawnThat.ModName)
             {
                 newModConfig = new CharacterDropModConfigSpawnThat();
             }
@@ -63,9 +63,9 @@ namespace DropThat.Configuration.ConfigTypes
 
         #region DropExtended Modifiers
 
-        public ConfigurationEntry<int> SetQualityLevel = new (-1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.");
-        public ConfigurationEntry<int> SetAmountLimit = new (-1, "Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.");
-        public ConfigurationEntry<bool> SetAutoStack = new (false, "If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.");
+        public ConfigurationEntry<int> SetQualityLevel = new(-1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.");
+        public ConfigurationEntry<int> SetAmountLimit = new(-1, "Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.");
+        public ConfigurationEntry<bool> SetAutoStack = new(false, "If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.");
         public ConfigurationEntry<float> SetDurability = new(-1, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.");
 
         #endregion
@@ -144,12 +144,12 @@ namespace DropThat.Configuration.ConfigTypes
     {
         public const string ModName = "CreatureLevelAndLootControl";
 
-        public ConfigurationEntry<string> ConditionBossAffix = new ("", "Array of boss affixes, for which item will drop.");
-        public ConfigurationEntry<string> ConditionNotBossAffix = new ("", "Array of boss affixes, for which item will not drop.");
-        public ConfigurationEntry<string> ConditionInfusion = new ("", "Array of creature infusions, for which item will drop.");
-        public ConfigurationEntry<string> ConditionNotInfusion = new ("", "Array of creature infusions, for which item will not drop.");
-        public ConfigurationEntry<string> ConditionExtraEffect = new ("", "Array of creature extra effects, for which item will drop.");
-        public ConfigurationEntry<string> ConditionNotExtraEffect = new ("", "Array of creature extra effects, for which item will not drop.");
+        public ConfigurationEntry<string> ConditionBossAffix = new("", "Array of boss affixes, for which item will drop.");
+        public ConfigurationEntry<string> ConditionNotBossAffix = new("", "Array of boss affixes, for which item will not drop.");
+        public ConfigurationEntry<string> ConditionInfusion = new("", "Array of creature infusions, for which item will drop.");
+        public ConfigurationEntry<string> ConditionNotInfusion = new("", "Array of creature infusions, for which item will not drop.");
+        public ConfigurationEntry<string> ConditionExtraEffect = new("", "Array of creature extra effects, for which item will drop.");
+        public ConfigurationEntry<string> ConditionNotExtraEffect = new("", "Array of creature extra effects, for which item will not drop.");
         public ConfigurationEntry<int> ConditionWorldLevelMin = new(0, "Minimum CLLC world level, for which item will drop.");
         public ConfigurationEntry<int> ConditionWorldLevelMax = new(0, "Maximum CLLC world level, for which item will drop. 0 or less means no max.");
     }

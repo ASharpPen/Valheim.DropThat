@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 using DropThat.Utilities;
+using DropThat.Configuration.ConfigTypes.Old;
 
 namespace DropThat.Debugging;
 

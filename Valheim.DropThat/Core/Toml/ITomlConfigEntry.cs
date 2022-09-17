@@ -2,7 +2,7 @@
 
 namespace DropThat.Core.Toml;
 
-internal interface ITomlConfigEntry
+public interface ITomlConfigEntry
 {
     string Name { get; }
 
@@ -15,14 +15,14 @@ internal interface ITomlConfigEntry
     public object GetValue();
 }
 
-internal interface ITomlConfigEntry<T> : ITomlConfigEntry
+public interface ITomlConfigEntry<T> : ITomlConfigEntry
 {
     T Value { get; set; }
 
     T DefaultValue { get; set; }
 }
 
-internal interface ITomlValueConfigEntry<T> : ITomlConfigEntry
+public interface ITomlValueConfigEntry<T> : ITomlConfigEntry
     where T : struct
 {
     T? Value { get; set; }

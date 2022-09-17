@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 using DropThat.Core.Extensions;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Drop.CharacterDropSystem.Configurations;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 

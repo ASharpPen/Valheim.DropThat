@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Utilities;
+using DropThat.Configuration.ConfigTypes.Old;
 
 namespace DropThat.Debugging
 {

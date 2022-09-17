@@ -1,7 +1,7 @@
 ﻿using System;
 using DropThat.Core.Configuration;
 
-namespace DropThat.Configuration.ConfigTypes
+namespace DropThat.Configuration.ConfigTypes.Old
 {
     [Serializable]
     public class CharacterDropListConfigurationFile : ConfigWithSubsections<CharacterDropListConfiguration>, IConfigFile

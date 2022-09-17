@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 using DropThat.Creature.StatusRecords;
 using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Core.Extensions;
+using DropThat.Drop.CharacterDropSystem.Configurations;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 

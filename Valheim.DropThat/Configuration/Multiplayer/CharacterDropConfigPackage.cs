@@ -1,5 +1,5 @@
 ﻿using System;
-using DropThat.Configuration.ConfigTypes;
+using DropThat.Configuration.ConfigTypes.Old;
 using DropThat.Core;
 using DropThat.Core.Network;
 
@@ -13,11 +13,11 @@ namespace DropThat.Configuration.Multiplayer
 
         protected override void BeforePack()
         {
-            CharacterDropConfigs = ConfigurationManager.CharacterDropConfigs;
-            CharacterDropLists = ConfigurationManager.CharacterDropLists;
+            //CharacterDropConfigs = ConfigurationManager.CharacterDropConfigs;
+            //CharacterDropLists = ConfigurationManager.CharacterDropLists;
 
-            Log.LogDebug($"Packaged CharacterDrop configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
-            Log.LogDebug($"Packaged CharacterDrop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
+            //Log.LogDebug($"Packaged CharacterDrop configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
+            //Log.LogDebug($"Packaged CharacterDrop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
         }
 
         protected override void AfterUnpack(object obj)
@@ -26,11 +26,11 @@ namespace DropThat.Configuration.Multiplayer
             {
                 Log.LogDebug("Received and deserialized CharacterDrop config package");
 
-                ConfigurationManager.CharacterDropConfigs = configPackage.CharacterDropConfigs;
-                ConfigurationManager.CharacterDropLists = configPackage.CharacterDropLists;
+               // ConfigurationManager.CharacterDropConfigs = configPackage.CharacterDropConfigs;
+               // ConfigurationManager.CharacterDropLists = configPackage.CharacterDropLists;
 
-                Log.LogDebug($"Unpacked CharacterDrop configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
-                Log.LogDebug($"Unpacked CharacterDrop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
+                //Log.LogDebug($"Unpacked CharacterDrop configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
+                //Log.LogDebug($"Unpacked CharacterDrop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
 
                 Log.LogInfo("Successfully unpacked CharacterDrop configs.");
             }

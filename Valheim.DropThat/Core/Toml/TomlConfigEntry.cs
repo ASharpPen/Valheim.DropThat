@@ -2,7 +2,7 @@
 
 namespace DropThat.Core.Toml;
 
-internal class TomlConfigEntry<T> : ITomlConfigEntry<T>
+public class TomlConfigEntry<T> : ITomlConfigEntry<T>
 {
     internal TomlConfigEntry()
     { }
@@ -27,4 +27,6 @@ internal class TomlConfigEntry<T> : ITomlConfigEntry<T>
     public bool IsSet { get; set; }
 
     public object GetValue() => Value;
+
+    public static implicit operator T(TomlConfigEntry<T> entry) => entry.IsSet ? entry.Value : entry.DefaultValue;
 }

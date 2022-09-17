@@ -7,11 +7,10 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using DropThat.Configuration;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Core.Extensions;
+using DropThat.Drop.CharacterDropSystem.Configurations;
 
 namespace DropThat.Drop.CharacterDropSystem.Patches;
 
@@ -32,7 +31,7 @@ public static class Patch_Ragdoll_TransferConfigs
     private static MethodInfo StoreConfigsMethod = AccessTools.Method(typeof(Patch_Ragdoll_TransferConfigs), nameof(StoreConfigReferences));
     private static MethodInfo LoadConfigsMethod = AccessTools.Method(typeof(Patch_Ragdoll_TransferConfigs), nameof(LoadConfigReferences));
 
-    [HarmonyPatch("SaveLootList")]
+    [HarmonyPatch(nameof(Ragdoll.SaveLootList))]
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> TranspileStoreConfigReferences(IEnumerable<CodeInstruction> instructions)
     {
@@ -46,7 +45,7 @@ public static class Patch_Ragdoll_TransferConfigs
             .InstructionEnumeration();
     }
 
-    [HarmonyPatch("SpawnLoot")]
+    [HarmonyPatch(nameof(Ragdoll.SpawnLoot))]
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> TranspileLoadConfigReferences(IEnumerable<CodeInstruction> instructions)
     {
@@ -85,7 +84,7 @@ public static class Patch_Ragdoll_TransferConfigs
                     new DropConfig
                     {
                         Index = x.Key,
-                        ConfigKey = x.Value.Config.SectionKey,
+                        ConfigKey = x.Value.Config.SectionPath,
                         IsList = x.Value.Config.IsFromNamedList,
                     })
                 .ToList();
@@ -160,7 +159,7 @@ public static class Patch_Ragdoll_TransferConfigs
 
                         if (entry.IsList)
                         {
-                            if (ConfigurationManager.CharacterDropLists.TryGet(configSections[0], out CharacterDropListConfiguration listConfig))
+                            if (CharacterDropConfigurationFileManager.CharacterDropListConfig.TryGet(configSections[0], out var listConfig))
                             {
                                 if (listConfig.TryGet(configSections[1], out CharacterDropItemConfiguration itemConfig))
                                 {
@@ -171,7 +170,7 @@ public static class Patch_Ragdoll_TransferConfigs
                                 }
                             }
                         }
-                        else if (ConfigurationManager.CharacterDropConfigs.TryGet(configSections[0], out CharacterDropMobConfiguration mobConfig))
+                        else if (CharacterDropConfigurationFileManager.CharacterDropConfig.TryGet(configSections[0], out CharacterDropMobConfiguration mobConfig))
                         {
                             if (mobConfig.TryGet(configSections[1], out CharacterDropItemConfiguration itemConfig))
                             {

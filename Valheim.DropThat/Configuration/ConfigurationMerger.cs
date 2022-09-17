@@ -1,4 +1,5 @@
 ﻿using DropThat.Configuration.ConfigTypes;
+using DropThat.Configuration.ConfigTypes.Old;
 using DropThat.Core;
 
 namespace DropThat.Configuration
