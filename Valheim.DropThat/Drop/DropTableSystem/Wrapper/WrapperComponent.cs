@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper
+namespace DropThat.Drop.DropTableSystem.Wrapper
 {
     /// <summary>
     /// Self destroying component, that tries to instantiate a wrapped object.

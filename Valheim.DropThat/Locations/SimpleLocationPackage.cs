@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Network;
+using DropThat.Core;
+using DropThat.Core.Network;
 
-namespace Valheim.DropThat.Locations
+namespace DropThat.Locations
 {
     [Serializable]
     internal class SimpleLocationPackage : CompressedPackage

@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Caches
+namespace DropThat.Drop.DropTableSystem.Caches
 {
     internal class DropTemplateCache
     {

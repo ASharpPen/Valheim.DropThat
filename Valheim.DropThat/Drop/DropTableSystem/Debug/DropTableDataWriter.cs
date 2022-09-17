@@ -5,13 +5,13 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Debugging;
-using Valheim.DropThat.Utilities;
-using Valheim.DropThat.Utilities.Valheim;
+using DropThat.Configuration;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Debugging;
+using DropThat.Utilities;
+using DropThat.Utilities.Valheim;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Debug
+namespace DropThat.Drop.DropTableSystem.Debug
 {
     [HarmonyPatch(typeof(DungeonDB))]
     internal static class Patch_DungeonDB_Start

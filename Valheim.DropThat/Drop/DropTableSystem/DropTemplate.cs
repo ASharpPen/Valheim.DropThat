@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Drop.DropTableSystem.Conditions;
-using Valheim.DropThat.Drop.DropTableSystem.Modifiers;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Drop.DropTableSystem.Conditions;
+using DropThat.Drop.DropTableSystem.Modifiers;
 
-namespace Valheim.DropThat.Drop.DropTableSystem
+namespace DropThat.Drop.DropTableSystem
 {
     public class DropTemplate
     {

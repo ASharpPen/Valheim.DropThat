@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Valheim.DropThat.Locations
+namespace DropThat.Locations
 {
     public class SimpleLocation
     {

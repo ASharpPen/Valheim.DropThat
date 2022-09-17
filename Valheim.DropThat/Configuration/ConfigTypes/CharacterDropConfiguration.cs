@@ -1,7 +1,7 @@
 ﻿using System;
-using Valheim.DropThat.Core.Configuration;
+using DropThat.Core.Configuration;
 
-namespace Valheim.DropThat.Configuration.ConfigTypes
+namespace DropThat.Configuration.ConfigTypes
 {
     /// <summary>
     /// CharacterDrop configurations

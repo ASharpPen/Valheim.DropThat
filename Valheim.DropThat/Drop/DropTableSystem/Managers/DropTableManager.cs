@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.DropTableSystem.Caches;
-using Valheim.DropThat.Drop.DropTableSystem.Managers;
-using Valheim.DropThat.Drop.DropTableSystem.Wrapper;
+using DropThat.Core;
+using DropThat.Drop.DropTableSystem.Caches;
+using DropThat.Drop.DropTableSystem.Managers;
+using DropThat.Drop.DropTableSystem.Wrapper;
 
-namespace Valheim.DropThat.Drop.DropTableSystem
+namespace DropThat.Drop.DropTableSystem
 {
     internal static class DropTableManager
     {

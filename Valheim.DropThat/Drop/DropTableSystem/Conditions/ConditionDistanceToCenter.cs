@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Conditions
+namespace DropThat.Drop.DropTableSystem.Conditions
 {
     public class ConditionDistanceToCenter : IDropTableCondition
     {

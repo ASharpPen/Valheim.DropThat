@@ -4,10 +4,10 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Patches;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Patches;
 
-namespace Valheim.DropThat.Debugging
+namespace DropThat.Debugging
 {
     [HarmonyPatch(typeof(CharacterDrop))]
     internal static class Patch_CharacterDrop

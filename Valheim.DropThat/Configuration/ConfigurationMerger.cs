@@ -1,7 +1,7 @@
-﻿using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
+﻿using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Configuration
+namespace DropThat.Configuration
 {
     public static class ConfigurationMerger
     {

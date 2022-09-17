@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
+using DropThat.Configuration.ConfigTypes;
 
-namespace Valheim.DropThat.Drop.DropTableSystem
+namespace DropThat.Drop.DropTableSystem
 {
     public class DropSourceTemplateLink
     {

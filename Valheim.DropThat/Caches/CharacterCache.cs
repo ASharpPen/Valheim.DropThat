@@ -1,7 +1,7 @@
-﻿using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+﻿using DropThat.Core;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Caches
+namespace DropThat.Caches
 {
     public static class CharacterCache
     {

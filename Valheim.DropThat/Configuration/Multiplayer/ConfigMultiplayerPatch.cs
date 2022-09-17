@@ -1,9 +1,9 @@
 ﻿using HarmonyLib;
 using System;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Network;
+using DropThat.Core;
+using DropThat.Core.Network;
 
-namespace Valheim.DropThat.Configuration.Multiplayer
+namespace DropThat.Configuration.Multiplayer
 {
     [HarmonyPatch(typeof(ZNet))]
 	public class ConfigMultiplayerPatch

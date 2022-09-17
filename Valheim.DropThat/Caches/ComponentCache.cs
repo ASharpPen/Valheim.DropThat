@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Caches
+namespace DropThat.Caches
 {
     public class ComponentCache
     {

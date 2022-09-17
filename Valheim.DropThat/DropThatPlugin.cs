@@ -1,7 +1,7 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
+using DropThat.Configuration;
+using DropThat.Core;
 
 namespace Valheim.DropThat
 {

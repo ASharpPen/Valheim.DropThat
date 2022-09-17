@@ -1,71 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers;
-using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific;
-using Valheim.DropThat.Reset;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Drop.CharacterDropSystem.Modifiers;
+using DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific;
+using DropThat.Reset;
+using DropThat.Core.Extensions;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem
+namespace DropThat.Drop.CharacterDropSystem;
+
+public class DropModificationManager
 {
-    public class DropModificationManager
+    private HashSet<IDropModifier> DropModifiers = new HashSet<IDropModifier>();
+
+    private static DropModificationManager _instance;
+
+    public static DropModificationManager Instance
     {
-        private HashSet<IDropModifier> DropModifiers = new HashSet<IDropModifier>();
-
-        private static DropModificationManager _instance;
-
-        public static DropModificationManager Instance
+        get
         {
-            get
-            {
-                return _instance ??= new DropModificationManager();
-            }
+            return _instance ??= new DropModificationManager();
         }
+    }
 
-        DropModificationManager()
+    DropModificationManager()
+    {
+        StateResetter.Subscribe(() =>
         {
-            StateResetter.Subscribe(() =>
-            {
-                _instance = null;
-            });
+            _instance = null;
+        });
 
-            DropModifiers.AddNullSafe(ModifierSetQualityLevel.Instance);
-            DropModifiers.AddNullSafe(ModifierLoaderEpicLoot.MagicItem);
+        DropModifiers.AddNullSafe(ModifierSetQualityLevel.Instance);
+        DropModifiers.AddNullSafe(ModifierLoaderEpicLoot.MagicItem);
 
-            // Should run AFTER epic loot modifier
-            DropModifiers.AddNullSafe(ModifierSetDurability.Instance);
+        // Should run AFTER epic loot modifier
+        DropModifiers.AddNullSafe(ModifierSetDurability.Instance);
+    }
+
+    public void ApplyModifications(GameObject item, DropExtended extended, Vector3 pos)
+    {
+        if (item is null || extended is null)
+        {
+            return;
         }
-
-        public void ApplyModifications(GameObject item, DropExtended extended, Vector3 pos)
-        {
-            if (item is null || extended is null)
-            {
-                return;
-            }
 
 #if DEBUG
-            Log.LogDebug($"Applying modifiers to item {item.name}");
+        Log.LogDebug($"Applying modifiers to item {item.name}");
 #endif
 
-            var context = new DropContext
-            {
-                Item = item,
-                Extended = extended,
-                Pos = pos
-            };
+        var context = new DropContext
+        {
+            Item = item,
+            Extended = extended,
+            Pos = pos
+        };
 
-            foreach (var modifier in DropModifiers)
+        foreach (var modifier in DropModifiers)
+        {
+            try
             {
-                try
-                {
-                    modifier?.Modify(context);
-                }
-                catch (Exception e)
-                {
-                    Log.LogError($"Error while attempting to modify item drop {item.name}", e);
-                }
+                modifier?.Modify(context);
+            }
+            catch (Exception e)
+            {
+                Log.LogError($"Error while attempting to modify item drop {item.name}", e);
             }
         }
     }

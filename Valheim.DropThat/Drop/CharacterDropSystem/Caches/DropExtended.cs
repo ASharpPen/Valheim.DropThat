@@ -1,8 +1,8 @@
 ﻿
 using System.Runtime.CompilerServices;
-using Valheim.DropThat.Configuration.ConfigTypes;
+using DropThat.Configuration.ConfigTypes;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Caches
+namespace DropThat.Drop.CharacterDropSystem.Caches
 {
     public class DropExtended
     {

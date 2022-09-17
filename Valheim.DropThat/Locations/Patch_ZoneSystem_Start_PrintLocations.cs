@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Debugging;
+using DropThat.Configuration;
+using DropThat.Debugging;
 
-namespace Valheim.DropThat.Locations
+namespace DropThat.Locations
 {
     [HarmonyPatch(typeof(ZoneSystem))]
     internal static class Patch_ZoneSystem_Start_PrintLocations

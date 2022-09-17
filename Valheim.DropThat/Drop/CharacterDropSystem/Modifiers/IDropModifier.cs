@@ -1,5 +1,5 @@
 ﻿
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers
+namespace DropThat.Drop.CharacterDropSystem.Modifiers
 {
     public interface IDropModifier
     {

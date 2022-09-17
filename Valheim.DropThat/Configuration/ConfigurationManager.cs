@@ -2,11 +2,11 @@
 using BepInEx.Configuration;
 using System;
 using System.IO;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Configuration;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Core.Configuration;
 
-namespace Valheim.DropThat.Configuration
+namespace DropThat.Configuration
 {
     public static class ConfigurationManager
     {

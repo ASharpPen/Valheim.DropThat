@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Valheim.DropThat.Core.Network
+namespace DropThat.Core.Network
 {
     /// <summary>
     /// Dispatcher for DataTransferService.

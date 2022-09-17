@@ -2,24 +2,23 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace Valheim.DropThat.Utilities
-{
-    internal static class ReflectionUtils
-    {
-        private static MethodInfo InstantiateGameObject = null;
+namespace DropThat.Utilities;
 
-        public static MethodInfo InstantiateGameObjectMethod
+internal static class ReflectionUtils
+{
+    private static MethodInfo InstantiateGameObject = null;
+
+    public static MethodInfo InstantiateGameObjectMethod
+    {
+        get
         {
-            get
-            {
-                return InstantiateGameObject ??= typeof(UnityEngine.Object)
-                    .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                    .Where(x => x.Name.StartsWith(nameof(UnityEngine.Object.Instantiate)))
-                    .Where(m => m.IsGenericMethod)
-                    .First(m => m.ContainsGenericParameters && m.GetParameters().Length == 3)
-                    .GetGenericMethodDefinition()
-                    .MakeGenericMethod(typeof(GameObject));
-            }
+            return InstantiateGameObject ??= typeof(UnityEngine.Object)
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Where(x => x.Name.StartsWith(nameof(UnityEngine.Object.Instantiate)))
+                .Where(m => m.IsGenericMethod)
+                .First(m => m.ContainsGenericParameters && m.GetParameters().Length == 3)
+                .GetGenericMethodDefinition()
+                .MakeGenericMethod(typeof(GameObject));
         }
     }
 }

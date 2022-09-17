@@ -1,6 +1,6 @@
-﻿using Valheim.DropThat.Utilities.Valheim;
+﻿using DropThat.Utilities.Valheim;
 
-namespace Valheim.DropThat.Creature.DamageRecords
+namespace DropThat.Creature.DamageRecords
 {
     public class DamageRecord
     {

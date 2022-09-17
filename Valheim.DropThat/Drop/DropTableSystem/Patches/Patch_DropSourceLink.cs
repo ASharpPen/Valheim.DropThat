@@ -1,12 +1,12 @@
 ﻿using System;
 using HarmonyLib;
 using UnityEngine;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.DropTableSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration;
+using DropThat.Core;
+using DropThat.Drop.DropTableSystem.Caches;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Patches;
+namespace DropThat.Drop.DropTableSystem.Patches;
 
 internal static class Patch_DropSourceLink
 {

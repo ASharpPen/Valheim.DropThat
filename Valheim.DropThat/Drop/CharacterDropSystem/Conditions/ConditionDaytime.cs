@@ -1,7 +1,7 @@
-﻿using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+﻿using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionDaytime : ICondition
     {

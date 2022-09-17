@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Conditions.ModSpecific.ModCLLC
+namespace DropThat.Drop.DropTableSystem.Conditions.ModSpecific.ModCLLC
 {
     public class ConditionWorldLevel : IDropTableCondition
     {

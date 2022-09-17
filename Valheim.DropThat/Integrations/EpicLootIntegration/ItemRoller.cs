@@ -1,9 +1,9 @@
 ﻿using ExtendedItemDataFramework;
-using Valheim.DropThat.Configuration.ConfigTypes;
+using DropThat.Configuration.ConfigTypes;
 using UnityEngine;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Integrations.EpicLootIntegration
+namespace DropThat.Integrations.EpicLootIntegration
 {
     internal static class ItemRoller
     {

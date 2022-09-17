@@ -1,8 +1,8 @@
 ﻿using System;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific
+namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific
 {
     internal static class ConditionLoaderCLLC
     {

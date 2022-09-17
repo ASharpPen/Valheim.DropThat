@@ -1,7 +1,7 @@
-﻿using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
+﻿using DropThat.Caches;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers;
+namespace DropThat.Drop.CharacterDropSystem.Modifiers;
 
 public class ModifierSetDurability : IDropModifier
 {

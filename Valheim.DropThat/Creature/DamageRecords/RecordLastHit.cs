@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Creature.DamageRecords
+namespace DropThat.Creature.DamageRecords
 {
     /// <summary>
     /// Local cache of last hit data.

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valheim.DropThat.Core.Configuration;
+using DropThat.Core.Configuration;
 
-namespace Valheim.DropThat.Configuration.ConfigTypes
+namespace DropThat.Configuration.ConfigTypes
 {
     [Serializable]
     public class EpicLootItemConfiguration : Config

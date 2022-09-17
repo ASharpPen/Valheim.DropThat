@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers
+namespace DropThat.Drop.DropTableSystem.Modifiers
 {
     public class ModifierSetQualityLevel : IDropTableModifier
     {

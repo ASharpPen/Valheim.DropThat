@@ -293,6 +293,7 @@
     <Compile Include="Configuration\Multiplayer\GeneralConfigPackage.cs" />
     <Compile Include="Core\Cache\CacheCleaner.cs" />
     <Compile Include="Core\Cache\ManagedCache.cs" />
+    <Compile Include="Core\Extensions\ICollectionExtensions.cs" />
     <Compile Include="Core\Network\CompressedPackage.cs" />
     <Compile Include="Core\Network\DataTransferService.cs" />
     <Compile Include="Core\Network\Debug\DataTransferServiceTest.cs" />
@@ -406,13 +407,11 @@
     <Compile Include="Reset\WorldStartPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reset\StateResetter.cs" />
-    <Compile Include="Utilities\HashSetExtensions.cs" />
-    <Compile Include="Utilities\ListExtensions.cs" />
     <Compile Include="Utilities\UnityObjectExtensions.cs" />
     <Compile Include="Utilities\Valheim\BiomeExtensions.cs" />
     <Compile Include="Utilities\CodeMatcherExtensions.cs" />
     <Compile Include="Drop\DropTableSystem\Wrapper\WrapperGameObjectExtensions.cs" />
-    <Compile Include="Utilities\StringExtensions.cs" />
+    <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Utilities\ReflectionUtils.cs" />
     <Compile Include="Utilities\Valheim\HitDataExtensions.cs" />
     <Compile Include="Drop\DropTableSystem\Wrapper\WrapperComponent.cs" />

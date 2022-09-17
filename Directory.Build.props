@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
-    <LangVersion>preview</LangVersion>
+	  <RootNamespace>DropThat</RootNamespace>
+	  <LangVersion>preview</LangVersion>
   </PropertyGroup>
 </Project>

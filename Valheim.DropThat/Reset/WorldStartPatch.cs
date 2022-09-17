@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
+using DropThat.Configuration;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Reset
+namespace DropThat.Reset
 {
     [HarmonyPatch(typeof(FejdStartup), "OnWorldStart")]
     public static class WorldStartPatch

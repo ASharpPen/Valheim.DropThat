@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Creature.StatusRecords
+namespace DropThat.Creature.StatusRecords
 {
     public static class RecordLastStatus
     {

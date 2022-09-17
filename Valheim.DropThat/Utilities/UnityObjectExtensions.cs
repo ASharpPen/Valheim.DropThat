@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using Valheim.DropThat.Core;
 
-namespace Valheim.DropThat.Utilities;
+namespace DropThat.Utilities;
 
-public static class UnityObjectExtensions
+internal static class UnityObjectExtensions
 {
     private static Regex NameRegex = new Regex(@"^[^$(]*(?=$|[(])", RegexOptions.Compiled);
 

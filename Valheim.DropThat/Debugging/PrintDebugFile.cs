@@ -1,10 +1,10 @@
 ﻿using BepInEx;
 using System.Collections.Generic;
 using System.IO;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
+using DropThat.Configuration;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Debugging
+namespace DropThat.Debugging
 {
     internal static class PrintDebugFile
     {

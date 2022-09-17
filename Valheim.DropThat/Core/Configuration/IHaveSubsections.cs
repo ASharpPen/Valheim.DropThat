@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Valheim.DropThat.Core.Configuration
+namespace DropThat.Core.Configuration
 {
     public interface IHaveSubsections
     {

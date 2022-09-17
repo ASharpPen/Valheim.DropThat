@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.DropTableSystem.Caches;
-using Valheim.DropThat.Drop.DropTableSystem.Managers;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Drop.DropTableSystem.Caches;
+using DropThat.Drop.DropTableSystem.Managers;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Patches
+namespace DropThat.Drop.DropTableSystem.Patches
 {
     /// <summary>
     /// Turns out. DropTable's really want to do things the hard way.

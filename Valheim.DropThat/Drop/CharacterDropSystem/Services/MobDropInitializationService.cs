@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Configuration.ConfigTypes;
+using DropThat.Configuration.ConfigTypes;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Services
+namespace DropThat.Drop.CharacterDropSystem.Services
 {
     internal static class MobDropInitializationService
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Caches
+namespace DropThat.Caches
 {
     public static class ZdoCache
     {

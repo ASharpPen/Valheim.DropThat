@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific;
-using Valheim.DropThat.Reset;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Core.Extensions;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Drop.CharacterDropSystem.Conditions;
+using DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific;
+using DropThat.Reset;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem
+namespace DropThat.Drop.CharacterDropSystem
 {
     public class ConditionChecker
     {

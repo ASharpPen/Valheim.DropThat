@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Caches;
+using DropThat.Core;
+using DropThat.Core.Extensions;
+using DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionCreatureState : ICondition
     {

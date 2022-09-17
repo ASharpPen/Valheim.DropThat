@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Valheim.DropThat.Debugging
+namespace DropThat.Debugging
 {
     internal static class LocationsFileWriter
     {

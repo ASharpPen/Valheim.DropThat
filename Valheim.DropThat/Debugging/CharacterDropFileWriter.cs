@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Debugging
+namespace DropThat.Debugging
 {
     public static class CharacterDropFileWriter
     {
