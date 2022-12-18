@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Cache;
 
 namespace Valheim.DropThat.Creature.StatusRecords
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Valheim.DropThat.Core
+namespace Valheim.DropThat.Core.Cache
 {
     internal interface IManagedCache
     {

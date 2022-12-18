@@ -1,4 +1,4 @@
-﻿using Valheim.DropThat.Core;
+﻿using Valheim.DropThat.Core.Cache;
 using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Caches

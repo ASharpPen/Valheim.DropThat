@@ -4,10 +4,9 @@ using System.Linq;
 using UnityEngine;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.DropTableSystem.Caches;
-using Valheim.DropThat.Drop.DropTableSystem.Managers;
 using Valheim.DropThat.Drop.DropTableSystem.Wrapper;
 
-namespace Valheim.DropThat.Drop.DropTableSystem
+namespace Valheim.DropThat.Drop.DropTableSystem.Managers
 {
     internal static class DropTableManager
     {
@@ -56,7 +55,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
 
             bool skipDrop = entityConfig is null
                 ? UnityEngine.Random.value > dropTable.m_dropChance
-                : UnityEngine.Random.value > (entityConfig.SetDropChance / 100);
+                : UnityEngine.Random.value > entityConfig.SetDropChance / 100;
 
             if (skipDrop)
             {
@@ -130,7 +129,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
                         result.AddRange(DropConverter(workingList.First()));
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Log.LogWarning("Error while rolling drop. Skipping roll\n", e);
                 }
@@ -164,7 +163,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
                 Item[0] = itemData;
                 return Item;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.LogError("Error while attempting to prepare new item data", e);
                 return Enumerable.Empty<ItemDrop.ItemData>();

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Cache;
 using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Creature.DamageRecords;

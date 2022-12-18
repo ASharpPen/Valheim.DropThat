@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Cache;
 
 namespace Valheim.DropThat.Caches
 {
