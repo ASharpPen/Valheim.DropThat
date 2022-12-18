@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Reset;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Reset;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Locations
+namespace DropThat.Locations
 {
     public static class LocationHelper
     {

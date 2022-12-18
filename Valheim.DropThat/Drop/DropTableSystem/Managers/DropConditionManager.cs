@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Managers;
+namespace DropThat.Drop.DropTableSystem.Managers;
 
 internal static class DropConditionManager
 {

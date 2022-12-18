@@ -1,8 +1,8 @@
 ﻿using System;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpicLoot;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpicLoot;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific
+namespace DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific
 {
     internal static class ModifierLoaderEpicLoot
     {

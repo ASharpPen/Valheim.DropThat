@@ -1,5 +1,5 @@
 ﻿
-namespace Valheim.DropThat.Integrations.EpicLootIntegration
+namespace DropThat.Integrations.EpicLootIntegration
 {
     internal enum Rarity
     {

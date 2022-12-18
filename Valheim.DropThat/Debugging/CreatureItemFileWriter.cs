@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Debugging;
+namespace DropThat.Debugging;
 
 internal static class CreatureItemFileWriter
 {

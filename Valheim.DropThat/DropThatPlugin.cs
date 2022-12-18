@@ -1,10 +1,10 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Network;
+using DropThat.Configuration;
+using DropThat.Core;
+using DropThat.Core.Network;
 
-namespace Valheim.DropThat
+namespace DropThat
 {
     [BepInDependency("asharppen.valheim.spawn_that", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("randyknapp.mods.epicloot", BepInDependency.DependencyFlags.SoftDependency)]

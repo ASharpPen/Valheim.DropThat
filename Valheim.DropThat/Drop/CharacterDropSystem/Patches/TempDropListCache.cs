@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
+namespace DropThat.Drop.CharacterDropSystem.Patches
 {
     /// <summary>
     /// Temporary caching for carrying config information between CharacterDrop.GenerateDropList and CharacterDrop.DropItems.

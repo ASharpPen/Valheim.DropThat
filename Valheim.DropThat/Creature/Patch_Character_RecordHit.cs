@@ -1,10 +1,9 @@
 ﻿using HarmonyLib;
 using System;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Caches;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Creature;
+namespace DropThat.Creature;
 
 [HarmonyPatch(typeof(Character))]
 internal static class Patch_Character_RecordHit

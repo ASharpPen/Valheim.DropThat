@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Reset
+namespace DropThat.Reset
 {
     public static class StateResetter
     {

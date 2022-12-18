@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading.Tasks;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.DropTableSystem.Caches;
-using Valheim.DropThat.Drop.DropTableSystem.Wrapper;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Drop.DropTableSystem.Caches;
+using DropThat.Drop.DropTableSystem.Wrapper;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Patches
+namespace DropThat.Drop.DropTableSystem.Patches
 {
     internal static class Patch_OnDrop
     {

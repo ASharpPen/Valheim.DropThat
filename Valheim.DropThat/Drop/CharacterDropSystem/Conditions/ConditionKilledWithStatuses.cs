@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Creature.StatusRecords;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Caches;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Creature.StatusRecords;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionKilledWithStatuses : ICondition
     {

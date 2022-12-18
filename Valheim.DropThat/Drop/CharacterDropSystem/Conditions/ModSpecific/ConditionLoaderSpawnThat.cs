@@ -1,8 +1,8 @@
 ﻿using System;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific
+namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific
 {
     internal static class ConditionLoaderSpawnThat
     {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Valheim.DropThat.Caches
+namespace DropThat.Caches
 {
     public class CharacterExtended
     {

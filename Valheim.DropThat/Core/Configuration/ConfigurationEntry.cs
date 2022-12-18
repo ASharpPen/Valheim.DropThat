@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Valheim.DropThat.Core.Configuration
+namespace DropThat.Core.Configuration
 {
     public interface IConfigurationEntry
     {

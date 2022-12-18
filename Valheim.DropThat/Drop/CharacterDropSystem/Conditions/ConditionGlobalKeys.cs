@@ -1,8 +1,8 @@
-﻿using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+﻿using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions
 {
     internal class ConditionGlobalKeys : ICondition
     {

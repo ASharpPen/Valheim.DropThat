@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Network;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Core.Network;
 
-namespace Valheim.DropThat.Configuration.Multiplayer;
+namespace DropThat.Configuration.Multiplayer;
 
 [Serializable]
 internal class CharacterDropConfigPackage : Dto

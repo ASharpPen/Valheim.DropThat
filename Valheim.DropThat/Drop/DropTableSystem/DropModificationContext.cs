@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Valheim.DropThat.Drop.DropTableSystem
+namespace DropThat.Drop.DropTableSystem
 {
     public class DropModificationContext
     {

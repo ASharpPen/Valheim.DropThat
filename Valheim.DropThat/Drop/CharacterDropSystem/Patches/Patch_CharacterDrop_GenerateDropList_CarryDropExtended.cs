@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
+namespace DropThat.Drop.CharacterDropSystem.Patches
 {
     /// <summary>
     /// This part of the code is extremely busy with a number of mods wanting in on the item drop action.

@@ -1,7 +1,7 @@
 ﻿using System;
-using Valheim.DropThat.Drop.DropTableSystem.Conditions.ModSpecific.ModCLLC;
+using DropThat.Drop.DropTableSystem.Conditions.ModSpecific.ModCLLC;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Conditions.ModSpecific
+namespace DropThat.Drop.DropTableSystem.Conditions.ModSpecific
 {
     internal static class ConditionLoaderCLLC
     {

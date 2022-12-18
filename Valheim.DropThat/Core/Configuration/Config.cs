@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Valheim.DropThat.Core.Configuration
+namespace DropThat.Core.Configuration
 {
     [Serializable]
     public abstract class Config

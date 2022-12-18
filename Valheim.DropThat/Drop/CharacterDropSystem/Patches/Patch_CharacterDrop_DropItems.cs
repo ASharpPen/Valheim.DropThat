@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Caches;
+using DropThat.Configuration;
+using DropThat.Core;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
+namespace DropThat.Drop.CharacterDropSystem.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop))]
     public static class Patch_CharacterDrop_DropItems

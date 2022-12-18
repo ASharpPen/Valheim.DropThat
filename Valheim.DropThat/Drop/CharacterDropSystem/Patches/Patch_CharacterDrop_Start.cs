@@ -1,15 +1,15 @@
 ﻿using HarmonyLib;
 using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
+using DropThat.Configuration.ConfigTypes;
 using System;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Services;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Services;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
+namespace DropThat.Drop.CharacterDropSystem.Patches
 {
     [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.Start))]
     public static class Patch_CharacterDrop_Start

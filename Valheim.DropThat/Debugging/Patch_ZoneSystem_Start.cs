@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Configuration;
+using DropThat.Configuration;
 
-namespace Valheim.DropThat.Debugging
+namespace DropThat.Debugging
 {
     /// <summary>
     /// Could have loaded in at ZNetScene Awake, 

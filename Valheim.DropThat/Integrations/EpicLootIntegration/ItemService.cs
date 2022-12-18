@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Integrations.EpicLootIntegration
+namespace DropThat.Integrations.EpicLootIntegration
 {
     internal static class ItemService
     {

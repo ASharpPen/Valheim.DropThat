@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Caches;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Core.Configuration;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat
+namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat
 {
     public class ConditionTemplateId : ICondition
     {

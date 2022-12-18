@@ -1,10 +1,10 @@
 ﻿using HarmonyLib;
 using System;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Network;
-using Valheim.DropThat.Reset;
+using DropThat.Core;
+using DropThat.Core.Network;
+using DropThat.Reset;
 
-namespace Valheim.DropThat.Locations
+namespace DropThat.Locations
 {
     [HarmonyPatch(typeof(ZNet))]
 	public static class ZoneSystemMultiplayerPatch

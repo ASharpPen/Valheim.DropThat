@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Valheim.DropThat.Creature.StatusRecords
+namespace DropThat.Creature.StatusRecords
 {
     public class StatusRecord
     {

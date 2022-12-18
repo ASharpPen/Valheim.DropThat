@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionDistanceToCenter : ICondition
     {

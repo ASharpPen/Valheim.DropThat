@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Valheim.DropThat.Core.Cache
+namespace DropThat.Core.Cache
 {
     internal static class CacheCleaner
     {

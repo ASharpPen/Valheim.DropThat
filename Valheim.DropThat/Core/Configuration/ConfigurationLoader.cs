@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Valheim.DropThat.Core.Configuration
+namespace DropThat.Core.Configuration
 {
     public static class ConfigurationLoader
     {

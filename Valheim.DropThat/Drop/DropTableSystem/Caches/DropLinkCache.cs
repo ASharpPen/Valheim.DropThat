@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Caches
+namespace DropThat.Drop.DropTableSystem.Caches
 {
     internal static class DropLinkCache
     {

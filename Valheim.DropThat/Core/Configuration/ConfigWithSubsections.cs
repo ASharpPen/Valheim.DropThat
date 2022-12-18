@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Valheim.DropThat.Core.Configuration
+namespace DropThat.Core.Configuration
 {
     [Serializable]
     public abstract class ConfigWithSubsections<T> : Config, IHaveSubsections where T : Config

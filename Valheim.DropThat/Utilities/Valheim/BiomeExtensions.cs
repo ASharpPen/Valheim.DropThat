@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Valheim.DropThat.Utilities.Valheim
+namespace DropThat.Utilities.Valheim
 {
     public static class BiomeExtensions
     {

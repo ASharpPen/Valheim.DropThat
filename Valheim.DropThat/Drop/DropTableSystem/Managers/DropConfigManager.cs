@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Drop.DropTableSystem.Conditions;
-using Valheim.DropThat.Drop.DropTableSystem.Conditions.ModSpecific;
-using Valheim.DropThat.Drop.DropTableSystem.Modifiers;
-using Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot;
-using Valheim.DropThat.Integrations;
-using Valheim.DropThat.Reset;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Core.Configuration;
+using DropThat.Drop.DropTableSystem.Conditions;
+using DropThat.Drop.DropTableSystem.Conditions.ModSpecific;
+using DropThat.Drop.DropTableSystem.Modifiers;
+using DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot;
+using DropThat.Integrations;
+using DropThat.Reset;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Managers
+namespace DropThat.Drop.DropTableSystem.Managers
 {
     internal static class DropConfigManager
     {

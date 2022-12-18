@@ -1,4 +1,4 @@
-﻿namespace Valheim.DropThat.Core.Network
+﻿namespace DropThat.Core.Network
 {
     internal class QueueItem
     {

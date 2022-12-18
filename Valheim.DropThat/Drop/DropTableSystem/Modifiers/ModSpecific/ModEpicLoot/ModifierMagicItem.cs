@@ -1,10 +1,10 @@
-﻿using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Integrations.EpicLootIntegration;
+﻿using DropThat.Configuration.ConfigTypes;
+using DropThat.Core.Configuration;
+using DropThat.Core;
+using DropThat.Integrations.EpicLootIntegration;
 using UnityEngine;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot
+namespace DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot
 {
     internal class ModifierMagicItem : IDropTableModifier
     {

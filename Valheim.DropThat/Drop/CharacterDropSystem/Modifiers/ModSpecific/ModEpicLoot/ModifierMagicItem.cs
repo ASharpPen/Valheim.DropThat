@@ -3,16 +3,16 @@ using System.Reflection;
 using HarmonyLib;
 using ExtendedItemDataFramework;
 using EpicLoot;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core.Configuration;
+using DropThat.Utilities;
 using EpicLoot.LegendarySystem;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Caches;
+using DropThat.Caches;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpicLoot
+namespace DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpicLoot
 {
     internal class ModifierMagicItem : IDropModifier
     {

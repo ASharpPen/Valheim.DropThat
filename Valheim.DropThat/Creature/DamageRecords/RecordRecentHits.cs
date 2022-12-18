@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Valheim.DropThat.Core.Cache;
-using Valheim.DropThat.Utilities;
+using DropThat.Core.Cache;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Creature.DamageRecords;
+namespace DropThat.Creature.DamageRecords;
 
 /// <summary>
 /// Local cache of recent hit data pr creature.

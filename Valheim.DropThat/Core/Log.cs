@@ -1,8 +1,8 @@
 ﻿using BepInEx.Logging;
 using System;
-using Valheim.DropThat.Configuration;
+using DropThat.Configuration;
 
-namespace Valheim.DropThat.Core
+namespace DropThat.Core
 {
     internal static class Log
     {

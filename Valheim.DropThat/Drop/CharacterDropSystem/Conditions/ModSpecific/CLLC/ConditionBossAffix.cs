@@ -1,13 +1,13 @@
 ﻿using CreatureLevelControl;
 using System;
 using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Caches;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Core.Configuration;
+using DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC
+namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC
 {
     internal class ConditionBossAffix : ICondition
     {

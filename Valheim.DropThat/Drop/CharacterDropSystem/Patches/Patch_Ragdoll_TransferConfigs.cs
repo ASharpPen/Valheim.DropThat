@@ -7,13 +7,13 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
+namespace DropThat.Drop.CharacterDropSystem.Patches
 {
     /// <summary>
     /// Turns out, ragdoll rules the drops when a creature dies.

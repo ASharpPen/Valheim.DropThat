@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Reset;
+using DropThat.Reset;
 
-namespace Valheim.DropThat.Core.Network;
+namespace DropThat.Core.Network;
 
 internal partial class DataTransferService : IDisposable
 {

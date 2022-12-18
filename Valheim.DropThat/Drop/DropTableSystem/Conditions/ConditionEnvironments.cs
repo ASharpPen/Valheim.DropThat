@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Conditions
+namespace DropThat.Drop.DropTableSystem.Conditions
 {
     public class ConditionEnvironments : IDropTableCondition
     {

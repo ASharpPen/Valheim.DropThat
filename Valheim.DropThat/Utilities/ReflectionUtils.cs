@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace Valheim.DropThat.Utilities
+namespace DropThat.Utilities
 {
     internal static class ReflectionUtils
     {

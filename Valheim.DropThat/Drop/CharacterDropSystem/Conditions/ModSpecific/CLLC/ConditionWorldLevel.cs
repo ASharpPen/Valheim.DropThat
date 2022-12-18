@@ -1,9 +1,9 @@
 ﻿using CreatureLevelControl;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC
+namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC
 {
     public class ConditionWorldLevel : ICondition
     {

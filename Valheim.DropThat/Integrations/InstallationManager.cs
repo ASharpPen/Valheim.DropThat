@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Valheim.DropThat.Integrations
+namespace DropThat.Integrations
 {
     public static class InstallationManager
     {

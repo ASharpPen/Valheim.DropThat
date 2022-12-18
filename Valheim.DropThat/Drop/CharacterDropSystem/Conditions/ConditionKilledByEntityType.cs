@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Creature.DamageRecords;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Drop.CharacterDropSystem.Models;
-using Valheim.DropThat.Utilities;
+using DropThat.Caches;
+using DropThat.Configuration.ConfigTypes;
+using DropThat.Core;
+using DropThat.Creature.DamageRecords;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions
 {
     public class ConditionKilledByEntityType : ICondition
     {

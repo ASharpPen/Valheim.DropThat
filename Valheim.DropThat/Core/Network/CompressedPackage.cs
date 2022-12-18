@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Valheim.DropThat.Core.Network
+namespace DropThat.Core.Network
 {
     [Serializable]
     internal abstract class CompressedPackage

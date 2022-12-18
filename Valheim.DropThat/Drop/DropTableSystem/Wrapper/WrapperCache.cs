@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Core.Cache;
+using DropThat.Core.Cache;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper;
+namespace DropThat.Drop.DropTableSystem.Wrapper;
 
 internal class WrapperCache
 {

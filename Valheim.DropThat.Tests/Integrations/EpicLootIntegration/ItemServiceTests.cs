@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Valheim.DropThat.Tests.Integrations.EpicLootIntegration
+namespace DropThat.Tests.Integrations.EpicLootIntegration
 {
     [TestClass]
     public class ItemServiceTests

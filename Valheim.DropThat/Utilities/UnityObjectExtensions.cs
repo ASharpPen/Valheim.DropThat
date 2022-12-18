@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Utilities;
+namespace DropThat.Utilities;
 
 public static class UnityObjectExtensions
 {

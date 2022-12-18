@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers;
-using Valheim.DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific;
-using Valheim.DropThat.Reset;
-using Valheim.DropThat.Utilities;
+using DropThat.Core;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Drop.CharacterDropSystem.Modifiers;
+using DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific;
+using DropThat.Reset;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem
+namespace DropThat.Drop.CharacterDropSystem
 {
     public class DropModificationManager
     {

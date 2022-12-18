@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
 using System;
-using Valheim.DropThat.Core;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Utilities
+namespace DropThat.Utilities
 {
     public static class CodeMatcherExtensions
     {
