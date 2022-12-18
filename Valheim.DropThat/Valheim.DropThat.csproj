@@ -18,12 +18,14 @@
   </PropertyGroup>
   
   <ItemGroup>
+	  <PackageReference Include="YamlDotNet" Version="12.2.1" />
+	  <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
 	  <PackageReference Include="Microsoft.Unity.Analyzers" Version="1.12.0">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	</PackageReference>
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
   </ItemGroup>
-
+	
   <ItemGroup>
 	<Reference Include="0Harmony">
       <HintPath>..\Libs\BepInEx\0Harmony.dll</HintPath>
@@ -46,6 +48,9 @@
     <Reference Include="ExtendedItemDataFramework">
       <HintPath>..\Libs\RandyKnapp-ExtendedItemDataFramework\ExtendedItemDataFramework.dll</HintPath>
     </Reference>
+    <Reference Include="ThatCore">
+      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
     </Reference>
@@ -60,13 +65,11 @@
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Libs\Unity\UnityEngine.UI.dll</HintPath>
-    </Reference>  
+    </Reference>
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="ThunderstoreResources\manifest.json" />
-    <None Include="packages.config" />
     <None Include="ThunderstoreResources\README.md" />
   </ItemGroup>
   <ItemGroup>

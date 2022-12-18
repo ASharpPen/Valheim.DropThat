@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ILRepacker" AfterTargets="Build">
+
+		<ItemGroup>
+			<InputAssemblies Include="$(TargetPath)" />
+			<InputAssemblies Include="$(OutputPath)\YamlDotNet.dll" />
+			<InputAssemblies Include="$(OutputPath)\ThatCore.dll" />
+			<LibraryPath  Include="$(OutputPath)" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<!-- Must be a fully qualified name -->
+			<!--<DoNotInternalizeAssemblies Include="${TargetPath}" />-->
+		</ItemGroup>
+
+		<ILRepack
+			Parallel="true"
+			Internalize="true"
+			InternalizeExclude="@(DoNotInternalizeAssemblies)"
+			InputAssemblies="@(InputAssemblies)"
+			TargetKind="Dll"
+			OutputFile="$(OutputPath)\$(AssemblyName).dll"
+			LibraryPath="@(LibraryPath)"
+    />
+
+	</Target>
+</Project>
