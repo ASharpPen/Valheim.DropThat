@@ -78,7 +78,7 @@ namespace DropThat.Drop.CharacterDropSystem.Conditions
             {
                 GameObject attacker = ZNetScene.instance.FindInstance(lastHit.Hit.m_attacker);
 
-                var attackerCharacter = ComponentCache.GetComponent<Character>(attacker);
+                var attackerCharacter = ComponentCache.Get<Character>(attacker);
 
                 if (attackerCharacter is not null)
                 {

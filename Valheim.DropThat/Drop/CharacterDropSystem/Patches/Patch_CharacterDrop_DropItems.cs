@@ -90,7 +90,7 @@ namespace DropThat.Drop.CharacterDropSystem.Patches
                     if (stackSize > 1)
                     {
                         // Apply stack to item, and skip loop equivalently.
-                        var itemDrop = ComponentCache.GetComponent<ItemDrop>(item);
+                        var itemDrop = ComponentCache.Get<ItemDrop>(item);
 
                         Log.LogTrace($"Stacking item '{drop.Key.name}' {stackSize} times out of maximum {maxStack}.");
 
@@ -115,7 +115,7 @@ namespace DropThat.Drop.CharacterDropSystem.Patches
 
             int GetMaxStackSize(GameObject item)
             {
-                var itemDrop = ComponentCache.GetComponent<ItemDrop>(item);
+                var itemDrop = ComponentCache.Get<ItemDrop>(item);
 
                 if (itemDrop.IsNull() ||
                     itemDrop.m_itemData?.m_shared is null)

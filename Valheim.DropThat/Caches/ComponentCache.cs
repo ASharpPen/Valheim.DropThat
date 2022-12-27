@@ -1,37 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using DropThat.Core.Cache;
+using ThatCore.Cache;
 
-namespace DropThat.Caches
+namespace DropThat.Caches;
+
+public class ComponentCache
 {
-    public class ComponentCache
+    private static ManagedCache<ComponentCache> CacheTable { get; } = new();
+
+    public static T Get<T>(GameObject obj) where T : Component
     {
-        private static ManagedCache<ComponentCache> CacheTable { get; } = new();
+        ComponentCache cache = CacheTable.GetOrCreate(obj);
 
-        public static T GetComponent<T>(GameObject obj) where T : Component
+        Type componentType = typeof(T);
+
+        if (cache.ComponentTable.TryGetValue(componentType, out Component cached))
         {
-            ComponentCache cache = CacheTable.GetOrCreate(obj);
-
-            Type componentType = typeof(T);
-
-            if (cache.ComponentTable.TryGetValue(componentType, out Component cached))
-            {
-                return (T)cached;
-            }
-
-            if (obj.TryGetComponent(componentType, out Component component))
-            {
-                cache.ComponentTable.Add(componentType, component);
-                return (T)component;
-            }
-            else
-            {
-                cache.ComponentTable.Add(componentType, null);
-                return null;
-            }
+            return (T)cached;
         }
 
-        private Dictionary<Type, Component> ComponentTable { get; } = new();
+        if (obj.TryGetComponent(componentType, out Component component))
+        {
+            cache.ComponentTable.Add(componentType, component);
+            return (T)component;
+        }
+        else
+        {
+            cache.ComponentTable.Add(componentType, null);
+            return null;
+        }
     }
+
+    private Dictionary<Type, Component> ComponentTable { get; } = new();
 }

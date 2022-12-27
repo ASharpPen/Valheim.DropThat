@@ -21,7 +21,7 @@ public class ModifierSetDurability : IDropModifier
             return;
         }
 
-        var itemDrop = ComponentCache.GetComponent<ItemDrop>(context.Item);
+        var itemDrop = ComponentCache.Get<ItemDrop>(context.Item);
 
         Log.LogTrace($"Setting durability of item '{context.Item.name}' to {context.Extended.Config.SetDurability.Value}");
         itemDrop.m_itemData.m_durability = context.Extended.Config.SetDurability;

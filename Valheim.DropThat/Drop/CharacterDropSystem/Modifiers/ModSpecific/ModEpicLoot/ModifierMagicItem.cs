@@ -46,7 +46,7 @@ namespace DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpicLoot
                 return;
             }
 
-            var itemDrop = ComponentCache.GetComponent<ItemDrop>(context.Item);
+            var itemDrop = ComponentCache.Get<ItemDrop>(context.Item);
 
             if (EpicLoot.EpicLoot.CanBeMagicItem(itemDrop.m_itemData))
             {

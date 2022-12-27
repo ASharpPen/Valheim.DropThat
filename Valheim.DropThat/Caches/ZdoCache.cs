@@ -14,7 +14,7 @@ namespace DropThat.Caches
                 return cached;
             }
 
-            var znetView = ComponentCache.GetComponent<ZNetView>(gameObject);
+            var znetView = ComponentCache.Get<ZNetView>(gameObject);
 
             if (!znetView || znetView is null)
             {

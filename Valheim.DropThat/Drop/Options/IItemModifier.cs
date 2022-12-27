@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
-namespace DropThat.Core.Configuration
+namespace DropThat.Drop.Options;
+
+public interface IItemModifier
 {
-    public interface IConfigFile : IHaveSubsections
-    {
-    }
+    void Modify(GameObject drop);
 }
