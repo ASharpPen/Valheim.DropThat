@@ -1,43 +1,44 @@
 ﻿using System;
+using System.Linq;
 using Valheim.DropThat.Configuration.ConfigTypes;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Network;
 
-namespace Valheim.DropThat.Configuration.Multiplayer
+namespace Valheim.DropThat.Configuration.Multiplayer;
+
+[Serializable]
+internal class CharacterDropConfigPackage : Dto
 {
-    [Serializable]
-    internal class CharacterDropConfigPackage : CompressedPackage
+    public CharacterDropConfiguration CharacterDropConfigs;
+    public CharacterDropListConfigurationFile CharacterDropLists;
+
+    public override void BeforePack()
     {
-        public CharacterDropConfiguration CharacterDropConfigs;
-        public CharacterDropListConfigurationFile CharacterDropLists;
+        CharacterDropConfigs = ConfigurationManager.CharacterDropConfigs;
+        CharacterDropLists = ConfigurationManager.CharacterDropLists;
 
-        protected override void BeforePack()
-        {
-            CharacterDropConfigs = ConfigurationManager.CharacterDropConfigs;
-            CharacterDropLists = ConfigurationManager.CharacterDropLists;
+        Log.LogDebug($"Packaged CharacterDrop configurations: " +
+            $"{ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0} creatures " +
+            $"and {ConfigurationManager.CharacterDropConfigs?.Subsections?.Values.Sum(x => x.Subsections.Count) ?? 0} drops");
+        Log.LogDebug($"Packaged CharacterDrop lists: " +
+            $"{ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0} creatures " +
+            $"and {ConfigurationManager.CharacterDropLists?.Subsections?.Values.Sum(x => x.Subsections.Count) ?? 0} drops");
+    }
 
-            Log.LogDebug($"Packaged CharacterDrop configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
-            Log.LogDebug($"Packaged CharacterDrop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
-        }
+    public override void AfterUnpack()
+    {
+        Log.LogDebug("Received and deserialized CharacterDrop config package");
 
-        protected override void AfterUnpack(object obj)
-        {
-            if (obj is CharacterDropConfigPackage configPackage)
-            {
-                Log.LogDebug("Received and deserialized CharacterDrop config package");
+        ConfigurationManager.CharacterDropConfigs = CharacterDropConfigs;
+        ConfigurationManager.CharacterDropLists = CharacterDropLists;
 
-                ConfigurationManager.CharacterDropConfigs = configPackage.CharacterDropConfigs;
-                ConfigurationManager.CharacterDropLists = configPackage.CharacterDropLists;
+        Log.LogDebug($"Unpacked CharacterDrop configurations: " +
+            $"{ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0} creatures " +
+            $"and {ConfigurationManager.CharacterDropConfigs?.Subsections?.Values.Sum(x => x.Subsections.Count) ?? 0} drops");
+        Log.LogDebug($"Unpacked CharacterDrop lists: " +
+            $"{ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0} creatures " +
+            $"and {ConfigurationManager.CharacterDropLists?.Subsections?.Values.Sum(x => x.Subsections.Count) ?? 0} drops");
 
-                Log.LogDebug($"Unpacked CharacterDrop configurations: {ConfigurationManager.CharacterDropConfigs?.Subsections?.Count ?? 0}");
-                Log.LogDebug($"Unpacked CharacterDrop lists: {ConfigurationManager.CharacterDropLists?.Subsections?.Count ?? 0}");
-
-                Log.LogInfo("Successfully unpacked CharacterDrop configs.");
-            }
-            else
-            {
-                Log.LogWarning("Received bad config package. Unable to load.");
-            }
-        }
+        Log.LogInfo("Successfully unpacked CharacterDrop configs.");
     }
 }

@@ -72,7 +72,7 @@ namespace Valheim.DropThat.Locations
 
 		private static void RPC_ReceiveLocationsDropThat(ZRpc rpc, ZPackage pkg)
 		{
-			Log.LogInfo("Received locations package.");
+			Log.LogDebug("Received locations package.");
 			try
 			{
 				if (HaveReceivedLocations)

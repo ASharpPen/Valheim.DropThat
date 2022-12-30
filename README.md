@@ -91,6 +91,9 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
+- v2.3.4:
+	- Fixed sync when having a large amount of configs.
+	- Additional null check while recording hits.
 - v2.3.3:
 	- Fixed DropTable Epic Loot modifier. Items should now properly be able to roll with non-unique rarity.
 	- Fixed detection of Spawn That installation.

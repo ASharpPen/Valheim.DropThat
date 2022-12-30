@@ -26,9 +26,9 @@ namespace Valheim.DropThat.Core.Network
                     binaryFormatter.Serialize(zipStream, this);
                 }
 
-                byte[] serialized = memStream.GetBuffer();
+                byte[] serialized = memStream.ToArray();
 
-                Log.LogDebug($"Serialized size: {serialized.Length} bytes");
+                Log.LogTrace($"Serialized size: {serialized.Length} bytes");
 
                 package.Write(serialized);
             }
@@ -40,7 +40,7 @@ namespace Valheim.DropThat.Core.Network
         {
             var serialized = package.ReadByteArray();
 
-            Log.LogDebug($"Deserializing package size: {serialized.Length} bytes");
+            Log.LogTrace($"Deserializing package size: {serialized.Length} bytes");
 
             using (MemoryStream memStream = new MemoryStream(serialized))
             {

@@ -27,30 +27,23 @@ namespace Valheim.DropThat.Core.Network
 
         public static Dispatcher Instance => _instance ??= new();
 
-        [HarmonyPatch(typeof(ZNet))]
-        internal static class Patch_ZNet_Update_Dispatcher
+        public static void Dispatch()
         {
+            var currentSockets = ZNet.instance
+                .GetPeers()
+                .Select(x => x.m_socket)
+                .ToList();
 
-            [HarmonyPatch(nameof(ZNet.Update))]
-            [HarmonyPostfix]
-            private static void Dispatch()
+            int sockets = currentSockets.Count;
+
+            Task[] socketTasks = new Task[sockets];
+
+            for (int i = 0; i < sockets; ++i)
             {
-                var currentSockets = ZNet.instance
-                    .GetPeers()
-                    .Select(x => x.m_socket)
-                    .ToList();
-
-                int sockets = currentSockets.Count;
-
-                Task[] socketTasks = new Task[sockets];
-
-                for (int i = 0; i < sockets; ++i)
-                {
-                    socketTasks[i] = Instance.DispatchSocket(currentSockets[i]);
-                }
-
-                Task.WaitAll(socketTasks);
+                socketTasks[i] = Instance.DispatchSocket(currentSockets[i]);
             }
+
+            Task.WaitAll(socketTasks);
         }
 
         private static Task Completed = Task.CompletedTask;
