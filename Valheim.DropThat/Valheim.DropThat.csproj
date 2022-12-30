@@ -294,10 +294,16 @@
     <Compile Include="Core\Cache\CacheCleaner.cs" />
     <Compile Include="Core\Cache\ManagedCache.cs" />
     <Compile Include="Core\Network\CompressedPackage.cs" />
+    <Compile Include="Core\Network\Debug\GenerateMegaConfigs.cs" />
+    <Compile Include="Core\Network\SplitPackageReceiverService.cs" />
     <Compile Include="Core\Network\DataTransferService.cs" />
     <Compile Include="Core\Network\Debug\DataTransferServiceTest.cs" />
     <Compile Include="Core\Network\Dispatcher.cs" />
+    <Compile Include="Core\Network\Dto.cs" />
+    <Compile Include="Core\Network\NetworkSetup.cs" />
     <Compile Include="Core\Network\QueueItem.cs" />
+    <Compile Include="Core\Network\SplitPackage.cs" />
+    <Compile Include="Core\Network\ZNet_Lifecycle_Patch.cs" />
     <Compile Include="Creature\DamageRecords\RecordRecentHits.cs" />
     <Compile Include="Debugging\PrintDebugFile.cs" />
     <Compile Include="Configuration\ConfigTypes\DropTableConfiguration.cs" />

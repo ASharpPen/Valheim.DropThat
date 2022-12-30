@@ -2,6 +2,7 @@
 using HarmonyLib;
 using Valheim.DropThat.Configuration;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Core.Network;
 
 namespace Valheim.DropThat
 {
@@ -19,6 +20,8 @@ namespace Valheim.DropThat
             ConfigurationManager.LoadGeneralConfigurations();
 
             new Harmony("mod.drop_that").PatchAll();
+
+            NetworkSetup.SetupNetworking();
         }
     }
 }
