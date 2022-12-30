@@ -6,8 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using ThatCore.Logging;
 
-namespace Valheim.DropThat.Core.Network;
+namespace DropThat.Core.Network;
 
 [Serializable]
 // TODO: This whole thing is most likely easier dealt with by having known parameters added to the ZPackage directly.

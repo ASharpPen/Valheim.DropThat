@@ -2,45 +2,44 @@
 using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 
-namespace DropThat.Drop.DropTableSystem.Conditions
-{
-    public class ConditionAltitude : IDropTableCondition
-    { 
-        private static ConditionAltitude _instance;
+namespace DropThat.Drop.DropTableSystem.Conditions;
 
-        public static ConditionAltitude Instance => _instance ??= new();
+public class ConditionAltitude : IDropTableCondition
+{ 
+    private static ConditionAltitude _instance;
 
-        public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+    public static ConditionAltitude Instance => _instance ??= new();
+
+    public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+    {
+        if (IsValid(context.Source.transform.position, template?.Config))
         {
-            if (IsValid(context.Source.transform.position, template?.Config))
-            {
-                return false;
-            }
+            return false;
+        }
 
-            Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due being outside required altitude.");
+        Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due being outside required altitude.");
+        return true;
+    }
+
+    public bool IsValid(Vector3 position, DropTableItemConfiguration config)
+    {
+        if (config is null)
+        {
             return true;
         }
 
-        public bool IsValid(Vector3 position, DropTableItemConfiguration config)
+        var altitude = position.y - ZoneSystem.instance.m_waterLevel;
+
+        if (altitude < config.ConditionAltitudeMin)
         {
-            if (config is null)
-            {
-                return true;
-            }
-
-            var altitude = position.y - ZoneSystem.instance.m_waterLevel;
-
-            if (altitude < config.ConditionAltitudeMin)
-            {
-                return false;
-            }
-
-            if (altitude > config.ConditionAltitudeMax)
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
+
+        if (altitude > config.ConditionAltitudeMax)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

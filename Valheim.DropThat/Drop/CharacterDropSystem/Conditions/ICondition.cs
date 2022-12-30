@@ -1,9 +1,8 @@
 ﻿using DropThat.Drop.CharacterDropSystem.Caches;
 
-namespace DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
+
+public interface ICondition
 {
-    public interface ICondition
-    {
-        bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop);
-    }
+    bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop);
 }

@@ -1,8 +1,7 @@
 ﻿
-namespace DropThat.Drop.CharacterDropSystem.Modifiers
+namespace DropThat.Drop.CharacterDropSystem.Modifiers;
+
+public interface IDropModifier
 {
-    public interface IDropModifier
-    {
-        void Modify(DropContext context);
-    }
+    void Modify(DropContext context);
 }

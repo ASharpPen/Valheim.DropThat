@@ -1,117 +1,116 @@
 ﻿using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 
-namespace DropThat.Configuration
+namespace DropThat.Configuration;
+
+public static class ConfigurationMerger
 {
-    public static class ConfigurationMerger
+    public static void MergeInto(this CharacterDropConfiguration source, CharacterDropConfiguration target)
     {
-        public static void MergeInto(this CharacterDropConfiguration source, CharacterDropConfiguration target)
+        foreach(var sourceMob in source.Subsections)
         {
-            foreach(var sourceMob in source.Subsections)
+            if(target.Subsections.ContainsKey(sourceMob.Key))
             {
-                if(target.Subsections.ContainsKey(sourceMob.Key))
-                {
-                    var targetMob = target.Subsections[sourceMob.Key];
+                var targetMob = target.Subsections[sourceMob.Key];
 
-                    foreach(var sourceItem in sourceMob.Value.Subsections)
+                foreach(var sourceItem in sourceMob.Value.Subsections)
+                {
+                    if(targetMob.Subsections.ContainsKey(sourceItem.Key))
                     {
-                        if(targetMob.Subsections.ContainsKey(sourceItem.Key))
-                        {
-                            Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
-                        }
-
-                        targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
+                        Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
                     }
-                }
-                else
-                {
-                    target.Subsections[sourceMob.Key] = sourceMob.Value;
+
+                    targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
                 }
             }
-        }
-
-        public static void MergeInto(this DropTableConfiguration source, DropTableConfiguration target)
-        {
-            foreach (var sourceMob in source.Subsections)
+            else
             {
-                if (target.Subsections.ContainsKey(sourceMob.Key))
-                {
-                    var targetMob = target.Subsections[sourceMob.Key];
-
-                    foreach (var sourceItem in sourceMob.Value.Subsections)
-                    {
-                        if (!sourceItem.Value.EnableConfig)
-                        {
-                            continue;
-                        }
-
-                        if (targetMob.Subsections.ContainsKey(sourceItem.Key))
-                        {
-                            Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
-                        }
-
-                        targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
-                    }
-                }
-                else
-                {
-                    target.Subsections[sourceMob.Key] = sourceMob.Value;
-                }
+                target.Subsections[sourceMob.Key] = sourceMob.Value;
             }
         }
+    }
 
-        public static void MergeInto(this DropTableListConfigurationFile source, DropTableListConfigurationFile target)
+    public static void MergeInto(this DropTableConfiguration source, DropTableConfiguration target)
+    {
+        foreach (var sourceMob in source.Subsections)
         {
-            foreach (var sourceMob in source.Subsections)
+            if (target.Subsections.ContainsKey(sourceMob.Key))
             {
-                if (target.Subsections.ContainsKey(sourceMob.Key))
-                {
-                    var targetMob = target.Subsections[sourceMob.Key];
+                var targetMob = target.Subsections[sourceMob.Key];
 
-                    foreach (var sourceItem in sourceMob.Value.Subsections)
+                foreach (var sourceItem in sourceMob.Value.Subsections)
+                {
+                    if (!sourceItem.Value.EnableConfig)
                     {
-                        if (!sourceItem.Value.EnableConfig)
-                        {
-                            continue;
-                        }
-
-                        if (targetMob.Subsections.ContainsKey(sourceItem.Key))
-                        {
-                            Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
-                        }
-
-                        targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
+                        continue;
                     }
-                }
-                else
-                {
-                    target.Subsections[sourceMob.Key] = sourceMob.Value;
+
+                    if (targetMob.Subsections.ContainsKey(sourceItem.Key))
+                    {
+                        Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
+                    }
+
+                    targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
                 }
             }
-        }
-
-        public static void MergeInto(this CharacterDropListConfigurationFile source, CharacterDropListConfigurationFile target)
-        {
-            foreach (var sourceMob in source.Subsections)
+            else
             {
-                if (target.Subsections.ContainsKey(sourceMob.Key))
-                {
-                    var targetMob = target.Subsections[sourceMob.Key];
+                target.Subsections[sourceMob.Key] = sourceMob.Value;
+            }
+        }
+    }
 
-                    foreach (var sourceItem in sourceMob.Value.Subsections)
+    public static void MergeInto(this DropTableListConfigurationFile source, DropTableListConfigurationFile target)
+    {
+        foreach (var sourceMob in source.Subsections)
+        {
+            if (target.Subsections.ContainsKey(sourceMob.Key))
+            {
+                var targetMob = target.Subsections[sourceMob.Key];
+
+                foreach (var sourceItem in sourceMob.Value.Subsections)
+                {
+                    if (!sourceItem.Value.EnableConfig)
                     {
-                        if (targetMob.Subsections.ContainsKey(sourceItem.Key))
-                        {
-                            Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
-                        }
-
-                        targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
+                        continue;
                     }
+
+                    if (targetMob.Subsections.ContainsKey(sourceItem.Key))
+                    {
+                        Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
+                    }
+
+                    targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
                 }
-                else
+            }
+            else
+            {
+                target.Subsections[sourceMob.Key] = sourceMob.Value;
+            }
+        }
+    }
+
+    public static void MergeInto(this CharacterDropListConfigurationFile source, CharacterDropListConfigurationFile target)
+    {
+        foreach (var sourceMob in source.Subsections)
+        {
+            if (target.Subsections.ContainsKey(sourceMob.Key))
+            {
+                var targetMob = target.Subsections[sourceMob.Key];
+
+                foreach (var sourceItem in sourceMob.Value.Subsections)
                 {
-                    target.Subsections[sourceMob.Key] = sourceMob.Value;
+                    if (targetMob.Subsections.ContainsKey(sourceItem.Key))
+                    {
+                        Log.LogWarning($"Overlapping drop configs for {sourceItem.Value.SectionKey}, overriding existing.");
+                    }
+
+                    targetMob.Subsections[sourceItem.Key] = sourceItem.Value;
                 }
+            }
+            else
+            {
+                target.Subsections[sourceMob.Key] = sourceMob.Value;
             }
         }
     }

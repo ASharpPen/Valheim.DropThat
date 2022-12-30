@@ -1,29 +1,28 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace DropThat.Drop.DropTableSystem.Caches
+namespace DropThat.Drop.DropTableSystem.Caches;
+
+internal static class DropLinkCache
 {
-    internal static class DropLinkCache
+    private static ConditionalWeakTable<DropTable, DropSourceTemplateLink> LinkTable = new();
+
+    public static DropSourceTemplateLink GetLink(DropTable key)
     {
-        private static ConditionalWeakTable<DropTable, DropSourceTemplateLink> LinkTable = new();
-
-        public static DropSourceTemplateLink GetLink(DropTable key)
+        if (LinkTable.TryGetValue(key, out DropSourceTemplateLink value))
         {
-            if (LinkTable.TryGetValue(key, out DropSourceTemplateLink value))
-            {
-                return value;
-            }
-
-            return null;
+            return value;
         }
 
-        public static void SetLink(DropTable key, DropSourceTemplateLink context)
-        {
-            if (context is null)
-            {
-                return;
-            }
+        return null;
+    }
 
-            LinkTable.Add(key, context);
+    public static void SetLink(DropTable key, DropSourceTemplateLink context)
+    {
+        if (context is null)
+        {
+            return;
         }
+
+        LinkTable.Add(key, context);
     }
 }

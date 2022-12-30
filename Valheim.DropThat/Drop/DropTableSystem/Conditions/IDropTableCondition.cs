@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DropThat.Drop.DropTableSystem.Conditions
+namespace DropThat.Drop.DropTableSystem.Conditions;
+
+public interface IDropTableCondition
 {
-    public interface IDropTableCondition
-    {
-        bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template);
-    }
+    bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template);
 }

@@ -3,9 +3,9 @@ using System;
 using DropThat.Core;
 using DropThat.Core.Network;
 
-namespace DropThat.Configuration.Multiplayer
-{
-    [HarmonyPatch(typeof(ZNet))]
+namespace DropThat.Configuration.Multiplayer;
+
+[HarmonyPatch(typeof(ZNet))]
 	public class ConfigMultiplayerPatch
 	{
 		[HarmonyPatch("OnNewConnection")]
@@ -34,7 +34,7 @@ namespace DropThat.Configuration.Multiplayer
 				if (!ZNet.instance.IsServer())
 				{
 					Log.LogWarning("Non-server instance received request for configs. Ignoring request.");
-                    return;
+                return;
 				}
 
 				Log.LogInfo("Received request for configs.");
@@ -46,9 +46,9 @@ namespace DropThat.Configuration.Multiplayer
 				Log.LogTrace("Sending config packages.");
 			}
 			catch (Exception e)
-            {
+        {
 				Log.LogError("Unexpected error while attempting to create and send config package from server to client.", e);
-            }
+        }
 		}
 
 		private static void RPC_ReceiveConfigsDropThat(ZRpc rpc, ZPackage pkg)
@@ -56,22 +56,21 @@ namespace DropThat.Configuration.Multiplayer
 			Log.LogTrace("Received config package.");
 			try
 			{
-                var splitPackage = SplitPackage.Unpack(pkg);
+            var splitPackage = SplitPackage.Unpack(pkg);
 
-                if (splitPackage is not null)
-                {
-                    Log.LogTrace($"Package split received '{splitPackage.TransferId}:{splitPackage.SplitIndex}:{splitPackage.SplitCount}'");
-                    SplitPackageReceiverService.ReceivePackage(splitPackage);
-                }
-                else
-                {
-                    Log.LogWarning($"Unable to read received config package with size '{pkg.Size()}'");
-                }
-            }
-			catch(Exception e)
+            if (splitPackage is not null)
             {
-				Log.LogError("Error while attempting to read received config package.", e);
+                Log.LogTrace($"Package split received '{splitPackage.TransferId}:{splitPackage.SplitIndex}:{splitPackage.SplitCount}'");
+                SplitPackageReceiverService.ReceivePackage(splitPackage);
             }
+            else
+            {
+                Log.LogWarning($"Unable to read received config package with size '{pkg.Size()}'");
+            }
+        }
+			catch(Exception e)
+        {
+				Log.LogError("Error while attempting to read received config package.", e);
+        }
 		}
 	}
-}

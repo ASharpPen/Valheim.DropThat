@@ -4,40 +4,39 @@ using System.IO;
 using DropThat.Configuration;
 using DropThat.Core;
 
-namespace DropThat.Debugging
+namespace DropThat.Debugging;
+
+internal static class PrintDebugFile
 {
-    internal static class PrintDebugFile
+    public static void PrintFile(string content, string filename, string fileDescription)
     {
-        public static void PrintFile(string content, string filename, string fileDescription)
+        string directory = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.DebugFileFolder ?? "Debug");
+
+        if (!Directory.Exists(directory))
         {
-            string directory = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.DebugFileFolder ?? "Debug");
-
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            string filePath = Path.Combine(directory, filename);
-
-            Log.LogInfo($"Writing {fileDescription} to file {filePath}.");
-
-            File.WriteAllText(filePath, content);
+            Directory.CreateDirectory(directory);
         }
 
-        public static void PrintFile(List<string> content, string filename, string fileDescription)
+        string filePath = Path.Combine(directory, filename);
+
+        Log.LogInfo($"Writing {fileDescription} to file {filePath}.");
+
+        File.WriteAllText(filePath, content);
+    }
+
+    public static void PrintFile(List<string> content, string filename, string fileDescription)
+    {
+        string directory = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.DebugFileFolder ?? "Debug");
+
+        if (!Directory.Exists(directory))
         {
-            string directory = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.DebugFileFolder ?? "Debug");
-
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            string filePath = Path.Combine(directory, filename);
-
-            Log.LogInfo($"Writing {fileDescription} to file {filePath}.");
-
-            File.WriteAllLines(filePath, content);
+            Directory.CreateDirectory(directory);
         }
+
+        string filePath = Path.Combine(directory, filename);
+
+        Log.LogInfo($"Writing {fileDescription} to file {filePath}.");
+
+        File.WriteAllLines(filePath, content);
     }
 }

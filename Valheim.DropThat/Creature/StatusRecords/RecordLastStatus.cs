@@ -1,33 +1,32 @@
 ﻿using System.Linq;
-using DropThat.Core.Cache;
+using ThatCore.Cache;
 
-namespace DropThat.Creature.StatusRecords
+namespace DropThat.Creature.StatusRecords;
+
+public static class RecordLastStatus
 {
-    public static class RecordLastStatus
+    private static ManagedCache<StatusRecord> LastStatus = new();
+
+    public static StatusRecord GetLastStatus(Character character)
     {
-        private static ManagedCache<StatusRecord> LastStatus = new();
-
-        public static StatusRecord GetLastStatus(Character character)
+        if (LastStatus.TryGet(character, out StatusRecord cached))
         {
-            if (LastStatus.TryGet(character, out StatusRecord cached))
-            {
-                return cached;
-            }
-
-            return null;
+            return cached;
         }
 
-        public static void SetLastStatus(Character character)
-        {
-            var statusRecord = LastStatus.GetOrCreate(character);
-            statusRecord.Statuses = character
-                .GetSEMan()?
-                .GetStatusEffects()?
-                .Select(x => x.name)?
-                .Where(x => 
-                    x != null && 
-                    x.Length > 0)?
-                .ToList() ?? new();
-        }
+        return null;
+    }
+
+    public static void SetLastStatus(Character character)
+    {
+        var statusRecord = LastStatus.GetOrCreate(character);
+        statusRecord.Statuses = character
+            .GetSEMan()?
+            .GetStatusEffects()?
+            .Select(x => x.name)?
+            .Where(x => 
+                x != null && 
+                x.Length > 0)?
+            .ToList() ?? new();
     }
 }

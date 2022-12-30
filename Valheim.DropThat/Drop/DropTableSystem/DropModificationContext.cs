@@ -1,46 +1,45 @@
 ﻿using UnityEngine;
 
-namespace DropThat.Drop.DropTableSystem
+namespace DropThat.Drop.DropTableSystem;
+
+public class DropModificationContext
 {
-    public class DropModificationContext
+    public GameObject Drop { get; }
+
+    public DropTemplate Template { get; }
+
+    public DropModificationContext(GameObject drop, DropTemplate template)
     {
-        public GameObject Drop { get; }
+        Drop = drop;
+        Template = template;
 
-        public DropTemplate Template { get; }
+        ItemDrop = new(drop);
+    }
 
-        public DropModificationContext(GameObject drop, DropTemplate template)
+    public CachedComponent<ItemDrop> ItemDrop { get; }
+
+    public class CachedComponent<T> where T : Component
+    {
+        private T Component;
+
+        private GameObject Source;
+
+        private bool HasChecked;
+
+        public CachedComponent(GameObject gameObject)
         {
-            Drop = drop;
-            Template = template;
-
-            ItemDrop = new(drop);
+            Source = gameObject;
         }
 
-        public CachedComponent<ItemDrop> ItemDrop { get; }
-
-        public class CachedComponent<T> where T : Component
+        public static implicit operator T(CachedComponent<T> cache)
         {
-            private T Component;
-
-            private GameObject Source;
-
-            private bool HasChecked;
-
-            public CachedComponent(GameObject gameObject)
+            if (!cache.HasChecked)
             {
-                Source = gameObject;
+                cache.Component = cache.Source.GetComponent<T>();
+                cache.HasChecked = true;
             }
 
-            public static implicit operator T(CachedComponent<T> cache)
-            {
-                if (!cache.HasChecked)
-                {
-                    cache.Component = cache.Source.GetComponent<T>();
-                    cache.HasChecked = true;
-                }
-
-                return cache.Component;
-            }
+            return cache.Component;
         }
     }
 }

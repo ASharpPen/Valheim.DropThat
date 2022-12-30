@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using DropThat.Core.Cache;
+using ThatCore.Cache;
 
 namespace DropThat.Drop.DropTableSystem.Wrapper;
 

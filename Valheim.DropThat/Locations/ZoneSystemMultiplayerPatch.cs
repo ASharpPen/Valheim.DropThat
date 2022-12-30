@@ -4,9 +4,9 @@ using DropThat.Core;
 using DropThat.Core.Network;
 using DropThat.Reset;
 
-namespace DropThat.Locations
-{
-    [HarmonyPatch(typeof(ZNet))]
+namespace DropThat.Locations;
+
+[HarmonyPatch(typeof(ZNet))]
 	public static class ZoneSystemMultiplayerPatch
 	{
 		private static bool HaveReceivedLocations = false;
@@ -92,4 +92,3 @@ namespace DropThat.Locations
 			}
 		}
 	}
-}

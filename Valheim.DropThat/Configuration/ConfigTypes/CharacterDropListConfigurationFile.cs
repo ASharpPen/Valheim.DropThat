@@ -1,26 +1,25 @@
 ﻿using System;
 using DropThat.Core.Configuration;
 
-namespace DropThat.Configuration.ConfigTypes
-{
-    [Serializable]
-    public class CharacterDropListConfigurationFile : ConfigWithSubsections<CharacterDropListConfiguration>, IConfigFile
-    {
-        protected override CharacterDropListConfiguration InstantiateSubsection(string subsectionName)
-        {
-            return new CharacterDropListConfiguration();
-        }
-    }
+namespace DropThat.Configuration.ConfigTypes;
 
-    [Serializable]
-    public class CharacterDropListConfiguration : ConfigWithSubsections<CharacterDropItemConfiguration>
+[Serializable]
+public class CharacterDropListConfigurationFile : ConfigWithSubsections<CharacterDropListConfiguration>, IConfigFile
+{
+    protected override CharacterDropListConfiguration InstantiateSubsection(string subsectionName)
     {
-        protected override CharacterDropItemConfiguration InstantiateSubsection(string subsectionName)
+        return new CharacterDropListConfiguration();
+    }
+}
+
+[Serializable]
+public class CharacterDropListConfiguration : ConfigWithSubsections<CharacterDropItemConfiguration>
+{
+    protected override CharacterDropItemConfiguration InstantiateSubsection(string subsectionName)
+    {
+        return new CharacterDropItemConfiguration()
         {
-            return new CharacterDropItemConfiguration()
-            {
-                IsFromNamedList = true,
-            };
-        }
+            IsFromNamedList = true,
+        };
     }
 }

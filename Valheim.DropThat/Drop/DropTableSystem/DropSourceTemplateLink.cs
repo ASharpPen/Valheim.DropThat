@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using DropThat.Configuration.ConfigTypes;
 
-namespace DropThat.Drop.DropTableSystem
-{
-    public class DropSourceTemplateLink
-    {
-        public GameObject Source;
+namespace DropThat.Drop.DropTableSystem;
 
-        public DropTableEntityConfiguration EntityConfig;
-    }
+public class DropSourceTemplateLink
+{
+    public GameObject Source;
+
+    public DropTableEntityConfiguration EntityConfig;
 }

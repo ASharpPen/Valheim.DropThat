@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using DropThat.Core.Cache;
 using DropThat.Utilities;
+using ThatCore.Cache;
 
 namespace DropThat.Creature.DamageRecords;
 

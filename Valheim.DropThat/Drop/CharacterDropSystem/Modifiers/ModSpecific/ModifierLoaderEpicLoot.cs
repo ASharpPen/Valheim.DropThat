@@ -2,23 +2,22 @@
 using DropThat.Core;
 using DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific.ModEpicLoot;
 
-namespace DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific
-{
-    internal static class ModifierLoaderEpicLoot
-    {
-        public static bool InstalledEpicLoot { get; } = Type.GetType("EpicLoot.EpicLoot, EpicLoot") is not null;
+namespace DropThat.Drop.CharacterDropSystem.Modifiers.ModSpecific;
 
-        public static ModifierMagicItem MagicItem
+internal static class ModifierLoaderEpicLoot
+{
+    public static bool InstalledEpicLoot { get; } = Type.GetType("EpicLoot.EpicLoot, EpicLoot") is not null;
+
+    public static ModifierMagicItem MagicItem
+    {
+        get
         {
-            get
-            {
-                if (InstalledEpicLoot) return ModifierMagicItem.Instance;
+            if (InstalledEpicLoot) return ModifierMagicItem.Instance;
 
 #if DEBUG
-                if (!InstalledEpicLoot) Log.LogDebug("Epic Loot found.");
+            if (!InstalledEpicLoot) Log.LogDebug("Epic Loot found.");
 #endif
-                return null;
-            }
+            return null;
         }
     }
 }

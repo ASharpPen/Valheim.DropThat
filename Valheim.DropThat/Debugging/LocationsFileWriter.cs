@@ -3,82 +3,81 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DropThat.Debugging
+namespace DropThat.Debugging;
+
+internal static class LocationsFileWriter
 {
-    internal static class LocationsFileWriter
+    private const string FileName = "drop_that.locations.txt";
+
+    public static void WriteToList(List<ZoneSystem.ZoneLocation> zoneLocations)
     {
-        private const string FileName = "drop_that.locations.txt";
+        HashSet<string> printedLocations = new();
+        StringBuilder stringBuilder = new ();
+        Dictionary<Heightmap.Biome, List<string>> locationsByBiome = new();
 
-        public static void WriteToList(List<ZoneSystem.ZoneLocation> zoneLocations)
+        foreach(var location in zoneLocations)
         {
-            HashSet<string> printedLocations = new();
-            StringBuilder stringBuilder = new ();
-            Dictionary<Heightmap.Biome, List<string>> locationsByBiome = new();
+            var biomes = SplitBiome(location.m_biome);
 
-            foreach(var location in zoneLocations)
+            foreach(var biome in biomes)
             {
-                var biomes = SplitBiome(location.m_biome);
+                List<string> biomeLocations;
 
-                foreach(var biome in biomes)
+                if (!locationsByBiome.TryGetValue(biome, out biomeLocations))
                 {
-                    List<string> biomeLocations;
-
-                    if (!locationsByBiome.TryGetValue(biome, out biomeLocations))
-                    {
-                        locationsByBiome[biome] = biomeLocations = new();
-                    }
-
-                    biomeLocations.Add(location.m_prefabName);
+                    locationsByBiome[biome] = biomeLocations = new();
                 }
+
+                biomeLocations.Add(location.m_prefabName);
             }
-
-            foreach (var biome in locationsByBiome.OrderBy(x => x.Key))
-            {
-                var currentBiome = biome.Key.ToString();
-
-                stringBuilder.AppendLine();
-                stringBuilder.AppendLine($"[{currentBiome}]");
-
-                foreach (var location in biome.Value)
-                {
-                    var locationKey = location + "." + currentBiome;
-
-                    if (!printedLocations.Contains(locationKey))
-                    {
-                        stringBuilder.AppendLine(location);
-                        printedLocations.Add(locationKey);
-                    }
-                }
-            }
-
-            PrintDebugFile.PrintFile(stringBuilder.ToString(), FileName, "locations");
         }
 
-        private static List<Heightmap.Biome> SplitBiome(Heightmap.Biome bitmaskedBiome)
+        foreach (var biome in locationsByBiome.OrderBy(x => x.Key))
         {
-            List<Heightmap.Biome> results = new();
+            var currentBiome = biome.Key.ToString();
 
-            foreach(var b in Enum.GetValues(typeof(Heightmap.Biome)))
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine($"[{currentBiome}]");
+
+            foreach (var location in biome.Value)
             {
-                if(b is Heightmap.Biome biome && biome != Heightmap.Biome.BiomesMax)
-                {
-                    if (biome == 0 && bitmaskedBiome == 0)
-                    {
-                        results.Add(biome);
-                    }
-                    else if(biome != Heightmap.Biome.None)
-                    {
-                        var filteredBiome = biome & bitmaskedBiome;
+                var locationKey = location + "." + currentBiome;
 
-                        if (filteredBiome > 0)
-                        {
-                            results.Add(filteredBiome);
-                        }
+                if (!printedLocations.Contains(locationKey))
+                {
+                    stringBuilder.AppendLine(location);
+                    printedLocations.Add(locationKey);
+                }
+            }
+        }
+
+        PrintDebugFile.PrintFile(stringBuilder.ToString(), FileName, "locations");
+    }
+
+    private static List<Heightmap.Biome> SplitBiome(Heightmap.Biome bitmaskedBiome)
+    {
+        List<Heightmap.Biome> results = new();
+
+        foreach(var b in Enum.GetValues(typeof(Heightmap.Biome)))
+        {
+            if(b is Heightmap.Biome biome && biome != Heightmap.Biome.BiomesMax)
+            {
+                if (biome == 0 && bitmaskedBiome == 0)
+                {
+                    results.Add(biome);
+                }
+                else if(biome != Heightmap.Biome.None)
+                {
+                    var filteredBiome = biome & bitmaskedBiome;
+
+                    if (filteredBiome > 0)
+                    {
+                        results.Add(filteredBiome);
                     }
                 }
             }
-
-            return results;
         }
+
+        return results;
     }
 }

@@ -3,56 +3,55 @@ using System.IO;
 using System.IO.Compression;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace DropThat.Core.Network
+namespace DropThat.Core.Network;
+
+[Serializable]
+internal abstract class CompressedPackage
 {
-    [Serializable]
-    internal abstract class CompressedPackage
+    protected virtual void BeforePack() { }
+
+    protected virtual void AfterUnpack(object obj) { }
+
+    public ZPackage Pack()
     {
-        protected virtual void BeforePack() { }
+        BeforePack();
 
-        protected virtual void AfterUnpack(object obj) { }
+        ZPackage package = new ZPackage();
 
-        public ZPackage Pack()
+        using (MemoryStream memStream = new MemoryStream())
         {
-            BeforePack();
-
-            ZPackage package = new ZPackage();
-
-            using (MemoryStream memStream = new MemoryStream())
+            using (var zipStream = new GZipStream(memStream, CompressionLevel.Optimal))
             {
-                using (var zipStream = new GZipStream(memStream, CompressionLevel.Optimal))
-                {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(zipStream, this);
-                }
-
-                byte[] serialized = memStream.ToArray();
-
-                Log.LogTrace($"Serialized size: {serialized.Length} bytes");
-
-                package.Write(serialized);
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(zipStream, this);
             }
 
-            return package;
+            byte[] serialized = memStream.ToArray();
+
+            Log.LogTrace($"Serialized size: {serialized.Length} bytes");
+
+            package.Write(serialized);
         }
 
-        public static void Unpack(ZPackage package)
+        return package;
+    }
+
+    public static void Unpack(ZPackage package)
+    {
+        var serialized = package.ReadByteArray();
+
+        Log.LogTrace($"Deserializing package size: {serialized.Length} bytes");
+
+        using (MemoryStream memStream = new MemoryStream(serialized))
         {
-            var serialized = package.ReadByteArray();
-
-            Log.LogTrace($"Deserializing package size: {serialized.Length} bytes");
-
-            using (MemoryStream memStream = new MemoryStream(serialized))
+            using (var zipStream = new GZipStream(memStream, CompressionMode.Decompress, true))
             {
-                using (var zipStream = new GZipStream(memStream, CompressionMode.Decompress, true))
-                {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    var responseObject = binaryFormatter.Deserialize(zipStream);
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                var responseObject = binaryFormatter.Deserialize(zipStream);
 
-                    if (responseObject is CompressedPackage compressedPackage)
-                    {
-                        compressedPackage.AfterUnpack(responseObject);
-                    }
+                if (responseObject is CompressedPackage compressedPackage)
+                {
+                    compressedPackage.AfterUnpack(responseObject);
                 }
             }
         }

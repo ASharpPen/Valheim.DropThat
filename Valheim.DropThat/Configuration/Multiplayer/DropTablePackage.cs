@@ -1,7 +1,7 @@
 ﻿using System;
 using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
 using DropThat.Core.Network;
+using ThatCore.Logging;
 
 namespace DropThat.Configuration.Multiplayer;
 

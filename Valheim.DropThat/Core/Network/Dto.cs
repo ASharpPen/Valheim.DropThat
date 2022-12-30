@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Valheim.DropThat.Core.Network;
+namespace DropThat.Core.Network;
 
 [Serializable]
 internal abstract class Dto

@@ -3,28 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DropThat.Utilities.Valheim
+namespace DropThat.Utilities.Valheim;
+
+public static class BiomeExtensions
 {
-    public static class BiomeExtensions
+    public static string GetNames(this Heightmap.Biome biome)
     {
-        public static string GetNames(this Heightmap.Biome biome)
+        List<string> biomes = new List<string>();
+
+        foreach (Heightmap.Biome potentialBiome in Enum.GetValues(typeof(Heightmap.Biome)))
         {
-            List<string> biomes = new List<string>();
-
-            foreach (Heightmap.Biome potentialBiome in Enum.GetValues(typeof(Heightmap.Biome)))
+            if (potentialBiome == Heightmap.Biome.BiomesMax || potentialBiome == Heightmap.Biome.None)
             {
-                if (potentialBiome == Heightmap.Biome.BiomesMax || potentialBiome == Heightmap.Biome.None)
-                {
-                    continue;
-                }
-
-                if ((biome & potentialBiome) > 0)
-                {
-                    biomes.Add(potentialBiome.ToString());
-                }
+                continue;
             }
 
-            return biomes.Join(delimiter: ", ");
+            if ((biome & potentialBiome) > 0)
+            {
+                biomes.Add(potentialBiome.ToString());
+            }
         }
+
+        return biomes.Join(delimiter: ", ");
     }
 }

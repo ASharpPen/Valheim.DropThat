@@ -1,29 +1,28 @@
-﻿using UnityEngine;
-using DropThat.Core.Cache;
+﻿using ThatCore.Cache;
+using UnityEngine;
 
-namespace DropThat.Caches
+namespace DropThat.Caches;
+
+public static class ZdoCache
 {
-    public static class ZdoCache
+    private static ManagedCache<ZDO> ZdoTable { get; } = new();
+
+    public static ZDO GetZDO(GameObject gameObject)
     {
-        private static ManagedCache<ZDO> ZdoTable { get; } = new();
-
-        public static ZDO GetZDO(GameObject gameObject)
+        if (ZdoTable.TryGet(gameObject, out ZDO cached))
         {
-            if (ZdoTable.TryGet(gameObject, out ZDO cached))
-            {
-                return cached;
-            }
-
-            var znetView = ComponentCache.Get<ZNetView>(gameObject);
-
-            if (!znetView || znetView is null)
-            {
-                return null;
-            }
-
-            var zdo = znetView.GetZDO();
-            ZdoTable.Set(gameObject, zdo);
-            return zdo;
+            return cached;
         }
+
+        var znetView = ComponentCache.Get<ZNetView>(gameObject);
+
+        if (!znetView || znetView is null)
+        {
+            return null;
+        }
+
+        var zdo = znetView.GetZDO();
+        ZdoTable.Set(gameObject, zdo);
+        return zdo;
     }
 }
