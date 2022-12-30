@@ -34,13 +34,14 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 				if (!ZNet.instance.IsServer())
 				{
 					Log.LogWarning("Non-server instance received request for configs. Ignoring request.");
+                    return;
 				}
 
 				Log.LogInfo("Received request for configs.");
 
-				DataTransferService.Service.AddToQueue(new GeneralConfigPackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
-				DataTransferService.Service.AddToQueue(new CharacterDropConfigPackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
-				DataTransferService.Service.AddToQueue(new DropTablePackage().Pack(), nameof(RPC_ReceiveConfigsDropThat), rpc);
+				DataTransferService.Service.AddToQueue(SplitPackage.Pack(new GeneralConfigPackage()), nameof(RPC_ReceiveConfigsDropThat), rpc);
+				DataTransferService.Service.AddToQueue(SplitPackage.Pack(new CharacterDropConfigPackage()), nameof(RPC_ReceiveConfigsDropThat), rpc);
+				DataTransferService.Service.AddToQueue(SplitPackage.Pack(new DropTablePackage()), nameof(RPC_ReceiveConfigsDropThat), rpc);
 
 				Log.LogTrace("Sending config packages.");
 			}
@@ -52,11 +53,21 @@ namespace Valheim.DropThat.Configuration.Multiplayer
 
 		private static void RPC_ReceiveConfigsDropThat(ZRpc rpc, ZPackage pkg)
 		{
-			Log.LogInfo("Received package.");
+			Log.LogTrace("Received config package.");
 			try
 			{
-				CompressedPackage.Unpack(pkg);
-			}
+                var splitPackage = SplitPackage.Unpack(pkg);
+
+                if (splitPackage is not null)
+                {
+                    Log.LogTrace($"Package split received '{splitPackage.TransferId}:{splitPackage.SplitIndex}:{splitPackage.SplitCount}'");
+                    SplitPackageReceiverService.ReceivePackage(splitPackage);
+                }
+                else
+                {
+                    Log.LogWarning($"Unable to read received config package with size '{pkg.Size()}'");
+                }
+            }
 			catch(Exception e)
             {
 				Log.LogError("Error while attempting to read received config package.", e);

@@ -2,6 +2,7 @@
 using System;
 using Valheim.DropThat.Caches;
 using Valheim.DropThat.Core;
+using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Creature;
 
@@ -20,6 +21,11 @@ internal static class Patch_Character_RecordHit
 #if DEBUG
                 Log.LogTrace("Applying damage.");
 #endif
+
+            if (__instance.IsNull())
+            {
+                return;
+            }
 
             var zdo = ZdoCache.GetZDO(__instance.gameObject);
 
