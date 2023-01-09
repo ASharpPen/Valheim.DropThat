@@ -65,14 +65,9 @@
   
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ThunderstoreResources\manifest.json" />
     <None Include="packages.config" />
-    <None Include="ThunderstoreResources\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Drop\DropTableSystem\Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LibsStripped\Readme.md" />
   </ItemGroup>
 </Project>
