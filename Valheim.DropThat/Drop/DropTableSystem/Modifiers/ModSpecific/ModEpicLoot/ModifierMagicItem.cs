@@ -3,6 +3,8 @@ using Valheim.DropThat.Core.Configuration;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Integrations.EpicLootIntegration;
 using UnityEngine;
+using Valheim.DropThat.Utilities;
+using Valheim.DropThat.Integrations;
 
 namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot
 {
@@ -14,6 +16,11 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
 
         public void Modify(DropModificationContext context)
         {
+            if (!InstallationManager.EpicLootInstalled)
+            {
+                return;
+            }
+
             EpicLootItemConfiguration config = GetConfig(context.Template);
 
             if (config is null)
@@ -26,7 +33,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
 
             ItemDrop itemDrop = context.ItemDrop;
 
-            if (itemDrop is null)
+            if (itemDrop.IsNull())
             {
                 return;
             }
@@ -35,19 +42,31 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
             Log.LogDebug("Adding magic modifiers.");
 #endif
 
-            var magicItemData = ItemRoller.Roll(
-                itemDrop.m_itemData, 
-                context.Drop.transform.position, 
-                config);
-
-            if (magicItemData is not null)
+            if (ItemRoller.TryRollMagic(
+                itemDrop.m_itemData,
+                itemDrop.transform.position,
+                new ItemRollParameters
+                {
+                    RarityWeightNone = config.RarityWeightNone,
+                    RarityWeightMagic = config.RarityWeightMagic,
+                    RarityWeightRare = config.RarityWeightRare,
+                    RarityWeightEpic = config.RarityWeightEpic,
+                    RarityWeightLegendary = config.RarityWeightLegendary,
+                    RarityWeightUnique = config.RarityWeightUnique,
+                    UniqueIds = config.UniqueIDs.Value.SplitByComma(),
+                }))
             {
-                itemDrop.m_itemData = magicItemData;
+                itemDrop.Save();
             }
         }
 
         public void Modify(ref ItemDrop.ItemData drop, DropTemplate template, Vector3 position)
         {
+            if (!InstallationManager.EpicLootInstalled)
+            {
+                return;
+            }
+
             EpicLootItemConfiguration config = GetConfig(template);
 
             if (config is null)
@@ -60,6 +79,8 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
             }
 
             if (drop is null)
+
+
             {
                 return;
             }
@@ -68,18 +89,20 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoo
             Log.LogDebug("Adding magic modifiers.");
 #endif
 
-            var magicItemData = ItemRoller.Roll(
+            ItemRoller.TryRollMagic(
                 drop,
                 position,
-                config);
-
-            if (magicItemData is not null)
-            {
-#if DEBUG
-                Log.LogTrace($"Assigning magickified drop '{drop.m_shared.m_name}'.");
-#endif
-                drop = magicItemData;
-            }
+                new ItemRollParameters
+                {
+                    RarityWeightNone = config.RarityWeightNone,
+                    RarityWeightMagic = config.RarityWeightMagic,
+                    RarityWeightRare = config.RarityWeightRare,
+                    RarityWeightEpic = config.RarityWeightEpic,
+                    RarityWeightLegendary = config.RarityWeightLegendary,
+                    RarityWeightUnique = config.RarityWeightUnique,
+                    UniqueIds = config.UniqueIDs.Value.SplitByComma(),
+                })
+                ;
         }
 
         private EpicLootItemConfiguration GetConfig(DropTemplate template)

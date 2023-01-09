@@ -8,6 +8,10 @@ See the [Valheim wiki](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Tab
 
 A pretty comprehensive guide for prefabs can be found [here](https://gist.github.com/Sonata26/e2b85d53e125fb40081b18e2aee6d584)
 
+# Documentation
+
+Documentation can be found on the [Drop That! wiki](https://github.com/ASharpPen/Valheim.DropThat/wiki).
+
 # Features
 
 - Override any existing potential drop of a mob, by specifying the index of the item you want changed.
@@ -24,10 +28,6 @@ A pretty comprehensive guide for prefabs can be found [here](https://gist.github
 - Performance improvements
 	- Drop stacks instead of individual items. Want to have a stack of coins, that isn't a massive lag tower of individual coins?
 	- Limit max amount to avoid those pesky world-crashing level 10 trolls.
-
-# Documentation
-
-Documentation can be found on the [Drop That! wiki](https://github.com/ASharpPen/Valheim.DropThat/wiki).
 
 # v2.0.0 Details
 
@@ -91,6 +91,8 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
+- v2.3.5:
+	- Compatibility with Epic Loot v0.9.5.
 - v2.3.4:
 	- Fixed sync when having a large amount of configs.
 	- Additional null check while recording hits.

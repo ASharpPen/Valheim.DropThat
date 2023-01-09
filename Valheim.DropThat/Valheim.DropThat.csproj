@@ -4,7 +4,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>2.3.4</Version>
+    <Version>2.3.5</Version>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <AssemblyName>Valheim.DropThat</AssemblyName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -42,9 +42,6 @@
     </Reference>
     <Reference Include="EpicLoot">
       <HintPath>..\Libs\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
-    </Reference>
-    <Reference Include="ExtendedItemDataFramework">
-      <HintPath>..\Libs\RandyKnapp-ExtendedItemDataFramework\ExtendedItemDataFramework.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
