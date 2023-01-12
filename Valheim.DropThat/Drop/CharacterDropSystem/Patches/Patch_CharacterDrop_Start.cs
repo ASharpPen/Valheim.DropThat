@@ -11,7 +11,7 @@ using Valheim.DropThat.Utilities;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
 {
-    [HarmonyPatch(typeof(CharacterDrop), "Start")]
+    [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.Start))]
     public static class Patch_CharacterDrop_Start
     {
         private static GeneralConfiguration GeneralConfig => ConfigurationManager.GeneralConfig;

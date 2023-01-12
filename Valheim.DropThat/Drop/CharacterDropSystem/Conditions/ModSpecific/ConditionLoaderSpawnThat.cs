@@ -1,5 +1,4 @@
-﻿using System;
-using Valheim.DropThat.Core;
+﻿using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific

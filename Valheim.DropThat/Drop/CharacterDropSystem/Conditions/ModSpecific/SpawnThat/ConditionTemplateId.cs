@@ -5,7 +5,6 @@ using Valheim.DropThat.Core;
 using Valheim.DropThat.Core.Configuration;
 using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
 using Valheim.DropThat.Utilities;
-using Valheim.SpawnThat.Spawners.SpawnerSpawnSystem.SpawnModifiers.General;
 
 namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat
 {
@@ -48,7 +47,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.Spawn
                 return false;
             }
 
-            var templateId = zdo.GetString(SpawnModifierSetTemplateId.ZdoFeature, null);
+            var templateId = zdo.GetString("spawn_template_id", null);
 
             var configTemplateIds = config.ConditionTemplateId.Value.SplitByComma();
 
