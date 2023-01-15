@@ -1,95 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
 using DropThat.Creature.DamageRecords;
-using DropThat.Drop.CharacterDropSystem.Caches;
-using DropThat.Utilities;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionKilledBySkillType : ICondition
+public class ConditionKilledBySkillType : IDropCondition
 {
-    private static ConditionKilledBySkillType _instance;
+    public HashSet<Skills.SkillType> SkillTypes { get; }
 
-    public static ConditionKilledBySkillType Instance => _instance ??= new();
+    public ConditionKilledBySkillType() { }
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
+    public ConditionKilledBySkillType(IEnumerable<Skills.SkillType> skillTypes)
     {
-        if (!characterDrop || characterDrop is null || extended?.Config is null)
-        {
-            return false;
-        }
-
-        if (string.IsNullOrEmpty(extended.Config.ConditionKilledBySkillType?.Value))
-        {
-            return false;
-        }
-
-        var character = CharacterCache.GetCharacter(characterDrop);
-
-        if (ValidConditionKilledBySkillType(drop, extended.Config, character))
-        {
-            return false;
-        }
-
-        return true;
+        SkillTypes = skillTypes.ToHashSet();
     }
 
-    public bool ValidConditionKilledBySkillType(CharacterDrop.Drop drop, CharacterDropItemConfiguration config, Character character)
+    public bool IsValid(DropContext context)
     {
-        if (config.ConditionKilledBySkillType.Value.Length > 0)
+        if (SkillTypes is null ||
+            SkillTypes.Count == 0)
         {
-            var skillTypes = config.ConditionKilledBySkillType.Value.SplitByComma();
-
-            if (skillTypes.Count == 0)
-            {
-                //Skip if we have no states to check. This indicates all are allowed.
-                return true;
-            }
-
-            var lastHit = RecordLastHit.GetLastHit(character);
-
-            if (lastHit is null)
-            {
-                Log.LogTrace($"{nameof(ConditionKilledBySkillType)}: Disabling drop {drop.m_prefab.name} due to not finding any last hit data.");
-                return false;
-            }
-
-            var convertedSkills = ConvertToSkillType(skillTypes);
-
-#if DEBUG
-            Log.LogTrace($"Searching for skill type '{lastHit.SkillType}' among required types '{config.ConditionKilledBySkillType.Value}'");
-#endif
-
-            if (!convertedSkills.Any(x => x == lastHit.SkillType))
-            {
-                Log.LogTrace($"{nameof(ConditionKilledBySkillType)}: Disabling drop {drop.m_prefab.name} due to not finding any of the required skill types in last hit.");
-                return false;
-            }
+            return true;
         }
 
-        return true;
+        DamageRecord lastHit = RecordLastHit.GetLastHit(context.Character);
+
+        if (lastHit is null)
+        {
+            return false;
+        }
+
+        return SkillTypes.Contains(lastHit.SkillType);
     }
+}
 
-    private static List<Skills.SkillType> ConvertToSkillType(List<string> skillTypes)
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionKilledBySkillType(
+        this CharacterDropDropTemplate template,
+        IEnumerable<Skills.SkillType> skillTypes)
     {
-        List<Skills.SkillType> results = new();
-
-        foreach (var type in skillTypes)
+        if (skillTypes?.Any() == true)
         {
-            if (Enum.TryParse(type, true, out Skills.SkillType skillType))
-            {
-                results.Add(skillType);
-            }
-            else
-            {
-                Log.LogWarning($"[{nameof(ConditionKilledBySkillType)}]: Unable to parse skill '{type}'");
-            }
+            template.Conditions.AddOrReplaceByType(new ConditionKilledBySkillType(skillTypes));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionKilledBySkillType);
         }
 
-        return results;
+        return template;
     }
 }

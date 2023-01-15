@@ -1,38 +1,57 @@
 ﻿using System.Collections.Generic;
-using DropThat.Core;
-using DropThat.Drop.CharacterDropSystem.Caches;
-using DropThat.Utilities;
+using System.Linq;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-internal class ConditionEnvironments : ICondition
+public class ConditionEnvironments : IDropCondition
 {
-    private static ConditionEnvironments _instance;
+    public HashSet<string> Environments { get; set; }
 
-    public static ConditionEnvironments Instance => _instance ??= new();
+    public ConditionEnvironments() { }
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
+    public ConditionEnvironments(IEnumerable<string> environments)
     {
-        if (!string.IsNullOrEmpty(dropExtended.Config.ConditionEnvironments.Value))
+        Environments = environments
+            .Select(x => x
+                .Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
+
+    public bool IsValid(DropContext context)
+    {
+        if (Environments is null ||
+            Environments.Count == 0)
         {
-            var envMan = EnvMan.instance;
-            var currentEnv = envMan.GetCurrentEnvironment();
-
-            var environments = dropExtended.Config.ConditionEnvironments.Value.SplitByComma(true);
-
-            if (environments.Count > 0)
-            {
-                var requiredSet = new HashSet<string>(environments);
-
-                if (!requiredSet.Contains(currentEnv.m_name.Trim().ToUpperInvariant()))
-                {
-                    Log.LogTrace($"{nameof(dropExtended.Config.ConditionEnvironments)}: Disabling drop {drop.m_prefab.name} due to environment {currentEnv.m_name} not being in required list.");
-
-                    return true;
-                }
-            }
+            return true;
         }
 
-        return false;
+        var currentEnv = EnvMan.instance.GetCurrentEnvironment();
+
+        var envName = currentEnv.m_name
+            .Trim()
+            .ToUpperInvariant();
+
+        return Environments.Contains(envName);
+    }
+}
+
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionEnvironments(
+        this CharacterDropDropTemplate template,
+        IEnumerable<string> environments)
+    {
+        if (environments?.Any() == true)
+        {
+            template.Conditions.AddOrReplaceByType(new ConditionEnvironments(environments));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionEnvironments);
+        }
+
+        return template;
     }
 }

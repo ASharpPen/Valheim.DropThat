@@ -1,18 +1,18 @@
-﻿using CreatureLevelControl;
+﻿using System.Collections.Generic;
 using System.Linq;
+using CreatureLevelControl;
 using DropThat.Integrations.CllcIntegration;
-using System.Collections.Generic;
 using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionBossAffix : IDropCondition
+public class ConditionNotBossAffix : IDropCondition
 {
     public CllcBossAffix[] BossAffixes { get; set; }
 
-    public ConditionBossAffix() { }
+    public ConditionNotBossAffix() { }
 
-    public ConditionBossAffix(IEnumerable<CllcBossAffix> bossAffixes) 
+    public ConditionNotBossAffix(IEnumerable<CllcBossAffix> bossAffixes)
     {
         BossAffixes = bossAffixes.ToArray();
     }
@@ -32,7 +32,7 @@ public class ConditionBossAffix : IDropCondition
             return true;
         }
 
-        return HasAffix(context.Character);
+        return !HasAffix(context.Character);
     }
 
     private bool HasAffix(Character character)
@@ -45,17 +45,17 @@ public class ConditionBossAffix : IDropCondition
 
 internal static partial class CharacterDropDropTemplateConditionExtensions
 {
-    public static CharacterDropDropTemplate ConditionBossAffix(
+    public static CharacterDropDropTemplate ConditionNotBossAffix(
         this CharacterDropDropTemplate template,
         IEnumerable<CllcBossAffix> bossAffixes)
     {
         if (bossAffixes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionBossAffix(bossAffixes));
+            template.Conditions.AddOrReplaceByType(new ConditionNotBossAffix(bossAffixes));
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionBossAffix);
+            template.Conditions.RemoveAll(x => x is ConditionNotBossAffix);
         }
 
         return template;

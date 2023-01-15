@@ -1,90 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DropThat.Creature.DamageRecords;
-using DropThat.Drop.CharacterDropSystem.Caches;
-using DropThat.Utilities;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionKilledByDamageType : ICondition
+public class ConditionKilledByDamageType : IDropCondition
 {
-    private static ConditionKilledByDamageType _instance;
+    public HitData.DamageType DamageTypeMask { get; set; } = 0;
 
-    public static ConditionKilledByDamageType Instance => _instance ??= new();
+    public ConditionKilledByDamageType() { }
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
+    public ConditionKilledByDamageType(IEnumerable<HitData.DamageType> damageTypes)
     {
-        if (!characterDrop || characterDrop is null || dropExtended?.Config is null)
+        foreach (var damageType in damageTypes)
         {
-            return false;
+            DamageTypeMask |= damageType;
         }
-
-        if (string.IsNullOrEmpty(dropExtended.Config.ConditionKilledByDamageType?.Value))
-        {
-            return false;
-        }
-
-        var character = CharacterCache.GetCharacter(characterDrop);
-
-        if (ValidConditionKilledByDamageType(drop, dropExtended.Config, character))
-        {
-            return false;
-        }
-
-        return true;
     }
 
-    public bool ValidConditionKilledByDamageType(CharacterDrop.Drop drop, CharacterDropItemConfiguration config, Character character)
+    public bool IsValid(DropContext context)
     {
-        if (config.ConditionKilledByDamageType.Value.Length > 0)
+        if (DamageTypeMask == 0)
         {
-            var causes = config.ConditionKilledByDamageType.Value.SplitByComma();
-
-            if (causes.Count == 0)
-            {
-                //Skip if we have no states to check. This indicates all are allowed.
-                return true;
-            }
-
-            var lastHit = RecordLastHit.GetLastHit(character);
-
-            if (lastHit is null)
-            {
-                Log.LogTrace($"{nameof(config.ConditionKilledByDamageType)}: Disabling drop {drop.m_prefab.name} due to not finding any last hit data.");
-                return false;
-            }
-
-            var causesDamageType = ConvertToBitmask(causes);
-
-#if DEBUG
-            Log.LogTrace($"Searching for damage types '{causes}' as {causesDamageType} among '{lastHit.DamageType}' with result '{causesDamageType & lastHit.DamageType}'");
-#endif
-
-            if ((causesDamageType & lastHit.DamageType) == 0)
-            {
-                Log.LogTrace($"{nameof(config.ConditionKilledByDamageType)}: Disabling drop {drop.m_prefab.name} due to not finding any of the required damage types in last hit.");
-                return false;
-            }
+            return true;
         }
 
-        return true;
+        DamageRecord lastHit = RecordLastHit.GetLastHit(context.Character);
+
+        if (lastHit is null)
+        {
+            return false;
+        }
+
+        return (lastHit.DamageType & DamageTypeMask) > 0;
     }
+}
 
-    private static HitData.DamageType ConvertToBitmask(List<string> damageTypes)
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionKilledByDamageType(
+        this CharacterDropDropTemplate template,
+        IEnumerable<HitData.DamageType> damageTypes)
     {
-        HitData.DamageType result = 0;
-
-        foreach (var type in damageTypes)
+        if (damageTypes?.Any() == true)
         {
-            if (Enum.TryParse(type, true, out HitData.DamageType damageType))
-            {
-                result |= damageType;
-            }
+            template.Conditions.AddOrReplaceByType(new ConditionKilledByDamageType(damageTypes));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionKilledByDamageType);
         }
 
-        return result;
+        return template;
     }
 }

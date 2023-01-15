@@ -1,18 +1,18 @@
-﻿using CreatureLevelControl;
+﻿using System.Collections.Generic;
 using System.Linq;
+using CreatureLevelControl;
 using DropThat.Integrations.CllcIntegration;
-using System.Collections.Generic;
 using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionCreatureExtraEffect : IDropCondition
+public class ConditionNotCreatureExtraEffect : IDropCondition
 {
     public CllcCreatureExtraEffect[] ExtraEffects { get; set; }
 
-    public ConditionCreatureExtraEffect() { }
+    public ConditionNotCreatureExtraEffect() { }
 
-    public ConditionCreatureExtraEffect(IEnumerable<CllcCreatureExtraEffect> extraEffects) 
+    public ConditionNotCreatureExtraEffect(IEnumerable<CllcCreatureExtraEffect> extraEffects)
     {
         ExtraEffects = extraEffects.ToArray();
     }
@@ -31,7 +31,7 @@ public class ConditionCreatureExtraEffect : IDropCondition
             return true;
         }
 
-        return HasExtraEffect(context.Character);
+        return !HasExtraEffect(context.Character);
     }
 
     private bool HasExtraEffect(Character character)
@@ -44,19 +44,20 @@ public class ConditionCreatureExtraEffect : IDropCondition
 
 internal static partial class CharacterDropDropTemplateConditionExtensions
 {
-    public static CharacterDropDropTemplate ConditionCreatureExtraEffect(
+    public static CharacterDropDropTemplate ConditionNotCreatureExtraEffect(
         this CharacterDropDropTemplate template,
         IEnumerable<CllcCreatureExtraEffect> creatureExtraEffects)
     {
         if (creatureExtraEffects?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionCreatureExtraEffect(creatureExtraEffects));
+            template.Conditions.AddOrReplaceByType(new ConditionNotCreatureExtraEffect(creatureExtraEffects));
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionCreatureExtraEffect);
+            template.Conditions.RemoveAll(x => x is ConditionNotCreatureExtraEffect);
         }
 
         return template;
     }
 }
+

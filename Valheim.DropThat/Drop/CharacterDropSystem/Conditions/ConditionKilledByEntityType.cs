@@ -1,118 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
 using DropThat.Creature.DamageRecords;
-using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Drop.CharacterDropSystem.Models;
-using DropThat.Utilities;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionKilledByEntityType : ICondition
+public class ConditionKilledByEntityType : IDropCondition
 {
-    private static ConditionKilledByEntityType _instance;
+    public EntityType[] EntityTypes { get; set; }
 
-    public static ConditionKilledByEntityType Instance => _instance ??= new();
+    public ConditionKilledByEntityType() { }
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
+    public ConditionKilledByEntityType(IEnumerable<EntityType> entityTypes)
     {
-        if (!characterDrop || characterDrop is null || extended?.Config is null)
-        {
-            return false;
-        }
-
-        var character = CharacterCache.GetCharacter(characterDrop);
-
-        if (IsValid(character, extended.Config))
-        {
-            return false;
-        }
-
-        Log.LogTrace($"Filtered drop '{drop.m_prefab.name}' due not being killed by required entity type.");
-        return true;
+        EntityTypes = entityTypes
+            .Distinct()
+            .ToArray();
     }
 
-    public bool IsValid(Character character, CharacterDropItemConfiguration config)
+    public bool IsValid(DropContext context)
     {
-        if (character is null)
-        {
-#if DEBUG
-            Log.LogTrace("[ConditionKilledByEntityType] No character found.");
-#endif
-            return true;
-        }
-
-        if (string.IsNullOrWhiteSpace(config.ConditionKilledByEntityType.Value))
+        if (EntityTypes is null ||
+            EntityTypes.Length == 0)
         {
             return true;
         }
 
-        var requiredEntityTypes = ConvertToEnum(config.ConditionKilledByEntityType.Value.SplitByComma());
-
-        if (requiredEntityTypes.Count == 0)
-        {
-#if DEBUG
-            Log.LogTrace("[ConditionKilledByEntityType] No valid requirements found.");
-#endif
-
-            return true;
-        }
-
-        var lastHit = RecordLastHit.GetLastHit(character);
+        DamageRecord lastHit = RecordLastHit.GetLastHit(context.Character);
 
         if (lastHit is null)
         {
-#if DEBUG
-            Log.LogTrace($"{nameof(config.ConditionKilledByDamageType)}: Disabling drop {config.SectionKey} due to not finding any last hit data.");
-#endif
             return false;
         }
 
-        EntityType killedBy = EntityType.Other;
+        EntityType lastHitter = lastHit.GetHitterType();
 
-        if (lastHit.Hit.HaveAttacker())
-        {
-            GameObject attacker = ZNetScene.instance.FindInstance(lastHit.Hit.m_attacker);
-
-            var attackerCharacter = ComponentCache.Get<Character>(attacker);
-
-            if (attackerCharacter is not null)
-            {
-                if (attackerCharacter.IsPlayer())
-                {
-                    killedBy = EntityType.Player;
-                }
-                else
-                {
-                    killedBy = EntityType.Creature;
-                }
-            }
-        }
-
-#if DEBUG
-        Log.LogTrace($"[ConditionKilledByEntityType] Killed by '{killedBy}'");
-#endif
-
-
-        return requiredEntityTypes.Any(x => x == killedBy);
+        return EntityTypes.Any(x => x == lastHitter);
     }
+}
 
-    private static List<EntityType> ConvertToEnum(List<string> entityTypes)
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionKilledByEntityType(
+        this CharacterDropDropTemplate template,
+        IEnumerable<EntityType> entityTypes)
     {
-        var result = new List<EntityType>(entityTypes.Count);
-
-        foreach (var type in entityTypes)
+        if (entityTypes?.Any() == true)
         {
-            if (Enum.TryParse(type, true, out EntityType entity))
-            {
-                result.Add(entity);
-            }
+            template.Conditions.AddOrReplaceByType(new ConditionKilledByEntityType(entityTypes));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionKilledByEntityType);
         }
 
-        return result;
+        return template;
     }
 }

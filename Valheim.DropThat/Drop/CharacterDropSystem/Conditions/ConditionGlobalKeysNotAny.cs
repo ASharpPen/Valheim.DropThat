@@ -1,0 +1,47 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using ThatCore.Extensions;
+
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
+
+internal class ConditionGlobalKeysNotAny : IDropCondition
+{
+    public string[] GlobalKeys { get; set; }
+
+    public ConditionGlobalKeysNotAny() { }
+
+    public ConditionGlobalKeysNotAny(IEnumerable<string> keys)
+    {
+        GlobalKeys = keys.ToArray();
+    }
+
+    public bool IsValid(DropContext context)
+    {
+        if (GlobalKeys is null ||
+            GlobalKeys.Length == 0)
+        {
+            return true;
+        }
+
+        return !GlobalKeys.Any(ZoneSystem.instance.GetGlobalKey);
+    }
+}
+
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionGlobalKeysNotAny(
+        this CharacterDropDropTemplate template,
+        IEnumerable<string> globalKeys)
+    {
+        if (globalKeys?.Any() == true)
+        {
+            template.Conditions.AddOrReplaceByType(new ConditionGlobalKeysNotAny(globalKeys));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionGlobalKeysNotAny);
+        }
+
+        return template;
+    }
+}

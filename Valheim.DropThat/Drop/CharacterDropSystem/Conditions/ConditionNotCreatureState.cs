@@ -5,15 +5,15 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionCreatureState : IDropCondition
+public class ConditionNotCreatureState : IDropCondition
 {
     public CreatureState[] CreatureStates { get; set; }
 
-    public ConditionCreatureState()
+    public ConditionNotCreatureState()
     {
     }
 
-    public ConditionCreatureState(IEnumerable<CreatureState> creatureStates)
+    public ConditionNotCreatureState(IEnumerable<CreatureState> creatureStates)
     {
         CreatureStates = creatureStates.ToArray();
     }
@@ -26,7 +26,7 @@ public class ConditionCreatureState : IDropCondition
             return true;
         }
 
-        return CreatureStates.Any(x =>
+        return !CreatureStates.Any(x =>
         {
             switch (x)
             {
@@ -50,17 +50,17 @@ public class ConditionCreatureState : IDropCondition
 
 internal static partial class CharacterDropDropTemplateConditionExtensions
 {
-    public static CharacterDropDropTemplate ConditionCreatureState(
-        this CharacterDropDropTemplate template, 
+    public static CharacterDropDropTemplate ConditionNotCreatureState(
+        this CharacterDropDropTemplate template,
         List<CreatureState> states)
     {
         if (states?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionCreatureState(states));
+            template.Conditions.AddOrReplaceByType(new ConditionNotCreatureState(states));
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionCreatureState);
+            template.Conditions.RemoveAll(x => x is ConditionNotCreatureState);
         }
 
         return template;

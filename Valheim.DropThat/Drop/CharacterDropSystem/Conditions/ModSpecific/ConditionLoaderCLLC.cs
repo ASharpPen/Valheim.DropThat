@@ -1,21 +1,20 @@
 ﻿using System;
-using DropThat.Core;
 using DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
+using DropThat.Integrations;
+using ThatCore.Logging;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific;
 
 internal static class ConditionLoaderCLLC
 {
-    public static bool InstalledCLLC { get; } = Type.GetType("CreatureLevelControl.API, CreatureLevelControl") is not null;
-
     public static ConditionBossAffix ConditionBossAffix
     {
         get
         {
-            if (InstalledCLLC) return ConditionBossAffix.Instance;
+            if (InstallationManager.CLLCInstalled) return ConditionBossAffix.Instance;
 
 #if DEBUG
-            if (!InstalledCLLC) Log.LogDebug("CLLC not found.");
+            if (!InstallationManager.CLLCInstalled) Log.LogDebug("CLLC not found.");
 #endif
 
             return null;
@@ -26,10 +25,10 @@ internal static class ConditionLoaderCLLC
     {
         get
         {
-            if (InstalledCLLC) return ConditionInfusion.Instance;
+            if (InstallationManager.CLLCInstalled) return ConditionInfusion.Instance;
 
 #if DEBUG
-            if (!InstalledCLLC) Log.LogDebug("CLLC not found.");
+            if (!InstallationManager.CLLCInstalled) Log.LogDebug("CLLC not found.");
 #endif
 
             return null;
@@ -40,10 +39,10 @@ internal static class ConditionLoaderCLLC
     {
         get
         {
-            if (InstalledCLLC) return ConditionCreatureExtraEffect.Instance;
+            if (InstallationManager.CLLCInstalled) return ConditionCreatureExtraEffect.Instance;
             return null;
         }
     }
 
-    public static ConditionWorldLevel ConditionWorldLevel => (InstalledCLLC) ? ConditionWorldLevel.Instance : null;
+    public static ConditionWorldLevel ConditionWorldLevel => (InstallationManager.CLLCInstalled) ? ConditionWorldLevel.Instance : null;
 }

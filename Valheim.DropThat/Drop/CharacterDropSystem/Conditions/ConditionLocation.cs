@@ -1,57 +1,61 @@
-﻿using System.Linq;
-using DropThat.Caches;
-using DropThat.Core;
-using DropThat.Drop.CharacterDropSystem.Caches;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DropThat.Locations;
-using DropThat.Utilities;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionLocation : ICondition
+public class ConditionLocation : IDropCondition
 {
-    private static ConditionLocation _instance;
+    public HashSet<string> Locations { get; set; }
 
-    public static ConditionLocation Instance => _instance ??= new();
+    public ConditionLocation() { }
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
+    public ConditionLocation(IEnumerable<string> locations) 
     {
-        if (!characterDrop || characterDrop is null || dropExtended?.Config?.ConditionLocation is null)
+        Locations = locations
+            .Select(x => x
+                .Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
+
+    public bool IsValid(DropContext context)
+    {
+        if (Locations is null ||
+            Locations.Count == 0 ||
+            context.Character.IsNull())
         {
-            return false;
+            return true;
         }
 
-        if (string.IsNullOrEmpty(dropExtended.Config.ConditionLocation.Value))
+        var currentLocation = LocationHelper
+            .FindLocation(context.Character.GetCenterPoint());
+
+        if (currentLocation is null)
         {
-            return false;
+            return true;
         }
 
-        var character = CharacterCache.GetCharacter(characterDrop);
+        return Locations.Contains(currentLocation.LocationName.Trim().ToUpperInvariant());
+    }
+}
 
-        var locations = dropExtended.Config.ConditionLocation.Value.SplitByComma(toUpper: true);
-
-        var currentLocation = LocationHelper.FindLocation(character.GetCenterPoint());
-
-        if (locations.Count > 0)
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionLocation(
+        this CharacterDropDropTemplate template,
+        IEnumerable<string> locations)
+    {
+        if (locations?.Any() == true)
         {
-            if (currentLocation is null)
-            {
-                Log.LogTrace($"{nameof(dropExtended.Config.ConditionLocation)}: Disabling drop {drop.m_prefab.name} due to not being in required location.");
-                return true;
-            }
-
-            var currentLocationName = currentLocation.LocationName.Trim().ToUpperInvariant();
-
-            if (locations.Any(x => x == currentLocationName))
-            {
-                return false;
-            }
-            else
-            {
-                Log.LogTrace($"{nameof(dropExtended.Config.ConditionLocation)}: Disabling drop {drop.m_prefab.name} due to not being in required location.");
-                return true;
-            }
+            template.Conditions.AddOrReplaceByType(new ConditionLocation(locations));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionLocation);
         }
 
-        return false;
+        return template;
     }
 }

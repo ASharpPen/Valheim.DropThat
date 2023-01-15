@@ -1,62 +1,52 @@
-﻿using System.Linq;
-using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
-using DropThat.Core.Configuration;
-using DropThat.Drop.CharacterDropSystem.Caches;
-using DropThat.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DropThat.Integrations;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
 
-public class ConditionTemplateId : ICondition
+public class ConditionTemplateId : IDropCondition
 {
-    private static ConditionTemplateId _instance;
+    public string[] TemplateIds { get; set; }
 
-    public static ConditionTemplateId Instance
+    public ConditionTemplateId() { }
+
+    public ConditionTemplateId(IEnumerable<string> ids) 
     {
-        get
-        {
-            return _instance ??= new ConditionTemplateId();
-        }
+        TemplateIds = ids.ToArray();
     }
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
+    public bool IsValid(DropContext context)
     {
-        if (!extended.Config.Subsections.TryGetValue(CharacterDropModConfigSpawnThat.ModName, out Config modConfig))
+        if (!InstallationManager.SpawnThatInstalled ||
+            TemplateIds is null ||
+            TemplateIds.Length == 0 ||
+            context.ZDO is null)
         {
-            return false;
-        }
-
-        var config = modConfig as CharacterDropModConfigSpawnThat;
-
-        if (config is null || string.IsNullOrWhiteSpace(config.ConditionTemplateId.Value))
-        {
-            return false;
-        }
-
-        var character = CharacterCache.GetCharacter(characterDrop);
-        if (!character || character is null)
-        {
-            return false;
-        }
-
-        var zdo = ZdoCache.GetZDO(character.gameObject);
-
-        if (zdo is null)
-        {
-            return false;
-        }
-
-        var templateId = zdo.GetString("spawn_template_id", null);
-
-        var configTemplateIds = config.ConditionTemplateId.Value.SplitByComma();
-
-        if (!configTemplateIds.Any(x => x == templateId))
-        {
-            Log.LogTrace($"{nameof(config.ConditionTemplateId)}: Disabling drop {drop.m_prefab.name} due to not having required spawn template id {config.ConditionTemplateId.Value}.");
             return true;
         }
 
-        return false;
+        var templateId = context.ZDO.GetString("spawn_template_id", null);
+
+        return TemplateIds.Contains(templateId);
+    }
+}
+
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionTemplateId(
+        this CharacterDropDropTemplate template,
+        IEnumerable<string> ids)
+    {
+        if (ids?.Any() == true)
+        {
+            template.Conditions.AddOrReplaceByType(new ConditionTemplateId(ids));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionTemplateId);
+        }
+
+        return template;
     }
 }

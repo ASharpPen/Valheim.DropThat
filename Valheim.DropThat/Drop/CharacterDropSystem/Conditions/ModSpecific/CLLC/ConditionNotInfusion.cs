@@ -1,18 +1,18 @@
-﻿using CreatureLevelControl;
+﻿using System.Collections.Generic;
 using System.Linq;
+using CreatureLevelControl;
 using DropThat.Integrations.CllcIntegration;
-using System.Collections.Generic;
 using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionInfusion : IDropCondition
+public class ConditionNotInfusion : IDropCondition
 {
     public CllcCreatureInfusion[] Infusions { get; set; }
 
-    public ConditionInfusion() { }
+    public ConditionNotInfusion() { }
 
-    public ConditionInfusion(IEnumerable<CllcCreatureInfusion> infusions) 
+    public ConditionNotInfusion(IEnumerable<CllcCreatureInfusion> infusions)
     {
         Infusions = infusions.ToArray();
     }
@@ -31,7 +31,7 @@ public class ConditionInfusion : IDropCondition
             return true;
         }
 
-        return HasInfusion(context.Character);
+        return !HasInfusion(context.Character);
     }
 
     private bool HasInfusion(Character character)
@@ -44,17 +44,17 @@ public class ConditionInfusion : IDropCondition
 
 internal static partial class CharacterDropDropTemplateConditionExtensions
 {
-    public static CharacterDropDropTemplate ConditionInfusion(
+    public static CharacterDropDropTemplate ConditionNotInfusion(
         this CharacterDropDropTemplate template,
         IEnumerable<CllcCreatureInfusion> infusions)
     {
         if (infusions?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionInfusion(infusions));
+            template.Conditions.AddOrReplaceByType(new ConditionNotInfusion(infusions));
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionInfusion);
+            template.Conditions.RemoveAll(x => x is ConditionNotInfusion);
         }
 
         return template;

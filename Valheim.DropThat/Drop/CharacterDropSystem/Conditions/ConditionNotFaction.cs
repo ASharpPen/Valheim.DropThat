@@ -1,52 +1,48 @@
-﻿using System;
-using DropThat.Caches;
-using DropThat.Core;
-using DropThat.Drop.CharacterDropSystem.Caches;
-using DropThat.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionNotFaction : ICondition
+public class ConditionNotFaction : IDropCondition
 {
-    private static ConditionNotFaction _instance;
+    public Character.Faction[] Factions { get; set; }
 
-    public static ConditionNotFaction Instance => _instance ??= new();
+    public ConditionNotFaction() { }
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
+    public ConditionNotFaction(IEnumerable<Character.Faction> factions)
     {
-        if (drop is null || extended is null || !characterDrop || characterDrop is null)
+        Factions = factions.ToArray();
+    }
+
+    public bool IsValid(DropContext context)
+    {
+        if (context.Character.IsNull())
         {
-            return false;
+            return true;
         }
 
-        if (string.IsNullOrEmpty(extended.Config.ConditionNotFaction.Value))
+        var characterFaction = context.Character.GetFaction();
+
+        return !Factions.Contains(characterFaction);
+    }
+}
+
+internal static partial class CharacterDropDropTemplateConditionExtensions
+{
+    public static CharacterDropDropTemplate ConditionNotFaction(
+        this CharacterDropDropTemplate template,
+        IEnumerable<Character.Faction> factions)
+    {
+        if (factions?.Any() == true)
         {
-            return false;
+            template.Conditions.AddOrReplaceByType(new ConditionNotFaction(factions));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionNotFaction);
         }
 
-        var character = CharacterCache.GetCharacter(characterDrop);
-
-        if (!character || character is null)
-        {
-            return false;
-        }
-
-        var characterFaction = character.GetFaction();
-
-        var requiredNotFactions = extended.Config.ConditionNotFaction.Value.SplitByComma();
-
-        foreach (var requiredNotFaction in requiredNotFactions)
-        {
-            if (Enum.TryParse(requiredNotFaction, true, out Character.Faction faction))
-            {
-                if (characterFaction == faction)
-                {
-                    Log.LogTrace($"{nameof(extended.Config.ConditionNotFaction)}: Disabling drop {drop.m_prefab.name} due to having faction {characterFaction}.");
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return template;
     }
 }
