@@ -1,4 +1,5 @@
 ﻿using CreatureLevelControl;
+using DropThat.Integrations;
 using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
@@ -17,7 +18,7 @@ public class ConditionWorldLevelMin : IDropCondition
     public bool IsValid(DropContext context)
     {
         if (MinLevel is null ||
-            !ConditionLoaderCLLC.InstalledCLLC)
+            !InstallationManager.CLLCInstalled)
         {
             return true;
         }

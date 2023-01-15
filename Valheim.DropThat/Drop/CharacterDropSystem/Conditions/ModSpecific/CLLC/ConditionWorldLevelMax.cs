@@ -1,4 +1,5 @@
 ﻿using CreatureLevelControl;
+using DropThat.Integrations;
 using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
@@ -17,7 +18,7 @@ public class ConditionWorldLevelMax : IDropCondition
     public bool IsValid(DropContext context)
     {
         if (MaxLevel is null ||
-            !ConditionLoaderCLLC.InstalledCLLC)
+            !InstallationManager.CLLCInstalled)
         {
             return true;
         }

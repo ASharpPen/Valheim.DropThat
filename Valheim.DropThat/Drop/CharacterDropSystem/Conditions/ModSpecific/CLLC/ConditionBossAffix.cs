@@ -3,6 +3,7 @@ using System.Linq;
 using DropThat.Integrations.CllcIntegration;
 using System.Collections.Generic;
 using ThatCore.Extensions;
+using DropThat.Integrations;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
@@ -27,7 +28,7 @@ public class ConditionBossAffix : IDropCondition
             return true;
         }
 
-        if (!ConditionLoaderCLLC.InstalledCLLC)
+        if (!InstallationManager.CLLCInstalled)
         {
             return true;
         }

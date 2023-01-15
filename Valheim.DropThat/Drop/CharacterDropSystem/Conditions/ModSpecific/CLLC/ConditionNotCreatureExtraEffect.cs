@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CreatureLevelControl;
+using DropThat.Integrations;
 using DropThat.Integrations.CllcIntegration;
 using ThatCore.Extensions;
 
@@ -26,7 +27,7 @@ public class ConditionNotCreatureExtraEffect : IDropCondition
             return true;
         }
 
-        if (!ConditionLoaderCLLC.InstalledCLLC)
+        if (!InstallationManager.CLLCInstalled)
         {
             return true;
         }
