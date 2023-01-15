@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ThatCore.Cache;
+using DropThat.Utilities;
 
 namespace DropThat.Caches;
 
@@ -11,6 +12,11 @@ public class ComponentCache
 
     public static T Get<T>(GameObject obj) where T : Component
     {
+        if (obj.IsNull())
+        {
+            return null;
+        }
+
         ComponentCache cache = CacheTable.GetOrCreate(obj);
 
         Type componentType = typeof(T);
@@ -30,6 +36,16 @@ public class ComponentCache
             cache.ComponentTable.Add(componentType, null);
             return null;
         }
+    }
+
+    public static T Get<T>(Component obj) where T : Component
+    {
+        if (obj.IsNull())
+        {
+            return null;
+        }
+
+        return Get<T>(obj.gameObject);
     }
 
     private Dictionary<Type, Component> ComponentTable { get; } = new();

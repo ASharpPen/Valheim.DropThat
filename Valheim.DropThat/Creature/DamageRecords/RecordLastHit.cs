@@ -12,6 +12,11 @@ public static class RecordLastHit
 
     public static DamageRecord GetLastHit(Character character)
     {
+        if (character.IsNull())
+        {
+            return null;
+        }
+
         if(LastHits.TryGet(character, out DamageRecord lastHit))
         {
             return lastHit;
@@ -22,6 +27,11 @@ public static class RecordLastHit
 
     public static void SetLastHit(Character character, HitData hitData)
     {
+        if (character.IsNull())
+        {
+            return;
+        }
+
         var lastHit = LastHits.GetOrCreate(character);
         lastHit.Hit = hitData;
         

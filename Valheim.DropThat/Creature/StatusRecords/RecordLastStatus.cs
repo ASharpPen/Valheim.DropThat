@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DropThat.Utilities;
 using ThatCore.Cache;
 
 namespace DropThat.Creature.StatusRecords;
@@ -9,6 +10,11 @@ public static class RecordLastStatus
 
     public static StatusRecord GetLastStatus(Character character)
     {
+        if (character.IsNull())
+        {
+            return null;
+        }
+
         if (LastStatus.TryGet(character, out StatusRecord cached))
         {
             return cached;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
 using DropThat.Core;
-using DropThat.Drop.CharacterDropSystem.Patches;
+using DropThat.Drop.CharacterDropSystem.Caches;
 
 namespace DropThat.Debugging
 {

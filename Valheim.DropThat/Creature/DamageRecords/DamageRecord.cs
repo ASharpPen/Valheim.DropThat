@@ -1,4 +1,8 @@
-﻿using DropThat.Utilities.Valheim;
+﻿using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Utilities.Valheim;
+using ThatCore.Extensions;
+using UnityEngine;
 
 namespace DropThat.Creature.DamageRecords;
 
@@ -22,4 +26,30 @@ public class DamageRecord
     /// Znet time when hit was recorded.
     /// </summary>
     public double Timestamp { get; set; }
+
+    public EntityType GetHitterType()
+    {
+        EntityType hitBy = EntityType.Other;
+
+        if (Hit?.HaveAttacker() == true)
+        {
+            GameObject attacker = ZNetScene.instance.FindInstance(Hit.m_attacker);
+
+            var attackerCharacter = ComponentCache.Get<Character>(attacker);
+
+            if (attackerCharacter.IsNotNull())
+            {
+                if (attackerCharacter.IsPlayer())
+                {
+                    hitBy = EntityType.Player;
+                }
+                else
+                {
+                    hitBy = EntityType.Creature;
+                }
+            }
+        }
+
+        return hitBy;
+    }
 }
