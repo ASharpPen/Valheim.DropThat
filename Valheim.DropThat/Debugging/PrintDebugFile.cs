@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using DropThat.Configuration;
 using DropThat.Core;
+using ThatCore.Logging;
 
 namespace DropThat.Debugging;
 
@@ -19,7 +20,7 @@ internal static class PrintDebugFile
 
         string filePath = Path.Combine(directory, filename);
 
-        Log.LogInfo($"Writing {fileDescription} to file {filePath}.");
+        Log.Info?.Log($"Writing {fileDescription} to file {filePath}.");
 
         File.WriteAllText(filePath, content);
     }
@@ -35,7 +36,7 @@ internal static class PrintDebugFile
 
         string filePath = Path.Combine(directory, filename);
 
-        Log.LogInfo($"Writing {fileDescription} to file {filePath}.");
+        Log.Info?.Log($"Writing {fileDescription} to file {filePath}.");
 
         File.WriteAllLines(filePath, content);
     }

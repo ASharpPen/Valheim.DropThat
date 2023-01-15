@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using DropThat.Core;
 using DropThat.Reset;
 using DropThat.Utilities;
+using ThatCore.Logging;
 
 namespace DropThat.Locations;
 
@@ -22,15 +22,8 @@ public static class LocationHelper
     {
         if (_simpleLocationsByZone is null)
         {
-#if DEBUG
-            Log.LogTrace($"Instantiating new dictionary for SimpleLocations.");
-#endif
             _simpleLocationsByZone = new Dictionary<Vector2i, SimpleLocation>();
         }
-
-#if DEBUG
-        Log.LogTrace($"Assigning locations.");
-#endif
 
         foreach (var location in locations)
         {
@@ -42,7 +35,7 @@ public static class LocationHelper
     {
         if (ZoneSystem.instance.IsNull())
         {
-            Log.LogWarning("Attempting to retrieve location before ZoneSystem is initialized.");
+            Log.Warning?.Log("Attempting to retrieve location before ZoneSystem is initialized.");
             return null;
         }
 

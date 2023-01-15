@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ThatCore.Logging;
 
 namespace DropThat.Core.Network;
 
@@ -76,9 +77,8 @@ internal class Dispatcher
         int queueSize = socket.GetSendQueueSize();
         if (socket.GetSendQueueSize() > MaxQueueSizeForDispatch)
         {
-#if DEBUG
-            Log.LogTrace("Package queue size: " + queueSize);
-#endif
+            Log.DevelopmentOnly("Package queue size: " + queueSize);
+
             return Completed;
         }
 
@@ -93,13 +93,13 @@ internal class Dispatcher
         {
             item.ZRpc.Invoke(item.Target, new object[] { item.Package });
 
-            Log.LogTrace($"Sending package with size '{item.Package.Size()}' to '{item.Target}'");
+            Log.Trace?.Log($"Sending package with size '{item.Package.Size()}' to '{item.Target}'");
         }
         catch (Exception e)
         {
             if (item.Retries > 3)
             {
-                Log.LogWarning($"Error while trying to send package. Too many retries, will stop trying.", e);
+                Log.Warning?.Log($"Error while trying to send package. Too many retries, will stop trying.", e);
             }
             else
             {

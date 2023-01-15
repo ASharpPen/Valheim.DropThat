@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DropThat.Core.Network;
 
-namespace Valheim.DropThat.Core.Network;
+namespace DropThat.Core.Network;
 
 internal static class NetworkSetup
 {

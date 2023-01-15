@@ -4,8 +4,8 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
-using DropThat.Core;
 using DropThat.Drop.CharacterDropSystem.Caches;
+using ThatCore.Logging;
 
 namespace DropThat.Debugging
 {
@@ -26,7 +26,7 @@ namespace DropThat.Debugging
 
         private static List<KeyValuePair<GameObject, int>> InvestigateList(List<KeyValuePair<GameObject, int>> drops)
         {
-            Log.LogDebug("OnDeath");
+            Log.DevelopmentOnly("OnDeath");
             TempDropListCache.GetDrops(drops);
 
             return drops;

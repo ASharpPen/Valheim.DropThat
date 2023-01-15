@@ -43,7 +43,7 @@ internal class SplitPackage
 
             serialized = memStream.ToArray();
 
-            Log.LogTrace($"Serialized size: {serialized.Length} bytes");
+            Log.Trace?.Log($"Serialized size: {serialized.Length} bytes");
         }
 
         const int maxPackageSize =  100_000;
@@ -79,7 +79,7 @@ internal class SplitPackage
             splits.Add(zpack);
 
 #if VERBOSE && DEBUG
-            Log.LogTrace($"Created package:" +
+            Log.DevelopmentOnly($"Created package:" +
                 $"\n\t\ti: {i}" +
                 $"\n\t\tRemaining: {remaining}" +
                 $"\n\t\tItems: {splitItems}" +
@@ -92,7 +92,7 @@ internal class SplitPackage
         }
 
 #if VERBOSE && DEBUG
-        Log.LogTrace($"Split package into {splits.Count} pieces");
+        Log.DevelopmentOnly($"Split package into {splits.Count} pieces");
 #endif
 
         return splits;
@@ -111,7 +111,7 @@ internal class SplitPackage
         }
         else
         {
-            Log.LogDebug($"Unpackaged unexpected object '{responseObject.GetType()}'");
+            Log.Debug?.Log($"Unpackaged unexpected object '{responseObject.GetType()}'");
             return null;
         }
     }
@@ -124,7 +124,7 @@ internal class SplitPackage
             .ToArray());
 
 #if VERBOSE && DEBUG
-        Log.LogDebug($"Deserializing '{splits.Count}' split packages with total size of '{serializedStream.Length}' bytes");
+        Log.DevelopmentOnly($"Deserializing '{splits.Count}' split packages with total size of '{serializedStream.Length}' bytes");
 #endif
 
         using var zipStream = new DeflateStream(serializedStream, CompressionMode.Decompress, true);
@@ -138,7 +138,7 @@ internal class SplitPackage
         }
         else
         {
-            Log.LogDebug($"Unpackaged unexpected object '{responseObject.GetType()}'");
+            Log.Debug?.Log($"Unpackaged unexpected object '{responseObject.GetType()}'");
         }
     }
 }

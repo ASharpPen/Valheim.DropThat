@@ -31,7 +31,27 @@ public class ModifierQualityLevel : IItemModifier
             return;
         }
 
-        Log.LogDebug($"Setting quality level of item '{itemDrop.name}' to {QualityLevel}.");
+        Log.Warning?.Log($"Setting quality level of item '{itemDrop.name}' to {QualityLevel}.");
         itemDrop.m_itemData.m_durability = QualityLevel.Value;
+    }
+}
+
+internal static partial class IHaveItemModifierExtensions
+{
+    public static T ModifierQualityLevel<T>(
+        this T template,
+        int? qualityLevel)
+        where T : IHaveItemModifiers
+    {
+        if (qualityLevel >= 0)
+        {
+            template.ItemModifiers.AddOrReplaceByType(new ModifierQualityLevel(qualityLevel.Value));
+        }
+        else
+        {
+            template.ItemModifiers.RemoveAll(x => x is ModifierQualityLevel);
+        }
+
+        return template;
     }
 }

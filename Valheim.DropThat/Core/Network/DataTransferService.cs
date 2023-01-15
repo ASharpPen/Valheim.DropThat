@@ -65,7 +65,7 @@ internal partial class DataTransferService : IDisposable
         }
         catch (Exception e)
         {
-            Log.LogError("Failed to queue package.", e);
+            Log.Error?.Log("Failed to queue package.", e);
         }
     }
 

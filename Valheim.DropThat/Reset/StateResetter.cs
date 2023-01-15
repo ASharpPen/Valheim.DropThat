@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DropThat.Core;
+using ThatCore.Logging;
 
 namespace DropThat.Reset;
 
@@ -20,7 +20,7 @@ public static class StateResetter
 
     public static void Reset()
     {
-        Log.LogDebug("Resetting mod state.");
+        Log.Debug?.Log("Resetting mod state.");
 
         foreach (var onReset in OnResetActions)
         {

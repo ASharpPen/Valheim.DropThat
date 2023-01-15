@@ -31,7 +31,27 @@ public class ModifierDurability : IItemModifier
             return;
         }
 
-        Log.LogDebug($"Setting durability of item '{itemDrop.name}' to {Durability}.");
+        Log.Debug?.Log($"Setting durability of item '{itemDrop.name}' to {Durability}.");
         itemDrop.m_itemData.m_durability = Durability.Value;
+    }
+}
+
+internal static partial class IHaveItemModifierExtensions
+{
+    public static T ModifierDurability<T>(
+        this T template,
+        float? durability)
+        where T : IHaveItemModifiers
+    {
+        if (durability is not null)
+        {
+            template.ItemModifiers.AddOrReplaceByType(new ModifierDurability(durability.Value));
+        }
+        else
+        {
+            template.ItemModifiers.RemoveAll(x => x is ModifierDurability);
+        }
+
+        return template;
     }
 }

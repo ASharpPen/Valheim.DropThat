@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 using System;
-using DropThat.Core;
+using ThatCore.Logging;
 
 namespace DropThat.Utilities;
 
@@ -33,11 +33,11 @@ public static class CodeMatcherExtensions
         try
         {
             var line = codeMatcher.InstructionAt(currentOffset);
-            Log.LogTrace($"[{currentOffset}] " + line.ToString());
+            Log.Trace?.Log($"[{currentOffset}] " + line.ToString());
         }
         catch (Exception e)
         {
-            Log.LogTrace(e.Message);
+            Log.Trace?.Log(e.Message);
         }
     }
 #endif

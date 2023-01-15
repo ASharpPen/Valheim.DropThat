@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using DropThat.Configuration;
 using DropThat.Core;
+using ThatCore.Logging;
+using System;
 
 namespace DropThat.Reset;
 
@@ -14,9 +16,16 @@ public static class WorldStartPatch
     [HarmonyPrefix]
     private static void ResetState()
     {
-        Log.LogDebug("OnWorldStart - Resetting configurations");
-        StateResetter.Reset();
-        ConfigurationManager.LoadAll();
+        try
+        {
+            Log.Debug?.Log("OnWorldStart - Resetting configurations");
+            StateResetter.Reset();
+            ConfigurationManager.LoadAll();
+        }
+        catch (Exception e)
+        {
+            Log.Error?.Log("Error during loadup.", e);
+        }
     }
 
     /// <summary>
@@ -26,8 +35,15 @@ public static class WorldStartPatch
     [HarmonyPrefix]
     private static void ResetStateMultiplayer()
     {
-        Log.LogDebug("JoinServer - Resetting configurations");
-        StateResetter.Reset();
+        try
+        {
+            Log.Debug?.Log("JoinServer - Resetting configurations");
+            StateResetter.Reset();
+        }
+        catch (Exception e)
+        {
+            Log.Error?.Log("Error during loadup.", e);
+        }
     }
 
     /// <summary>
@@ -37,11 +53,18 @@ public static class WorldStartPatch
     [HarmonyPrefix]
     private static void ResetStateServer()
     {
-        Log.LogDebug("ParseServerArguments - Resetting configurations");
-        StateResetter.Reset();
-        ConfigurationManager.LoadAllCharacterDropConfigurations();
-        ConfigurationManager.LoadAllCharacterDropLists();
-        ConfigurationManager.LoadAllDropTableConfigurations();
-        ConfigurationManager.LoadAllDropTableLists();
+        try
+        {
+            Log.Debug?.Log("ParseServerArguments - Resetting configurations");
+            StateResetter.Reset();
+            ConfigurationManager.LoadAllCharacterDropConfigurations();
+            ConfigurationManager.LoadAllCharacterDropLists();
+            ConfigurationManager.LoadAllDropTableConfigurations();
+            ConfigurationManager.LoadAllDropTableLists();
+        }
+        catch (Exception e)
+        {
+            Log.Error?.Log("Error during loadup.", e);
+        }
     }
 }

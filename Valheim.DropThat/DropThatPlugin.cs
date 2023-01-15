@@ -3,6 +3,7 @@ using HarmonyLib;
 using DropThat.Configuration;
 using DropThat.Core;
 using DropThat.Core.Network;
+using ThatCore.Logging;
 
 namespace DropThat;
 
@@ -15,7 +16,7 @@ public class DropThatPlugin : BaseUnityPlugin
     // Awake is called once when both the game and the plug-in are loaded
     void Awake()
     {
-        Log.Logger = Logger;
+        Log.SetLogger(new BepInExLogger(Logger));
 
         ConfigurationManager.LoadGeneralConfigurations();
 

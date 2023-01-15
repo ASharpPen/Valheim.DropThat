@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.Serialization.Formatters.Binary;
+using ThatCore.Logging;
 
 namespace DropThat.Core.Network;
 
@@ -28,7 +29,7 @@ internal abstract class CompressedPackage
 
             byte[] serialized = memStream.ToArray();
 
-            Log.LogTrace($"Serialized size: {serialized.Length} bytes");
+            Log.Trace?.Log($"Serialized size: {serialized.Length} bytes");
 
             package.Write(serialized);
         }
@@ -40,7 +41,7 @@ internal abstract class CompressedPackage
     {
         var serialized = package.ReadByteArray();
 
-        Log.LogTrace($"Deserializing package size: {serialized.Length} bytes");
+        Log.Trace?.Log($"Deserializing package size: {serialized.Length} bytes");
 
         using (MemoryStream memStream = new MemoryStream(serialized))
         {

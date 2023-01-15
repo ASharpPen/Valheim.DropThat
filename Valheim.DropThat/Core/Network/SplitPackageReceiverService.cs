@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DropThat.Reset;
 using ThatCore.Logging;
-using DropThat.Core.Network;
 
 namespace DropThat.Core.Network;
 
@@ -42,7 +41,7 @@ internal static class SplitPackageReceiverService
         {
             if (session.LastPackage < retentionTimestamp)
             {
-                Log.LogTrace($"Removing dead package session with transfer id '{session.TransferId}' and {session.Packages.Count}/{session.ExpectedPackages} received packages");
+                Log.Trace?.Log($"Removing dead package session with transfer id '{session.TransferId}' and {session.Packages.Count}/{session.ExpectedPackages} received packages");
 
                 PackageCache.Remove(session.TransferId);
                 RecentlyDroppedTransfers[session.TransferId] = DateTimeOffset.UtcNow;
@@ -109,7 +108,7 @@ internal static class SplitPackageReceiverService
         {
             if (!ValidPackage(package))
             {
-                Log.LogDebug($"Received unexpected misformed package '{package.TransferId}:{package.SplitIndex}' for session '{package.TransferId}'. Dropping package.");
+                Log.Debug?.Log($"Received unexpected misformed package '{package.TransferId}:{package.SplitIndex}' for session '{package.TransferId}'. Dropping package.");
                 return;
             }
 

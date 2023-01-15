@@ -6,6 +6,7 @@ using UnityEngine;
 using DropThat.Configuration.ConfigTypes;
 using DropThat.Core;
 using DropThat.Utilities;
+using ThatCore.Logging;
 
 namespace DropThat.Debugging;
 
@@ -71,12 +72,6 @@ internal static class CreatureItemFileWriter
                 }
             }
 
-#if DEBUG
-                if (inventoryItems.Count == 0)
-                {
-                    Log.LogTrace("No inventory items found for " + characterDrop.Item1.name);
-                }
-#endif
             lines.Add($"[{characterDrop.Item1.name}.0]");
             lines.Add($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}={inventoryItems?.Join()}");
             lines.Add("");

@@ -1,7 +1,8 @@
 ﻿using HarmonyLib;
 using System;
 using DropThat.Caches;
-using DropThat.Core;
+using ThatCore.Logging;
+using ThatCore.Extensions;
 
 namespace DropThat.Creature;
 
@@ -17,9 +18,7 @@ internal static class Patch_Character_RecordHit
     {
         try
         {
-#if DEBUG
-                Log.LogTrace("Applying damage.");
-#endif
+            Log.DevelopmentOnly("Applying damage.");
 
             if (__instance.IsNull())
             {
@@ -30,15 +29,11 @@ internal static class Patch_Character_RecordHit
 
             if (zdo is null)
             {
-#if DEBUG
-                    Log.LogTrace($"[{__instance.name}] Skipping record of last hit.");
-#endif
+                Log.DevelopmentOnly($"[{__instance.name}] Skipping record of last hit.");
                 return;
             }
 
-#if DEBUG
-                Log.LogTrace($"[{__instance.name}] Recording hit.");
-#endif
+            Log.DevelopmentOnly($"[{__instance.name}] Recording hit.");
 
             DamageRecords.RecordLastHit.SetLastHit(__instance, hit);
             DamageRecords.RecordRecentHits.SetRecentHit(__instance, hit);
@@ -46,7 +41,7 @@ internal static class Patch_Character_RecordHit
         }
         catch (Exception e)
         {
-            Log.LogError("Error during attempt at recording last hit", e);
+            Log.Error?.Log("Error during attempt at recording last hit", e);
         }
     }
 }

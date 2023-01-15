@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DropThat.Core;
 using DropThat.Core.Network;
+using ThatCore.Logging;
 
 namespace DropThat.Locations;
 
@@ -44,16 +45,16 @@ internal class SimpleLocationPackage : CompressedPackage
         LocationNames = locationNames.ToArray();
         Locations = locationDtos.ToArray();
 
-        Log.LogTrace($"Packed {LocationNames.Length} location names");
-        Log.LogTrace($"Packed {Locations.Length} locations");
+        Log.Trace?.Log($"Packed {LocationNames.Length} location names");
+        Log.Trace?.Log($"Packed {Locations.Length} locations");
     }
 
     protected override void AfterUnpack(object responseObject)
     {
         if (responseObject is SimpleLocationPackage)
         {
-            Log.LogTrace($"Unpacking {LocationNames.Length} location names");
-            Log.LogTrace($"Unpacking {Locations.Length} locations");
+            Log.Trace?.Log($"Unpacking {LocationNames.Length} location names");
+            Log.Trace?.Log($"Unpacking {Locations.Length} locations");
 
             List<SimpleLocation> simpleLocations = new List<SimpleLocation>(Locations.Length);
 
