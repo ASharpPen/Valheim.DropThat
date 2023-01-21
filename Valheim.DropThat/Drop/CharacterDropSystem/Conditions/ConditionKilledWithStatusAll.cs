@@ -50,10 +50,10 @@ public class ConditionKilledWithStatusAll : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionKilledWithStatusAll(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionKilledWithStatusAll(
+        this IHaveDropConditions template,
         IEnumerable<string> statuses)
     {
         if (statuses?.Any() == true)

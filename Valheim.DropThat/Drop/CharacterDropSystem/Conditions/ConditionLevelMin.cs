@@ -26,10 +26,10 @@ public class ConditionLevelMin : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionLevelMin(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionLevelMin(
+        this IHaveDropConditions template,
         int? minLevel)
     {
         if (minLevel is not null)

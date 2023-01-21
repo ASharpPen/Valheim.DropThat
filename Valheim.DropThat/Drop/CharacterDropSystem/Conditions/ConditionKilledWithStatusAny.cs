@@ -47,10 +47,10 @@ public class ConditionKilledWithStatusAny : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionKilledWithStatusAny(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionKilledWithStatusAny(
+        this IHaveDropConditions template,
         IEnumerable<string> statuses)
     {
         if (statuses?.Any() == true)

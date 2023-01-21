@@ -17,10 +17,10 @@ internal class GeneralConfigPackage : Dto
 
     public override void AfterUnpack()
     {
-        Log.LogDebug("Received and deserialized config package");
+        Log.Trace?.Log("Received and deserialized config package");
 
         ConfigurationManager.GeneralConfig = GeneralConfig;
             
-        Log.LogInfo("Successfully unpacked general configs.");
+        Log.Debug?.Log("Successfully unpacked general configs.");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
@@ -48,10 +49,10 @@ public class ConditionNotCreatureState : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionNotCreatureState(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionNotCreatureState(
+        this IHaveDropConditions template,
         List<CreatureState> states)
     {
         if (states?.Any() == true)

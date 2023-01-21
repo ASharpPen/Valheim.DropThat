@@ -42,10 +42,10 @@ public class ConditionHitByEntityTypeRecently : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionHitByEntityTypeRecently(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionHitByEntityTypeRecently(
+        this IHaveDropConditions template,
         IEnumerable<EntityType> entityTypes)
     {
         if (entityTypes?.Any() == true)

@@ -8,10 +8,10 @@ public class ConditionNotNight : IDropCondition
     public bool IsValid(DropContext context) => !EnvMan.instance.IsNight();
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionNotNight(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionNotNight(
+        this IHaveDropConditions template,
         bool? notNight)
     {
         if (notNight == true)

@@ -28,10 +28,10 @@ public class ConditionWorldLevelMax : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionWorldLevelMax(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionWorldLevelMax(
+        this IHaveDropConditions template,
         int? maxWorldLevel)
     {
         if (maxWorldLevel > 0)

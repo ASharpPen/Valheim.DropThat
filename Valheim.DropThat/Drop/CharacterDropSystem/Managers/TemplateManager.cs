@@ -1,21 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DropThat.Drop.CharacterDropSystem.Configuration;
+using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Reset;
 
 namespace DropThat.Drop.CharacterDropSystem.Managers;
 
-public static class DropTemplateManager
+public static class TemplateManager
 {
     internal static Dictionary<string, CharacterDropMobTemplate> Templates { get; set; } = new();
 
-    static DropTemplateManager()
+    static TemplateManager()
     {
         StateResetter.Subscribe(() =>
         {
             Templates = new();
         });
     }
+
+    public static void SetTemplate(string prefabName, CharacterDropMobTemplate template) =>
+        Templates[prefabName] = template;
 
     public static List<(string prefab, CharacterDropMobTemplate)> GetTemplates() =>
         Templates

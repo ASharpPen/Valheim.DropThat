@@ -45,10 +45,10 @@ public class ConditionBossAffix : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionBossAffix(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionBossAffix(
+        this IHaveDropConditions template,
         IEnumerable<CllcBossAffix> bossAffixes)
     {
         if (bossAffixes?.Any() == true)

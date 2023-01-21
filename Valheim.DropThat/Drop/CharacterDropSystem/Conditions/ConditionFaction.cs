@@ -29,10 +29,10 @@ public class ConditionFaction : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionFaction(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionFaction(
+        this IHaveDropConditions template,
         IEnumerable<Character.Faction> factions)
     {
         if (factions?.Any() == true)

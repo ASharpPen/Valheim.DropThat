@@ -36,10 +36,10 @@ public class ConditionKilledBySkillType : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionKilledBySkillType(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionKilledBySkillType(
+        this IHaveDropConditions template,
         IEnumerable<Skills.SkillType> skillTypes)
     {
         if (skillTypes?.Any() == true)

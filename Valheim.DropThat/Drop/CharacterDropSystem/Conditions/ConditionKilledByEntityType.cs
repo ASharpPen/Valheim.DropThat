@@ -40,10 +40,10 @@ public class ConditionKilledByEntityType : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionKilledByEntityType(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionKilledByEntityType(
+        this IHaveDropConditions template,
         IEnumerable<EntityType> entityTypes)
     {
         if (entityTypes?.Any() == true)

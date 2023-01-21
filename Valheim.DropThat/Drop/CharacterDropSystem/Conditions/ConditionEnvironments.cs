@@ -38,10 +38,10 @@ public class ConditionEnvironments : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionEnvironments(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionEnvironments(
+        this IHaveDropConditions template,
         IEnumerable<string> environments)
     {
         if (environments?.Any() == true)

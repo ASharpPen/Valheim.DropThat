@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DropThat.Configuration;
 using DropThat.Drop.CharacterDropSystem.Caches;
-using DropThat.Drop.CharacterDropSystem.Configuration;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Drop.CharacterDropSystem.Services;
 using ThatCore.Extensions;

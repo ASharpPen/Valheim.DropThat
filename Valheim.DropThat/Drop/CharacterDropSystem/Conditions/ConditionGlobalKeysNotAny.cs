@@ -28,10 +28,10 @@ internal class ConditionGlobalKeysNotAny : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionGlobalKeysNotAny(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionGlobalKeysNotAny(
+        this IHaveDropConditions template,
         IEnumerable<string> globalKeys)
     {
         if (globalKeys?.Any() == true)

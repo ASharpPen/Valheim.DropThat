@@ -28,10 +28,10 @@ public class ConditionWorldLevelMin : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionWorldLevelMin(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionWorldLevelMin(
+        this IHaveDropConditions template,
         int? minWorldLevel)
     {
         if (minWorldLevel > 0)

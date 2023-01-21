@@ -44,10 +44,10 @@ public class ConditionInfusion : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionInfusion(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionInfusion(
+        this IHaveDropConditions template,
         IEnumerable<CllcCreatureInfusion> infusions)
     {
         if (infusions?.Any() == true)

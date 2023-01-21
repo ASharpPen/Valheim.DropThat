@@ -49,10 +49,10 @@ public class ConditionCreatureState : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionCreatureState(
-        this CharacterDropDropTemplate template, 
+    public static IHaveDropConditions ConditionCreatureState(
+        this IHaveDropConditions template, 
         List<CreatureState> states)
     {
         if (states?.Any() == true)

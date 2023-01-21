@@ -7,6 +7,7 @@ namespace DropThat.Drop.CharacterDropSystem.Models;
 
 public class CharacterDropDropTemplate
     : IHaveItemModifiers
+    , IHaveDropConditions
 {
     public List<IDropCondition> Conditions { get; set; } = new();
 
@@ -17,10 +18,10 @@ public class CharacterDropDropTemplate
     public string PrefabName { get; set; }
 
     [DefaultValue(true)]
-    public bool Enabled { get; set; } = true;
+    public bool? Enabled { get; set; } = true;
 
     [DefaultValue(true)]
-    public bool TemplateEnabled { get; set; } = true;
+    public bool? TemplateEnabled { get; set; } = true;
 
     public int? AmountMin { get; set; }
 

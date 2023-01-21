@@ -64,10 +64,10 @@ public class ConditionLocation : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionLocation(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionLocation(
+        this IHaveDropConditions template,
         IEnumerable<string> locations)
     {
         if (locations?.Any() == true)

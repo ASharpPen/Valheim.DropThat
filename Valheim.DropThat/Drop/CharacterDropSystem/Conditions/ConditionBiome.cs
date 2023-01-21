@@ -65,10 +65,10 @@ public class ConditionBiome : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionBiome(
-        this CharacterDropDropTemplate template, 
+    public static IHaveDropConditions ConditionBiome(
+        this IHaveDropConditions template, 
         IEnumerable<Heightmap.Biome> biomes)
     {
         if (biomes?.Any() == true)

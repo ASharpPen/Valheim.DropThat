@@ -22,10 +22,10 @@ public class ConditionDistanceToCenterMax : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionDistanceToCenterMax(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionDistanceToCenterMax(
+        this IHaveDropConditions template,
         float? distance)
     {
         if (distance > 0)

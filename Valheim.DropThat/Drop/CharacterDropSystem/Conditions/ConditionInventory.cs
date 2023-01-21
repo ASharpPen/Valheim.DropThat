@@ -104,10 +104,10 @@ public class ConditionInventory : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionInventory(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionInventory(
+        this IHaveDropConditions template,
         IEnumerable<string> items)
     {
         if (items?.Any() == true)

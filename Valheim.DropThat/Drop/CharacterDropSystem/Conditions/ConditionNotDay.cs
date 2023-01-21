@@ -8,10 +8,10 @@ public class ConditionNotDay : IDropCondition
     public bool IsValid(DropContext context) => !EnvMan.instance.IsDay();
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionNotDay(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionNotDay(
+        this IHaveDropConditions template,
         bool? notDay)
     {
         if (notDay == true)

@@ -22,10 +22,10 @@ public class ConditionDistanceToCenterMin : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionDistanceToCenterMin(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionDistanceToCenterMin(
+        this IHaveDropConditions template,
         float? distance)
     {
         if (distance > 0)

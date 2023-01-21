@@ -38,10 +38,10 @@ public class ConditionKilledByDamageType : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionKilledByDamageType(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionKilledByDamageType(
+        this IHaveDropConditions template,
         IEnumerable<HitData.DamageType> damageTypes)
     {
         if (damageTypes?.Any() == true)

@@ -26,10 +26,10 @@ public class ConditionLevelMax : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionLevelMax(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionLevelMax(
+        this IHaveDropConditions template,
         int? maxLevel)
     {
         if (maxLevel is not null)

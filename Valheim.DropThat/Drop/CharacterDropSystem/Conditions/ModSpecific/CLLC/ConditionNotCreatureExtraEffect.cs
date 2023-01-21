@@ -44,10 +44,10 @@ public class ConditionNotCreatureExtraEffect : IDropCondition
     }
 }
 
-internal static partial class CharacterDropDropTemplateConditionExtensions
+internal static partial class IHaveDropConditionsExtensions
 {
-    public static CharacterDropDropTemplate ConditionNotCreatureExtraEffect(
-        this CharacterDropDropTemplate template,
+    public static IHaveDropConditions ConditionNotCreatureExtraEffect(
+        this IHaveDropConditions template,
         IEnumerable<CllcCreatureExtraEffect> creatureExtraEffects)
     {
         if (creatureExtraEffects?.Any() == true)
