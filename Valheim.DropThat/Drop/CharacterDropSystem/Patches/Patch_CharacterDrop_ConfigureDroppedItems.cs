@@ -1,45 +1,54 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 using DropThat.Caches;
 using DropThat.Configuration;
-using DropThat.Core;
-using DropThat.Utilities;
+using DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Drop.CharacterDropSystem.Managers;
+using HarmonyLib;
+using ThatCore.Extensions;
+using ThatCore.Logging;
+using UnityEngine;
 
 namespace DropThat.Drop.CharacterDropSystem.Patches;
-
-[HarmonyPatch(typeof(CharacterDrop))]
-public static class Patch_CharacterDrop_DropItems
+internal static class Patch_CharacterDrop_ConfigureDroppedItems
 {
-    private static MethodInfo OnSpawnedItemMethod = AccessTools.Method(typeof(Patch_CharacterDrop_DropItems), nameof(OnSpawnedItem), new[] { typeof(GameObject), typeof(List<KeyValuePair<GameObject, int>>), typeof(Vector3) });
-    private static MethodInfo AfterSpawnedItemMethod = AccessTools.Method(typeof(Patch_CharacterDrop_DropItems), nameof(AfterSpawnedItem));
-
     [HarmonyPatch(nameof(CharacterDrop.DropItems))]
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> HookSpawnedItem(IEnumerable<CodeInstruction> instructions)
+    private static IEnumerable<CodeInstruction> HookSpawnedItem(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
-        return new CodeMatcher(instructions)
+        return new CodeMatcher(instructions, generator)
             // Move to right after object instantiation
             .MatchForward(false, new CodeMatch(OpCodes.Ldloc_3))
             .Advance(3)
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_S, 5))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_1))
-            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, OnSpawnedItemMethod))
+            .SetInstructionAndAdvance(Transpilers.EmitDelegate(OnSpawnedItem))
             // Insert auto stacking, and set loop index to result.
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_S, 5))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_2))
-            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AfterSpawnedItemMethod))
+            .SetInstructionAndAdvance(Transpilers.EmitDelegate(StackDropsAndReturnNewIndex))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Stloc_2)) // Overwrite existing loop index
             .InstructionEnumeration();
     }
 
-    private static int AfterSpawnedItem(GameObject item, List<KeyValuePair<GameObject, int>> drops, int index)
+    // TODO: Figure out how to add an index by transpiler instead, to avoid having to do this weird counter shit.
+    // Maybe just count it in a static... And skip the whole madness.
+    private static void OnSpawnedItem(GameObject item, List<KeyValuePair<GameObject, int>> drops, Vector3 centerPos)
+    {
+        int count = LoopCounter.GetCount(drops);
+        int index = GetIndex(drops, count);
+        LoopCounter.Increment(drops);
+
+        DropTableManager.ModifyDrop(item, drops, index); 
+    }
+
+    // TODO: Figure out how to add an index by transpiler instead, to avoid having to do this weird counter shit.
+    // Maybe just count it in a static... And skip the whole madness.
+    private static int StackDropsAndReturnNewIndex(GameObject item, List<KeyValuePair<GameObject, int>> drops, int index)
     {
         var resultIndex = index;
 
@@ -48,15 +57,8 @@ public static class Patch_CharacterDrop_DropItems
             var count = LoopCounter.GetCount(drops) - 1;
             int itemIndex = GetIndex(drops, count);
 
-#if DEBUG
-            //Log.LogDebug($"[AfterSpawnedItem] Count: {count}, Index: {itemIndex}");
-#endif
-
             if (itemIndex >= drops.Count)
             {
-#if DEBUG
-                // Log.LogWarning($"Ups. Attempting to access drop index {itemIndex} in drop list with count {drops.Count}");
-#endif
                 return resultIndex;
             }
 
@@ -73,9 +75,9 @@ public static class Patch_CharacterDrop_DropItems
                 }
                 else
                 {
-                    var extendedData = TempDropListCache.GetDrop(drops, itemIndex);
+                    var configInfo = TempDropListCache.GetDrop(drops, itemIndex);
 
-                    if (extendedData is not null && extendedData.Config.SetAutoStack)
+                    if (configInfo?.DropTemplate?.AutoStack == true)
                     {
                         shouldStack = true;
                     }
@@ -92,28 +94,24 @@ public static class Patch_CharacterDrop_DropItems
                     // Apply stack to item, and skip loop equivalently.
                     var itemDrop = ComponentCache.Get<ItemDrop>(item);
 
-                    Log.LogTrace($"Stacking item '{drop.Key.name}' {stackSize} times out of maximum {maxStack}.");
+                    Log.Trace?.Log($"Stacking item '{drop.Key.name}' {stackSize} times out of maximum {maxStack}.");
 
                     itemDrop.SetStack(stackSize);
 
                     // Deduct 1 from result, since loop will increment on its own, and OnSpawnedItem will have incremented loop too.
                     LoopCounter.Increment(drops, stackSize - 1);
                     resultIndex += stackSize - 1;
-
-#if DEBUG
-                    //Log.LogTrace($"Setting new loop index: {resultIndex}");
-#endif
                 }
             }
         }
         catch (Exception e)
         {
-            Log.LogError($"Error while attempting to stack item '{item.name}'. Skipping stacking.", e);
+            Log.Error?.Log($"Error while attempting to stack item '{item.name}'. Skipping stacking.", e);
         }
 
         return resultIndex;
 
-        int GetMaxStackSize(GameObject item)
+        static int GetMaxStackSize(GameObject item)
         {
             var itemDrop = ComponentCache.Get<ItemDrop>(item);
 
@@ -124,45 +122,6 @@ public static class Patch_CharacterDrop_DropItems
             }
 
             return itemDrop.m_itemData.m_shared.m_maxStackSize;
-        }
-    }
-
-    private static void OnSpawnedItem(GameObject item, List<KeyValuePair<GameObject, int>> drops, Vector3 centerPos)
-    {
-#if DEBUG
-        //Log.LogDebug($"Attempting to apply modifiers to item {item.name}:{drops.GetHashCode()}");
-        //Log.LogDebug($"Possible drops: " + drops.Join(x => $"{x.Key.name}:{x.Value}"));
-#endif
-
-        int count = LoopCounter.GetCount(drops);
-        int index = GetIndex(drops, count);
-        LoopCounter.Increment(drops);
-
-#if DEBUG
-        //Log.LogDebug($"[OnSpawnedItem] Count: {count}, Index: {index}");
-#endif
-
-        try
-        {
-            var extendedData = TempDropListCache.GetDrop(drops, index);
-
-            if (extendedData is null)
-            {
-#if DEBUG
-            //Log.LogDebug($"No config for item {item.name} at index {index}");
-#endif
-                return;
-            }
-
-#if DEBUG
-        //Log.LogDebug($"Found config, applying modifiers to item {item.name}");
-#endif
-
-            DropModificationManager.Instance.ApplyModifications(item, extendedData, centerPos);
-        }
-        catch (Exception e)
-        {
-            Log.LogError("Error during drop modification.", e);
         }
     }
 

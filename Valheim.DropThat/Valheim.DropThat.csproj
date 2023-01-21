@@ -16,6 +16,11 @@
     <Description>Valheim mod and tool for configuring loot drops.</Description>
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="LibsStripped\**" />
+    <EmbeddedResource Remove="LibsStripped\**" />
+    <None Remove="LibsStripped\**" />
+  </ItemGroup>
   
   <ItemGroup>
 	  <PackageReference Include="YamlDotNet" Version="12.2.1" />
@@ -45,9 +50,6 @@
     <Reference Include="EpicLoot">
       <HintPath>..\Libs\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
     </Reference>
-    <Reference Include="ExtendedItemDataFramework">
-      <HintPath>..\Libs\RandyKnapp-ExtendedItemDataFramework\ExtendedItemDataFramework.dll</HintPath>
-    </Reference>
     <Reference Include="ThatCore">
       <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.dll</HintPath>
     </Reference>
@@ -74,8 +76,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Drop\DropTableSystem\Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LibsStripped\Readme.md" />
   </ItemGroup>
 </Project>
