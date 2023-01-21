@@ -9,8 +9,6 @@ namespace DropThat.Creature;
 [HarmonyPatch(typeof(Character))]
 internal static class Patch_Character_RecordHit
 {
-    private const string ZdoHealth = "health";
-
     [HarmonyPatch(nameof(Character.ApplyDamage))]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.Last)] // Let other prefixes apply their changes, so we can properly pick up the final result.
@@ -25,7 +23,7 @@ internal static class Patch_Character_RecordHit
                 return;
             }
 
-            var zdo = ZdoCache.GetZDO(__instance.gameObject);
+            var zdo = ZdoCache.GetZDO(__instance);
 
             if (zdo is null)
             {

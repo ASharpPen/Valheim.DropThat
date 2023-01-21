@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CreatureLevelControl;
+using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Integrations;
 using DropThat.Integrations.CllcIntegration;
 using ThatCore.Extensions;

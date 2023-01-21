@@ -4,6 +4,7 @@ using DropThat.Integrations.CllcIntegration;
 using System.Collections.Generic;
 using ThatCore.Extensions;
 using DropThat.Integrations;
+using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 

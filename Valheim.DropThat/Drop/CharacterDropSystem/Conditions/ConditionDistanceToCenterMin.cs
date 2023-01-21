@@ -1,4 +1,5 @@
-﻿using ThatCore.Extensions;
+﻿using DropThat.Drop.CharacterDropSystem.Models;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 

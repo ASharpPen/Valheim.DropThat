@@ -1,6 +1,6 @@
 ﻿using BepInEx.Configuration;
-using System;
 using DropThat.Core.Configuration;
+using System;
 
 namespace DropThat.Configuration.ConfigTypes;
 
@@ -20,7 +20,7 @@ public class GeneralConfiguration
     public ConfigurationEntry<bool> ClearAllExistingCharacterDrops = new(false, "When enabled, all existing items in drop tables gets removed.");
     public ConfigurationEntry<bool> ClearAllExistingCharacterDropsWhenModified = new(false, "When enabled, all existing items in drop tables are removed when a configuration for that entity exist. Eg. if 'Deer' is present in configuration table, the configured drops will be the only drops for 'Deer'.");
     public ConfigurationEntry<bool> AlwaysAppendCharacterDrops = new(false, "When enabled, drop configurations will not override existing items if their indexes match.");
-    public ConfigurationEntry<bool> ApplyConditionsOnDeathCharacterDrops = new(false, "When enabled, drop conditions are checked at time of death, instead of at time of spawn.");
+    public ConfigurationEntry<bool> ApplyConditionsOnDeathCharacterDrops = new(false, "[Deprecated] When enabled, drop conditions are checked at time of death, instead of at time of spawn.");
 
     // DropTable
 

@@ -2,6 +2,7 @@
 using DropThat.Creature.StatusRecords;
 using System.Collections.Generic;
 using ThatCore.Extensions;
+using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 

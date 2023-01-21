@@ -1,4 +1,6 @@
-﻿namespace DropThat.Drop.CharacterDropSystem.Conditions;
+﻿using DropThat.Drop.CharacterDropSystem.Models;
+
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
 public interface IDropCondition
 {

@@ -1,4 +1,5 @@
 ﻿using CreatureLevelControl;
+using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Integrations;
 using ThatCore.Extensions;
 

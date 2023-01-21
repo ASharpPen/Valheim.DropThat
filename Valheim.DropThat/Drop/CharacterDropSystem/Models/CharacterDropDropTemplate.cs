@@ -3,14 +3,16 @@ using System.ComponentModel;
 using DropThat.Drop.CharacterDropSystem.Conditions;
 using DropThat.Drop.Options;
 
-namespace DropThat.Drop.CharacterDropSystem;
+namespace DropThat.Drop.CharacterDropSystem.Models;
 
 public class CharacterDropDropTemplate
     : IHaveItemModifiers
 {
-    public List<ICondition> Conditions { get; set; } = new();
+    public List<IDropCondition> Conditions { get; set; } = new();
 
     public List<IItemModifier> ItemModifiers { get; set; } = new();
+
+    public int Id { get; set; }
 
     public string PrefabName { get; set; }
 

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Managers;
+using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Utilities.Valheim;
-using EpicLoot.MagicItemEffects;
 using ThatCore.Extensions;
-using static Heightmap;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 

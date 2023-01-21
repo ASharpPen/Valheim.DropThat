@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Creature.DamageRecords;
+using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;

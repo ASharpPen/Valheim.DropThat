@@ -45,7 +45,7 @@ public static class ConfigurationManager
     {
         string generalConfig = Path.Combine(Paths.ConfigPath, DefaultConfigFile);
 
-        Log.LogInfo($"Loading general configuration from {generalConfig}.");
+        Log.Info?.Log($"Loading general configuration from {generalConfig}.");
 
         GeneralConfig = new GeneralConfiguration();
         GeneralConfig.Load(new ConfigFile(generalConfig, true));
@@ -53,10 +53,10 @@ public static class ConfigurationManager
 
     public static void LoadAllCharacterDropLists()
     {
-        Log.LogInfo("Loading character drop lists");
+        Log.Debug?.Log("Loading character drop lists");
 
         var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropListsFiles, SearchOption.AllDirectories);
-        Log.LogDebug($"Found {supplementalFiles.Length} files");
+        Log.Debug?.Log($"Found {supplementalFiles.Length} files");
 
         CharacterDropListConfigurationFile configs = new();
 
@@ -70,18 +70,18 @@ public static class ConfigurationManager
             }
             catch (Exception e)
             {
-                Log.LogError($"Failed to load config file '{file}'.", e);
+                Log.Error?.Log($"Failed to load config file '{file}'.", e);
             }
         }
 
         CharacterDropLists = configs;
 
-        Log.LogDebug("Finished loading character drop list");
+        Log.Debug?.Log("Finished loading character drop list");
     }
 
     public static void LoadAllCharacterDropConfigurations()
     {
-        Log.LogInfo("Loading character drop configurations");
+        Log.Debug?.Log("Loading character drop configurations");
 
         string configPath = Path.Combine(Paths.ConfigPath, DefaultDropFile);
 
@@ -90,7 +90,7 @@ public static class ConfigurationManager
         if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
         {
             var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, SupplementalPattern, SearchOption.AllDirectories);
-            Log.LogDebug($"Found {supplementalFiles.Length} supplemental files");
+            Log.Debug?.Log($"Found {supplementalFiles.Length} supplemental files");
 
             foreach (var file in supplementalFiles)
             {
@@ -109,19 +109,19 @@ public static class ConfigurationManager
 
         CharacterDropConfigs = configs;
 
-        Log.LogDebug("Finished loading drop configurations");
+        Log.Debug?.Log("Finished loading drop configurations");
     }
 
     public static void LoadAllDropTableLists()
     {
-        Log.LogInfo("Loading drop table lists");
+        Log.Debug?.Log("Loading drop table lists");
 
         var configs = new DropTableListConfigurationFile();
 
         if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
         {
             var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, DropTableListsFiles, SearchOption.AllDirectories);
-            Log.LogDebug($"Found {supplementalFiles.Length} files");
+            Log.Debug?.Log($"Found {supplementalFiles.Length} files");
 
             foreach (var file in supplementalFiles)
             {
@@ -133,19 +133,19 @@ public static class ConfigurationManager
                 }
                 catch (Exception e)
                 {
-                    Log.LogError($"Failed to load config file '{file}'.", e);
+                    Log.Error?.Log($"Failed to load config file '{file}'.", e);
                 }
             }
         }
 
         DropTableLists = configs;
 
-        Log.LogDebug("Finished drop table lists");
+        Log.Debug?.Log("Finished drop table lists");
     }
 
     public static void LoadAllDropTableConfigurations()
     {
-        Log.LogInfo("Loading drop table configurations");
+        Log.Debug?.Log("Loading drop table configurations");
 
         string configPath = Path.Combine(Paths.ConfigPath, DefaultDropTablesFile);
 
@@ -154,7 +154,7 @@ public static class ConfigurationManager
         if (GeneralConfig?.LoadSupplementalDropTables?.Value == true)
         {
             var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, SupplementalDropTablePattern, SearchOption.AllDirectories);
-            Log.LogDebug($"Found {supplementalFiles.Length} supplemental files");
+            Log.Debug?.Log($"Found {supplementalFiles.Length} supplemental files");
 
             foreach (var file in supplementalFiles)
             {
@@ -166,20 +166,20 @@ public static class ConfigurationManager
                 }
                 catch (Exception e)
                 {
-                    Log.LogError($"Failed to load supplemental config '{file}'.", e);
+                    Log.Error?.Log($"Failed to load supplemental config '{file}'.", e);
                 }
             }
         }
 
         DropTableConfigs = configs;
 
-        Log.LogDebug("Finished loading drop configurations");
+        Log.Debug?.Log("Finished loading drop configurations");
     }
 
 
     private static TConfig LoadConfigFile<TConfig>(string configPath) where TConfig : Config, IConfigFile
     {
-        Log.LogDebug($"Loading file {configPath}");
+        Log.Debug?.Log($"Loading file {configPath}");
 
         var configFile = new ConfigFile(configPath, true);
 

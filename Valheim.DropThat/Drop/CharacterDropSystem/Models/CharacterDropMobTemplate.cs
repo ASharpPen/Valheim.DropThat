@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DropThat.Drop.CharacterDropSystem;
+namespace DropThat.Drop.CharacterDropSystem.Models;
 
 public class CharacterDropMobTemplate
 {
