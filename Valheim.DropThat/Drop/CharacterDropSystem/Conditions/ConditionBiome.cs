@@ -12,6 +12,11 @@ public class ConditionBiome : IDropCondition
 {
     public Heightmap.Biome BiomeMask { get; set; }
 
+    static ConditionBiome()
+    {
+        DropTableManager.OnDropTableInitialize += SetSpawnBiomeIfMissing;
+    }
+
     public ConditionBiome()
     {
     }
@@ -45,13 +50,26 @@ public class ConditionBiome : IDropCondition
 
         return (spawnBiome.Value & BiomeMask) > 0;
     }
+
+    private static void SetSpawnBiomeIfMissing(CharacterDrop droptable)
+    {
+        var zdo = ZdoCache.GetZDO(droptable);
+
+        if (zdo is not null &&
+            zdo.GetSpawnBiome() is null)
+        {
+            var biome = Heightmap.FindBiome(zdo.m_position);
+
+            zdo.SetSpawnBiome(biome);
+        }
+    }
 }
 
 internal static partial class CharacterDropDropTemplateConditionExtensions
 {
     public static CharacterDropDropTemplate ConditionBiome(
         this CharacterDropDropTemplate template, 
-        IEnumerable<Biome> biomes)
+        IEnumerable<Heightmap.Biome> biomes)
     {
         if (biomes?.Any() == true)
         {

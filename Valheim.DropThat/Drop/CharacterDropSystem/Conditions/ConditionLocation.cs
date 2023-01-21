@@ -13,6 +13,11 @@ public class ConditionLocation : IDropCondition
 {
     public HashSet<string> Locations { get; set; }
 
+    static ConditionLocation()
+    {
+        DropTableManager.OnDropTableInitialize += SetSpawnLocationIfMissing;
+    }
+
     public ConditionLocation() { }
 
     public ConditionLocation(IEnumerable<string> locations) 
@@ -33,8 +38,11 @@ public class ConditionLocation : IDropCondition
             return true;
         }
 
+        var pos = context.ZDO?.GetSpawnPosition()
+            ?? context.Character.GetCenterPoint();
+
         var currentLocation = LocationHelper
-            .FindLocation(context.Character.GetCenterPoint());
+            .FindLocation(pos);
 
         if (currentLocation is null)
         {
@@ -42,6 +50,17 @@ public class ConditionLocation : IDropCondition
         }
 
         return Locations.Contains(currentLocation.LocationName.Trim().ToUpperInvariant());
+    }
+
+    private static void SetSpawnLocationIfMissing(CharacterDrop droptable)
+    {
+        var zdo = ZdoCache.GetZDO(droptable);
+
+        if (zdo is not null &&
+            zdo.GetSpawnPosition() is null)
+        {
+            zdo.SetSpawnPosition(zdo.m_position);
+        }
     }
 }
 
