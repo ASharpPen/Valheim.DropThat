@@ -15,7 +15,7 @@ public class ConditionLocation : IDropCondition
 
     static ConditionLocation()
     {
-        DropTableManager.OnDropTableInitialize += SetSpawnLocationIfMissing;
+        CharacterDropEventManager.OnDropTableInitialize += SetSpawnLocationIfMissing;
     }
 
     public ConditionLocation() { }

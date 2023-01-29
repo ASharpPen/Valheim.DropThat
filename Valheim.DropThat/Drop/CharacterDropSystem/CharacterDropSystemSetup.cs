@@ -1,6 +1,7 @@
 ﻿using DropThat.Configuration;
 using DropThat.Drop.CharacterDropSystem.Configuration;
 using DropThat.Drop.CharacterDropSystem.Debug;
+using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem.Sync;
 using ThatCore.Lifecycle;
 
@@ -22,6 +23,8 @@ internal static class CharacterDropSystemSetup
     {
         var configuration = new CharacterDropSystemConfiguration();
 
+        EventManager.ConfigurationsLoading();
+
         ConfigFileLoader.LoadConfigs(configuration);
 
         configuration.Build();
@@ -30,5 +33,7 @@ internal static class CharacterDropSystemSetup
         {
             TemplateWriter.WriteToDiskAsToml();
         }
+
+        EventManager.ConfigurationsLoaded();
     }
 }

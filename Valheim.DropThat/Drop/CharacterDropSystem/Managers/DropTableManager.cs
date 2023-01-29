@@ -16,14 +16,12 @@ internal static class DropTableManager
 {
     public static ConditionalWeakTable<CharacterDrop.Drop, DropConfigInfo> DropInstanceTable { get; } = new();
 
-    public static event Action<CharacterDrop> OnDropTableInitialize;
-
     public static void Initialize(CharacterDrop droptable)
     {
         try
         {
             // Record spawn data if missing.
-            OnDropTableInitialize?.Raise(droptable, $"Error while initializing spawn data for '{droptable.GetName()}'.");
+            EventManager.DropTableInitialize(droptable);
 
             // Insert or configure drops.
             var existingDrops = droptable.m_drops ??= new();

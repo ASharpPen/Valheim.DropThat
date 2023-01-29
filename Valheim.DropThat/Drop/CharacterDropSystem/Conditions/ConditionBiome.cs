@@ -14,7 +14,7 @@ public class ConditionBiome : IDropCondition
 
     static ConditionBiome()
     {
-        DropTableManager.OnDropTableInitialize += SetSpawnBiomeIfMissing;
+        CharacterDropEventManager.OnDropTableInitialize += SetSpawnBiomeIfMissing;
     }
 
     public ConditionBiome()
