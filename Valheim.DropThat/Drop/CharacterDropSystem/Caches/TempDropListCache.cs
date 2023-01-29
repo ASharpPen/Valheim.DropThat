@@ -18,20 +18,20 @@ internal class TempDropListCache
 
     public Dictionary<int, DropConfigInfo> InfoByIndex { get; } = new();
 
-    public static void SetDrop(UnityEngine.Component key, DropConfigInfo dropInfo)
+    public static void SetDrop(UnityEngine.Component key, DropConfigInfo dropInfo, int? index = null)
     {
         Log.DevelopmentOnly($"Setting temp drop cache {dropInfo.Index}:{key.GetHashCode()}");
 
         var cache = ObjectTable.GetOrCreate(key.gameObject);
-        cache.InfoByIndex[dropInfo.Index] = dropInfo;
+        cache.InfoByIndex[index ?? dropInfo.Index] = dropInfo;
     }
 
-    public static void SetDrop(object key, DropConfigInfo dropInfo)
+    public static void SetDrop(object key, DropConfigInfo dropInfo, int? index = null)
     {
         Log.DevelopmentOnly($"Setting temp drop cache {dropInfo.Index}:{key.GetHashCode()}");
 
         var cache = DropListTable.GetOrCreateValue(key);
-        cache.InfoByIndex[dropInfo.Index] = dropInfo;
+        cache.InfoByIndex[index ?? dropInfo.Index] = dropInfo;
     }
 
     public static TempDropListCache GetDrops(UnityEngine.Component key)

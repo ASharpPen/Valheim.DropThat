@@ -64,7 +64,7 @@ public static class Patch_TrackDrops
             {
                 Log.DevelopmentOnly($"Carrying configs for drop {configInfo.DisplayName}:{drop.m_prefab.name}:{characterDrop.GetHashCode()}");
 
-                TempDropListCache.SetDrop(characterDrop, dropItems.Count - 1, configInfo);
+                TempDropListCache.SetDrop(characterDrop, configInfo, dropItems.Count - 1);
             }
         }
         catch (Exception e)
@@ -87,7 +87,7 @@ public static class Patch_TrackDrops
                 //Re-associate result with configs.
                 foreach (var reference in instanceReferences.InfoByIndex)
                 {
-                    TempDropListCache.SetDrop(__result, reference.Key, reference.Value);
+                    TempDropListCache.SetDrop(__result, reference.Value, reference.Key);
                 }
             }
         }
@@ -221,7 +221,7 @@ public static class Patch_TrackDrops
                         Index = reference.Index,
                     };
 
-                    TempDropListCache.SetDrop(dropList, reference.Index, configInfo);
+                    TempDropListCache.SetDrop(dropList, configInfo, reference.Index);
                 }
             }
         }

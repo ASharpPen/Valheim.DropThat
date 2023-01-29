@@ -17,4 +17,14 @@ internal class CharacterDropListBuilder : IHaveDropBuilders
     public string Id { get; }
 
     public Dictionary<uint, CharacterDropDropBuilder> DropBuilders { get; } = new();
+
+    public CharacterDropDropBuilder GetDrop(uint id)
+    {
+        if (DropBuilders.TryGetValue(id, out var existing))
+        {
+            return existing;
+        }
+
+        return DropBuilders[id] = new(id, this);
+    }
 }

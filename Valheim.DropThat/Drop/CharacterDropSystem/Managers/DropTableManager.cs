@@ -37,7 +37,7 @@ internal static class DropTableManager
             }
 
             var dropTemplates = config.Drops
-                .Where(x => x.Value.TemplateEnabled)
+                .Where(x => x.Value.TemplateEnabled ?? true)
                 .OrderBy(x => x.Key)
                 .Select(x => (x.Key, x.Value))
                 .ToList();
