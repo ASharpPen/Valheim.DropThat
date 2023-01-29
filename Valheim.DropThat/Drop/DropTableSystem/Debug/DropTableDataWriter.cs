@@ -7,9 +7,9 @@ using System.Text;
 using UnityEngine;
 using DropThat.Configuration;
 using DropThat.Configuration.ConfigTypes;
-using DropThat.Debugging;
 using DropThat.Utilities;
 using DropThat.Utilities.Valheim;
+using DropThat.Debugging;
 
 namespace DropThat.Drop.DropTableSystem.Debug;
 

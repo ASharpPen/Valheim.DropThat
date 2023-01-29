@@ -20,7 +20,8 @@ public class GeneralConfiguration
     public ConfigurationEntry<bool> ClearAllExistingCharacterDrops = new(false, "When enabled, all existing items in drop tables gets removed.");
     public ConfigurationEntry<bool> ClearAllExistingCharacterDropsWhenModified = new(false, "When enabled, all existing items in drop tables are removed when a configuration for that entity exist. Eg. if 'Deer' is present in configuration table, the configured drops will be the only drops for 'Deer'.");
     public ConfigurationEntry<bool> AlwaysAppendCharacterDrops = new(false, "When enabled, drop configurations will not override existing items if their indexes match.");
-    public ConfigurationEntry<bool> ApplyConditionsOnDeathCharacterDrops = new(false, "[Deprecated] When enabled, drop conditions are checked at time of death, instead of at time of spawn.");
+    public ConfigurationEntry<bool> ApplyConditionsOnDeathCharacterDrops = new(false, "[Deprecated - No longer has any effect]\nWhen enabled, drop conditions are checked at time of death, instead of at time of spawn.");
+    public ConfigurationEntry<bool> WriteLoadedCharacterDropsToFile = new(false, "When enabled, creates a file on world start, in the debug folder containing the loaded CharacterDrop configurations.\nThese are the combined settings loaded from files, before they are applied to any existing drop tables.");
 
     // DropTable
 
@@ -56,6 +57,7 @@ public class GeneralConfiguration
         ClearAllExistingCharacterDrops.Bind(Config, "CharacterDrop", "ClearAllExisting");
         ClearAllExistingCharacterDropsWhenModified.Bind(Config, "CharacterDrop", "ClearAllExistingWhenModified");
         AlwaysAppendCharacterDrops.Bind(Config, "CharacterDrop", "AlwaysAppend");
+        WriteLoadedCharacterDropsToFile.Bind(Config, "CharacterDrop", "WriteLoadedConfigsToFile");
 
         ClearAllExistingDropTables.Bind(Config, "DropTable", "ClearAllExisting");
         ClearAllExistingDropTablesWhenModified.Bind(Config, "DropTable", "ClearAllExistingWhenModified");

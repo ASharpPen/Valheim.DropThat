@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DropThat.Configuration;
 
-namespace DropThat.Debugging;
+namespace DropThat.Debugging.Datamining;
 
 /// <summary>
 /// Could have loaded in at ZNetScene Awake, 
@@ -13,16 +13,17 @@ namespace DropThat.Debugging;
 [HarmonyPatch(typeof(ZoneSystem))]
 internal static class Patch_ZoneSystem_Start
 {
-    [HarmonyPatch("Start")]
+    [HarmonyPatch(nameof(ZoneSystem.Start))]
     [HarmonyPostfix]
-    private static void ScanPrefabs(ZoneSystem __instance)
+    private static void WriteDebugFiles(ZoneSystem __instance)
     {
         var prefabs = ZNetScene.instance.m_prefabs;
 
+        if (prefabs is not null)
         {
             var prefabsWithDropTables = new List<Tuple<GameObject, CharacterDrop>>();
-                
-            foreach(var prefab in prefabs)
+
+            foreach (var prefab in prefabs)
             {
                 var characterDrop = prefab.GetComponent<CharacterDrop>();
                 if (characterDrop)
@@ -40,6 +41,11 @@ internal static class Patch_ZoneSystem_Start
             {
                 CreatureItemFileWriter.WriteToFile(prefabsWithDropTables);
             }
+        }
+
+        if (ConfigurationManager.GeneralConfig?.WriteLocationsToFile.Value == true)
+        {
+            LocationFileWriter.WriteToFile(__instance.m_locations);
         }
     }
 }

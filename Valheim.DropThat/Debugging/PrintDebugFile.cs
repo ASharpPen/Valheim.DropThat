@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using DropThat.Configuration;
-using DropThat.Core;
 using ThatCore.Logging;
 
 namespace DropThat.Debugging;
