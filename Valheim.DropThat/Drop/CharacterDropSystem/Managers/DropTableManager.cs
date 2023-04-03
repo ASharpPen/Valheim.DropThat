@@ -21,13 +21,13 @@ internal static class DropTableManager
         try
         {
             // Record spawn data if missing.
-            EventManager.DropTableInitialize(droptable);
+            CharacterDropEventManager.DropTableInitialize(droptable);
 
             // Insert or configure drops.
             var existingDrops = droptable.m_drops ??= new();
 
             var sourceName = droptable.GetCleanedName();
-            var config = TemplateManager.GetTemplate(sourceName);
+            var config = CharacterDropTemplateManager.GetTemplate(sourceName);
 
             if (config is null)
             {

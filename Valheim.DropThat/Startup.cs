@@ -7,6 +7,6 @@ internal static class Startup
 {
     public static void SetupServices()
     {
-        LifecycleManager.OnNewConnection += ConfigSyncManager.SetupConfigSyncForPeer;
+        ThatCore.Lifecycle.LifecycleManager.OnNewConnection += ConfigSyncManager.SetupConfigSyncForPeer;
     }
 }

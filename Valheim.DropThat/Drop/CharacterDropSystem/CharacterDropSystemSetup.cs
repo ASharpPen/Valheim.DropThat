@@ -12,20 +12,20 @@ internal static class CharacterDropSystemSetup
     // TODO: Move config loading on dedicated to later in workflow. Give a bit of time for other mods like Expand World to load up and apply their changes.
     public static void PrepareModule()
     {
-        LifecycleManager.OnDedicatedServerInit += CharacterDropConfigSyncManager.Configure;
-        LifecycleManager.OnMultiplayerInit += CharacterDropConfigSyncManager.Configure;
+        ThatCore.Lifecycle.LifecycleManager.OnDedicatedServerInit += CharacterDropConfigSyncManager.Configure;
+        ThatCore.Lifecycle.LifecycleManager.OnMultiplayerInit += CharacterDropConfigSyncManager.Configure;
 
-        LifecycleManager.OnSinglePlayerInit += LoadConfigs;
-        LifecycleManager.OnDedicatedServerInit += LoadConfigs;
+        ThatCore.Lifecycle.LifecycleManager.OnSinglePlayerInit += LoadConfigs;
+        ThatCore.Lifecycle.LifecycleManager.OnDedicatedServerInit += LoadConfigs;
     }
 
     private static void LoadConfigs()
     {
         var configuration = new CharacterDropSystemConfiguration();
 
-        EventManager.ConfigurationsLoading();
+        CharacterDropEventManager.ConfigurationsLoading();
 
-        ConfigFileLoader.LoadConfigs(configuration);
+        ConfigurationFileManager.LoadConfigs(configuration);
 
         configuration.Build();
 
@@ -34,6 +34,6 @@ internal static class CharacterDropSystemSetup
             TemplateWriter.WriteToDiskAsToml();
         }
 
-        EventManager.ConfigurationsLoaded();
+        CharacterDropEventManager.ConfigurationsLoaded();
     }
 }

@@ -16,6 +16,7 @@ using DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
 using DropThat.Drop.Options.Modifiers;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
+
 internal static class CharacterDropSchemaGenerator
 {
     internal static TomlSchemaBuilder GenerateCfgSchema()

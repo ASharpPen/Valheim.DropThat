@@ -13,6 +13,7 @@ public class DropContext
     public DropContext(CharacterDrop characterDrop)
     {
         CharacterDrop = characterDrop;
+        Pos = CharacterDrop.transform.position;
     }
 
     public DropConfigInfo DropInfo { get; set; }

@@ -39,7 +39,7 @@ internal static class TemplateWriter
     {
         TomlConfig config = new();
 
-        var templates = TemplateManager.GetTemplates();
+        var templates = CharacterDropTemplateManager.GetTemplates();
 
         foreach ((string mob, CharacterDropMobTemplate mobTemplate) in templates)
         {

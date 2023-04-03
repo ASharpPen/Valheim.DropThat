@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using DropThat.Drop.CharacterDropSystem.Configuration;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using ThatCore.Logging;
 
-namespace DropThat.Drop.CharacterDropSystem.Configuration;
+namespace DropThat.Drop.CharacterDropSystem;
 
-internal class CharacterDropSystemConfiguration
+internal class CharacterDropSystemConfiguration : IDropSystemConfig
 {
     private Dictionary<string, CharacterDropListBuilder> _listBuilders = new();
 
@@ -53,7 +54,7 @@ internal class CharacterDropSystemConfiguration
         foreach (var builder in _builders)
         {
             var template = builder.Value.Build();
-            TemplateManager.SetTemplate(builder.Key, template);
+            CharacterDropTemplateManager.SetTemplate(builder.Key, template);
         }
     }
 }

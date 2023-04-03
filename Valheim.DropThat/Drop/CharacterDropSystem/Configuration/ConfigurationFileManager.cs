@@ -9,7 +9,7 @@ using ThatCore.Logging;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
-internal static class ConfigFileLoader
+internal static class ConfigurationFileManager
 {
     public const string MainDropFile = "drop_that.character_drop.cfg";
     public const string CharacterDropFiles = "drop_that.character_drop.*.cfg";
@@ -44,7 +44,7 @@ internal static class ConfigFileLoader
         LoadAllCharacterDropLists();
         LoadAllCharacterDropConfigurations();
 
-        Log.Debug?.Log("Finished loading character drop configs");
+        Log.Debug?.Log("Finished loading character_drop configs");
     }
 
     private static void LoadAllCharacterDropLists()

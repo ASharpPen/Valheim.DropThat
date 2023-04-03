@@ -5,11 +5,11 @@ using DropThat.Reset;
 
 namespace DropThat.Drop.CharacterDropSystem.Managers;
 
-public static class TemplateManager
+public static class CharacterDropTemplateManager
 {
     internal static Dictionary<string, CharacterDropMobTemplate> Templates { get; set; } = new();
 
-    static TemplateManager()
+    static CharacterDropTemplateManager()
     {
         StateResetter.Subscribe(() =>
         {

@@ -211,7 +211,7 @@ public static class Patch_TrackDrops
 
             foreach (var reference in references ?? Enumerable.Empty<ConfigReferenceDto>())
             {
-                if (TemplateManager.TryGetTemplate(reference.Mob, out var mobTemplate) &&
+                if (CharacterDropTemplateManager.TryGetTemplate(reference.Mob, out var mobTemplate) &&
                     mobTemplate.Drops.TryGetValue(reference.Id, out var dropTemplate))
                 {
                     var configInfo = new DropConfigInfo()
