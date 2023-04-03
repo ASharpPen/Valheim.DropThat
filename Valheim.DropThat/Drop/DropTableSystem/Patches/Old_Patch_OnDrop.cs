@@ -12,13 +12,13 @@ using DropThat.Utilities;
 
 namespace DropThat.Drop.DropTableSystem.Patches;
 
-internal static class Patch_OnDrop
+internal static class Old_Patch_OnDrop
 {
     private static MethodInfo DropInstantiation = ReflectionUtils.InstantiateGameObjectMethod;
     private static MethodInfo AddItemToInventory = AccessTools.Method(typeof(Inventory), nameof(Inventory.AddItem), new[] { typeof(ItemDrop.ItemData) });
     
-    private static MethodInfo UnwrapDropMethod = AccessTools.Method(typeof(Patch_OnDrop), nameof(UnwrapDrop));
-    private static MethodInfo ModifyDropMethod = AccessTools.Method(typeof(Patch_OnDrop), nameof(ModifyDrop));
+    private static MethodInfo UnwrapDropMethod = AccessTools.Method(typeof(Old_Patch_OnDrop), nameof(UnwrapDrop));
+    private static MethodInfo ModifyDropMethod = AccessTools.Method(typeof(Old_Patch_OnDrop), nameof(ModifyDrop));
 
     [HarmonyPatch(typeof(Container))]
     internal static class Patch_Container_AddDefaultItems
@@ -31,7 +31,7 @@ internal static class Patch_OnDrop
                 // Move to right before drop is added to inventory
                 .MatchForward(false, new CodeMatch(OpCodes.Callvirt, AddItemToInventory))
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
-                .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_OnDrop), nameof(ModifyContainerItem))))
+                .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Old_Patch_OnDrop), nameof(ModifyContainerItem))))
                 .InstructionEnumeration();
         }
     }

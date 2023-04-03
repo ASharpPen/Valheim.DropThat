@@ -5,7 +5,7 @@ using DropThat.Core;
 
 namespace DropThat.Drop.DropTableSystem.Managers;
 
-internal static class DropConditionManager
+internal static class OldDropConditionManager
 {
     public static List<DropTemplate> Filter(DropSourceTemplateLink context, List<DropTemplate> templates)
     {

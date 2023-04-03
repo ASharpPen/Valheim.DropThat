@@ -12,14 +12,15 @@ using DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot;
 using DropThat.Integrations;
 using DropThat.Reset;
 using DropThat.Utilities;
+using DropThat.Drop.Options.Modifiers.ModSpecific.ModEpicLoot;
 
 namespace DropThat.Drop.DropTableSystem.Managers;
 
-internal static class DropConfigManager
+internal static class OldDropConfigManager
 {
     private static Dictionary<int, List<DropTemplate>> TemplateCache { get; set; } = new();
 
-    static DropConfigManager()
+    static OldDropConfigManager()
     {
         StateResetter.Subscribe(() =>
         {
@@ -172,13 +173,13 @@ internal static class DropConfigManager
     {
         List<IDropTableCondition> conditions = new();
 
-        conditions.AddNullSafe(ConditionBiome.Instance);
-        conditions.AddNullSafe(ConditionAltitude.Instance);
-        conditions.AddNullSafe(ConditionDaytime.Instance);
-        conditions.AddNullSafe(ConditionEnvironments.Instance);
-        conditions.AddNullSafe(ConditionGlobalKeysRequired.Instance);
-        conditions.AddNullSafe(ConditionLocation.Instance);
-        conditions.AddNullSafe(ConditionDistanceToCenter.Instance);
+        conditions.AddNullSafe(OldConditionBiome.Instance);
+        conditions.AddNullSafe(OldConditionAltitude.Instance);
+        conditions.AddNullSafe(OldConditionDaytime.Instance);
+        conditions.AddNullSafe(OldConditionEnvironments.Instance);
+        conditions.AddNullSafe(OldConditionGlobalKeysRequired.Instance);
+        conditions.AddNullSafe(OldConditionLocation.Instance);
+        conditions.AddNullSafe(OldConditionDistanceToCenter.Instance);
 
         conditions.AddNullSafe(ConditionLoaderCLLC.ConditionWorldLevel);
 

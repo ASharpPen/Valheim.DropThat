@@ -8,7 +8,7 @@ using DropThat.Utilities;
 
 namespace DropThat.Drop.DropTableSystem.Patches;
 
-internal static class Patch_DropSourceLink
+internal static class Old_Patch_DropSourceLink
 {
     [HarmonyPatch(typeof(Container))]
     internal static class Patch_Container_Awake_InitDropContext

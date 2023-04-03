@@ -9,11 +9,11 @@ using DropThat.Core;
 
 namespace DropThat.Drop.DropTableSystem.Conditions.ModSpecific.ModCLLC;
 
-public class ConditionWorldLevel : IDropTableCondition
+public class OldConditionWorldLevel : IDropTableCondition
 {
-    private static ConditionWorldLevel _instance;
+    private static OldConditionWorldLevel _instance;
 
-    public static ConditionWorldLevel Instance => _instance ??= new();
+    public static OldConditionWorldLevel Instance => _instance ??= new();
 
     public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
     {

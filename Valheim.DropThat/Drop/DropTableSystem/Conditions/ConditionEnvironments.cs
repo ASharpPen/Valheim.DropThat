@@ -1,53 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
-using DropThat.Utilities;
+using DropThat.Drop.DropTableSystem.Models;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionEnvironments : IDropTableCondition
+public class ConditionEnvironments : IDropCondition
 {
-    private static ConditionEnvironments _instance;
+    public HashSet<string> Environments { get; }
 
-    public static ConditionEnvironments Instance => _instance ??= new();
+    public ConditionEnvironments() { }
 
-    public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+    public ConditionEnvironments(IEnumerable<string> environments) 
     {
-        if (IsValid(template.Config))
-        {
-            return false;
-        }
-
-        Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due to current environment.");
-        return true;
+        Environments = environments
+            .Select(x => x
+                .Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
     }
 
-    public bool IsValid(DropTableItemConfiguration config)
+    public bool IsValid(DropContext context)
     {
-        if (string.IsNullOrEmpty(config.ConditionEnvironments.Value))
+        if (Environments is null ||
+            Environments.Count == 0)
         {
             return true;
         }
 
-        var envMan = EnvMan.instance;
-        var currentEnv = envMan.GetCurrentEnvironment().m_name.Trim().ToUpperInvariant();
+        var currentEnv = EnvMan.instance
+            .GetCurrentEnvironment()
+            .m_name
+            .Trim()
+            .ToUpperInvariant();
 
-        var environments = config.ConditionEnvironments.Value.SplitByComma(toUpper: true);
+        return Environments.Contains(currentEnv);
+    }
+}
 
-        if (environments.Count == 0)
+internal static partial class IHaveDropConditionsExtensions
+{
+    public static IHaveDropConditions ConditionEnvironments(
+        this IHaveDropConditions template,
+        IEnumerable<string> environments)
+    {
+        if (environments?.Any() == true)
         {
-            return true;
+            template.Conditions.AddOrReplaceByType(new ConditionEnvironments(environments));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionEnvironments);
         }
 
-        if (environments.Any(x => x == currentEnv))
-        {
-            return true;
-        }
-
-        return false;
+        return template;
     }
 }

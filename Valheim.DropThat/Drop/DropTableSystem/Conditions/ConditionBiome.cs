@@ -1,45 +1,57 @@
-﻿using System.Linq;
-using UnityEngine;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
-using DropThat.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DropThat.Drop.DropTableSystem.Models;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionBiome : IDropTableCondition
+public class ConditionBiome : IDropCondition
 {
-    private static ConditionBiome _instance;
+    public Heightmap.Biome BiomeMask { get; set; }
 
-    public static ConditionBiome Instance => _instance ??= new();
+    public ConditionBiome() { }
 
-    public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+    public ConditionBiome(params Heightmap.Biome[] biomes)
     {
-        if (IsValid(context.Source.transform.position, template?.Config))
-        {
-            return false;
-        }
+        BiomeMask = Heightmap.Biome.None;
 
-        Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due being outside required biome.");
-        return true;
+        if (biomes is not null)
+        {
+            foreach (var biome in biomes)
+            {
+                BiomeMask |= biome;
+            }
+        }
     }
 
-    public bool IsValid(Vector3 position, DropTableItemConfiguration config)
+    public bool IsValid(DropContext context)
     {
-        if (config is null)
+        if (BiomeMask == Heightmap.Biome.None)
         {
             return true;
         }
 
-        if (string.IsNullOrWhiteSpace(config.ConditionBiomes.Value))
+        var biome = Heightmap.FindBiome(context.Pos);
+
+        return (BiomeMask & biome) > 0;
+    }
+}
+
+internal static partial class IHaveDropConditionsExtensions
+{
+    public static IHaveDropConditions ConditionBiome(
+        this IHaveDropConditions template,
+        IEnumerable<Heightmap.Biome> biomes)
+    {
+        if (biomes?.Any() == true)
         {
-            return true;
+            template.Conditions.AddOrReplaceByType(new ConditionBiome(biomes));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionBiome);
         }
 
-        var allowedBiomes = config.ConditionBiomes.Value.SplitByComma(true);
-
-        var currentBiome = Heightmap.FindBiome(position);
-        var currentBiomeCleaned = currentBiome.ToString().ToUpperInvariant();
-
-        return allowedBiomes.Any(x => x == currentBiomeCleaned);
+        return template;
     }
 }

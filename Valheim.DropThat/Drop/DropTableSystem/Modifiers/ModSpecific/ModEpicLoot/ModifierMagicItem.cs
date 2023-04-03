@@ -3,6 +3,7 @@ using DropThat.Core.Configuration;
 using DropThat.Core;
 using DropThat.Integrations.EpicLootIntegration;
 using UnityEngine;
+using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Modifiers.ModSpecific.ModEpicLoot;
 
@@ -35,15 +36,10 @@ internal class ModifierMagicItem : IDropTableModifier
         Log.LogDebug("Adding magic modifiers.");
 #endif
 
-        var magicItemData = ItemRoller.Roll(
-            itemDrop.m_itemData, 
-            context.Drop.transform.position, 
+        ItemRoller.TryRollMagic(
+            itemDrop,
+            context.Drop.transform.position,
             config);
-
-        if (magicItemData is not null)
-        {
-            itemDrop.m_itemData = magicItemData;
-        }
     }
 
     public void Modify(ref ItemDrop.ItemData drop, DropTemplate template, Vector3 position)

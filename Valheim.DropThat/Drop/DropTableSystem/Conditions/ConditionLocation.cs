@@ -1,47 +1,66 @@
-﻿using System.Linq;
-using UnityEngine;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Locations;
-using DropThat.Utilities;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionLocation : IDropTableCondition
+public class ConditionLocation : IDropCondition
 {
-    private static ConditionLocation _instance;
+    public HashSet<string> Locations { get; set; }
 
-    public static ConditionLocation Instance => _instance ??= new();
-
-    public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+    public ConditionLocation()
     {
-        if (IsValid(context.Source.transform.position, template.Config))
+    }
+
+    public ConditionLocation(IEnumerable<string> locations)
+    {
+        Locations = locations
+            .Select(x => 
+                x.Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
+
+    public bool IsValid(DropContext context)
+    {
+        if (Locations is null ||
+            Locations.Count == 0)
+        {
+            return true;
+        }
+
+        var currentLocation = LocationHelper.FindLocation(context.Pos);
+
+        if (currentLocation is null)
         {
             return false;
         }
 
-        Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due to not being in required location.");
-        return true;
+        var currentLocationName = currentLocation.LocationName
+            .Trim()
+            .ToUpperInvariant();
+
+        return Locations.Contains(currentLocationName);
     }
+}
 
-    public bool IsValid(Vector3 position, DropTableItemConfiguration config)
+internal static partial class IHaveDropConditionsExtensions
+{
+    public static IHaveDropConditions ConditionLocation(
+        this IHaveDropConditions template,
+        IEnumerable<string> locations)
     {
-        if (string.IsNullOrWhiteSpace(config?.ConditionLocations?.Value))
+        if (locations?.Any() == true)
         {
-            return true;
+            template.Conditions.AddOrReplaceByType(new ConditionLocation(locations));
+        }
+        else
+        {
+            template.Conditions.RemoveAll(x => x is ConditionLocation);
         }
 
-        var locations = config.ConditionLocations.Value.SplitByComma(toUpper: true);
-
-        if (locations.Count == 0)
-        {
-            return true;
-        }
-
-        var currentLocation = LocationHelper.FindLocation(position);
-
-        var currentLocationName = currentLocation.LocationName.Trim().ToUpperInvariant();
-
-        return locations.Any(x => x == currentLocationName);
+        return template;
     }
 }

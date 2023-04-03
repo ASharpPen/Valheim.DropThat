@@ -8,7 +8,7 @@ using DropThat.Drop.DropTableSystem.Wrapper;
 
 namespace DropThat.Drop.DropTableSystem.Managers;
 
-internal static class DropTableManager
+internal static class OldDropTableManager
 {
     public static List<ItemDrop.ItemData> GetItemDrops(DropTable dropTable, DropSourceTemplateLink context)
     {
@@ -41,7 +41,7 @@ internal static class DropTableManager
 
     private static List<T> GetDrops<T>(DropTable dropTable, DropSourceTemplateLink context, Func<DropTemplate, IEnumerable<T>> DropConverter) where T : class
     {
-        var dropTemplates = DropConfigManager.GetPossibleDrops(context, dropTable);
+        var dropTemplates = OldDropConfigManager.GetPossibleDrops(context, dropTable);
 
         if (dropTemplates.Count == 0)
         {
@@ -67,7 +67,7 @@ internal static class DropTableManager
 
         var workingList = new List<DropTemplate>(dropTemplates);
 
-        workingList = DropConditionManager.Filter(context, workingList);
+        workingList = OldDropConditionManager.Filter(context, workingList);
 
 #if DEBUG
         Log.LogDebug("Drops after filter:");

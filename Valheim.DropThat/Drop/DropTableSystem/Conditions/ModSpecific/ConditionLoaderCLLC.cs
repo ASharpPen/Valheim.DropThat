@@ -7,5 +7,5 @@ internal static class ConditionLoaderCLLC
 {
     public static bool InstalledCLLC { get; } = Type.GetType("CreatureLevelControl.API, CreatureLevelControl") is not null;
 
-    public static ConditionWorldLevel ConditionWorldLevel => InstalledCLLC ? ConditionWorldLevel.Instance : null;
+    public static OldConditionWorldLevel ConditionWorldLevel => InstalledCLLC ? OldConditionWorldLevel.Instance : null;
 }

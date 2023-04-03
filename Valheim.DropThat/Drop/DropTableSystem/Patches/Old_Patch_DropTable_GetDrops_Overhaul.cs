@@ -44,7 +44,7 @@ namespace DropThat.Drop.DropTableSystem.Patches;
 /// 
 /// </summary>
 [HarmonyPatch(typeof(DropTable))]
-internal static class Patch_DropTable_GetDrops_Overhaul
+internal static class Old_Patch_DropTable_GetDrops_Overhaul
 {
     [HarmonyPatch(nameof(DropTable.GetDropListItems))]
     [HarmonyTranspiler]
@@ -54,14 +54,14 @@ internal static class Patch_DropTable_GetDrops_Overhaul
             // Move to start, and insert overhaul
             .Start()
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
-            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_DropTable_GetDrops_Overhaul), nameof(GetDropListItems))))
+            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Old_Patch_DropTable_GetDrops_Overhaul), nameof(GetDropListItems))))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ret))
             // Set label for where the original code would have started to run.
             .CreateLabel(out Label originalStart)
             // Move back again to start, and insert check and skip of overhaul.
             .Start()
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
-            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_DropTable_GetDrops_Overhaul), nameof(UseOriginal))))
+            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Old_Patch_DropTable_GetDrops_Overhaul), nameof(UseOriginal))))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Brtrue, originalStart))
             .InstructionEnumeration();
     }
@@ -75,14 +75,14 @@ internal static class Patch_DropTable_GetDrops_Overhaul
             .Start()
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_1))
-            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_DropTable_GetDrops_Overhaul), nameof(GetDropList))))
+            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Old_Patch_DropTable_GetDrops_Overhaul), nameof(GetDropList))))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ret))
             // Set label for where the original code would have started to run.
             .CreateLabel(out Label originalStart) 
             // Move back again to start, and insert check and skip of overhaul.
             .Start()
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
-            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_DropTable_GetDrops_Overhaul), nameof(UseOriginal))))
+            .InsertAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Old_Patch_DropTable_GetDrops_Overhaul), nameof(UseOriginal))))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Brtrue, originalStart))
             .InstructionEnumeration();
     }
@@ -98,7 +98,7 @@ internal static class Patch_DropTable_GetDrops_Overhaul
         {
             var context = DropLinkCache.GetLink(dropTable);
 
-            var dropTemplates = DropConfigManager.GetPossibleDrops(context, dropTable);
+            var dropTemplates = OldDropConfigManager.GetPossibleDrops(context, dropTable);
 
 #if DEBUG
             Log.LogDebug("Potential drops: " + dropTemplates.Count);
@@ -113,7 +113,7 @@ internal static class Patch_DropTable_GetDrops_Overhaul
                 return new(0);
             }
 
-            return DropTableManager.GetItemDrops(dropTable, context);
+            return OldDropTableManager.GetItemDrops(dropTable, context);
         }
         catch(Exception e)
         {
@@ -128,14 +128,14 @@ internal static class Patch_DropTable_GetDrops_Overhaul
         {
             var context = DropLinkCache.GetLink(dropTable);
 
-            var dropTemplates = DropConfigManager.GetPossibleDrops(context, dropTable);
+            var dropTemplates = OldDropConfigManager.GetPossibleDrops(context, dropTable);
 
             if (dropTemplates.Count == 0)
             {
                 return new(0);
             }
 
-            return DropTableManager.GetDrops(dropTable, context);
+            return OldDropTableManager.GetDrops(dropTable, context);
         }
         catch (Exception e)
         {
