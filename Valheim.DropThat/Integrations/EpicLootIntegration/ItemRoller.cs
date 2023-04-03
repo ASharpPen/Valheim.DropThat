@@ -1,40 +1,33 @@
-﻿using ExtendedItemDataFramework;
-using DropThat.Configuration.ConfigTypes;
-using UnityEngine;
-using DropThat.Core;
+﻿using UnityEngine;
+using ThatCore.Logging;
 
 namespace DropThat.Integrations.EpicLootIntegration;
 
 internal static class ItemRoller
 {
-    public static ItemDrop.ItemData Roll(ItemDrop.ItemData itemData, Vector3 dropPos, EpicLootItemConfiguration config)
+    internal static bool TryRollMagic(ItemDrop drop, Vector3 dropPos, ItemRollParameters parameters)
     {
+        var itemData = drop.m_itemData;
+
         if (!EpicLoot.EpicLoot.CanBeMagicItem(itemData))
         {
-#if DEBUG
-            Log.LogTrace($"Item '{itemData.m_shared.m_name}' can't be made magic.");
-#endif
-            return null;
+            Log.DevelopmentOnly($"Item '{itemData.m_shared.m_name}' can't be made magic.");
+
+            return false;
         }
 
-        var extendedItemData = new ExtendedItemData(itemData);
+        var rarity = ItemService.RollRarity(parameters);
 
-        var rarity = ItemService.RollRarity(config);
-
-#if DEBUG
-        Log.LogTrace($"Item '{itemData.m_shared.m_name}' rolled rarity '{rarity}'.");
-#endif
+        Log.DevelopmentOnly($"Item '{itemData.m_shared.m_name}' rolled rarity '{rarity}'.");
 
         if (rarity is Rarity.None)
         {
-            return null;
+            return false;
         }
-
-        ItemDrop.ItemData magicItemData = null;
 
         if (rarity is Rarity.Unique)
         {
-            magicItemData = ItemService.MakeUnique(itemData, extendedItemData, config);
+            return ItemService.TryMakeUnique(drop, parameters);
         }
         else
         {
@@ -42,14 +35,15 @@ internal static class ItemRoller
             var epicLootRarity = ItemService.RarityToItemRarity(rarity);
             if (epicLootRarity is not null)
             {
-                magicItemData = ItemService.MakeMagic(
+                ItemService.MakeMagic(
                     epicLootRarity.Value,
-                    itemData,
-                    extendedItemData,
+                    drop,
                     dropPos);
+
+                return true;
             }
         }
 
-        return magicItemData;
+        return false;
     }
 }
