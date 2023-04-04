@@ -31,8 +31,20 @@ public class ModifierQualityLevel : IItemModifier
             return;
         }
 
-        Log.Warning?.Log($"Setting quality level of item '{itemDrop.name}' to {QualityLevel}.");
+        Log.Trace?.Log($"Setting quality level of item '{itemDrop.name}' to {QualityLevel}.");
         itemDrop.m_itemData.m_durability = QualityLevel.Value;
+    }
+
+    public void Modify(ItemDrop.ItemData drop)
+    {
+        if (QualityLevel is null ||
+            QualityLevel < 0)
+        {
+            return;
+        }
+
+        Log.Trace?.Log($"Setting quality level of item '{drop.m_dropPrefab.name}' to {QualityLevel}.");
+        drop.m_quality = QualityLevel.Value;
     }
 }
 

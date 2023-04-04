@@ -12,6 +12,10 @@ using UnityEngine;
 
 namespace DropThat.Drop.CharacterDropSystem.Managers;
 
+/// <summary>
+/// Logic for general workflow surrounding configuring
+/// drop table, running conditions and applying modifiers.
+/// </summary>
 internal static class DropTableManager
 {
     public static ConditionalWeakTable<CharacterDrop.Drop, DropConfigInfo> DropInstanceTable { get; } = new();

@@ -15,7 +15,7 @@ namespace DropThat.Drop.DropTableSystem.Patches;
 internal static class Old_Patch_OnDrop
 {
     private static MethodInfo DropInstantiation = ReflectionUtils.InstantiateGameObjectMethod;
-    private static MethodInfo AddItemToInventory = AccessTools.Method(typeof(Inventory), nameof(Inventory.AddItem), new[] { typeof(ItemDrop.ItemData) });
+    private static MethodInfo AddItemToInventory = ;
     
     private static MethodInfo UnwrapDropMethod = AccessTools.Method(typeof(Old_Patch_OnDrop), nameof(UnwrapDrop));
     private static MethodInfo ModifyDropMethod = AccessTools.Method(typeof(Old_Patch_OnDrop), nameof(ModifyDrop));

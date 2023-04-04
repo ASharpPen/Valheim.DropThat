@@ -3,6 +3,7 @@ using UnityEngine;
 using DropThat.Reset;
 using DropThat.Utilities;
 using ThatCore.Logging;
+using ThatCore.Lifecycle;
 
 namespace DropThat.Locations;
 
@@ -12,10 +13,10 @@ public static class LocationHelper
 
     static LocationHelper()
     {
-        StateResetter.Subscribe(() =>
+        LifecycleManager.OnWorldInit += () =>
         {
             _simpleLocationsByZone = null;
-        });
+        };
     }
 
     internal static void SetLocations(IEnumerable<SimpleLocation> locations)

@@ -34,6 +34,18 @@ public class ModifierDurability : IItemModifier
         Log.Debug?.Log($"Setting durability of item '{itemDrop.name}' to {Durability}.");
         itemDrop.m_itemData.m_durability = Durability.Value;
     }
+
+    public void Modify(ItemDrop.ItemData drop)
+    {
+        if (Durability is null ||
+            Durability < 0)
+        {
+            return;
+        }
+
+        Log.Trace?.Log($"Setting durability of item '{drop.m_dropPrefab.name}' to {Durability}.");
+        drop.m_durability = Durability.Value;
+    }
 }
 
 internal static partial class IHaveItemModifierExtensions

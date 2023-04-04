@@ -1,9 +1,7 @@
 ﻿using HarmonyLib;
 using System;
-using DropThat.Core;
-using DropThat.Core.Network;
-using DropThat.Reset;
 using ThatCore.Logging;
+using ThatCore.Lifecycle;
 
 namespace DropThat.Locations;
 
@@ -14,10 +12,10 @@ public static class ZoneSystemMultiplayerPatch
 
 	static ZoneSystemMultiplayerPatch()
 	{
-		StateResetter.Subscribe(() =>
-		{
-			HaveReceivedLocations = false;
-		});
+        LifecycleManager.OnWorldInit += () =>
+        {
+            HaveReceivedLocations = false;
+        };
 	}
 
 	[HarmonyPatch("OnNewConnection")]

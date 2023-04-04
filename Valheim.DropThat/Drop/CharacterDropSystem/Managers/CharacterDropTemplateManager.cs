@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Models;
-using DropThat.Reset;
+using ThatCore.Lifecycle;
 
 namespace DropThat.Drop.CharacterDropSystem.Managers;
 
@@ -11,10 +11,10 @@ public static class CharacterDropTemplateManager
 
     static CharacterDropTemplateManager()
     {
-        StateResetter.Subscribe(() =>
+        LifecycleManager.OnWorldInit += () =>
         {
             Templates = new();
-        });
+        };
     }
 
     public static void SetTemplate(string prefabName, CharacterDropMobTemplate template) =>

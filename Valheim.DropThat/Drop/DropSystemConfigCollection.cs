@@ -15,7 +15,7 @@ internal class DropSystemConfigCollection : IDropSystemConfigCollection
             .Cast<IDropSystemConfig>()
             .ToList();
 
-    public TDropSystemConfig GetDropSystemConfiguration<TDropSystemConfig>() 
+    public TDropSystemConfig GetDropSystemConfig<TDropSystemConfig>() 
         where TDropSystemConfig : IDropSystemConfig, new()
     {
         var type = typeof(TDropSystemConfig);

@@ -6,6 +6,6 @@ public interface IDropSystemConfigCollection
 {
     List<IDropSystemConfig> GetDropSystemConfigs();
 
-    TDropSystemConfig GetDropSystemConfiguration<TDropSystemConfig>()
+    TDropSystemConfig GetDropSystemConfig<TDropSystemConfig>()
         where TDropSystemConfig : IDropSystemConfig, new();
 }
