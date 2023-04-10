@@ -40,8 +40,7 @@ namespace DropThat.Configuration.Multiplayer;
 				Log.Info?.Log("Received request for configs.");
 
 				DataTransferService.Service.AddToQueue(SplitPackage.Pack(new GeneralConfigPackage()), nameof(RPC_ReceiveConfigsDropThat), rpc);
-				DataTransferService.Service.AddToQueue(SplitPackage.Pack(new DropTablePackage()), nameof(RPC_ReceiveConfigsDropThat), rpc);
-
+			
 				Log.Trace?.Log("Sending config packages.");
 			}
 			catch (Exception e)
