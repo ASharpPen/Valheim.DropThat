@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DropThat.Drop.DropTableSystem.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using ThatCore.Logging;
 
@@ -62,19 +61,13 @@ internal static class ConfigureDropTableService
             {
                 var drop = drops[dropTemplate.Key];
 
-                drop.DropData = ModifyDrop(
+                drop.DropData = ConfigureDrop(
                      table.m_drops[dropTemplate.Key], 
                      template,
                      dropTemplate.Value);
 
                 drop.TableTemplate = template;
                 drop.DropTemplate = dropTemplate.Value;
-
-                DropLinkCache.SetLink(table, dropTemplate.Key, new()
-                {
-                    Table = template,
-                    Drop = dropTemplate.Value
-                });
             }
             else
             {
@@ -90,12 +83,6 @@ internal static class ConfigureDropTableService
                         TableTemplate = template,
                     });
                 }
-
-                DropLinkCache.SetLink(table, table.m_drops.Count - 1, new()
-                {
-                    Table = template,
-                    Drop = dropTemplate.Value
-                });
             }
         }
 
@@ -154,7 +141,7 @@ internal static class ConfigureDropTableService
         return true;
     }
 
-    private static DropTable.DropData ModifyDrop(
+    private static DropTable.DropData ConfigureDrop(
         DropTable.DropData drop, 
         DropTableTemplate tableTemplate, 
         DropTableDropTemplate dropTemplate)

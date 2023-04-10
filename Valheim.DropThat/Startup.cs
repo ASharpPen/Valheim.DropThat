@@ -1,5 +1,7 @@
 ﻿using DropThat.Configuration;
 using DropThat.Drop;
+using DropThat.Drop.CharacterDropSystem;
+using DropThat.Drop.DropTableSystem;
 using ThatCore.Lifecycle;
 
 namespace DropThat;
@@ -14,6 +16,9 @@ internal static class Startup
         // Sync
         LifecycleManager.OnNewConnection += ConfigSyncManager.SetupConfigSyncForPeer;
 
+        // Setup modules
+        CharacterDropSystemStartup.Setup();
+        DropTableSystemStartup.Setup();
     }
 
     private static void LoadConfigs()

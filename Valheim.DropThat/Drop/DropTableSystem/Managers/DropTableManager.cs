@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DropThat.Caches;
-using DropThat.Drop.DropTableSystem.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
 using DropThat.Drop.DropTableSystem.Wrapper;
@@ -81,7 +80,7 @@ internal static class DropTableManager
             return new();
         }
 
-        var rolledDrops = DropRollerService.RollDropsInternal(dropTable, source, drops);
+        var rolledDrops = DropRollerService.RollDrops(dropTable, source, drops);
 
         // Apply modifiers and finalize results as ItemData.
         if (Log.TraceEnabled)
@@ -157,7 +156,7 @@ internal static class DropTableManager
             return new();
         }
 
-        var rolledDrops = DropRollerService.RollDropsInternal(dropTable, source, drops);
+        var rolledDrops = DropRollerService.RollDrops(dropTable, source, drops);
 
         // Convert to GameObject.
         // In vanilla, these are the prefabs referenced by the ItemDrop.

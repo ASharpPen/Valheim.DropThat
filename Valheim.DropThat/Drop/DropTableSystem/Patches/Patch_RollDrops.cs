@@ -15,7 +15,7 @@ namespace DropThat.Drop.DropTableSystem.Patches;
 /// Sorry to whomever might be reading this one.
 /// </summary>
 [HarmonyPatch]
-internal static class Patch_2_GenerateDrops
+internal static class Patch_RollDrops
 {
     [HarmonyPatch(typeof(DropTable), nameof(DropTable.GetDropListItems))]
     [HarmonyPrefix]

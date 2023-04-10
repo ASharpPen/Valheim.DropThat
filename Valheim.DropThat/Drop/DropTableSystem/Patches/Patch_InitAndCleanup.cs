@@ -4,13 +4,14 @@ using HarmonyLib;
 namespace DropThat.Drop.DropTableSystem.Patches;
 
 /// <summary>
-/// Step 1 - Store reference from gameobject of DropTable to the DropTable itself.
+/// Store reference from gameobject of DropTable to the DropTable itself,
+/// and cleanup the reference when the gameobject is destroyed.
 /// 
 /// Since the DropTable is a standard object and not a unity engine Object, we need
 /// to store what object it belongs with for later reference.
 /// </summary>
 [HarmonyPatch]
-internal static class Patch_1_InitAndCleanup
+internal static class Patch_InitAndCleanup
 {
     [HarmonyPatch(typeof(Container))]
     internal static class Patch_Container_Awake_InitDropContext

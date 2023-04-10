@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DropThat.Caches;
-using DropThat.Drop.DropTableSystem.Caches;
 using DropThat.Drop.DropTableSystem.Models;
-using DropThat.Drop.DropTableSystem.Wrapper;
 using DropThat.Utilities;
 using ThatCore.Logging;
 using UnityEngine;
@@ -18,106 +15,7 @@ namespace DropThat.Drop.DropTableSystem.Services;
 /// </summary>
 internal static class DropRollerService
 {
-    public static List<GameObject> RollDrops(DropTable dropTable, GameObject source, List<DropTableDrop> drops)
-    {
-        var rolledDrops = RollDropsInternal(dropTable, source, drops);
-        
-        // Convert to GameObject.
-        // In vanilla, these are the prefabs referenced by the ItemDrop.
-        var convertedDrops = rolledDrops.SelectMany((drop) =>
-        {
-            GameObject dropObject = drop.DropData.m_item;
-
-            if (drop.DropTemplate is not null)
-            {
-                // We need an object instance to track, so that we can run modifiers after instantiation.
-                // So we create a Wrapper object that can be tracked if list and its order is modified later.
-                // Multiple other mods are doing operations in here that muddy the tracking,
-                // so this is necessary even if it is costly and fiddly.
-                dropObject = dropObject.Wrap();
-                DropTemplateCache.RegisterTemplate(dropObject, drop.DropTemplate);
-            }
-
-            // GameObject drops are handled individually.
-            // Roll drop amount, and duplicate entries correspondingly.
-            // TODO: Consider handling amount based on stack-size, and setting the size on the instantiated drop.
-            int amount = UnityEngine.Random.Range(
-                Math.Max(1, drop.DropData.m_stackMin),
-                1 + drop.DropData.m_stackMax
-                );
-
-            var results = new GameObject[amount];
-
-            for(int i = 0; i < amount; ++i)
-            {
-                results[i] = dropObject;
-            }
-
-            return results;
-        });
-
-        return convertedDrops
-            .Where(x => x is not null)
-            .ToList();
-    }
-
-    // TODO: Consider if we can change the overhaul to replace the initial list of drops instead, like Spawn That.
-    // TODO: And then run modifications on AddItemToList, using the index for config lookup.
-    public static List<ItemDrop.ItemData> RollItemDrops(DropTable dropTable, GameObject source, List<DropTableDrop> drops)
-    {
-        var rolledDrops = RollDropsInternal(dropTable, source, drops);
-
-        if (Log.TraceEnabled)
-        {
-            Log.Trace?.Log($"Dropping {drops.Count} items:");
-            foreach (var drop in drops)
-            {
-                Log.Trace?.Log($"\t{drop.DropData.m_item.name}");
-            }
-        }
-
-        // Convert to ItemDrop.ItemData
-        var convertedDrops = drops.Select((drop) =>
-        {
-            var itemDrop = ComponentCache.Get<ItemDrop>(drop.DropData.m_item);
-
-            if (itemDrop is null)
-            {
-                return null;
-            }
-
-            ItemDrop.ItemData itemData = itemDrop.m_itemData.Clone();
-
-            itemData.m_dropPrefab = drop.DropData.m_item;
-            itemData.m_stack = UnityEngine.Random.Range(
-                Math.Max(1, drop.DropData.m_stackMin),
-                1 + Math.Min(itemData.m_shared.m_maxStackSize, drop.DropData.m_stackMax)
-                );
-
-            // Apply modifiers to ItemData.
-            foreach (var modifier in drop.DropTemplate.ItemModifiers)
-            {
-                try
-                {
-                    modifier.Modify(itemData);
-                }
-                catch (Exception e)
-                {
-                    Log.Error?.Log(
-                        $"Error while attempting to apply modifier '{modifier.GetType().Name}' " +
-                        $"to '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}'.", e);
-                }
-            }
-
-            return itemData;
-        });
-
-        return convertedDrops
-            .Where(x => x is not null)
-            .ToList();
-    }
-
-    public static List<DropTableDrop> RollDropsInternal(
+    public static List<DropTableDrop> RollDrops(
         DropTable dropTable,
         GameObject source,
         List<DropTableDrop> drops)

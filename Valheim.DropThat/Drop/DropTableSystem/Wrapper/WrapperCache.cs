@@ -13,16 +13,6 @@ internal class WrapperCache
 
     internal static ManagedCache<WrapperCache> Cache { get; } = new();
 
-    internal static WrapperCache Get(GameObject go)
-    {
-        if (Cache.TryGet(go, out WrapperCache cached))
-        {
-            return cached;
-        }
-
-        return null;
-    }
-
     internal static bool TryGet(GameObject key, out WrapperCache cache)
     {
         if (Cache.TryGet(key, out cache))

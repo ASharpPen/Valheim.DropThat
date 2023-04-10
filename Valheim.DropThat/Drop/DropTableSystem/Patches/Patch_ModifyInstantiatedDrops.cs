@@ -14,9 +14,9 @@ namespace DropThat.Drop.DropTableSystem.Patches;
 /// is lets us track the configurations from roll-time to instantiation.
 /// 
 /// While the Wrapper object is built for disaster scenarios of complete overhauls done
-/// by other mods, we still need to properly unwrap to properly modify the instantiated prefab.
+/// by other mods, it is still preferable to properly unwrap and modify the instantiated prefab.
 /// </summary>
-internal static class Patch_3_ModifyInstantiatedDrops
+internal static class Patch_ModifyInstantiatedDrops
 {
     [HarmonyPatch(typeof(DropOnDestroyed))]
     internal static class Patch_DropOnDestroyed_OnDestroyed
