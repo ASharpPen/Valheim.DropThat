@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
-using DropThat.Core;
+using ThatCore.Extensions;
+using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Wrapper;
 
+/// <summary>
+/// TODOFUTURE: Consider using an object pool for the wrapper gameobjects.
+/// </summary>
 public static class WrapperGameObjectExtensions
 {
-    public static GameObject Wrap(this GameObject gameObject)
+    public static WrapperComponent Wrap(this GameObject gameObject)
     {
-        var cached = WrapperCache.Get(gameObject);
-
-        if (cached is not null)
+        if (WrapperCache.TryGet(gameObject, out var existing))
         {
             // Object is already a wrapper.
-            return gameObject;
+            return existing.Wrapper;
         }
 
-        GameObject wrapper = new GameObject(gameObject.name);
-        wrapper.AddComponent<WrapperComponent>();
+        GameObject wrapperObj = new GameObject(gameObject.name);
+        var wrapper = wrapperObj.AddComponent<WrapperComponent>();
 
         WrapperCache.Set(wrapper, gameObject);
 
@@ -25,18 +27,15 @@ public static class WrapperGameObjectExtensions
 
     public static GameObject Unwrap(this GameObject gameObject)
     {
-        if (gameObject == null || !gameObject)
+        if (gameObject.IsNull())
         {
             return gameObject;
         }
 
-        var cached = WrapperCache.Get(gameObject);
-
-        if (cached is not null)
+        if (WrapperCache.TryGet(gameObject, out var cached))
         {
-#if DEBUG
-            Log.LogTrace($"Unwrapped '{cached.Wrapped.name}'");
-#endif
+            Log.DevelopmentOnly($"Unwrapped '{cached.Wrapped.name}'");
+      
             // Mark as successfully unwrapping to tell the WrapperComponent that everything is fine.
             cached.Unwrapped = true;
 

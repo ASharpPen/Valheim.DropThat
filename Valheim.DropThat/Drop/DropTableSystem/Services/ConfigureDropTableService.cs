@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DropThat.Drop.DropTableSystem.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using ThatCore.Logging;
@@ -34,55 +35,79 @@ internal static class ConfigureDropTableService
         }
     }
 
-    public static void ConfigureDrops(DropTable table, DropTableTemplate template)
+    public static List<DropTableDrop> CreateDropList(DropTable table, DropTableTemplate template)
     {
-        table.m_drops ??= new();
+        // Initialize with default drops.
+        List<DropTableDrop> drops = table.m_drops
+            .Select((x, i) =>
+                new DropTableDrop()
+                {
+                    DropTableIndex = i,
+                    CurrentIndex = i,
+                    DropData = x,
+                    TableData = table,                    
+                })
+            .ToList();
 
-        foreach (var drop in template.Drops.OrderBy(x => x.Key))
+        foreach (var dropTemplate in template.Drops.OrderBy(x => x.Key))
         {
-            if (drop.Value.TemplateEnabled is not null &&
-                drop.Value.TemplateEnabled == false)
+            if (dropTemplate.Value.TemplateEnabled is not null &&
+                dropTemplate.Value.TemplateEnabled == false)
             {
                 continue;
             }
 
-            if (drop.Key < table.m_drops.Count &&
-                drop.Key >= 0)
+            if (dropTemplate.Key < drops.Count &&
+                dropTemplate.Key >= 0)
             {
-                 table.m_drops[drop.Key] = ModifyDrop(
-                     table.m_drops[drop.Key], 
-                     template,
-                     drop.Value);
+                var drop = drops[dropTemplate.Key];
 
-                DropLinkCache.SetLink(table, drop.Key, new()
+                drop.DropData = ModifyDrop(
+                     table.m_drops[dropTemplate.Key], 
+                     template,
+                     dropTemplate.Value);
+
+                drop.TableTemplate = template;
+                drop.DropTemplate = dropTemplate.Value;
+
+                DropLinkCache.SetLink(table, dropTemplate.Key, new()
                 {
                     Table = template,
-                    Drop = drop.Value
+                    Drop = dropTemplate.Value
                 });
             }
             else
             {
-                var newDrop = CreateDrop(template, drop.Value);
-
-                if (newDrop is not null)
+                if (TryCreateDrop(template, dropTemplate.Value, out var newDrop))
                 {
-                    table.m_drops.Add(newDrop.Value);
+                    drops.Add(new()
+                    {
+                        DropTableIndex = drops.Count,
+                        CurrentIndex = drops.Count,
+                        DropData = newDrop,
+                        TableData = table,
+                        DropTemplate = dropTemplate.Value,
+                        TableTemplate = template,
+                    });
                 }
 
                 DropLinkCache.SetLink(table, table.m_drops.Count - 1, new()
                 {
                     Table = template,
-                    Drop = drop.Value
+                    Drop = dropTemplate.Value
                 });
             }
         }
+
+        return drops;
     }
 
-    private static DropTable.DropData? CreateDrop(
+    private static bool TryCreateDrop(
         DropTableTemplate tableTemplate,
-        DropTableDropTemplate dropTemplate)
+        DropTableDropTemplate dropTemplate,
+        out DropTable.DropData drop)
     {
-        DropTable.DropData drop = new()
+        drop = new()
         {
             m_stackMax = 1,
             m_stackMin = 1,
@@ -102,7 +127,7 @@ internal static class ConfigureDropTableService
                     $"for config '{tableTemplate.PrefabName}.{dropTemplate.Id}'. Disabling config.");
                 dropTemplate.TemplateEnabled = false;
 
-                return null;
+                return false;
             }
 
             drop.m_item = prefab;
@@ -126,7 +151,7 @@ internal static class ConfigureDropTableService
             drop.m_weight = dropTemplate.Weight.Value.Value;
         }
 
-        return drop;
+        return true;
     }
 
     private static DropTable.DropData ModifyDrop(

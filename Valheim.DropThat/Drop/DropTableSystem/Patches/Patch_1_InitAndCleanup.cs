@@ -10,7 +10,7 @@ namespace DropThat.Drop.DropTableSystem.Patches;
 /// to store what object it belongs with for later reference.
 /// </summary>
 [HarmonyPatch]
-internal static class Patch_1_TableToSourceLinks
+internal static class Patch_1_InitAndCleanup
 {
     [HarmonyPatch(typeof(Container))]
     internal static class Patch_Container_Awake_InitDropContext

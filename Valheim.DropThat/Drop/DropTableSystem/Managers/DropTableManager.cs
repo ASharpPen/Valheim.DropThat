@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DropThat.Caches;
 using DropThat.Drop.DropTableSystem.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
+using DropThat.Drop.DropTableSystem.Wrapper;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
@@ -20,9 +20,14 @@ internal static class DropTableManager
 {
     private static Dictionary<DropTable, GameObject> SourceLinkTable { get; } = new();
     private static Dictionary<DropTable, DropTableTemplate> TemplateLinkTable { get; } = new();
+    private static Dictionary<DropTable, List<DropTableDrop>> DropsByTable { get; } = new();
+
+    // TODO: Experimental idea. Consider using this for caching of configs. It feels like this list will probably never change between instantiations of same prefab.
+    // TODO: Might want to consider cloning some of these objects to avoid accidental changes?
+    private static Dictionary<string, List<DropTableDrop>> DropsByPrefab { get; } = new();
 
     /// <summary>
-    /// Step 1 - Initialize references from table to source.
+    /// Initialize references from drop table to source.
     /// </summary>
     public static void Initialize(MonoBehaviour source, DropTable dropTable)
     {
@@ -53,7 +58,7 @@ internal static class DropTableManager
     }
 
     /// <summary>
-    /// Step 2a - Overhaul of vanilla drop generation for GetItemDrops.
+    /// Overhaul of vanilla drop generation for GetItemDrops.
     /// </summary>
     public static List<ItemDrop.ItemData> GenerateItemDrops(DropTable dropTable)
     {
@@ -62,7 +67,12 @@ internal static class DropTableManager
             return new();
         }
 
-        PrepareTable(dropTable);
+        List<DropTableDrop> drops;
+
+        if (!DropsByTable.TryGetValue(dropTable, out drops))
+        {
+            drops = PrepareTable(dropTable);
+        }
 
         // Roll drops
         if (!SourceLinkTable.TryGetValue(dropTable, out var source))
@@ -71,11 +81,60 @@ internal static class DropTableManager
             return new();
         }
 
-        return DropRollerService.RollItemDrops(dropTable, source);
+        var rolledDrops = DropRollerService.RollDropsInternal(dropTable, source, drops);
+
+        // Apply modifiers and finalize results as ItemData.
+        if (Log.TraceEnabled)
+        {
+            Log.Trace?.Log($"Dropping {drops.Count} items:");
+            foreach (var drop in drops)
+            {
+                Log.Trace?.Log($"\t{drop.DropData.m_item.name}");
+            }
+        }
+
+        var convertedDrops = drops.Select((drop) =>
+        {
+            var itemDrop = ComponentCache.Get<ItemDrop>(drop.DropData.m_item);
+
+            if (itemDrop is null)
+            {
+                return null;
+            }
+
+            ItemDrop.ItemData itemData = itemDrop.m_itemData.Clone();
+
+            itemData.m_dropPrefab = drop.DropData.m_item;
+            itemData.m_stack = UnityEngine.Random.Range(
+                Math.Max(1, drop.DropData.m_stackMin),
+                1 + Math.Min(itemData.m_shared.m_maxStackSize, drop.DropData.m_stackMax)
+                );
+
+            // Apply modifiers to ItemData.
+            foreach (var modifier in drop.DropTemplate.ItemModifiers)
+            {
+                try
+                {
+                    modifier.Modify(itemData);
+                }
+                catch (Exception e)
+                {
+                    Log.Error?.Log(
+                        $"Error while attempting to apply modifier '{modifier.GetType().Name}' " +
+                        $"to '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}'.", e);
+                }
+            }
+
+            return itemData;
+        });
+
+        return convertedDrops
+            .Where(x => x is not null)
+            .ToList();
     }
 
     /// <summary>
-    /// Step 2b - Overhaul of vanilla drop generation for GetDrops.
+    /// Overhaul of vanilla drop generation for GetDrops.
     /// </summary>
     public static List<GameObject> GenerateDrops(DropTable dropTable)
     {
@@ -84,7 +143,12 @@ internal static class DropTableManager
             return new();
         }
 
-        PrepareTable(dropTable);
+        List<DropTableDrop> drops;
+
+        if (!DropsByTable.TryGetValue(dropTable, out drops))
+        {
+            drops = PrepareTable(dropTable);
+        }
 
         // Roll drops
         if (!SourceLinkTable.TryGetValue(dropTable, out var source))
@@ -93,10 +157,53 @@ internal static class DropTableManager
             return new();
         }
 
-        return DropRollerService.RollDrops(dropTable, source);
+        var rolledDrops = DropRollerService.RollDropsInternal(dropTable, source, drops);
+
+        // Convert to GameObject.
+        // In vanilla, these are the prefabs referenced by the ItemDrop.
+        var convertedDrops = rolledDrops.SelectMany((drop) =>
+        {
+            GameObject dropObject = drop.DropData.m_item;
+
+            if (drop.DropTemplate is not null)
+            {
+                // We need an object instance to track, so that we can run modifiers after instantiation.
+                // So we create a Wrapper object that can be tracked if list and its order is modified later.
+                // Multiple other mods are doing operations in here that muddy the tracking,
+                // so this is necessary even if it is costly and fiddly.
+                var wrapper = dropObject.Wrap();
+
+                // Store reference to template objects
+                wrapper.Drop = drop;
+
+                // Use wrapper object instead of original prefab.
+                dropObject = wrapper.gameObject;
+            }
+
+            // GameObject drops are handled individually.
+            // Roll drop amount, and duplicate entries correspondingly.
+            // TODO: Consider handling amount based on stack-size, and setting the size on the instantiated drop.
+            int amount = UnityEngine.Random.Range(
+                Math.Max(1, drop.DropData.m_stackMin),
+                1 + drop.DropData.m_stackMax
+                );
+
+            var results = new GameObject[amount];
+
+            for (int i = 0; i < amount; ++i)
+            {
+                results[i] = dropObject;
+            }
+
+            return results;
+        });
+
+        return convertedDrops
+            .Where(x => x is not null)
+            .ToList();
     }
 
-    private static void PrepareTable(DropTable dropTable)
+    private static List<DropTableDrop> PrepareTable(DropTable dropTable)
     {
         // Find configs
         DropTableTemplate template;
@@ -104,27 +211,81 @@ internal static class DropTableManager
         if (!TemplateLinkTable.TryGetValue(dropTable, out template))
         {
             // Something is wrong. We shouldn't be trying to overhaul drop generation without a template with changes being linked.
-            return;
+            return new(0);
         }
 
         // Configure table
         ConfigureDropTableService.ConfigureTable(dropTable, template);
 
-        // Configure drops
-        ConfigureDropTableService.ConfigureDrops(dropTable, template);
+        // Create list of configured drops for table.
+        var drops = ConfigureDropTableService.CreateDropList(dropTable, template);
+
+        DropsByTable[dropTable] = drops;
+
+        return drops;
     }
 
     /// <summary>
-    /// Step 3 - Apply modifiers to created container items.
+    /// Short-term state between <see cref="UnwrapDrop(GameObject)"/> and <see cref="Modify"/>.
     /// </summary>
-    public static ItemDrop.ItemData ModifyContainerItem(ItemDrop.ItemData item, Container container)
+    private static GameObject _currentWrapped;
+
+    /// <summary>
+    /// Unwrap GameObject is possible, in preparation for instantiation of drop.
+    /// 
+    /// Wrapping is done during generation of drop list, and consists of wrapping up the prefab
+    /// that is intended to get dropped, in a custom GameObject that we can trace through
+    /// the code flow. Unnwrapping involves replacing said custom GameObject on the stack with
+    /// the prefab it wraps, while storing the trackable reference of the wrapper for operations
+    /// slighty further ahead in the workflow.
+    /// </summary>
+    public static GameObject UnwrapDrop(GameObject wrappedDrop)
     {
-        // TODO: PLACEHOLDER
-        return item;
+        try
+        {
+            _currentWrapped = wrappedDrop;
+
+            return wrappedDrop.Unwrap();
+        }
+        catch (Exception e)
+        {
+            Log.Error?.Log("Error while attempting to unwrap drop", e);
+            return wrappedDrop;
+        }
     }
 
     /// <summary>
-    /// Step 4 - Cleanup references
+    /// Modify dropped object after it has been instantiated.
+    /// </summary>
+    public static void ModifyInstantiatedDrop(GameObject drop)
+    {
+        try
+        {
+            if (WrapperCache.TryGet(_currentWrapped, out var cache) &&
+                cache.Wrapper.Drop?.DropTemplate is not null)
+            {
+                cache.Wrapper.Drop.DropTemplate.ItemModifiers.ForEach(modifier =>
+                {
+                    try
+                    {
+                        modifier.Modify(drop);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error?.Log($"Error while attempting to apply modifier '{modifier.GetType().Name}' to drop '{drop}'. Skipping modifier.", e);
+
+                    }
+                });
+            }
+        } 
+        catch (Exception e)
+        {
+            Log.Error?.Log($"Error while preparing to modify drop '{drop}'. Skipping modifiers.", e);
+        }
+    }
+
+    /// <summary>
+    /// Cleanup references
     /// </summary>
     public static void Cleanup(MonoBehaviour source, DropTable dropTable)
     {
@@ -132,6 +293,7 @@ internal static class DropTableManager
         {
             SourceLinkTable.Remove(dropTable);
             TemplateLinkTable.Remove(dropTable);
+            DropsByTable.Remove(dropTable);
         }
         catch (Exception e)
         {

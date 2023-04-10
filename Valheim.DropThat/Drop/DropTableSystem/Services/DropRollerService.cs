@@ -6,7 +6,6 @@ using DropThat.Drop.DropTableSystem.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Wrapper;
 using DropThat.Utilities;
-using EpicLoot;
 using ThatCore.Logging;
 using UnityEngine;
 
@@ -14,16 +13,18 @@ namespace DropThat.Drop.DropTableSystem.Services;
 
 /// <summary>
 /// Overhauled version of the vanilla DropTable drop rolling.
+/// 
+/// Support class for DropTableManager.
 /// </summary>
 internal static class DropRollerService
 {
-    public static List<GameObject> RollDrops(DropTable dropTable, GameObject source)
+    public static List<GameObject> RollDrops(DropTable dropTable, GameObject source, List<DropTableDrop> drops)
     {
-        var drops = GetDrops(dropTable, source);
+        var rolledDrops = RollDropsInternal(dropTable, source, drops);
         
         // Convert to GameObject.
         // In vanilla, these are the prefabs referenced by the ItemDrop.
-        var convertedDrops = drops.SelectMany((drop) =>
+        var convertedDrops = rolledDrops.SelectMany((drop) =>
         {
             GameObject dropObject = drop.DropData.m_item;
 
@@ -54,13 +55,17 @@ internal static class DropRollerService
 
             return results;
         });
+
+        return convertedDrops
+            .Where(x => x is not null)
+            .ToList();
     }
 
     // TODO: Consider if we can change the overhaul to replace the initial list of drops instead, like Spawn That.
     // TODO: And then run modifications on AddItemToList, using the index for config lookup.
-    public static List<ItemDrop.ItemData> RollItemDrops(DropTable dropTable, GameObject source)
+    public static List<ItemDrop.ItemData> RollItemDrops(DropTable dropTable, GameObject source, List<DropTableDrop> drops)
     {
-        var drops = GetDrops(dropTable, source);
+        var rolledDrops = RollDropsInternal(dropTable, source, drops);
 
         if (Log.TraceEnabled)
         {
@@ -112,9 +117,10 @@ internal static class DropRollerService
             .ToList();
     }
 
-    private static List<Drop> GetDrops(
+    public static List<DropTableDrop> RollDropsInternal(
         DropTable dropTable,
-        GameObject source)
+        GameObject source,
+        List<DropTableDrop> drops)
     {
         bool skipDrop = UnityEngine.Random.value > dropTable.m_dropChance;
 
@@ -126,7 +132,7 @@ internal static class DropRollerService
         }
 
         // Gather drops and configs
-        var drops = GetPossibleDrops(dropTable, source);
+        var possibleDrops = GetPossibleDrops(drops, source);
 
         if (Log.TraceEnabled)
         {
@@ -135,19 +141,19 @@ internal static class DropRollerService
             {
                 int id = drop.DropTemplate is not null
                     ? drop.DropTemplate.Id
-                    : drop.Index;
+                    : drop.DropTableIndex;
 
                 Log.Trace?.Log($"\t{id}: {drop.DropData.m_item.name}");
             }
         }
 
-        float sumWeight = drops.Sum(x => x.DropData.m_weight);
+        float sumWeight = possibleDrops.Sum(x => x.DropData.m_weight);
 
         int dropCount = UnityEngine.Random.Range(
             dropTable.m_dropMin,
             dropTable.m_dropMax + 1);
 
-        List<Drop> results = new(dropCount);
+        List<DropTableDrop> results = new(dropCount);
 
         for(int i = 0; i < dropCount; i++)
         {
@@ -155,9 +161,9 @@ internal static class DropRollerService
             float accumulatedWeight = 0;
 
             // Scan through drops, accumulating weight until we hit the rolledWeight.
-            for (int j = 0; j < drops.Count; ++j)
+            for (int j = 0; j < possibleDrops.Count; ++j)
             {
-                var drop = drops[j];
+                var drop = possibleDrops[j];
                 accumulatedWeight += drop.DropData.m_weight;
 
                 if (rolledWeight <= accumulatedWeight)
@@ -168,7 +174,7 @@ internal static class DropRollerService
                     // If set to drop only once, remove from list of possible drops.
                     if (dropTable.m_oneOfEach)
                     {
-                        drops.RemoveAt(j);
+                        possibleDrops.RemoveAt(j);
                         sumWeight -= drop.DropData.m_weight;
                     }
 
@@ -180,41 +186,41 @@ internal static class DropRollerService
         return results;
     }
 
-    private static List<Drop> GetPossibleDrops(DropTable dropTable, GameObject source)
+    private static List<DropTableDrop> GetPossibleDrops(List<DropTableDrop> drops, GameObject source)
     {
-        List<Drop> workingList = new();
+        List<DropTableDrop> workingList = new();
 
-        for (int i = 0; i < dropTable.m_drops.Count; ++i)
+        for (int i = 0; i < drops.Count; ++i)
         {
-            var drop = dropTable.m_drops[i];
+            var drop = drops[i];
 
-            if (DropLinkCache.TryGetByIndex(dropTable, i, out var link))
+            if (drop.DropTemplate is not null)
             {
                 // Found config for drop.
 
-                if (link.Drop.Enabled == false)
+                if (drop.DropTemplate.Enabled == false)
                 {
                     Log.Trace?.Log(
-                        $"Filtering drop '{link.Table.PrefabName}.{link.Drop.Id}' " +
+                        $"Filtering drop '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}' " +
                         $"due to not being enabled.");
 
                     continue;
                 }
 
-                var dropContext = new DropContext(source, dropTable, drop)
+                var dropContext = new DropContext(source, drop.TableData, drop.DropData)
                 {
-                    DropConfig = link.Drop,
-                    DropTableConfig = link.Table
+                    DropConfig = drop.DropTemplate,
+                    DropTableConfig = drop.TableTemplate
                 };
 
-                var validDrop = link.Drop.Conditions.All(cond =>
+                var validDrop = drop.DropTemplate.Conditions.All(cond =>
                 {
                     try
                     {
                         var status = cond.IsValid(dropContext);
 
                         Log.Trace?.Log(
-                            $"Filtering drop '{link.Table.PrefabName}.{link.Drop.Id}' " +
+                            $"Filtering drop '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}' " +
                             $"due to invalid condition '{cond?.GetType()?.Name}'.");
 
                         return status;
@@ -223,7 +229,7 @@ internal static class DropRollerService
                     {
                         Log.Error?.Log(
                             $"Error while attempting to check condition '{cond?.GetType()?.Name}' " +
-                            $"for config '{link.Table.PrefabName}.{link.Drop.Id}'. " +
+                            $"for config '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}'. " +
                             $"Condition will be ignored", e);
                         return true;
                     }
@@ -231,13 +237,14 @@ internal static class DropRollerService
 
                 if (validDrop)
                 {
-                    workingList.Add(new Drop
+                    workingList.Add(new()
                     {
-                        Index = i,
-                        TableData = dropTable,
-                        DropData = drop,
-                        TableTemplate = link.Table,
-                        DropTemplate = link.Drop,
+                        CurrentIndex = i,
+                        DropTableIndex = drop.DropTableIndex,
+                        TableData = drop.TableData,
+                        DropData = drop.DropData,
+                        TableTemplate = drop.TableTemplate,
+                        DropTemplate = drop.DropTemplate,
                     });
                 }
             }
@@ -247,26 +254,14 @@ internal static class DropRollerService
 
                 workingList.Add(new()
                 {
-                    Index = i,
-                    TableData = dropTable,
-                    DropData = drop
+                    CurrentIndex = i,
+                    DropTableIndex = drop.DropTableIndex,
+                    TableData = drop.TableData,
+                    DropData = drop.DropData
                 });
             }
         }
 
         return workingList;
-    }
-
-    private struct Drop
-    {
-        public int Index { get; set; }
-
-        public DropTable TableData { get; set; }
-
-        public DropTable.DropData DropData { get; set; }
-
-        public DropTableTemplate TableTemplate { get; set; }
-
-        public DropTableDropTemplate DropTemplate { get; set; }
     }
 }

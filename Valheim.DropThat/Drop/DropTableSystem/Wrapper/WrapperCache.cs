@@ -5,7 +5,7 @@ namespace DropThat.Drop.DropTableSystem.Wrapper;
 
 internal class WrapperCache
 {
-    public GameObject Wrapper { get; set; }
+    public WrapperComponent Wrapper { get; set; }
 
     public GameObject Wrapped { get; set; }
 
@@ -23,15 +23,17 @@ internal class WrapperCache
         return null;
     }
 
-    internal static void SetStatus(GameObject wrapper, bool unwrapped = false)
+    internal static bool TryGet(GameObject key, out WrapperCache cache)
     {
-        if (Cache.TryGet(wrapper, out WrapperCache cached))
+        if (Cache.TryGet(key, out cache))
         {
-            cached.Unwrapped = unwrapped;
+            return true;
         }
+
+        return false;
     }
 
-    internal static void Set(GameObject wrapper, GameObject wrapped, bool unwrapped = false)
+    internal static void Set(WrapperComponent wrapper, GameObject wrapped, bool unwrapped = false)
     {
         Cache.Set(wrapper, new()
         {
