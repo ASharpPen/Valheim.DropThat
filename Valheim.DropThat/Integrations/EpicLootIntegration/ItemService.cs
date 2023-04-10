@@ -1,20 +1,19 @@
-﻿using EpicLoot;
+﻿using DropThat.Integrations.EpicLootIntegration;
+using EpicLoot;
+using EpicLoot.Data;
 using EpicLoot.LegendarySystem;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using ThatCore.Logging;
-using EpicLoot.Data;
+using UnityEngine;
 
-namespace DropThat.Integrations.EpicLootIntegration;
+namespace Valheim.DropThat.Integrations.EpicLootIntegration;
 
 internal static class ItemService
 {
-    public static bool TryMakeUnique(ItemDrop drop, ItemRollParameters parameters)
+    public static bool TryMakeUnique(ItemDrop.ItemData itemData, ItemRollParameters parameters)
     {
-        var itemData = drop.m_itemData;
-
         if (parameters.UniqueIds is null ||
             parameters.UniqueIds.Count == 0)
         {
@@ -80,17 +79,13 @@ internal static class ItemService
         MagicItemComponent magicComponent = itemData.Data().GetOrCreate<MagicItemComponent>();
 
         magicComponent.SetMagicItem(magicItem);
-
-        drop.Save();
-
         LootRoller.InitializeMagicItem(itemData);
 
         return true;
     }
 
-    public static void MakeMagic(ItemRarity rarity, ItemDrop drop, Vector3 position)
+    public static void MakeMagic(ItemRarity rarity, ItemDrop.ItemData itemData, Vector3 position)
     {
-        var itemData = drop.m_itemData;
         MagicItemComponent magicComponent = itemData.Data().GetOrCreate<MagicItemComponent>();
 
         var luck = LootRoller.GetLuckFactor(position);
@@ -99,8 +94,6 @@ internal static class ItemService
         Log.DevelopmentOnly("\t" + magicItem.Effects.Join(x => x.EffectType));
 
         magicComponent.SetMagicItem(magicItem);
-
-        drop.Save();
 
         LootRoller.InitializeMagicItem(itemData);
     }

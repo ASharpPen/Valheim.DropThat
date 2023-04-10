@@ -16,7 +16,7 @@ public class ModifierDurability : IItemModifier
         Durability = durability;
     }
 
-    public void Modify(GameObject drop)
+    public void Modify(ItemModifierContext<GameObject> drop)
     {
         if (Durability is null || 
             Durability < 0)
@@ -24,7 +24,7 @@ public class ModifierDurability : IItemModifier
             return;
         }
 
-        var itemDrop = ComponentCache.Get<ItemDrop>(drop);
+        var itemDrop = ComponentCache.Get<ItemDrop>(drop.Item);
 
         if (itemDrop.IsNull())
         {
@@ -35,7 +35,7 @@ public class ModifierDurability : IItemModifier
         itemDrop.m_itemData.m_durability = Durability.Value;
     }
 
-    public void Modify(ItemDrop.ItemData drop)
+    public void Modify(ItemModifierContext<ItemDrop.ItemData> drop)
     {
         if (Durability is null ||
             Durability < 0)
@@ -43,8 +43,8 @@ public class ModifierDurability : IItemModifier
             return;
         }
 
-        Log.Trace?.Log($"Setting durability of item '{drop.m_dropPrefab.name}' to {Durability}.");
-        drop.m_durability = Durability.Value;
+        Log.Trace?.Log($"Setting durability of item '{drop.Item.m_dropPrefab.name}' to {Durability}.");
+        drop.Item.m_durability = Durability.Value;
     }
 }
 

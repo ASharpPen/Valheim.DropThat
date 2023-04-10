@@ -16,7 +16,7 @@ public class ModifierQualityLevel : IItemModifier
         QualityLevel = qualityLevel;
     }
 
-    public void Modify(GameObject drop)
+    public void Modify(ItemModifierContext<GameObject> drop)
     {
         if (QualityLevel is null ||
             QualityLevel < 0)
@@ -24,7 +24,7 @@ public class ModifierQualityLevel : IItemModifier
             return;
         }
 
-        var itemDrop = ComponentCache.Get<ItemDrop>(drop);
+        var itemDrop = ComponentCache.Get<ItemDrop>(drop.Item);
 
         if (itemDrop.IsNull())
         {
@@ -35,7 +35,7 @@ public class ModifierQualityLevel : IItemModifier
         itemDrop.m_itemData.m_durability = QualityLevel.Value;
     }
 
-    public void Modify(ItemDrop.ItemData drop)
+    public void Modify(ItemModifierContext<ItemDrop.ItemData> drop)
     {
         if (QualityLevel is null ||
             QualityLevel < 0)
@@ -43,8 +43,8 @@ public class ModifierQualityLevel : IItemModifier
             return;
         }
 
-        Log.Trace?.Log($"Setting quality level of item '{drop.m_dropPrefab.name}' to {QualityLevel}.");
-        drop.m_quality = QualityLevel.Value;
+        Log.Trace?.Log($"Setting quality level of item '{drop.Item.m_dropPrefab.name}' to {QualityLevel}.");
+        drop.Item.m_quality = QualityLevel.Value;
     }
 }
 

@@ -1,10 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using DropThat.Core;
 using DropThat.Utilities;
 using DropThat.Drop.DropTableSystem.Models;
 using ThatCore.Logging;
-using static CharacterDrop;
 
 namespace DropThat.Drop.DropTableSystem.Wrapper;
 
@@ -35,8 +33,6 @@ public class WrapperComponent : MonoBehaviour
                     // Object was present in cache and succesfully unwrapped.
                     // This means we can just destroy this wrapper as everything is alright.
                     Log.DevelopmentOnly("Destroying succesfully unwrapped wrapper.");
-
-                    return;
                 }
                 else
                 {
@@ -70,25 +66,14 @@ public class WrapperComponent : MonoBehaviour
 
             var dropPos = this.gameObject.transform.position;
 
-            Log.DevelopmentOnly($"Dummy object '{this.gameObject.name}' instantiated. Creating real object instead at '{dropPos}', but might miss modifiers. Has cache '{cached is not null}' and wrapper instance '{this.gameObject.GetInstanceID()}'");
+            // Replicate normal behaviour - Unwrap -> Instantiate -> Modify
+            Managers.DropTableManager.UnwrapDrop(this.gameObject);
 
+            Log.DevelopmentOnly($"Dummy object '{this.gameObject.name}' instantiated. Creating real object instead at '{dropPos}'. Has cache '{cached is not null}' and wrapper instance '{this.gameObject.GetInstanceID()}'");
             var actualDrop = Instantiate(prefab, dropPos, this.gameObject.transform.rotation);
 
             // Apply modifiers to drop.
-            if (Drop?.DropTemplate is not null)
-            {
-                Drop.DropTemplate.ItemModifiers.ForEach(modifier =>
-                {
-                    try
-                    {
-                        modifier.Modify(actualDrop);
-                    }
-                    catch (Exception e)
-{
-                        Log.Error?.Log($"Error while attempting to apply modifier '{modifier.GetType().Name}' to drop '{actualDrop}'. Skipping modifier.", e);
-                    }
-                });
-            }
+            Managers.DropTableManager.ModifyInstantiatedDrop(actualDrop);
         }
         catch(Exception e)
         {

@@ -6,6 +6,7 @@ using DropThat.Configuration;
 using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Drop.CharacterDropSystem.Services;
+using DropThat.Drop.Options;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
@@ -219,11 +220,17 @@ internal static class DropTableManager
                 return;
             }
 
+            ItemModifierContext<GameObject> dropContext = new()
+            {
+                Item = drop,
+                Position = drop.transform.position
+            };
+
             foreach (var modifier in configInfo.DropTemplate.ItemModifiers)
             {
                 try
                 {
-                    modifier.Modify(drop);
+                    modifier.Modify(dropContext);
                 }
                 catch (Exception e)
                 {

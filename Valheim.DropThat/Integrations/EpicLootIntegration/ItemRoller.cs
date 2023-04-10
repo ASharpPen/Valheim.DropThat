@@ -1,18 +1,17 @@
-﻿using UnityEngine;
+﻿using DropThat.Integrations.EpicLootIntegration;
 using ThatCore.Logging;
+using UnityEngine;
 
-namespace DropThat.Integrations.EpicLootIntegration;
+namespace Valheim.DropThat.Integrations.EpicLootIntegration;
 
 internal static class ItemRoller
 {
-    internal static bool TryRollMagic(ItemDrop drop, Vector3 dropPos, ItemRollParameters parameters)
+    internal static bool TryRollMagic(ItemDrop.ItemData itemData, Vector3 dropPos, ItemRollParameters parameters)
     {
-        var itemData = drop.m_itemData;
-
         if (!EpicLoot.EpicLoot.CanBeMagicItem(itemData))
         {
             Log.DevelopmentOnly($"Item '{itemData.m_shared.m_name}' can't be made magic.");
-
+      
             return false;
         }
 
@@ -27,7 +26,7 @@ internal static class ItemRoller
 
         if (rarity is Rarity.Unique)
         {
-            return ItemService.TryMakeUnique(drop, parameters);
+            return ItemService.TryMakeUnique(itemData, parameters);
         }
         else
         {
@@ -37,7 +36,7 @@ internal static class ItemRoller
             {
                 ItemService.MakeMagic(
                     epicLootRarity.Value,
-                    drop,
+                    itemData,
                     dropPos);
 
                 return true;

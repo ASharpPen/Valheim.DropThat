@@ -5,6 +5,7 @@ using DropThat.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
 using DropThat.Drop.DropTableSystem.Wrapper;
+using DropThat.Drop.Options;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
@@ -110,11 +111,17 @@ internal static class DropTableManager
                 );
 
             // Apply modifiers to ItemData.
+            ItemModifierContext<ItemDrop.ItemData> dropContext = new()
+            {
+                Item = itemData,
+                Position = source.transform.position
+            };
+
             foreach (var modifier in drop.DropTemplate.ItemModifiers)
             {
                 try
                 {
-                    modifier.Modify(itemData);
+                    modifier.Modify(dropContext);
                 }
                 catch (Exception e)
                 {
@@ -263,11 +270,17 @@ internal static class DropTableManager
             if (WrapperCache.TryGet(_currentWrapped, out var cache) &&
                 cache.Wrapper.Drop?.DropTemplate is not null)
             {
+                ItemModifierContext<GameObject> dropContext = new()
+                {
+                    Item = drop,
+                    Position = drop.transform.position,
+                };
+
                 cache.Wrapper.Drop.DropTemplate.ItemModifiers.ForEach(modifier =>
                 {
                     try
                     {
-                        modifier.Modify(drop);
+                        modifier.Modify(dropContext);
                     }
                     catch (Exception e)
                     {

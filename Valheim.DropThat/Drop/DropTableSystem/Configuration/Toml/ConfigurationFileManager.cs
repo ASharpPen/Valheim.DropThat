@@ -11,9 +11,9 @@ namespace DropThat.Drop.DropTableSystem.Configuration.Toml;
 
 internal static class ConfigurationFileManager
 {
-    public const string MainDropFile = "";
-    public const string DropTableFiles = "";
-    public const string DropTableListsFiles = "";
+    public const string MainDropFile = "drop_that.drop_table.cfg";
+    public const string DropTableFiles = "drop_that.drop_table.*.cfg";
+    public const string DropTableListsFiles = "drop_that.drop_table_list.*.cfg";
 
     private static TomlSchemaBuilder _schemaBuilder;
     private static TomlSchemaBuilder _listSchemaBuilder;

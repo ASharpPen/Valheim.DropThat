@@ -6,6 +6,7 @@ using DropThat.Caches;
 using System.Linq;
 using DropThat.Integrations;
 using ThatCore.Models;
+using Valheim.DropThat.Integrations.EpicLootIntegration;
 
 namespace DropThat.Drop.Options.Modifiers.ModEpicLoot;
 
@@ -48,19 +49,19 @@ public class ModifierEpicLootItem : IItemModifier
         (UniqueIds?.Count ?? 0) == 0
         ;
 
-    public void Modify(GameObject drop)
+    public void Modify(ItemModifierContext<GameObject> drop)
     {
-        if (drop.IsNull() ||
+        if (drop.Item.IsNull() ||
             IsPointless)
         {
             return;
         }
 
-        var itemDrop = ComponentCache.Get<ItemDrop>(drop);
+        var itemDrop = ComponentCache.Get<ItemDrop>(drop.Item);
 
-        ItemRoller.TryRollMagic(
-            itemDrop,
-            drop.transform.position,
+        if (ItemRoller.TryRollMagic(
+            itemDrop.m_itemData,
+            itemDrop.transform.position,
             new ItemRollParameters
             {
                 RarityWeightNone = RarityWeightNone ?? 0,
@@ -69,7 +70,33 @@ public class ModifierEpicLootItem : IItemModifier
                 RarityWeightEpic = RarityWeightEpic ?? 0,
                 RarityWeightLegendary = RarityWeightLegendary ?? 0,
                 RarityWeightUnique = RarityWeightUnique ?? 0,
-                UniqueIds = UniqueIds
+                UniqueIds = UniqueIds,
+            }))
+        {
+            itemDrop.Save();
+        }
+    }
+
+    public void Modify(ItemModifierContext<ItemDrop.ItemData> drop)
+    {
+        if (drop?.Item is null ||
+            IsPointless)
+        {
+            return;
+        }
+
+        ItemRoller.TryRollMagic(
+            drop.Item,
+            drop.Position,
+            new ItemRollParameters
+            {
+                RarityWeightNone = RarityWeightNone ?? 0,
+                RarityWeightMagic = RarityWeightMagic ?? 0,
+                RarityWeightRare = RarityWeightRare ?? 0,
+                RarityWeightEpic = RarityWeightEpic ?? 0,
+                RarityWeightLegendary = RarityWeightLegendary ?? 0,
+                RarityWeightUnique = RarityWeightUnique ?? 0,
+                UniqueIds = UniqueIds,
             })
             ;
     }
