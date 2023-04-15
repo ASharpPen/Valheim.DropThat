@@ -11,7 +11,7 @@ public class ConditionBiome : IDropCondition
 
     public ConditionBiome() { }
 
-    public ConditionBiome(params Heightmap.Biome[] biomes)
+    public ConditionBiome(IEnumerable<Heightmap.Biome> biomes)
     {
         BiomeMask = Heightmap.Biome.None;
 

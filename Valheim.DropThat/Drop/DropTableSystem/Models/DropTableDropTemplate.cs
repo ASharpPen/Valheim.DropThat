@@ -28,5 +28,5 @@ public class DropTableDropTemplate
 
     public Optional<int?> AmountMax { get; set; }
 
-    public Optional<int?> Weight { get; set; }
+    public Optional<float?> Weight { get; set; }
 }

@@ -23,7 +23,6 @@
   </ItemGroup>
   
   <ItemGroup>
-	  <PackageReference Include="BepInEx.Core" Version="5.4.21" />
 	  <PackageReference Include="HarmonyX" Version="2.10.1" />
 	  <PackageReference Include="YamlDotNet" Version="12.2.1" />
 	  <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
@@ -39,6 +38,9 @@
     </Reference>
     <Reference Include="assembly_valheim">
       <HintPath>..\Libs\Valheim\assembly_valheim.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\Libs\BepInEx\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="CreatureLevelControl">
       <HintPath>..\Libs\Smoothbrain-CreatureLevelAndLootControl\CreatureLevelControl.dll</HintPath>

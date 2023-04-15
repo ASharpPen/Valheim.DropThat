@@ -1,10 +1,7 @@
 ﻿using BepInEx;
 using HarmonyLib;
 using DropThat.Configuration;
-using DropThat.Core.Network;
 using ThatCore.Logging;
-using DropThat.Core;
-using ThatCore.Lifecycle;
 
 namespace DropThat;
 

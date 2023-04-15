@@ -65,7 +65,7 @@ internal class DropTableBuilder
             .Select(x => x.Build())
             .ToDictionary(x => x.Id);
 
-        DropTableTemplate template = new()
+        return new()
         {
             PrefabName = Id,
             Drops = drops,
