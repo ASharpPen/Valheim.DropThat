@@ -3,6 +3,7 @@ using DropThat.Core;
 using DropThat.Drop;
 using DropThat.Drop.CharacterDropSystem;
 using DropThat.Drop.DropTableSystem;
+using DropThat.Locations.Sync;
 using ThatCore.Lifecycle;
 
 namespace DropThat;
@@ -21,6 +22,9 @@ internal static class Startup
         GeneralConfigStartup.Setup();
         CharacterDropSystemStartup.Setup();
         DropTableSystemStartup.Setup();
+
+        // Misc
+        LocationSyncManager.Configure();
     }
 
     private static void LoadConfigs()

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using DropThat.Core;
-using DropThat.Core.Network;
+﻿using System.Collections.Generic;
 using ThatCore.Logging;
+using ThatCore.Network;
 
-namespace DropThat.Locations;
+namespace DropThat.Locations.Sync;
 
-[Serializable]
-internal class SimpleLocationPackage : CompressedPackage
+internal class SimpleLocationMessage : IMessage
 {
     public string[] LocationNames;
 
     public SimpleLocationDTO[] Locations;
 
-    protected override void BeforePack()
+    public void Initialize()
     {
         var locationInstances = ZoneSystem.instance.m_locationInstances;
 
@@ -49,44 +46,40 @@ internal class SimpleLocationPackage : CompressedPackage
         Log.Trace?.Log($"Packed {Locations.Length} locations");
     }
 
-    protected override void AfterUnpack(object responseObject)
+    public void AfterUnpack()
     {
-        if (responseObject is SimpleLocationPackage)
+        Log.Trace?.Log($"Unpacking {LocationNames.Length} location names");
+        Log.Trace?.Log($"Unpacking {Locations.Length} locations");
+
+        List<SimpleLocation> simpleLocations = new List<SimpleLocation>(Locations.Length);
+
+        foreach (var location in Locations)
         {
-            Log.Trace?.Log($"Unpacking {LocationNames.Length} location names");
-            Log.Trace?.Log($"Unpacking {Locations.Length} locations");
+            var position = new Vector2i(location.X, location.Y);
 
-            List<SimpleLocation> simpleLocations = new List<SimpleLocation>(Locations.Length);
-
-            foreach (var location in Locations)
+            simpleLocations.Add(new SimpleLocation
             {
-                var position = new Vector2i(location.PositionX, location.PositionY);
-
-                simpleLocations.Add(new SimpleLocation
-                {
-                    LocationName = LocationNames[location.Location],
-                    Position = ZoneSystem.instance.GetZonePos(position),
-                    ZonePosition = position
-                });
-            }
-
-            LocationHelper.SetLocations(simpleLocations);
+                LocationName = LocationNames[location.Location],
+                Position = ZoneSystem.instance.GetZonePos(position),
+                ZonePosition = position
+            });
         }
+
+        LocationHelper.SetLocations(simpleLocations);
     }
 }
 
-[Serializable]
 public struct SimpleLocationDTO
 {
-    public int PositionX;
-    public int PositionY;
+    public int X;
+    public int Y;
 
     public ushort Location;
 
     public SimpleLocationDTO(Vector2i pos, ushort location)
     {
-        PositionX = pos.x;
-        PositionY = pos.y;
+        X = pos.x;
+        Y = pos.y;
 
         Location = location;
     }
