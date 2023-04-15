@@ -45,8 +45,8 @@ internal static class DropTableManager
                 .Select(x => (x.Key, x.Value))
                 .ToList();
 
-            if (ConfigurationManager.GeneralConfig?.ClearAllExistingCharacterDrops ||
-                ConfigurationManager.GeneralConfig?.ClearAllExistingCharacterDropsWhenModified &&
+            if (GeneralConfigManager.Config?.ClearAllExistingCharacterDrops ||
+                GeneralConfigManager.Config?.ClearAllExistingCharacterDropsWhenModified &&
                 dropTemplates.Count != 0)
             {
                 Log.Trace?.Log($"[{sourceName}] Clearing '{existingDrops.Count}' drops.");
@@ -67,7 +67,7 @@ internal static class DropTableManager
                 };
 
                 if (id >= existingDrops.Count ||
-                    ConfigurationManager.GeneralConfig?.AlwaysAppendCharacterDrops == true)
+                    GeneralConfigManager.Config?.AlwaysAppendCharacterDrops == true)
                 {
                     Log.Trace?.Log($"{dropInfo.DisplayName} Inserting drop '{template.PrefabName}'");
 
@@ -169,7 +169,7 @@ internal static class DropTableManager
     {
         try
         {
-            if (ConfigurationManager.GeneralConfig is null)
+            if (GeneralConfigManager.Config is null)
             {
                 return;
             }
@@ -177,11 +177,11 @@ internal static class DropTableManager
             for (int i = 0; i < drops.Count; ++i)
             {
                 var item = drops[i];
-                if (ConfigurationManager.GeneralConfig.DropLimit > 0 && item.Value > ConfigurationManager.GeneralConfig.DropLimit)
+                if (GeneralConfigManager.Config.DropLimit > 0 && item.Value > GeneralConfigManager.Config.DropLimit)
                 {
-                    Log.Trace?.Log($"Limiting {item.Key.name}:{item.Value} to {ConfigurationManager.GeneralConfig.DropLimit}");
+                    Log.Trace?.Log($"Limiting {item.Key.name}:{item.Value} to {GeneralConfigManager.Config.DropLimit}");
 
-                    drops[i] = Limit(item, ConfigurationManager.GeneralConfig.DropLimit);
+                    drops[i] = Limit(item, GeneralConfigManager.Config.DropLimit);
                     continue;
                 }
 

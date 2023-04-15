@@ -1,18 +1,13 @@
 ﻿using BepInEx.Configuration;
 using DropThat.Core.Configuration;
-using System;
 
-namespace DropThat.Configuration.ConfigTypes;
+namespace DropThat.Configuration;
 
-[Serializable]
-public class GeneralConfiguration
+public class GeneralConfig
 {
-    [NonSerialized]
     private ConfigFile Config;
 
     // General
-
-    public ConfigurationEntry<bool> StopTouchingMyConfigs = new(true, "Disables automatic updating and saving of drop table configurations.\nThis means the default settings note used will not automatically be added, and no helpful comments either, but.. allows you to keep things compact.\nNote: This setting can have massive impact on load time if disabled.");
     public ConfigurationEntry<bool> LoadSupplementalDropTables = new(true, "Loads drop table configurations from supplemental files.\nEg. drop_that.character_drop.my_drops.cfg will be included on load.");
 
     // CharacterDrop
@@ -25,9 +20,9 @@ public class GeneralConfiguration
 
     // DropTable
 
-    public ConfigurationEntry<bool> ClearAllExistingDropTables = new (false, "When enabled, all existing items in drop tables get removed.");
-    public ConfigurationEntry<bool> ClearAllExistingDropTablesWhenModified = new (false, "When enabled, all existing items in drop tables are removed when a configuration for that entity exist.\nEg. if 'FirTree' is present in configuration table, the configured drops will be the only drops for 'FirTree'.");
-    public ConfigurationEntry<bool> AlwaysAppendDropTables = new (false, "When enabled, drop configurations will not override existing items if their indexes match.");
+    public ConfigurationEntry<bool> ClearAllExistingDropTables = new(false, "When enabled, all existing items in drop tables get removed.");
+    public ConfigurationEntry<bool> ClearAllExistingDropTablesWhenModified = new(false, "When enabled, all existing items in drop tables are removed when a configuration for that entity exist.\nEg. if 'FirTree' is present in configuration table, the configured drops will be the only drops for 'FirTree'.");
+    public ConfigurationEntry<bool> AlwaysAppendDropTables = new(false, "When enabled, drop configurations will not override existing items if their indexes match.");
 
     // Performance
 
@@ -71,7 +66,6 @@ public class GeneralConfiguration
 
         DebugFileFolder.Bind(Config, "Debug", nameof(DebugFileFolder));
 
-        StopTouchingMyConfigs.Bind(Config, "General", nameof(StopTouchingMyConfigs));
         LoadSupplementalDropTables.Bind(Config, "General", nameof(LoadSupplementalDropTables));
     }
 }

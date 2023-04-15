@@ -32,18 +32,18 @@ internal static class Patch_ZoneSystem_Start
                 }
             }
 
-            if (ConfigurationManager.GeneralConfig?.WriteCharacterDropsToFile?.Value == true)
+            if (GeneralConfigManager.Config?.WriteCharacterDropsToFile?.Value == true)
             {
                 CharacterDropFileWriter.WriteToFile(prefabsWithDropTables);
             }
 
-            if (ConfigurationManager.GeneralConfig?.WriteCreatureItemsToFile?.Value == true)
+            if (GeneralConfigManager.Config?.WriteCreatureItemsToFile?.Value == true)
             {
                 CreatureItemFileWriter.WriteToFile(prefabsWithDropTables);
             }
         }
 
-        if (ConfigurationManager.GeneralConfig?.WriteLocationsToFile.Value == true)
+        if (GeneralConfigManager.Config?.WriteLocationsToFile.Value == true)
         {
             LocationFileWriter.WriteToFile(__instance.m_locations);
         }

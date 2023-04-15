@@ -1,5 +1,5 @@
 ﻿using System;
-using DropThat.Configuration;
+using DropThat.Core;
 using ThatCore.Logging;
 using ThatCore.Network;
 
@@ -9,7 +9,7 @@ internal static class CharacterDropConfigSyncManager
 {
     public static void Configure()
     {
-        ConfigSyncManager.RegisterSyncHandlers(
+        SyncManager.RegisterSyncHandlers(
             nameof(RPC_DropThat_ReceiveCharacterDropConfigs),
             GenerateMessage,
             RPC_DropThat_ReceiveCharacterDropConfigs);

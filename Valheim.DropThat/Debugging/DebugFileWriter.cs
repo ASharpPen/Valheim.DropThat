@@ -35,9 +35,9 @@ internal static class DebugFileWriter
     {
         string debugDir = "Debug";
 
-        if (ConfigurationManager.GeneralConfig?.DebugFileFolder is not null)
+        if (GeneralConfigManager.Config?.DebugFileFolder is not null)
         {
-            debugDir = Path.Combine(ConfigurationManager.GeneralConfig.DebugFileFolder.Value.SplitBySlash());
+            debugDir = Path.Combine(GeneralConfigManager.Config.DebugFileFolder.Value.SplitBySlash());
         }
 
         string filePath = Path.Combine(Paths.BepInExRootPath, debugDir, filename);

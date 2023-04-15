@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using ThatCore.Logging;
 using ThatCore.Network;
 
-namespace DropThat.Configuration;
+namespace DropThat.Core;
 
-internal static class ConfigSyncManager
+internal class SyncManager
 {
     private class HandlerPair
     {

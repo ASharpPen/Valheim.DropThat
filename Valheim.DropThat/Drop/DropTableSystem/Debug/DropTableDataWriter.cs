@@ -1,12 +1,10 @@
-﻿using BepInEx;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using DropThat.Configuration;
-using DropThat.Configuration.ConfigTypes;
 using DropThat.Utilities;
 using DropThat.Utilities.Valheim;
 using DropThat.Debugging;
@@ -20,7 +18,7 @@ internal static class Patch_DungeonDB_Start
     [HarmonyPostfix]
     private static void WriteDropTableData()
     {
-        if (ConfigurationManager.GeneralConfig?.WriteDropTablesToFiles)
+        if (GeneralConfigManager.Config?.WriteDropTablesToFiles)
         {
             DropTableDataWriter.PrintDungeonDropTables();
         }
@@ -34,7 +32,7 @@ internal static class Patch_ZoneSystem_Start
     [HarmonyPostfix]
     private static void WriteDropTableData()
     {
-        if (ConfigurationManager.GeneralConfig?.WriteDropTablesToFiles)
+        if (GeneralConfigManager.Config?.WriteDropTablesToFiles)
         {
             DropTableDataWriter.PrintPrefabDropTables();
             DropTableDataWriter.PrintLocationDropTables();

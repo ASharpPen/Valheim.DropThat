@@ -69,7 +69,7 @@ internal static class Patch_CharacterDrop_ConfigureDroppedItems
             // Check if we should be stacking the item
             if (drop.Value > 1)
             {
-                if (ConfigurationManager.GeneralConfig.AlwaysAutoStack)
+                if (GeneralConfigManager.Config.AlwaysAutoStack)
                 {
                     shouldStack = true;
                 }

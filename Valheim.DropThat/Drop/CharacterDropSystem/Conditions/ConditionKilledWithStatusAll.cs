@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DropThat.Caches;
-using DropThat.Configuration.ConfigTypes;
-using DropThat.Core;
 using DropThat.Creature.StatusRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;

@@ -23,7 +23,7 @@ public class DropThatPlugin : BaseUnityPlugin
     {
         Log.SetLogger(new BepInExLogger(Logger));
 
-        ConfigurationManager.LoadGeneralConfigurations();
+        GeneralConfigManager.Load();
 
         new Harmony(ModId).PatchAll();
 

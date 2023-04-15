@@ -10,7 +10,7 @@ internal static class PrintDebugFile
 {
     public static void PrintFile(string content, string filename, string fileDescription)
     {
-        string directory = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.DebugFileFolder ?? "Debug");
+        string directory = Path.Combine(Paths.BepInExRootPath, GeneralConfigManager.Config?.DebugFileFolder ?? "Debug");
 
         if (!Directory.Exists(directory))
         {
@@ -26,7 +26,7 @@ internal static class PrintDebugFile
 
     public static void PrintFile(List<string> content, string filename, string fileDescription)
     {
-        string directory = Path.Combine(Paths.BepInExRootPath, ConfigurationManager.GeneralConfig?.DebugFileFolder ?? "Debug");
+        string directory = Path.Combine(Paths.BepInExRootPath, GeneralConfigManager.Config?.DebugFileFolder ?? "Debug");
 
         if (!Directory.Exists(directory))
         {
