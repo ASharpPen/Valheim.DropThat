@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DropThat.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
@@ -18,9 +19,9 @@ namespace DropThat.Drop.DropTableSystem.Managers;
 /// </summary>
 internal static class DropTableManager
 {
-    private static Dictionary<DropTable, GameObject> SourceLinkTable { get; } = new();
-    private static Dictionary<DropTable, DropTableTemplate> TemplateLinkTable { get; } = new();
-    private static Dictionary<DropTable, List<DropTableDrop>> DropsByTable { get; } = new();
+    private static ConditionalWeakTable<DropTable, GameObject> SourceLinkTable { get; } = new();
+    private static ConditionalWeakTable<DropTable, DropTableTemplate> TemplateLinkTable { get; } = new();
+    private static ConditionalWeakTable<DropTable, List<DropTableDrop>> DropsByTable { get; } = new();
 
     // TODO: Experimental idea. Consider using this for caching of configs. It feels like this list will probably never change between instantiations of same prefab.
     // TODO: Might want to consider cloning some of these objects to avoid accidental changes?
@@ -39,11 +40,19 @@ internal static class DropTableManager
                 return;
             }
 
-            SourceLinkTable[dropTable] = source.gameObject;
+            if (SourceLinkTable.TryGetValue(dropTable, out _))
+            {
+                return;
+            }
+
+            SourceLinkTable.Add(dropTable, source.gameObject);
 
             if (DropTableTemplateManager.TryGetTemplate(source.GetCleanedName(), out var template))
             {
-                TemplateLinkTable[dropTable] = template;
+                TemplateLinkTable.Remove(dropTable);
+                TemplateLinkTable.Add(dropTable, template);
+
+                PrepareTable(dropTable);
             }
         }
         catch (Exception e)
@@ -54,7 +63,7 @@ internal static class DropTableManager
 
     public static bool HasChanges(DropTable dropTable)
     {
-        return TemplateLinkTable.ContainsKey(dropTable);
+        return TemplateLinkTable.TryGetValue(dropTable, out _);
     }
 
     /// <summary>
@@ -71,6 +80,8 @@ internal static class DropTableManager
 
         if (!DropsByTable.TryGetValue(dropTable, out drops))
         {
+            Log.Warning?.Log("Attempted to generate drops without having prepared DropTable. Attempting recovery, but something is wrong.");
+
             drops = PrepareTable(dropTable);
         }
 
@@ -153,6 +164,8 @@ internal static class DropTableManager
 
         if (!DropsByTable.TryGetValue(dropTable, out drops))
         {
+            Log.Warning?.Log("Attempted to generate drops without having prepared DropTable. Attempting recovery, but something is wrong.");
+
             drops = PrepareTable(dropTable);
         }
 
@@ -226,7 +239,8 @@ internal static class DropTableManager
         // Create list of configured drops for table.
         var drops = ConfigureDropTableService.CreateDropList(dropTable, template);
 
-        DropsByTable[dropTable] = drops;
+        DropsByTable.Remove(dropTable);
+        DropsByTable.Add(dropTable, drops);
 
         return drops;
     }
@@ -293,23 +307,6 @@ internal static class DropTableManager
         catch (Exception e)
         {
             Log.Error?.Log($"Error while preparing to modify drop '{drop}'. Skipping modifiers.", e);
-        }
-    }
-
-    /// <summary>
-    /// Cleanup references
-    /// </summary>
-    public static void Cleanup(MonoBehaviour source, DropTable dropTable)
-    {
-        try
-        {
-            SourceLinkTable.Remove(dropTable);
-            TemplateLinkTable.Remove(dropTable);
-            DropsByTable.Remove(dropTable);
-        }
-        catch (Exception e)
-        {
-            Log.Error?.Log("Error while attempting to clean up reference from drop table to its source.", e);
         }
     }
 }

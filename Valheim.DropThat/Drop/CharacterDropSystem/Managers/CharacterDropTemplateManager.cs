@@ -18,7 +18,7 @@ public static class CharacterDropTemplateManager
     }
 
     public static void SetTemplate(string prefabName, CharacterDropMobTemplate template) =>
-        Templates[prefabName] = template;
+        Templates[prefabName.ToUpperInvariant()] = template;
 
     public static List<(string prefab, CharacterDropMobTemplate)> GetTemplates() =>
         Templates
@@ -27,7 +27,7 @@ public static class CharacterDropTemplateManager
 
     public static CharacterDropMobTemplate GetTemplate(string prefabName)
     {
-        if (Templates.TryGetValue(prefabName, out var template))
+        if (Templates.TryGetValue(prefabName.ToUpperInvariant(), out var template))
         {
             return template;
         }
@@ -36,11 +36,11 @@ public static class CharacterDropTemplateManager
     }
 
     public static bool TryGetTemplate(string prefabName, out CharacterDropMobTemplate template) =>
-        Templates.TryGetValue(prefabName, out template);
+        Templates.TryGetValue(prefabName.ToUpperInvariant(), out template);
 
     public static bool TryGetTemplate(string prefabName, int id, out CharacterDropDropTemplate template)
     {
-        if (Templates.TryGetValue(prefabName, out var mobTemplate))
+        if (Templates.TryGetValue(prefabName.ToUpperInvariant(), out var mobTemplate))
         {
             return mobTemplate.Drops.TryGetValue(id, out template);
         }

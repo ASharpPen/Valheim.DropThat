@@ -86,8 +86,7 @@ internal static class Patch_ModifyInstantiatedDrops
             .MatchForward(true,
                 new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod),
                 new CodeMatch(OpCodes.Pop))
-            .RemoveInstruction()
-            .InsertAndAdvance(Transpilers.EmitDelegate(DropTableManager.ModifyInstantiatedDrop))
+            .SetInstruction(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(DropTableManager), nameof(DropTableManager.ModifyInstantiatedDrop))))
             .InstructionEnumeration();
     }
 }

@@ -114,12 +114,12 @@ internal static class DropTableListSchemaGenerator
                                 {
                                     (TomlConfig config, DropTableDropBuilder builder) =>
                                     {
-                                        builder.PrefabName.Configure(config, "PrefabName");
-                                        builder.TemplateEnabled.Configure(config, "EnableConfig");
-                                        builder.Enabled.Configure(config, "Enable");
-                                        builder.AmountMin.Configure(config, "SetAmountMin");
-                                        builder.AmountMax.Configure(config, "SetAmountMax");
-                                        builder.Weight.Configure(config, "SetTemplateWeight");
+                                        config.DoIfAnySet<string>("PrefabName", x => builder.PrefabName = x);
+                                        config.DoIfAnySet<bool?>("Enable", x => builder.Enabled = x);
+                                        config.DoIfAnySet<bool?>("EnableConfig", x => builder.TemplateEnabled = x);
+                                        config.DoIfAnySet<int?>("SetAmountMin", x => builder.AmountMin = x);
+                                        config.DoIfAnySet<int?>("SetAmountMax", x => builder.AmountMax = x);
+                                        config.DoIfAnySet<float?>("SetTemplateWeight", x => builder.Weight = x);
 
                                         // Conditions
                                         config

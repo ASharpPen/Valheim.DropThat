@@ -1,8 +1,7 @@
-﻿using DropThat.Integrations.EpicLootIntegration;
-using ThatCore.Logging;
+﻿using ThatCore.Logging;
 using UnityEngine;
 
-namespace Valheim.DropThat.Integrations.EpicLootIntegration;
+namespace DropThat.Integrations.EpicLootIntegration;
 
 internal static class ItemRoller
 {
@@ -11,7 +10,7 @@ internal static class ItemRoller
         if (!EpicLoot.EpicLoot.CanBeMagicItem(itemData))
         {
             Log.DevelopmentOnly($"Item '{itemData.m_shared.m_name}' can't be made magic.");
-      
+
             return false;
         }
 

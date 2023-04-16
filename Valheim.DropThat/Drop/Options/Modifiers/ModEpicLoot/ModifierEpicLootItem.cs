@@ -6,7 +6,6 @@ using DropThat.Caches;
 using System.Linq;
 using DropThat.Integrations;
 using ThatCore.Models;
-using Valheim.DropThat.Integrations.EpicLootIntegration;
 
 namespace DropThat.Drop.Options.Modifiers.ModEpicLoot;
 

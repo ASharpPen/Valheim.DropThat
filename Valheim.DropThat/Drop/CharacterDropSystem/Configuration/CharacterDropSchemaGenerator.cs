@@ -137,14 +137,15 @@ internal static class CharacterDropSchemaGenerator
                         {
                             (TomlConfig config, CharacterDropDropBuilder builder) =>
                             {
-                                builder.PrefabName.Configure(config, "PrefabName");
-                                builder.Enabled.Configure(config, "EnableConfig");
-                                builder.AmountMin.Configure(config, "SetAmountMin");
-                                builder.AmountMax.Configure(config, "SetAmountMax");
-                                builder.ChanceToDrop.Configure(config, "SetChanceToDrop");
-                                builder.ScaleByLevel.Configure(config, "SetScaleByLevel");
-                                builder.AmountLimit.Configure(config, "SetAmountLimit");
-                                builder.AutoStack.Configure(config, "SetAutoStack");
+                                config.Configure<string>("PrefabName", x => builder.PrefabName = x);
+                                config.Configure<bool?>("Enable", x => builder.Enabled = x);
+                                config.Configure<bool?>("EnableConfig", x => builder.TemplateEnabled = x);
+                                config.Configure<int?>("SetAmountMin", x => builder.AmountMin = x);
+                                config.Configure<int?>("SetAmountMax", x => builder.AmountMax = x);
+                                config.Configure<float?>("SetChanceToDrop", x => builder.ChanceToDrop = x);
+                                config.Configure<bool?>("SetScaleByLevel", x => builder.ScaleByLevel = x);
+                                config.Configure<int?>("SetAmountLimit", x => builder.AmountLimit = x);
+                                config.Configure<bool?>("SetAutoStack", x => builder.AutoStack = x);
 
                                 config.Configure<int?>("ConditionMinLevel", x => builder.ConditionLevelMin(x));
                                 config.Configure<int?>("ConditionMaxLevel", x => builder.ConditionLevelMax(x));

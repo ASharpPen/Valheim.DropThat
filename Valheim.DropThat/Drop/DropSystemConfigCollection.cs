@@ -12,7 +12,6 @@ internal class DropSystemConfigCollection : IDropSystemConfigCollection
     public List<IDropSystemConfig> GetDropSystemConfigs() => 
         _dropSystemConfigs
             .Values
-            .Cast<IDropSystemConfig>()
             .ToList();
 
     public TDropSystemConfig GetDropSystemConfig<TDropSystemConfig>() 

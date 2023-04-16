@@ -15,6 +15,7 @@
     <PackageTags>Valheim;Mod;Drop;Loot;BepInEx</PackageTags>
     <Description>Valheim mod and tool for configuring loot drops.</Description>
     <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+    <Configurations>Debug;Release;Test</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="LibsStripped\**" />
@@ -72,4 +73,8 @@
     <None Include="ThunderstoreResources\manifest.json" />
     <None Include="ThunderstoreResources\README.md" />
   </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Valheim.DropThat.Tests" />
+	</ItemGroup>
 </Project>

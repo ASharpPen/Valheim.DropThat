@@ -5,6 +5,7 @@ using DropThat.Drop.CharacterDropSystem;
 using DropThat.Drop.DropTableSystem;
 using DropThat.Locations.Sync;
 using ThatCore.Lifecycle;
+using ThatCore.Logging;
 
 namespace DropThat;
 
@@ -29,6 +30,8 @@ internal static class Startup
 
     private static void LoadConfigs()
     {
+        Log.DevelopmentOnly("Loading configs: " + LifecycleManager.GameState);
+
         // Only load if either single-player or server.
         if (LifecycleManager.GameState is (
             GameState.Singleplayer or 

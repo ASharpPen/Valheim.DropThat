@@ -13,6 +13,7 @@ internal static class Patch_CharacterDrop_ConfigureDroplist
     /// 1. Drop table is instantiated.
     /// </summary>
     [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.Start))]
+    [HarmonyPostfix]
     [HarmonyPriority(Priority.Last)]
     private static void Init(CharacterDrop __instance)
     {

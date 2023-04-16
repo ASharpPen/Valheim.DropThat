@@ -41,7 +41,7 @@ internal static class Patch_RollDrops
         return true;
     }
 
-    [HarmonyPatch(typeof(DropTable), nameof(DropTable.GetDropList))]
+    [HarmonyPatch(typeof(DropTable), nameof(DropTable.GetDropList), new[] { typeof(int) })]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.Last)]
     private static bool DropListOverhaul(DropTable __instance, ref List<GameObject> __result)

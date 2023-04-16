@@ -44,17 +44,7 @@ public static class DropSystemConfigManager
 
         OnConfigureLate.Raise(collection);
 
-        foreach (var dropSystem in collection.GetDropSystemConfigs())
-        {
-            try
-            {
-                dropSystem.Build();
-            }
-            catch (Exception e)
-            {
-                Log.Error?.Log($"Error during build of drop config {dropSystem?.GetType()?.Name}", e);
-            }
-        }
+        collection.Build();
 
         ConfigsLoaded();
     }

@@ -11,7 +11,7 @@ namespace DropThat.Drop.DropTableSystem.Patches;
 /// to store what object it belongs with for later reference.
 /// </summary>
 [HarmonyPatch]
-internal static class Patch_InitAndCleanup
+internal static class Patch_Init
 {
     [HarmonyPatch(typeof(Container))]
     internal static class Patch_Container_Awake_InitDropContext
@@ -20,11 +20,6 @@ internal static class Patch_InitAndCleanup
         [HarmonyPrefix]
         private static void SetLink(Container __instance) =>
             DropTableManager.Initialize(__instance, __instance.m_defaultItems);
-
-        [HarmonyPatch(nameof(Container.Destroy), typeof(UnityEngine.Object))]
-        [HarmonyPrefix]
-        private static void CleanupLink(Container __instance) => 
-            DropTableManager.Cleanup(__instance, __instance.m_defaultItems);
     }
 
     [HarmonyPatch(typeof(DropOnDestroyed))]
@@ -34,11 +29,6 @@ internal static class Patch_InitAndCleanup
         [HarmonyPostfix]
         private static void SetLink(DropOnDestroyed __instance) =>
             DropTableManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
-
-        [HarmonyPatch(nameof(DropOnDestroyed.Destroy), typeof(UnityEngine.Object))]
-        [HarmonyPrefix]
-        private static void CleanupLink(DropOnDestroyed __instance) => 
-            DropTableManager.Cleanup(__instance, __instance.m_dropWhenDestroyed);
     }
 
     [HarmonyPatch(typeof(LootSpawner))]
@@ -48,11 +38,6 @@ internal static class Patch_InitAndCleanup
         [HarmonyPostfix]
         private static void SetLink(LootSpawner __instance) =>
             DropTableManager.Initialize(__instance, __instance.m_items);
-
-        [HarmonyPatch(nameof(LootSpawner.Destroy), typeof(UnityEngine.Object))]
-        [HarmonyPrefix]
-        private static void CleanupLink(LootSpawner __instance) =>
-            DropTableManager.Cleanup(__instance, __instance.m_items);
     }
 
     [HarmonyPatch(typeof(TreeBase))]
@@ -62,11 +47,6 @@ internal static class Patch_InitAndCleanup
         [HarmonyPostfix]
         private static void SetLink(TreeBase __instance) =>
             DropTableManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
-
-        [HarmonyPatch(nameof(TreeBase.Destroy), typeof(UnityEngine.Object))]
-        [HarmonyPrefix]
-        private static void CleanupLink(TreeBase __instance) =>
-            DropTableManager.Cleanup(__instance, __instance.m_dropWhenDestroyed);
     }
 
     [HarmonyPatch(typeof(TreeLog))]
@@ -76,11 +56,6 @@ internal static class Patch_InitAndCleanup
         [HarmonyPostfix]
         private static void SetLink(TreeLog __instance) =>
             DropTableManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
-
-        [HarmonyPatch(nameof(TreeLog.Destroy), typeof(UnityEngine.Object))]
-        [HarmonyPrefix]
-        private static void CleanupLink(TreeLog __instance) =>
-            DropTableManager.Cleanup(__instance, __instance.m_dropWhenDestroyed);
     }
 
     [HarmonyPatch(typeof(MineRock))]
@@ -90,11 +65,6 @@ internal static class Patch_InitAndCleanup
         [HarmonyPostfix]
         private static void SetLink(MineRock __instance) =>
             DropTableManager.Initialize(__instance, __instance.m_dropItems);
-
-        [HarmonyPatch(nameof(MineRock.Destroy), typeof(UnityEngine.Object))]
-        [HarmonyPrefix]
-        private static void CleanupLink(MineRock __instance) =>
-            DropTableManager.Cleanup(__instance, __instance.m_dropItems);
     }
 
     [HarmonyPatch(typeof(MineRock5))]
@@ -104,10 +74,5 @@ internal static class Patch_InitAndCleanup
         [HarmonyPostfix]
         private static void SetLink(MineRock5 __instance) =>
             DropTableManager.Initialize(__instance, __instance.m_dropItems);
-
-        [HarmonyPatch(nameof(MineRock5.Destroy), typeof(UnityEngine.Object))]
-        [HarmonyPrefix]
-        private static void CleanupLink(MineRock5 __instance) =>
-            DropTableManager.Cleanup(__instance, __instance.m_dropItems);
     }
 }

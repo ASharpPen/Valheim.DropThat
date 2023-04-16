@@ -14,7 +14,7 @@ internal class GeneralConfigMessage : IMessage
 
     public void AfterUnpack()
     {
-        GeneralConfigManager.Config = GeneralConfig;
+        GeneralConfigManager.Set(GeneralConfig);
 
         Log.Debug?.Log("Successfully unpacked general configs.");
     }

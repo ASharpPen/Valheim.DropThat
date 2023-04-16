@@ -7,7 +7,7 @@ namespace DropThat.Configuration;
 
 public static class GeneralConfigManager
 {
-    public static GeneralConfig Config;
+    public static GeneralConfig Config { get; private set; }
 
     public const string GeneralConfigFile = "drop_that.cfg";
 
@@ -19,5 +19,16 @@ public static class GeneralConfigManager
 
         Config = new GeneralConfig();
         Config.Load(new ConfigFile(generalConfig, true));
+
+        Log.DebugEnabled = Config.EnableDebugLogging;
+        Log.TraceEnabled = Config.EnableTraceLogging;
+    }
+
+    internal static void Set(GeneralConfig config)
+    {
+        Config = config;
+
+        Log.DebugEnabled = Config.EnableDebugLogging;
+        Log.TraceEnabled = Config.EnableTraceLogging;
     }
 }

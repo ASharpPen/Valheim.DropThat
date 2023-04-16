@@ -1,5 +1,4 @@
-﻿using DropThat.Integrations.EpicLootIntegration;
-using EpicLoot;
+﻿using EpicLoot;
 using EpicLoot.Data;
 using EpicLoot.LegendarySystem;
 using HarmonyLib;
@@ -8,7 +7,7 @@ using System.Linq;
 using ThatCore.Logging;
 using UnityEngine;
 
-namespace Valheim.DropThat.Integrations.EpicLootIntegration;
+namespace DropThat.Integrations.EpicLootIntegration;
 
 internal static class ItemService
 {

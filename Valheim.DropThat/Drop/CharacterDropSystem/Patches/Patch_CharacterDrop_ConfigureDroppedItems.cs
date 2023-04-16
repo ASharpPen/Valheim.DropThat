@@ -12,9 +12,11 @@ using ThatCore.Logging;
 using UnityEngine;
 
 namespace DropThat.Drop.CharacterDropSystem.Patches;
+
+[HarmonyPatch]
 internal static class Patch_CharacterDrop_ConfigureDroppedItems
 {
-    [HarmonyPatch(nameof(CharacterDrop.DropItems))]
+    [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.DropItems))]
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> HookSpawnedItem(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
@@ -25,12 +27,12 @@ internal static class Patch_CharacterDrop_ConfigureDroppedItems
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_S, 5))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_1))
-            .SetInstructionAndAdvance(Transpilers.EmitDelegate(OnSpawnedItem))
+            .InsertAndAdvance(Transpilers.EmitDelegate(OnSpawnedItem))
             // Insert auto stacking, and set loop index to result.
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_S, 5))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_2))
-            .SetInstructionAndAdvance(Transpilers.EmitDelegate(StackDropsAndReturnNewIndex))
+            .InsertAndAdvance(Transpilers.EmitDelegate(StackDropsAndReturnNewIndex))
             .InsertAndAdvance(new CodeInstruction(OpCodes.Stloc_2)) // Overwrite existing loop index
             .InstructionEnumeration();
     }

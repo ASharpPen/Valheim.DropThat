@@ -110,12 +110,12 @@ internal static class DropTableSchemaGenerator
                         {
                             (TomlConfig config, DropTableBuilder builder) =>
                             {
-                                builder.DropMin.Configure(config, "SetDropMin");
-                                builder.DropMax.Configure(config, "SetDropMax");
-                                builder.DropChance.Configure(config, "SetDropChance");
-                                builder.DropOnlyOnce.Configure(config, "SetDropOnlyOnce");
+                                config.DoIfAnySet<int?>("SetDropMin", x => builder.DropMin = x);
+                                config.DoIfAnySet<int?>("SetDropMax", x => builder.DropMax = x);
+                                config.DoIfAnySet<float?>("SetDropChance", x => builder.DropChance = x);
+                                config.DoIfAnySet<bool?>("SetDropOnlyOnce", x => builder.DropOnlyOnce = x);
 
-                                builder.ListNames.Configure(config, "UseDropList");
+                                config.DoIfAnySet<List<string>>("UseDropList", x => builder.ListNames = x);
                             }
                         }
                     },
@@ -132,12 +132,12 @@ internal static class DropTableSchemaGenerator
                                 {
                                     (TomlConfig config, DropTableDropBuilder builder) =>
                                     {
-                                        builder.PrefabName.Configure(config, "PrefabName");
-                                        builder.TemplateEnabled.Configure(config, "EnableConfig");
-                                        builder.Enabled.Configure(config, "Enable");
-                                        builder.AmountMin.Configure(config, "SetAmountMin");
-                                        builder.AmountMax.Configure(config, "SetAmountMax");
-                                        builder.Weight.Configure(config, "SetTemplateWeight");
+                                        config.DoIfAnySet<string>("PrefabName", x => builder.PrefabName = x);
+                                        config.DoIfAnySet<bool?>("Enable", x => builder.Enabled = x);
+                                        config.DoIfAnySet<bool?>("EnableConfig", x => builder.TemplateEnabled = x);
+                                        config.DoIfAnySet<int?>("SetAmountMin", x => builder.AmountMin = x);
+                                        config.DoIfAnySet<int?>("SetAmountMax", x => builder.AmountMax = x);
+                                        config.DoIfAnySet<float?>("SetTemplateWeight", x => builder.Weight = x);
 
                                         // Conditions
                                         config
