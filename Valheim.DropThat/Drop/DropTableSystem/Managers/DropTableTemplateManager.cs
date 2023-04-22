@@ -18,7 +18,7 @@ public static class DropTableTemplateManager
     }
 
     public static void SetTemplate(string prefabName, DropTableTemplate template) =>
-        Templates[prefabName] = template;
+        Templates[prefabName.ToUpperInvariant()] = template;
 
     public static List<(string prefabName, DropTableTemplate template)> GetTemplates() =>
         Templates
@@ -27,7 +27,7 @@ public static class DropTableTemplateManager
          
     public static DropTableTemplate GetTemplate(string prefabName)
     {
-        if (Templates.TryGetValue(prefabName, out var template))
+        if (Templates.TryGetValue(prefabName.ToUpperInvariant(), out var template))
         {
             return template;
         }
@@ -36,11 +36,11 @@ public static class DropTableTemplateManager
     }
 
     public static bool TryGetTemplate(string prefabName, out DropTableTemplate template) =>
-        Templates.TryGetValue(prefabName, out template);
+        Templates.TryGetValue(prefabName.ToUpperInvariant(), out template);
 
     public static bool TryGetTemplate(string prefabName, int id, out DropTableDropTemplate dropTemplate)
     {
-        if (Templates.TryGetValue(prefabName, out var template))
+        if (Templates.TryGetValue(prefabName.ToUpperInvariant(), out var template))
         {
             return template.Drops.TryGetValue(id, out dropTemplate);
         }

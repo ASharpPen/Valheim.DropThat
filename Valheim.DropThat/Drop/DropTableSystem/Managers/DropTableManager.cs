@@ -37,6 +37,7 @@ internal static class DropTableManager
             if (dropTable is null ||
                 source.IsNull())
             {
+                Log.DevelopmentOnly("DropTable or Source is null");
                 return;
             }
 
@@ -108,7 +109,7 @@ internal static class DropTableManager
         {
             var itemDrop = ComponentCache.Get<ItemDrop>(drop.DropData.m_item);
 
-            if (itemDrop is null)
+            if (itemDrop.IsNull())
             {
                 return null;
             }
@@ -121,24 +122,27 @@ internal static class DropTableManager
                 1 + Math.Min(itemData.m_shared.m_maxStackSize, drop.DropData.m_stackMax)
                 );
 
-            // Apply modifiers to ItemData.
-            ItemModifierContext<ItemDrop.ItemData> dropContext = new()
+            if (drop.DropTemplate?.ItemModifiers is not null)
             {
-                Item = itemData,
-                Position = source.transform.position
-            };
+                // Apply modifiers to ItemData.
+                ItemModifierContext<ItemDrop.ItemData> dropContext = new()
+                {
+                    Item = itemData,
+                    Position = source.transform.position
+                };
 
-            foreach (var modifier in drop.DropTemplate.ItemModifiers)
-            {
-                try
+                foreach (var modifier in drop.DropTemplate.ItemModifiers)
                 {
-                    modifier.Modify(dropContext);
-                }
-                catch (Exception e)
-                {
-                    Log.Error?.Log(
-                        $"Error while attempting to apply modifier '{modifier.GetType().Name}' " +
-                        $"to '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}'.", e);
+                    try
+                    {
+                        modifier.Modify(dropContext);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error?.Log(
+                            $"Error while attempting to apply modifier '{modifier.GetType().Name}' " +
+                            $"to '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}'.", e);
+                    }
                 }
             }
 
@@ -229,6 +233,7 @@ internal static class DropTableManager
 
         if (!TemplateLinkTable.TryGetValue(dropTable, out template))
         {
+            Log.Warning?.Log("Attempted to generate drops without having template linked to DropTable.");
             // Something is wrong. We shouldn't be trying to overhaul drop generation without a template with changes being linked.
             return new(0);
         }
