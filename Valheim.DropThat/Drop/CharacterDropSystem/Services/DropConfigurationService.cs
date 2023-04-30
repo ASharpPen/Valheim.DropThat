@@ -1,6 +1,7 @@
 ﻿using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
 using ThatCore.Logging;
+using ThatCore.Models;
 using UnityEngine;
 
 namespace DropThat.Drop.CharacterDropSystem.Services;
@@ -21,11 +22,11 @@ internal static class DropConfigurationService
         drop = new()
         {
             m_prefab = prefab,
-            m_amountMax = template.AmountMax.Value,
-            m_amountMin = template.AmountMin.Value,
-            m_chance = template.ChanceToDrop.Value / 100,
-            m_levelMultiplier = template.ScaleByLevel.Value,
-            m_onePerPlayer = template.DropOnePerPlayer.Value,
+            m_amountMax = template.AmountMax.Value.GetValueOrDefault(),
+            m_amountMin = template.AmountMin.Value.GetValueOrDefault(),
+            m_chance = template.ChanceToDrop.Value.GetValueOrDefault() / 100,
+            m_levelMultiplier = template.ScaleByLevel.Value.GetValueOrDefault(),
+            m_onePerPlayer = template.DropOnePerPlayer.Value.GetValueOrDefault(),
         };
 
         return true;
@@ -54,9 +55,10 @@ internal static class DropConfigurationService
         template.ScaleByLevel.SetIfNotNull(ref drop.m_levelMultiplier);
         template.DropOnePerPlayer.SetIfNotNull(ref drop.m_onePerPlayer);
 
-        if (template.ChanceToDrop is not null)
+        if (template.ChanceToDrop.IsSet &&
+            template.ChanceToDrop.Value is not null)
         {
-            drop.m_chance = template.ChanceToDrop.Value / 100f;
+            drop.m_chance = template.ChanceToDrop.Value.Value / 100f;
         }
     }
 
@@ -77,12 +79,13 @@ internal static class DropConfigurationService
         return true;
     }
 
-    private static void SetIfNotNull<T>(this T? source, ref T dest)
+    private static void SetIfNotNull<T>(this Optional<T?> source, ref T dest)
         where T : struct
     {
-        if (source is not null)
+        if (source.IsSet &&
+            source.Value is not null)
         {
-            dest = source.Value;
+            dest = source.Value.Value;
         }
     }
 }

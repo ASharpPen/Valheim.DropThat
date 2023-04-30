@@ -62,7 +62,7 @@ public static class Patch_TrackDrops
 
             if (DropTableManager.DropInstanceTable.TryGetValue(drop, out var configInfo))
             {
-                Log.DevelopmentOnly($"Carrying configs for drop {configInfo.DisplayName}:{drop.m_prefab.name}:{characterDrop.GetHashCode()}");
+                Log.Development?.Log($"Carrying configs for drop {configInfo.DisplayName}:{drop.m_prefab.name}:{characterDrop.GetHashCode()}");
 
                 TempDropListCache.SetDrop(characterDrop, configInfo, dropItems.Count - 1);
             }
@@ -136,14 +136,14 @@ public static class Patch_TrackDrops
     {
         try
         {
-            Log.DevelopmentOnly($"Packing config references for zdo {zdo.m_uid}");
+            Log.Development?.Log($"Packing config references for zdo {zdo.m_uid}");
 
             var cache = TempDropListCache.GetDrops(drops);
             cache ??= TempDropListCache.GetDrops(drop); // If we somehow failed to keep a consistent list reference (probably mod conflict). Attempt with the original CharacterDrop instead.
 
             if (cache is null)
             {
-                Log.DevelopmentOnly($"Found no drops for zdo {zdo.m_uid}");
+                Log.Development?.Log($"Found no drops for zdo {zdo.m_uid}");
                 return;
             }
 
@@ -163,7 +163,7 @@ public static class Patch_TrackDrops
 
                 byte[] serialized = memStream.ToArray();
 
-                Log.DevelopmentOnly($"Serialized and set drops for zdo {zdo.m_uid}");
+                Log.Development?.Log($"Serialized and set drops for zdo {zdo.m_uid}");
 
                 zdo.Set(ZdoConfigReferenceKey, serialized);
             }
@@ -206,8 +206,8 @@ public static class Patch_TrackDrops
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             var references = binaryFormatter.Deserialize(stream) as List<ConfigReferenceDto>;
 
-            Log.DevelopmentOnly($"Deserialized config package for zdo {zdo.m_uid}");
-            Log.DevelopmentOnly($"\t" + references?.Join(x => $"{x.Index}:{x.Mob}.{x.Id}"));
+            Log.Development?.Log($"Deserialized config package for zdo {zdo.m_uid}");
+            Log.Development?.Log($"\t" + references?.Join(x => $"{x.Index}:{x.Mob}.{x.Id}"));
 
             foreach (var reference in references ?? Enumerable.Empty<ConfigReferenceDto>())
             {

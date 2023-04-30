@@ -90,7 +90,7 @@ internal static class ItemService
         var luck = LootRoller.GetLuckFactor(position);
         MagicItem magicItem = LootRoller.RollMagicItem(rarity, itemData, luck);
 
-        Log.DevelopmentOnly("\t" + magicItem.Effects.Join(x => x.EffectType));
+        Log.Development?.Log("\t" + magicItem.Effects.Join(x => x.EffectType));
 
         magicComponent.SetMagicItem(magicItem);
 

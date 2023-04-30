@@ -20,10 +20,7 @@ public static class CharacterDropTemplateManager
     public static void SetTemplate(string prefabName, CharacterDropMobTemplate template) =>
         Templates[prefabName.ToUpperInvariant()] = template;
 
-    public static List<(string prefab, CharacterDropMobTemplate)> GetTemplates() =>
-        Templates
-        .Select(x => (x.Key, x.Value))
-        .ToList();
+    public static List<CharacterDropMobTemplate> GetTemplates() => Templates.Values.ToList();
 
     public static CharacterDropMobTemplate GetTemplate(string prefabName)
     {

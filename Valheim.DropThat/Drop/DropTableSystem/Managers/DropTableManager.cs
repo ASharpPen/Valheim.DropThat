@@ -37,7 +37,7 @@ internal static class DropTableManager
             if (dropTable is null ||
                 source.IsNull())
             {
-                Log.DevelopmentOnly("DropTable or Source is null");
+                Log.Development?.Log("DropTable or Source is null");
                 return;
             }
 

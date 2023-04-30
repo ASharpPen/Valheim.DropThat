@@ -16,7 +16,7 @@ internal static class Patch_Character_RecordHit
     {
         try
         {
-            Log.DevelopmentOnly("Applying damage.");
+            Log.Development?.Log("Applying damage.");
 
             if (__instance.IsNull())
             {
@@ -27,11 +27,11 @@ internal static class Patch_Character_RecordHit
 
             if (zdo is null)
             {
-                Log.DevelopmentOnly($"[{__instance.name}] Skipping record of last hit.");
+                Log.Development?.Log($"[{__instance.name}] Skipping record of last hit.");
                 return;
             }
 
-            Log.DevelopmentOnly($"[{__instance.name}] Recording hit.");
+            Log.Development?.Log($"[{__instance.name}] Recording hit.");
 
             DamageRecords.RecordLastHit.SetLastHit(__instance, hit);
             DamageRecords.RecordRecentHits.SetRecentHit(__instance, hit);

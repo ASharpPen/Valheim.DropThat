@@ -34,7 +34,7 @@ public static class WrapperGameObjectExtensions
 
         if (WrapperCache.TryGet(gameObject, out var cached))
         {
-            Log.DevelopmentOnly($"Unwrapped '{cached.Wrapped.name}'");
+            Log.Development?.Log($"Unwrapped '{cached.Wrapped.name}'");
       
             // Mark as successfully unwrapping to tell the WrapperComponent that everything is fine.
             cached.Unwrapped = true;

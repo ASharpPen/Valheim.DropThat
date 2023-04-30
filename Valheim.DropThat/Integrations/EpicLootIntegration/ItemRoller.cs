@@ -9,14 +9,14 @@ internal static class ItemRoller
     {
         if (!EpicLoot.EpicLoot.CanBeMagicItem(itemData))
         {
-            Log.DevelopmentOnly($"Item '{itemData.m_shared.m_name}' can't be made magic.");
+            Log.Development?.Log($"Item '{itemData.m_shared.m_name}' can't be made magic.");
 
             return false;
         }
 
         var rarity = ItemService.RollRarity(parameters);
 
-        Log.DevelopmentOnly($"Item '{itemData.m_shared.m_name}' rolled rarity '{rarity}'.");
+        Log.Development?.Log($"Item '{itemData.m_shared.m_name}' rolled rarity '{rarity}'.");
 
         if (rarity is Rarity.None)
         {

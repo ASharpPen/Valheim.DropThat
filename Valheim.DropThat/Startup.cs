@@ -30,7 +30,7 @@ internal static class Startup
 
     private static void LoadConfigs()
     {
-        Log.DevelopmentOnly("Loading configs: " + LifecycleManager.GameState);
+        Log.Development?.Log("Loading configs: " + LifecycleManager.GameState);
 
         // Only load if either single-player or server.
         if (LifecycleManager.GameState is (

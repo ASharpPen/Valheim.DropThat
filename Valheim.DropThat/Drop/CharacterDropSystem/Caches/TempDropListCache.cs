@@ -20,7 +20,7 @@ internal class TempDropListCache
 
     public static void SetDrop(UnityEngine.Component key, DropConfigInfo dropInfo, int? index = null)
     {
-        Log.DevelopmentOnly($"Setting temp drop cache {dropInfo.Index}:{key.GetHashCode()}");
+        Log.Development?.Log($"Setting temp drop cache {dropInfo.Index}:{key.GetHashCode()}");
 
         var cache = ObjectTable.GetOrCreate(key.gameObject);
         cache.InfoByIndex[index ?? dropInfo.Index] = dropInfo;
@@ -28,7 +28,7 @@ internal class TempDropListCache
 
     public static void SetDrop(object key, DropConfigInfo dropInfo, int? index = null)
     {
-        Log.DevelopmentOnly($"Setting temp drop cache {dropInfo.Index}:{key.GetHashCode()}");
+        Log.Development?.Log($"Setting temp drop cache {dropInfo.Index}:{key.GetHashCode()}");
 
         var cache = DropListTable.GetOrCreateValue(key);
         cache.InfoByIndex[index ?? dropInfo.Index] = dropInfo;
@@ -51,7 +51,7 @@ internal class TempDropListCache
 
     public static TempDropListCache GetDrops(object key)
     {
-        Log.DevelopmentOnly($"Getting temp drop cache {key.GetHashCode()}");
+        Log.Development?.Log($"Getting temp drop cache {key.GetHashCode()}");
 
         if (key is null)
         {
@@ -83,11 +83,11 @@ internal class TempDropListCache
     {
         if (DropListTable.TryGetValue(key, out TempDropListCache cache))
         {
-            Log.DevelopmentOnly($"Found temp drop cache for {key.GetHashCode()}");
+            Log.Development?.Log($"Found temp drop cache for {key.GetHashCode()}");
 
             if (cache.InfoByIndex.TryGetValue(index, out DropConfigInfo dropInfo))
             {
-                Log.DevelopmentOnly($"Successfully retrieved config from temp drop cache");
+                Log.Development?.Log($"Successfully retrieved config from temp drop cache");
 
                 return dropInfo;
             }

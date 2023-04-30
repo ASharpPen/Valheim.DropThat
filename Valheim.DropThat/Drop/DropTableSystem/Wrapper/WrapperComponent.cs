@@ -32,7 +32,7 @@ public class WrapperComponent : MonoBehaviour
                 {
                     // Object was present in cache and succesfully unwrapped.
                     // This means we can just destroy this wrapper as everything is alright.
-                    Log.DevelopmentOnly("Destroying succesfully unwrapped wrapper.");
+                    Log.Development?.Log("Destroying succesfully unwrapped wrapper.");
                 }
                 else
                 {
@@ -41,7 +41,7 @@ public class WrapperComponent : MonoBehaviour
 
                     // Since cache existed, this must be the initial wrapper object.
                     // Skip this one, and leave the problem for the instantiated wrapper.
-                    Log.DevelopmentOnly($"Wrapper of '{cached.Wrapper.name}' was not unwrapped. Has cache '{cached is not null}' and wrapper instance '{this.gameObject.GetInstanceID()}'");
+                    Log.Development?.Log($"Wrapper of '{cached.Wrapper.name}' was not unwrapped. Has cache '{cached is not null}' and wrapper instance '{this.gameObject.GetInstanceID()}'");
                 }
 
                 return;
@@ -60,7 +60,7 @@ public class WrapperComponent : MonoBehaviour
             if (prefab.IsNull())
             {
                 // Give up.
-                Log.DevelopmentOnly($"Unable to find prefab for wrapper '{cached.Wrapper.name}'. Has cache: {cached is not null}");
+                Log.Development?.Log($"Unable to find prefab for wrapper '{cached.Wrapper.name}'. Has cache: {cached is not null}");
                 return;
             }
 
@@ -69,7 +69,7 @@ public class WrapperComponent : MonoBehaviour
             // Replicate normal behaviour - Unwrap -> Instantiate -> Modify
             Managers.DropTableManager.UnwrapDrop(this.gameObject);
 
-            Log.DevelopmentOnly($"Dummy object '{this.gameObject.name}' instantiated. Creating real object instead at '{dropPos}'. Has cache '{cached is not null}' and wrapper instance '{this.gameObject.GetInstanceID()}'");
+            Log.Development?.Log($"Dummy object '{this.gameObject.name}' instantiated. Creating real object instead at '{dropPos}'. Has cache '{cached is not null}' and wrapper instance '{this.gameObject.GetInstanceID()}'");
             var actualDrop = Instantiate(prefab, dropPos, this.gameObject.transform.rotation);
 
             // Apply modifiers to drop.

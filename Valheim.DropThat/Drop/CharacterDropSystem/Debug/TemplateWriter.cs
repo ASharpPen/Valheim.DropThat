@@ -41,9 +41,9 @@ internal static class TemplateWriter
 
         var templates = CharacterDropTemplateManager.GetTemplates();
 
-        foreach ((string mob, CharacterDropMobTemplate mobTemplate) in templates)
+        foreach (CharacterDropMobTemplate mobTemplate in templates)
         {
-            var section = config.CreateSubsection(new TomlPathSegment(TomlPathSegmentType.Named, mob));
+            var section = config.CreateSubsection(new TomlPathSegment(TomlPathSegmentType.Named, mobTemplate.PrefabName));
 
             foreach (var dropTemplate in mobTemplate.Drops)
             {

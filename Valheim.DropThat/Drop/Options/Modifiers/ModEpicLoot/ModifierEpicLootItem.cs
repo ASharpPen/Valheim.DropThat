@@ -36,7 +36,7 @@ public class ModifierEpicLootItem : IItemModifier
         RarityWeightEpic = rarityWeightEpic;
         RarityWeightLegendary = rarityWeightLegendary;
         RarityWeightUnique = rarityWeightUnique;
-        uniqueIds = uniqueIds.ToList();
+        UniqueIds = uniqueIds.ToList();
     }
 
     public bool IsPointless =>
@@ -44,7 +44,8 @@ public class ModifierEpicLootItem : IItemModifier
         RarityWeightMagic +
         RarityWeightRare +
         RarityWeightEpic +
-        RarityWeightLegendary == 0 &&
+        RarityWeightLegendary +
+        RarityWeightUnique == 0 &&
         (UniqueIds?.Count ?? 0) == 0
         ;
 
