@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem;
 using DropThat.Drop.CharacterDropSystem.Configuration;
@@ -7,7 +6,6 @@ using DropThat.Drop.CharacterDropSystem.Managers;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ThatCore.Config.Toml;
-using ThatCore.Config.Toml.Mapping;
 using ThatCore.Config.Toml.Schema;
 
 namespace Valheim.DropThat.Tests.Drop.CharacterDropSystem.Configuration;
@@ -15,39 +13,22 @@ namespace Valheim.DropThat.Tests.Drop.CharacterDropSystem.Configuration;
 [TestClass]
 public class MappingTests
 {
-    private TomlSchemaBuilder _schemaBuilder;
-    private TomlSchemaBuilder _listSchemaBuilder;
+    private CharacterDropConfigMapper _mapper;
 
-    private ITomlSchemaLayer _schema;
-    private ITomlSchemaLayer _listSchema;
-
-    [TestInitialize]
+    [TestInitialize()]
     public void Initialize()
     {
-        if (_schema is null)
-        {
-            _schemaBuilder = CharacterDropSchemaGenerator.GenerateCfgSchema();
-            _schema = _schemaBuilder.Build();
-        }
-
-        if (_listSchema is null)
-        {
-            _listSchemaBuilder = CharacterDropListSchemaGenerator.GenerateCfgSchema();
-            _listSchema = _listSchemaBuilder.Build();
-        }
+        _mapper = ConfigurationFileManager.PrepareMappings();
     }
 
     [TestMethod]
     public void CanLoadFile()
     {
         // Arrange
-        ConfigurationFileManager.Clear();
-
-        CharacterDropSystemConfiguration config = new();
-        ConfigToObjectMapper<CharacterDropSystemConfiguration> configMapper = CharacterDropSchemaGenerator.GenerateConfigLoader(config);
+        var schema = _mapper.BuildSchema();
 
         // Act
-        var configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, _schema);
+        var configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
 
         // Assert
         configFile.Should().NotBeNull();
@@ -57,14 +38,14 @@ public class MappingTests
     public void CanExecuteMapping()
     {
         // Arrange
-        ConfigurationFileManager.Clear();
+        var schema = _mapper.BuildSchema();
+        var configMapper = _mapper.CreateMapperForMobConfigs(new());
 
-        CharacterDropSystemConfiguration config = new();
-        ConfigToObjectMapper<CharacterDropSystemConfiguration> configMapper = CharacterDropSchemaGenerator.GenerateConfigLoader(config);
-
-        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, _schema);
+        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
 
         // Act
+        configMapper.Execute(configFile);
+
         Func<CharacterDropSystemConfiguration> act = () => configMapper.Execute(configFile);
 
         // Assert
@@ -75,12 +56,14 @@ public class MappingTests
     public void CanBuild()
     {
         // Arrange
-        ConfigurationFileManager.Clear();
+        CharacterDropTemplateManager.Templates.Clear();
 
-        CharacterDropSystemConfiguration config = new();
-        ConfigToObjectMapper<CharacterDropSystemConfiguration> configMapper = CharacterDropSchemaGenerator.GenerateConfigLoader(config);
+        var config = new CharacterDropSystemConfiguration();
 
-        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, _schema);
+        var schema = _mapper.BuildSchema();
+        var configMapper = _mapper.CreateMapperForMobConfigs(config);
+
+        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
 
         // Act
         configMapper.Execute(configFile);
@@ -97,12 +80,14 @@ public class MappingTests
     public void CanMapDrops()
     {
         // Arrange
-        ConfigurationFileManager.Clear();
+        CharacterDropTemplateManager.Templates.Clear();
 
-        CharacterDropSystemConfiguration config = new();
-        ConfigToObjectMapper<CharacterDropSystemConfiguration> configMapper = CharacterDropSchemaGenerator.GenerateConfigLoader(config);
+        var config = new CharacterDropSystemConfiguration();
 
-        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, _schema);
+        var schema = _mapper.BuildSchema();
+        var configMapper = _mapper.CreateMapperForMobConfigs(config);
+
+        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
 
         // Act
         configMapper.Execute(configFile);

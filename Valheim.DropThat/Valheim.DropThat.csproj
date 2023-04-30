@@ -50,7 +50,10 @@
       <HintPath>..\Libs\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore">
-      <HintPath>..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.dll</HintPath>
+      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.dll</HintPath>
+    </Reference>
+    <Reference Include="ThatCore.Shared">
+      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.Shared.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>

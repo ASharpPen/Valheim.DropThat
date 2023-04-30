@@ -10,14 +10,11 @@ using ThatCore.Logging;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
-internal static class ConfigurationFileManager
+internal static partial class ConfigurationFileManager
 {
     public const string MainDropFile = "drop_that.character_drop.cfg";
     public const string CharacterDropFiles = "drop_that.character_drop.*.cfg";
     public const string CharacterDropListsFiles = "drop_that.character_drop_list.*.cfg";
-
-    private static TomlSchemaBuilder _schemaBuilder;
-    private static TomlSchemaBuilder _listSchemaBuilder;
 
     private static ITomlSchemaLayer _schema;
     private static ITomlSchemaLayer _listSchema;
@@ -25,30 +22,35 @@ internal static class ConfigurationFileManager
     private static ConfigToObjectMapper<CharacterDropSystemConfiguration> _listConfigMapper;
     private static ConfigToObjectMapper<CharacterDropSystemConfiguration> _configMapper;
 
-    public static void Clear()
+    private static CharacterDropConfigMapper _mapper;
+
+    internal static void Clear()
     {
-        _schemaBuilder = null;
-        _listSchemaBuilder = null;
-        _schema = null;
-        _listSchema = null;
+        _mapper = null;
+    }
+
+    internal static CharacterDropConfigMapper PrepareMappings()
+    {
+        _mapper = new CharacterDropConfigMapper();
+
+        RegisterMainMappings(_mapper);
+        RegisterListMappings(_mapper);
+
+        _schema = _mapper.BuildSchema();
+        _listSchema = _mapper.BuildListSchema();
+
+        return _mapper;
     }
 
     public static void LoadConfigs(CharacterDropSystemConfiguration configuration)
     {
-        if (_schema is null)
+        if (_mapper is null)
         {
-            _schemaBuilder = CharacterDropSchemaGenerator.GenerateCfgSchema();
-            _schema = _schemaBuilder.Build();
+            PrepareMappings();
         }
 
-        if (_listSchema is null)
-        {
-            _listSchemaBuilder = CharacterDropListSchemaGenerator.GenerateCfgSchema();
-            _listSchema = _listSchemaBuilder.Build();
-        }
-
-        _configMapper = CharacterDropSchemaGenerator.GenerateConfigLoader(configuration);
-        _listConfigMapper = CharacterDropListSchemaGenerator.GenerateConfigLoader(configuration);
+        _configMapper = _mapper.CreateMapperForMobConfigs(configuration);
+        _listConfigMapper = _mapper.CreateMapperForListConfigs(configuration);
 
         LoadAllCharacterDropLists();
         LoadAllCharacterDropConfigurations();

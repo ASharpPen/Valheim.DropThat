@@ -6,12 +6,13 @@
 			<InputAssemblies Include="$(TargetPath)" />
 			<InputAssemblies Include="$(OutputPath)\YamlDotNet.dll" />
 			<InputAssemblies Include="$(OutputPath)\ThatCore.dll" />
+			<InputAssemblies Include="$(OutputPath)\ThatCore.Shared.dll" />
 			<LibraryPath  Include="$(OutputPath)" />
 		</ItemGroup>
 
 		<ItemGroup>
 			<!-- Must be a fully qualified name -->
-			<!--<DoNotInternalizeAssemblies Include="${TargetPath}" />-->
+			<DoNotInternalizeAssemblies Include="${TargetPath}\ThatCore.Shared.dll" />
 		</ItemGroup>
 
 		<ILRepack
