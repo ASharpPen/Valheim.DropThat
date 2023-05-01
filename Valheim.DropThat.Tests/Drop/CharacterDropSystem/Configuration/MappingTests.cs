@@ -98,4 +98,17 @@ public class MappingTests
         var dropTemplate = mobTemplate.Drops.First().Value;
         dropTemplate.PrefabName.Should().Be("Guck");
     }
+
+    [TestMethod]
+    public void CanPrintSchema()
+    {
+        // Arrange
+        var schema = _mapper.BuildSchema();
+
+        // Act
+        var result = TomlSchemaWriter.WriteToString(schema, new() { AddComments = true });
+
+        // Assert
+        result.Should().NotBeNullOrWhiteSpace();
+    }
 }

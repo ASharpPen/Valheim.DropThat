@@ -253,6 +253,62 @@ internal class CharacterDropConfigMapper
 
     public IOptionBuilder<CharacterDropDropBuilder, CharacterDropDropTemplate> AddDropSetting() => DropLayer.AddOption();
 
+    /*
+    public CharacterDropConfigMapper RegisterDropSetting(
+        Action<IFileMappingBuilder<CharacterDropDropBuilder>> fromFileMapping,
+        Action<ISourceMappingBuilder<CharacterDropDropTemplate>> toFileMapping)
+    {
+        DropLayer
+            .AddOption()
+            .FromFile(fromFileMapping)
+            .ToFile(toFileMapping);
+
+        ListDropLayer
+            .AddOption()
+            .FromFile(fromFileMapping)
+            ;
+
+        return this;
+    }
+
+    public CharacterDropConfigMapper RegisterModSetting(
+        string modName,
+        Action<IFileMappingBuilder<CharacterDropDropBuilder>> fromFileMapping,
+        Action<ISourceMappingBuilder<CharacterDropDropTemplate>> toFileMapping)
+    {
+        var modNode = DropModNodes[modName] = DropModLayer.AddNode(modName);
+
+        if (!DropModLayers.TryGetValue(modName, out var modLayer))
+        {
+            modLayer = DropModLayers[modName] = new(
+                TomlPathSegmentType.Named,
+                x => modName,
+                modNode);
+        }
+
+        modLayer
+            .AddOption()
+            .FromFile(fromFileMapping)
+            .ToFile(toFileMapping);
+
+        var listModNode = ListDropModNodes[modName] = ListDropModLayer.AddNode(modName);
+
+        if (!ListDropModLayers.TryGetValue(modName, out var listModLayer))
+        {
+            listModLayer = ListDropModLayers[modName] = new(
+                TomlPathSegmentType.Named,
+                x => modName,
+                listModNode);
+        }
+
+        listModLayer
+            .AddOption()
+            .FromFile(fromFileMapping);
+
+        return this;
+    }
+    */
+
     public IOptionBuilder<CharacterDropDropBuilder, CharacterDropDropTemplate> AddModSettings(string modName)
     {
         var modNode = DropModNodes[modName] = DropModLayer.AddNode(modName);
