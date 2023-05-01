@@ -18,7 +18,7 @@ public class WrapperComponent : MonoBehaviour
 #if DEBUG
     public void Awake()
     {
-        Log.DevelopmentOnly($"Wrapper '{name}' awake. Instance '{this.gameObject.GetInstanceID()}'");
+        Log.Development?.Log($"Wrapper '{name}' awake. Instance '{this.gameObject.GetInstanceID()}'");
     }
 #endif
 

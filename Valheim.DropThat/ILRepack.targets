@@ -12,13 +12,15 @@
 
 		<ItemGroup>
 			<!-- Must be a fully qualified name -->
-			<DoNotInternalizeAssemblies Include="${TargetPath}\ThatCore.Shared.dll" />
+			<DoNotInternalizeAssemblies Include="ThatCore.Config.I" />
+			<DoNotInternalizeAssemblies Include="ThatCore.Models" />
 		</ItemGroup>
 
 		<ILRepack
 			Parallel="true"
 			Internalize="true"
-			InternalizeExclude="@(DoNotInternalizeAssemblies)"
+			RenameInternalized="true"
+			InternalizeExclude="@(DoNotInternalizeAssemblies )"
 			InputAssemblies="@(InputAssemblies)"
 			TargetKind="Dll"
 			OutputFile="$(OutputPath)\$(AssemblyName).dll"
