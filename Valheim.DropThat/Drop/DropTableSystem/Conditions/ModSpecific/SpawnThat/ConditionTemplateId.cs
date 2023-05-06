@@ -49,11 +49,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (ids?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionTemplateId(ids));
+            template.Conditions
+                .GetOrCreate<ConditionTemplateId>()
+                .TemplateIds = ids.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionTemplateId);
+            template.Conditions.Remove<ConditionTemplateId>();
         }
 
         return template;

@@ -21,7 +21,7 @@ internal class CharacterDropSystemConfiguration : IDropSystemConfig
             return existing;
         }
 
-        return _listBuilders[name] = new(name, this);
+        return _listBuilders[name] = new(name);
     }
 
     public CharacterDropBuilder GetBuilder(string mob)

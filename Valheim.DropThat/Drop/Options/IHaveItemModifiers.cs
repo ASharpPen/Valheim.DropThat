@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ThatCore.Models;
 
 namespace DropThat.Drop.Options;
 
 public interface IHaveItemModifiers
 {
-    List<IItemModifier> ItemModifiers { get; }
+    TypeSet<IItemModifier> ItemModifiers { get; }
 }

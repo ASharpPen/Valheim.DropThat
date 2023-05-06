@@ -10,14 +10,11 @@ using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Configuration.Toml;
 
-internal static class ConfigurationFileManager
+internal static partial class ConfigurationFileManager
 {
     public const string MainDropFile = "drop_that.drop_table.cfg";
     public const string DropTableFiles = "drop_that.drop_table.*.cfg";
     public const string DropTableListsFiles = "drop_that.drop_table_list.*.cfg";
-
-    private static TomlSchemaBuilder _schemaBuilder;
-    private static TomlSchemaBuilder _listSchemaBuilder;
 
     private static ITomlSchemaLayer _schema;
     private static ITomlSchemaLayer _listSchema;
@@ -25,22 +22,25 @@ internal static class ConfigurationFileManager
     private static ConfigToObjectMapper<DropTableSystemConfiguration> _configMapper;
     private static ConfigToObjectMapper<DropTableSystemConfiguration> _listConfigMapper;
 
+    public static DropTableConfigMapper ConfigMapper { get; set; }
+    public static DropTableListConfigMapper ConfigListMapper { get; set; }
+
     public static void LoadConfigs(DropTableSystemConfiguration configuration)
     {
-        if (_schema is null)
+        if (ConfigMapper is null)
         {
-            _schemaBuilder = DropTableSchemaGenerator.GenerateCfgSchema();
-            _schema = _schemaBuilder.Build();
+            ConfigMapper = RegisterMainMappings();
+            _schema = ConfigMapper.BuildSchema();
         }
 
-        if (_listSchema is null)
+        if (ConfigListMapper is null)
         {
-            _listSchemaBuilder = DropTableListSchemaGenerator.GenerateCfgSchema();
-            _listSchema = _listSchemaBuilder.Build();
+            ConfigListMapper = RegisterListMappings();
+            _listSchema = ConfigListMapper.BuildSchema();
         }
 
-        _configMapper = DropTableSchemaGenerator.GenerateConfigLoader(configuration);
-        _listConfigMapper = DropTableListSchemaGenerator.GenerateConfigLoader(configuration);
+        _configMapper = ConfigMapper.CreateMapper(configuration);
+        _listConfigMapper = ConfigListMapper.CreateMapper(configuration);
 
         LoadAllDropTableLists();
         LoadAllDropTables();

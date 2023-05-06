@@ -1,13 +1,12 @@
 ﻿using CreatureLevelControl;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Integrations;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
 public class ConditionWorldLevelMin : IDropCondition
 {
-    public int? MinLevel { get; }
+    public int? MinLevel { get; set; }
 
     public ConditionWorldLevelMin() { }
 
@@ -36,11 +35,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (minWorldLevel > 0)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionWorldLevelMin(minWorldLevel.Value));
+            template.Conditions
+                .GetOrCreate<ConditionWorldLevelMin>()
+                .MinLevel = minWorldLevel.Value;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionWorldLevelMin);
+            template.Conditions.Remove<ConditionWorldLevelMin>();
         }
 
         return template;

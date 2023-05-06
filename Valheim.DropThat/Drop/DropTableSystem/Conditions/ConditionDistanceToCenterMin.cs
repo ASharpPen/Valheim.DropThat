@@ -1,5 +1,4 @@
 ﻿using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
@@ -34,11 +33,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (distance > 0)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionDistanceToCenterMin(distance));
+            template.Conditions.GetOrCreate<ConditionDistanceToCenterMin>().MinDistance = distance;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionDistanceToCenterMin);
+            template.Conditions.Remove<ConditionDistanceToCenterMin>();
         }
 
         return template;

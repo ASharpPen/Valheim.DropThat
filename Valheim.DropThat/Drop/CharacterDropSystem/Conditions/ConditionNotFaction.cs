@@ -37,11 +37,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (factions?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionNotFaction(factions));
+            template.Conditions
+                .GetOrCreate<ConditionNotFaction>()
+                .Factions = factions.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionNotFaction);
+            template.Conditions.Remove<ConditionNotFaction>();
         }
 
         return template;

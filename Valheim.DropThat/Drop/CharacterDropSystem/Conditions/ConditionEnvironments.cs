@@ -13,6 +13,11 @@ public class ConditionEnvironments : IDropCondition
 
     public ConditionEnvironments(IEnumerable<string> environments)
     {
+        SetEnvironments(environments);
+    }
+
+    public void SetEnvironments(IEnumerable<string> environments)
+    {
         Environments = environments
             .Select(x => x
                 .Trim()
@@ -46,11 +51,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (environments?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionEnvironments(environments));
+            template.Conditions.GetOrCreate<ConditionEnvironments>().SetEnvironments(environments);
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionEnvironments);
+            template.Conditions.Remove<ConditionEnvironments>();
         }
 
         return template;

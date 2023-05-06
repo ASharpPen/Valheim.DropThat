@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Runtime.InteropServices.ComTypes;
-using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
+﻿using DropThat.Drop.DropTableSystem.Models;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
 public class ConditionAltitudeMax : IDropCondition
 {
     public float? AltitudeMax { get; set; }
+
+    public ConditionAltitudeMax(){ }
 
     public ConditionAltitudeMax(float? altitudeMax = null)
     {
@@ -35,11 +34,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (altitude is not null)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionAltitudeMax(altitude));
+            template.Conditions.GetOrCreate<ConditionAltitudeMax>().AltitudeMax = altitude;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionAltitudeMax);
+            template.Conditions.Remove<ConditionAltitudeMax>();
         }
 
         return template;

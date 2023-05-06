@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using DropThat.Creature.StatusRecords;
 using System.Collections.Generic;
-using ThatCore.Extensions;
 using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
@@ -13,6 +12,11 @@ public class ConditionKilledWithStatusAny : IDropCondition
     public ConditionKilledWithStatusAny() { }
 
     public ConditionKilledWithStatusAny(IEnumerable<string> statuses)
+    {
+        SetStatuses(statuses);
+    }
+
+    public void SetStatuses(IEnumerable<string> statuses)
     {
         Statuses = statuses
             .Select(x => x
@@ -55,11 +59,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (statuses?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionKilledWithStatusAny(statuses));
+            template.Conditions
+                .GetOrCreate<ConditionKilledWithStatusAny>()
+                .SetStatuses(statuses);
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionKilledWithStatusAny);
+            template.Conditions.Remove<ConditionKilledWithStatusAny>();
         }
 
         return template;

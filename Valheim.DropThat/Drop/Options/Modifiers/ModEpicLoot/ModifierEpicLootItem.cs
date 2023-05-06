@@ -115,9 +115,7 @@ internal static partial class IHaveItemModifierExtensions
         Optional<List<string>> uniqueIds
         )
     {
-        var modifier = template.ItemModifiers
-            .OfType<ModifierEpicLootItem>()
-            .FirstOrDefault();
+        var modifier = template.ItemModifiers.GetOrCreate<ModifierEpicLootItem>();
 
         if (modifier is null)
         {

@@ -77,16 +77,28 @@
     <Reference Include="ThatCore">
       <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.dll</HintPath>
     </Reference>
+    <Reference Include="ThatCore.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drop\CharacterDropSystem\Configuration\MappingListTests.cs" />
     <Compile Include="Drop\CharacterDropSystem\Configuration\MappingTests.cs" />
+    <Compile Include="Drop\DropTableSystem\Configuration\MappingTests.cs" />
     <Compile Include="Integrations\EpicLootIntegration\ItemServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\drop_that.character_drop_list.test_mapping_2.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\drop_that.character_drop_list.test_mapping.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\drop_that.character_drop.test_mapping.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\drop_that.drop_table.test_mapping.cfg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -7,7 +7,7 @@ namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
 public class ConditionWorldLevelMax : IDropCondition
 {
-    public int? MaxLevel { get; }
+    public int? MaxLevel { get; set; }
 
     public ConditionWorldLevelMax() { }
 
@@ -36,11 +36,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (maxWorldLevel > 0)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionWorldLevelMax(maxWorldLevel.Value));
+            template.Conditions
+                .GetOrCreate<ConditionWorldLevelMax>()
+                .MaxLevel = maxWorldLevel.Value;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionWorldLevelMax);
+            template.Conditions.Remove<ConditionWorldLevelMax>();
         }
 
         return template;

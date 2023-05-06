@@ -38,11 +38,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (globalKeys?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionGlobalKeysNotAny(globalKeys));
+            template.Conditions.GetOrCreate<ConditionGlobalKeysNotAny>().GlobalKeys = globalKeys.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionGlobalKeysNotAny);
+            template.Conditions.Remove<ConditionGlobalKeysNotAny>();
         }
 
         return template;

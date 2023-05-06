@@ -52,11 +52,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (infusions?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionInfusion(infusions));
+            template.Conditions
+                .GetOrCreate<ConditionInfusion>()
+                .Infusions = infusions.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionInfusion);
+            template.Conditions.Remove<ConditionInfusion>();
         }
 
         return template;

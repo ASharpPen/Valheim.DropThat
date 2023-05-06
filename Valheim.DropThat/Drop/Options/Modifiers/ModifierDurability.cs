@@ -57,11 +57,13 @@ internal static partial class IHaveItemModifierExtensions
     {
         if (durability is not null)
         {
-            template.ItemModifiers.AddOrReplaceByType(new ModifierDurability(durability.Value));
+            template.ItemModifiers
+                .GetOrCreate<ModifierDurability>()
+                .Durability = durability.Value;
         }
         else
         {
-            template.ItemModifiers.RemoveAll(x => x is ModifierDurability);
+            template.ItemModifiers.Remove<ModifierDurability>();
         }
 
         return template;

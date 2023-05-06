@@ -35,6 +35,7 @@ internal class CharacterDropBuilder : IHaveDropBuilders
 
     public CharacterDropMobTemplate Build()
     {
+        /*
         // Initialize drops by applying list configs first.
         if (ListNames.IsSet)
         {
@@ -48,6 +49,7 @@ internal class CharacterDropBuilder : IHaveDropBuilders
                 }
             }
         }
+        */
 
         var drops = DropBuilders
             .Values

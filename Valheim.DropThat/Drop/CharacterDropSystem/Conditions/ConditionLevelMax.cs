@@ -34,11 +34,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (maxLevel is not null)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionLevelMax(maxLevel.Value));
+            template.Conditions
+                .GetOrCreate<ConditionLevelMax>()
+                .MaxLevel = maxLevel.Value;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionLevelMax);
+            template.Conditions.Remove<ConditionLevelMax>();
         }
 
         return template;

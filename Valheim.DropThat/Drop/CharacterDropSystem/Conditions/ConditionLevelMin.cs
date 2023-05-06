@@ -34,11 +34,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (minLevel is not null)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionLevelMin(minLevel.Value));
+            template.Conditions
+                .GetOrCreate<ConditionLevelMin>()
+                .MinLevel = minLevel.Value;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionLevelMin);
+            template.Conditions.Remove<ConditionLevelMin>();
         }
 
         return template;

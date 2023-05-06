@@ -1,6 +1,5 @@
 ﻿using CreatureLevelControl;
 using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions.ModSpecific.CLLC;
 
@@ -28,11 +27,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (worldLevel >= 0)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionWorldLevelMin(worldLevel));
+            template.Conditions
+                .GetOrCreate<ConditionWorldLevelMin>()
+                .WorldLevel = worldLevel.Value;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionWorldLevelMin);
+            template.Conditions.Remove<ConditionWorldLevelMin>();
         }
 
         return template;

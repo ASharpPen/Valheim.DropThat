@@ -34,7 +34,10 @@ internal static class Patch_ZoneSystem_Start
 
             if (GeneralConfigManager.Config?.WriteCharacterDropsToFile?.Value == true)
             {
-                CharacterDropFileWriter.WriteToFile(prefabsWithDropTables);
+                CharacterDropFileWriter.WriteToFile(
+                    prefabsWithDropTables,
+                    "drop_that.character_drop.before_changes.cfg",
+                    "CharacterDrop tables before Drop That changes are applied");
             }
 
             if (GeneralConfigManager.Config?.WriteCreatureItemsToFile?.Value == true)

@@ -1,5 +1,4 @@
 ﻿using DropThat.Drop.CharacterDropSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -30,11 +29,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (distance > 0)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionDistanceToCenterMin(distance.Value));
+            template.Conditions.GetOrCreate<ConditionDistanceToCenterMin>().DistanceToCenterMin = distance.Value;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionDistanceToCenterMin);
+            template.Conditions.Remove<ConditionDistanceToCenterMin>();
         }
 
         return template;

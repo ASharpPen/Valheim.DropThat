@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using ThatCore.Models;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
 public interface IHaveDropConditions
 {
-    List<IDropCondition> Conditions { get; }
+    TypeSet<IDropCondition> Conditions { get; }
 }

@@ -53,11 +53,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (bossAffixes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionNotBossAffix(bossAffixes));
+            template.Conditions
+                .GetOrCreate<ConditionNotBossAffix>()
+                .BossAffixes = bossAffixes.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionNotBossAffix);
+            template.Conditions.Remove<ConditionNotBossAffix>();
         }
 
         return template;

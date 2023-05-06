@@ -14,6 +14,11 @@ public class ConditionKilledWithStatusAll : IDropCondition
 
     public ConditionKilledWithStatusAll(IEnumerable<string> statuses)
     {
+        SetStatuses(statuses);
+    }
+
+    public void SetStatuses(IEnumerable<string> statuses)
+    {
         Statuses = statuses
             .Select(x => x
                 .Trim()
@@ -55,11 +60,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (statuses?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionKilledWithStatusAll(statuses));
+            template.Conditions
+                .GetOrCreate<ConditionKilledWithStatusAll>()
+                .SetStatuses(statuses);
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionKilledWithStatusAll);
+            template.Conditions.Remove<ConditionKilledWithStatusAll>();
         }
 
         return template;

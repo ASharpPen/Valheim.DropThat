@@ -8,7 +8,7 @@ namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
 public class ConditionKilledBySkillType : IDropCondition
 {
-    public HashSet<Skills.SkillType> SkillTypes { get; }
+    public HashSet<Skills.SkillType> SkillTypes { get; set; }
 
     public ConditionKilledBySkillType() { }
 
@@ -44,11 +44,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (skillTypes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionKilledBySkillType(skillTypes));
+            template.Conditions
+                .GetOrCreate<ConditionKilledBySkillType>()
+                .SkillTypes = skillTypes.ToHashSet();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionKilledBySkillType);
+            template.Conditions.Remove<ConditionKilledBySkillType>();
         }
 
         return template;

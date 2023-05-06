@@ -57,11 +57,13 @@ internal static partial class IHaveItemModifierExtensions
     {
         if (qualityLevel >= 0)
         {
-            template.ItemModifiers.AddOrReplaceByType(new ModifierQualityLevel(qualityLevel.Value));
+            template.ItemModifiers
+                .GetOrCreate<ModifierQualityLevel>()
+                .QualityLevel = qualityLevel.Value;
         }
         else
         {
-            template.ItemModifiers.RemoveAll(x => x is ModifierQualityLevel);
+            template.ItemModifiers.Remove<ModifierQualityLevel>();
         }
 
         return template;

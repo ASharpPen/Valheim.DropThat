@@ -50,11 +50,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (entityTypes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionHitByEntityTypeRecently(entityTypes));
+            template.Conditions.GetOrCreate<ConditionHitByEntityTypeRecently>().EntityTypes = entityTypes.ToHashSet();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionHitByEntityTypeRecently);
+            template.Conditions.Remove<ConditionHitByEntityTypeRecently>();
         }
 
         return template;

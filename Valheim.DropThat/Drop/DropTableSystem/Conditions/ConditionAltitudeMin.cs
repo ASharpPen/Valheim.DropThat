@@ -7,6 +7,8 @@ public class ConditionAltitudeMin : IDropCondition
 {
     public float? AltitudeMin { get; set; }
 
+    public ConditionAltitudeMin() { }
+
     public ConditionAltitudeMin(float? altitudeMin = null)
     {
         AltitudeMin = altitudeMin;
@@ -33,11 +35,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (altitude is not null)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionAltitudeMin(altitude));
+            template.Conditions.GetOrCreate<ConditionAltitudeMin>().AltitudeMin = altitude;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionAltitudeMin);
+            template.Conditions.Remove<ConditionAltitudeMin>();
         }
 
         return template;

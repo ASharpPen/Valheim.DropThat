@@ -52,11 +52,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (creatureExtraEffects?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionNotCreatureExtraEffect(creatureExtraEffects));
+            template.Conditions
+                .GetOrCreate<ConditionNotCreatureExtraEffect>()
+                .ExtraEffects = creatureExtraEffects.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionNotCreatureExtraEffect);
+            template.Conditions.Remove<ConditionNotCreatureExtraEffect>();
         }
 
         return template;

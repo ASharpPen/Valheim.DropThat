@@ -1,5 +1,4 @@
 ﻿using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
@@ -17,11 +16,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (notDay == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionDaytimeNotDay());
+            template.Conditions.GetOrCreate<ConditionDaytimeNotDay>();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionDaytimeNotDay);
+            template.Conditions.Remove<ConditionDaytimeNotDay>();
         }
 
         return template;

@@ -2,7 +2,6 @@
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Locations;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
@@ -16,8 +15,13 @@ public class ConditionLocation : IDropCondition
 
     public ConditionLocation(IEnumerable<string> locations)
     {
+        SetLocations(locations);
+    }
+
+    public void SetLocations(IEnumerable<string> locations)
+    {
         Locations = locations
-            .Select(x => 
+            .Select(x =>
                 x.Trim()
                 .ToUpperInvariant())
             .ToHashSet();
@@ -54,11 +58,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (locations?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionLocation(locations));
+            template.Conditions.GetOrCreate<ConditionLocation>().SetLocations(locations);
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionLocation);
+            template.Conditions.Remove<ConditionLocation>();
         }
 
         return template;

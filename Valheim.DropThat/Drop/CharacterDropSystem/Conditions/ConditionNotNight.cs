@@ -1,5 +1,4 @@
 ﻿using DropThat.Drop.CharacterDropSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -16,11 +15,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (notNight == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionNotNight());
+            template.Conditions.GetOrCreate<ConditionNotNight>();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionNotNight);
+            template.Conditions.Remove<ConditionNotNight>();
         }
 
         return template;

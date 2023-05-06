@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DropThat.Drop.CharacterDropSystem.Conditions;
+﻿using DropThat.Drop.CharacterDropSystem.Conditions;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Drop.Options;
 using ThatCore.Extensions;
@@ -28,8 +26,9 @@ internal class CharacterDropDropBuilder
     {
         CharacterDropDropTemplate template = new()
         {
-            Conditions = Conditions.ToList(),
-            ItemModifiers = ItemModifiers.ToList(),
+            Id = (int)Id,
+            Conditions = Conditions.Clone(),
+            ItemModifiers = ItemModifiers.Clone(),
         };
 
         PrefabName.DoIfSet(x => template.PrefabName = x);
@@ -48,24 +47,24 @@ internal class CharacterDropDropBuilder
 
     public void Configure(CharacterDropDropBuilder from)
     {
-        from.Conditions.ForEach(x => Conditions.AddOrReplaceByType(x));
-        from.ItemModifiers.ForEach(x => ItemModifiers.AddOrReplaceByType(x));
+        from.Conditions.ForEach(Conditions.Set);
+        from.ItemModifiers.ForEach(ItemModifiers.Set);
 
-        from.PrefabName.AssignIfSet(PrefabName);
-        from.Enabled.AssignIfSet(Enabled);
-        from.TemplateEnabled.AssignIfSet(TemplateEnabled);
-        from.AmountMin.AssignIfSet(AmountMin);
-        from.AmountMax.AssignIfSet(AmountMax);
-        from.ChanceToDrop.AssignIfSet(ChanceToDrop);
-        from.DropOnePerPlayer.AssignIfSet(DropOnePerPlayer);
-        from.ScaleByLevel.AssignIfSet(ScaleByLevel);
-        from.AutoStack.AssignIfSet(AutoStack);
-        from.AmountLimit.AssignIfSet(AmountLimit);
+        from.PrefabName.DoIfSet(x => PrefabName = x);
+        from.Enabled.DoIfSet(x => Enabled = x);
+        from.TemplateEnabled.DoIfSet(x => TemplateEnabled = x);
+        from.AmountMin.DoIfSet(x => AmountMin = x);
+        from.AmountMax.DoIfSet(x => AmountMax = x);
+        from.ChanceToDrop.DoIfSet(x => ChanceToDrop = x);
+        from.DropOnePerPlayer.DoIfSet(x => DropOnePerPlayer = x);
+        from.ScaleByLevel.DoIfSet(x => ScaleByLevel = x);
+        from.AutoStack.DoIfSet(x => AutoStack = x);
+        from.AmountLimit.DoIfSet(x => AmountLimit = x);
     }
 
-    public List<IDropCondition> Conditions { get; } = new();
+    public TypeSet<IDropCondition> Conditions { get; } = new();
 
-    public List<IItemModifier> ItemModifiers { get; } = new();
+    public TypeSet<IItemModifier> ItemModifiers { get; } = new();
 
     public Optional<string> PrefabName { get; set; }
 

@@ -4,13 +4,13 @@ using DropThat.Caches;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Utilities.Valheim;
-using ThatCore.Extensions;
+using ThatCore.Utilities.Valheim;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
 public class ConditionBiome : IDropCondition
 {
-    public Heightmap.Biome BiomeMask { get; set; }
+    public Heightmap.Biome BiomeBitmask { get; set; }
 
     static ConditionBiome()
     {
@@ -23,20 +23,12 @@ public class ConditionBiome : IDropCondition
 
     public ConditionBiome(params Heightmap.Biome[] biomes)
     {
-        BiomeMask = Heightmap.Biome.None;
-
-        if (biomes is not null)
-        {
-            foreach (var biome in biomes)
-            {
-                BiomeMask |= biome;
-            }
-        }
+        BiomeBitmask = biomes.ToBitmask();
     }
 
     public bool IsValid(DropContext context)
     {
-        if (BiomeMask == Heightmap.Biome.None)
+        if (BiomeBitmask == Heightmap.Biome.None)
         {
             return true;
         }
@@ -48,7 +40,7 @@ public class ConditionBiome : IDropCondition
             return false;
         }
 
-        return (spawnBiome.Value & BiomeMask) > 0;
+        return (spawnBiome.Value & BiomeBitmask) > 0;
     }
 
     private static void SetSpawnBiomeIfMissing(CharacterDrop droptable)
@@ -73,11 +65,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (biomes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionBiome(biomes.ToArray()));
+            template.Conditions.GetOrCreate<ConditionBiome>().BiomeBitmask = biomes.ToBitmask();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionBiome);
+            template.Conditions.Remove<ConditionBiome>();
         }
 
         return template;

@@ -5,15 +5,11 @@ namespace DropThat.Drop.CharacterDropSystem.Configuration;
 internal class CharacterDropListBuilder : IHaveDropBuilders
 {
     public CharacterDropListBuilder(
-        string name, 
-        CharacterDropSystemConfiguration builderCollection)
+        string name)
     {
         Id = name;
-        BuilderCollection = builderCollection;
     }
 
-    public CharacterDropSystemConfiguration BuilderCollection { get; }
-    
     public string Id { get; }
 
     public Dictionary<uint, CharacterDropDropBuilder> DropBuilders { get; } = new();

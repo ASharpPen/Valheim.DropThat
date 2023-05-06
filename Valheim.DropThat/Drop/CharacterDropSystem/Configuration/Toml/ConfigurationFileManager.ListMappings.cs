@@ -8,6 +8,7 @@ using DropThat.Drop.Options.Modifiers;
 using DropThat.Drop.Options;
 using DropThat.Integrations.CllcIntegration;
 using DropThat.Integrations;
+using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
@@ -292,20 +293,8 @@ internal static partial class ConfigurationFileManager
         mapper
             .AddModRequirement("EpicLoot", () => InstallationManager.EpicLootInstalled)
             .AddListModSettings("EpicLoot")
-            .FromFile(
-                (CharacterDropDropBuilder builder) =>
-                {
-                    var modifier = builder.FindModifier<ModifierEpicLootItem>();
-
-                    if (modifier is null)
-                    {
-                        modifier = new ModifierEpicLootItem();
-                        builder.ItemModifiers.Add(modifier);
-                    }
-
-                    return modifier;
-                },
-                config => config
+            .FromFile(c => c
+                .Using(x => x.ItemModifiers.GetOrCreate<ModifierEpicLootItem>())
                 .Map<float?>(
                     "RarityWeightNone", 0, "Weight to use for rolling as a non-magic item.",
                     (value, modifier) => modifier.RarityWeightNone = value)

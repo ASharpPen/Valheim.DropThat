@@ -10,9 +10,9 @@ public class CharacterDropDropTemplate
     : IHaveItemModifiers
     , IHaveDropConditions
 {
-    public List<IDropCondition> Conditions { get; set; } = new();
+    public TypeSet<IDropCondition> Conditions { get; set; } = new();
 
-    public List<IItemModifier> ItemModifiers { get; set; } = new();
+    public TypeSet<IItemModifier> ItemModifiers { get; set; } = new();
 
     public int Id { get; set; }
 

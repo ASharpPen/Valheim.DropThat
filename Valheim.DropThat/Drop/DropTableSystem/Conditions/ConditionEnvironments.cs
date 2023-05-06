@@ -7,11 +7,16 @@ namespace DropThat.Drop.DropTableSystem.Conditions;
 
 public class ConditionEnvironments : IDropCondition
 {
-    public HashSet<string> Environments { get; }
+    public HashSet<string> Environments { get; set; }
 
     public ConditionEnvironments() { }
 
     public ConditionEnvironments(IEnumerable<string> environments) 
+    {
+        SetEnvironments(environments);
+    }
+
+    public void SetEnvironments(IEnumerable<string> environments)
     {
         Environments = environments
             .Select(x => x
@@ -46,11 +51,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (environments?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionEnvironments(environments));
+            template.Conditions.GetOrCreate<ConditionEnvironments>().SetEnvironments(environments);
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionEnvironments);
+            template.Conditions.Remove<ConditionEnvironments>();
         }
 
         return template;

@@ -2,6 +2,7 @@
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem;
 using DropThat.Drop.CharacterDropSystem.Configuration;
+using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -95,8 +96,7 @@ public class MappingTests
         CharacterDropTemplateManager.TryGetTemplate("Boar", out var mobTemplate);
 
         // Assert
-        var dropTemplate = mobTemplate.Drops.First().Value;
-        dropTemplate.PrefabName.Should().Be("Guck");
+        mobTemplate.Drops[0].PrefabName.Should().Be("Guck");
     }
 
     [TestMethod]

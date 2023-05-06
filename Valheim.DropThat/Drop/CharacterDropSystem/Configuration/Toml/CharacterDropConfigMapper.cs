@@ -6,7 +6,7 @@ using ThatCore.Config.Toml;
 using ThatCore.Config.Toml.Mapping;
 using ThatCore.Config.Toml.Schema;
 
-namespace DropThat.Drop.CharacterDropSystem.Configuration;
+namespace DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 
 internal class CharacterDropConfigMapper
 {
@@ -79,7 +79,7 @@ internal class CharacterDropConfigMapper
     {
         List<IMappingInstantiationForParent<CharacterDropDropBuilder>> modLayerMappings = new();
 
-        foreach(var entry in DropModLayers)
+        foreach (var entry in DropModLayers)
         {
             MappingInstantiationForParent<CharacterDropDropBuilder, CharacterDropDropBuilder> mapping = new()
             {
@@ -193,7 +193,7 @@ internal class CharacterDropConfigMapper
             SubInstantiations = modLayerMappings,
         };
 
-        var mobLayerMappings = new MappingInstantiationForParent<CharacterDropSystemConfiguration, CharacterDropListBuilder>()
+        var listLayerMappings = new MappingInstantiationForParent<CharacterDropSystemConfiguration, CharacterDropListBuilder>()
         {
             SubPath = new()
             {
@@ -222,7 +222,7 @@ internal class CharacterDropConfigMapper
             },
             SubInstantiations = new()
             {
-                mobLayerMappings
+                listLayerMappings
             }
         };
     }
@@ -252,62 +252,6 @@ internal class CharacterDropConfigMapper
     public IOptionBuilder<CharacterDropBuilder, CharacterDropMobTemplate> AddMobSetting() => MobLayer.AddOption();
 
     public IOptionBuilder<CharacterDropDropBuilder, CharacterDropDropTemplate> AddDropSetting() => DropLayer.AddOption();
-
-    /*
-    public CharacterDropConfigMapper RegisterDropSetting(
-        Action<IFileMappingBuilder<CharacterDropDropBuilder>> fromFileMapping,
-        Action<ISourceMappingBuilder<CharacterDropDropTemplate>> toFileMapping)
-    {
-        DropLayer
-            .AddOption()
-            .FromFile(fromFileMapping)
-            .ToFile(toFileMapping);
-
-        ListDropLayer
-            .AddOption()
-            .FromFile(fromFileMapping)
-            ;
-
-        return this;
-    }
-
-    public CharacterDropConfigMapper RegisterModSetting(
-        string modName,
-        Action<IFileMappingBuilder<CharacterDropDropBuilder>> fromFileMapping,
-        Action<ISourceMappingBuilder<CharacterDropDropTemplate>> toFileMapping)
-    {
-        var modNode = DropModNodes[modName] = DropModLayer.AddNode(modName);
-
-        if (!DropModLayers.TryGetValue(modName, out var modLayer))
-        {
-            modLayer = DropModLayers[modName] = new(
-                TomlPathSegmentType.Named,
-                x => modName,
-                modNode);
-        }
-
-        modLayer
-            .AddOption()
-            .FromFile(fromFileMapping)
-            .ToFile(toFileMapping);
-
-        var listModNode = ListDropModNodes[modName] = ListDropModLayer.AddNode(modName);
-
-        if (!ListDropModLayers.TryGetValue(modName, out var listModLayer))
-        {
-            listModLayer = ListDropModLayers[modName] = new(
-                TomlPathSegmentType.Named,
-                x => modName,
-                listModNode);
-        }
-
-        listModLayer
-            .AddOption()
-            .FromFile(fromFileMapping);
-
-        return this;
-    }
-    */
 
     public IOptionBuilder<CharacterDropDropBuilder, CharacterDropDropTemplate> AddModSettings(string modName)
     {

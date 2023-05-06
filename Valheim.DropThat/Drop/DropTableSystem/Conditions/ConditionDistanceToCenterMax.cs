@@ -1,11 +1,10 @@
 ﻿using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
 public class ConditionDistanceToCenterMax : IDropCondition
 {
-    public float? MaxDistance { get; }
+    public float? MaxDistance { get; set; }
 
     public ConditionDistanceToCenterMax() { }
 
@@ -34,11 +33,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (distance > 0)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionDistanceToCenterMax(distance));
+            template.Conditions.GetOrCreate<ConditionDistanceToCenterMax>().MaxDistance = distance;
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionDistanceToCenterMax);
+            template.Conditions.Remove<ConditionDistanceToCenterMax>();
         }
 
         return template;

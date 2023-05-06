@@ -57,11 +57,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (states?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionCreatureState(states));
+            template.Conditions.GetOrCreate<ConditionCreatureState>().CreatureStates = states.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionCreatureState);
+            template.Conditions.Remove<ConditionCreatureState>();
         }
 
         return template;

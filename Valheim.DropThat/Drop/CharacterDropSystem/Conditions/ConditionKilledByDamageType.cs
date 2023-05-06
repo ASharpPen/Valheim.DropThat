@@ -3,6 +3,7 @@ using System.Linq;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
+using ThatCore.Utilities.Valheim;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -46,11 +47,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (damageTypes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionKilledByDamageType(damageTypes));
+            template.Conditions
+                .GetOrCreate<ConditionKilledByDamageType>()
+                .DamageTypeMask = damageTypes.ToBitmask();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionKilledByDamageType);
+            template.Conditions.Remove<ConditionKilledByDamageType>();
         }
 
         return template;

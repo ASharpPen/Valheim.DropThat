@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
@@ -38,11 +37,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (globalKeys?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionGlobalKeysNotAll(globalKeys));
+            template.Conditions.GetOrCreate<ConditionGlobalKeysNotAll>().GlobalKeys = globalKeys.ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionGlobalKeysNotAll);
+            template.Conditions.Remove<ConditionGlobalKeysNotAll>();
         }
 
         return template;

@@ -14,6 +14,11 @@ public class ConditionInventory : IDropCondition
 
     public ConditionInventory(IEnumerable<string> items)
     {
+        SetItems(items);
+    }
+
+    public void SetItems(IEnumerable<string> items)
+    {
         Items = items
             .Select(x => x
                 .Trim()
@@ -112,11 +117,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (items?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionInventory(items));
+            template.Conditions.GetOrCreate<ConditionInventory>().SetItems(items);
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionInventory);
+            template.Conditions.Remove<ConditionInventory>();
         }
 
         return template;

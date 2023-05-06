@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using BepInEx;
 using DropThat.Configuration;
+using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using ThatCore.Config.Toml;
 using ThatCore.Config.Toml.Mapping;
 using ThatCore.Config.Toml.Schema;
 using ThatCore.Logging;
+using static System.Collections.Specialized.BitVector32;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
@@ -16,49 +20,53 @@ internal static partial class ConfigurationFileManager
     public const string CharacterDropFiles = "drop_that.character_drop.*.cfg";
     public const string CharacterDropListsFiles = "drop_that.character_drop_list.*.cfg";
 
-    private static ITomlSchemaLayer _schema;
-    private static ITomlSchemaLayer _listSchema;
+    public static ITomlSchemaLayer Schema;
+    public static ITomlSchemaLayer ListSchema;
 
     private static ConfigToObjectMapper<CharacterDropSystemConfiguration> _listConfigMapper;
     private static ConfigToObjectMapper<CharacterDropSystemConfiguration> _configMapper;
 
-    private static CharacterDropConfigMapper _mapper;
+    public static CharacterDropConfigMapper Mapper;
 
     internal static void Clear()
     {
-        _mapper = null;
+        Mapper = null;
     }
 
     internal static CharacterDropConfigMapper PrepareMappings()
     {
-        _mapper = new CharacterDropConfigMapper();
+        Mapper = new CharacterDropConfigMapper();
 
-        RegisterMainMappings(_mapper);
-        RegisterListMappings(_mapper);
+        RegisterMainMappings(Mapper);
+        RegisterListMappings(Mapper);
 
-        _schema = _mapper.BuildSchema();
-        _listSchema = _mapper.BuildListSchema();
+        Schema = Mapper.BuildSchema();
+        ListSchema = Mapper.BuildListSchema();
 
-        return _mapper;
+        return Mapper;
     }
 
     public static void LoadConfigs(CharacterDropSystemConfiguration configuration)
     {
-        if (_mapper is null)
+        if (Mapper is null)
         {
             PrepareMappings();
         }
 
-        _configMapper = _mapper.CreateMapperForMobConfigs(configuration);
-        _listConfigMapper = _mapper.CreateMapperForListConfigs(configuration);
+        _configMapper = Mapper.CreateMapperForMobConfigs(configuration);
+        _listConfigMapper = Mapper.CreateMapperForListConfigs(configuration);
 
-        LoadAllCharacterDropLists();
-        LoadAllCharacterDropConfigurations();
+        var listConfig = LoadAllCharacterDropLists();
+        var mainConfig = LoadAllCharacterDropConfigurations();
+
+        var combinedConfig = MergeLists(listConfig, mainConfig);
+
+        _configMapper.Execute(combinedConfig);
 
         Log.Debug?.Log("Finished loading character_drop configs");
     }
 
-    private static void LoadAllCharacterDropLists()
+    private static TomlConfig LoadAllCharacterDropLists()
     {
         var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropListsFiles, SearchOption.AllDirectories);
         Log.Debug?.Log($"Loading '{supplementalFiles.Length}' character_drop list files");
@@ -69,7 +77,7 @@ internal static partial class ConfigurationFileManager
         {
             try
             {
-                configs[i] = TomlSchemaFileLoader.LoadFile(supplementalFiles[i], _listSchema);
+                configs[i] = TomlSchemaFileLoader.LoadFile(supplementalFiles[i], ListSchema);
             }
             catch (Exception e)
             {
@@ -77,13 +85,18 @@ internal static partial class ConfigurationFileManager
             }
         });
 
-        foreach (var config in configs)
+        // Override based on order of occurence. Later loaded overrides earlier.
+        var combinedConfig = configs.FirstOrDefault() ?? new();
+
+        for (int i = 1; i < configs.Length; ++i)
         {
-            _listConfigMapper.Execute(config);
+            TomlConfigMerger.Merge(configs[i], combinedConfig);
         }
+
+        return combinedConfig;
     }
 
-    private static void LoadAllCharacterDropConfigurations()
+    private static TomlConfig LoadAllCharacterDropConfigurations()
     {
         var customFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropFiles, SearchOption.AllDirectories);
         Log.Debug?.Log($"Loading '{customFiles.Length + 1}' character_drop files");
@@ -94,7 +107,7 @@ internal static partial class ConfigurationFileManager
         {
             try
             {
-                configs[i] = TomlSchemaFileLoader.LoadFile(customFiles[i], _schema);
+                configs[i] = TomlSchemaFileLoader.LoadFile(customFiles[i], Schema);
             }
             catch (Exception e)
             {
@@ -102,9 +115,12 @@ internal static partial class ConfigurationFileManager
             }
         });
 
-        foreach (var config in configs)
+        // Override based on order of occurence. Later loaded overrides earlier.
+        var combinedConfig = configs.FirstOrDefault() ?? new();
+
+        foreach (var config in configs.Skip(1))
         {
-            _configMapper.Execute(config);
+            TomlConfigMerger.Merge(config, combinedConfig);
         }
 
         // Load and apply main config last
@@ -115,9 +131,45 @@ internal static partial class ConfigurationFileManager
             CreateDefaultConfigFile(configPath);
         };
 
-        var mainConfig = TomlSchemaFileLoader.LoadFile(configPath, _schema);
+        var mainConfig = TomlSchemaFileLoader.LoadFile(configPath, Schema);
 
-        _configMapper.Execute(mainConfig);
+        TomlConfigMerger.Merge(mainConfig, combinedConfig);
+
+        return combinedConfig;
+    }
+
+    internal static TomlConfig MergeLists(TomlConfig listConfigs, TomlConfig mainConfig)
+    {
+        TomlConfig mergedConfig = new();
+
+        Dictionary<string, TomlConfig> listConfigsByName = listConfigs
+            .Sections?
+            .ToDictionary(x => x.Key.Name, x => x.Value) 
+            ?? new();
+
+        foreach (var section in mainConfig.Sections)
+        {
+            if (section.Value.Settings.TryGetValue("UseDropList", out var setting) && 
+                setting.IsSet &&
+                setting is TomlSetting<List<string>> useDropLists &&
+                useDropLists.Value is not null)
+            {
+                foreach (var list in useDropLists.Value)
+                {
+                    if (listConfigsByName.TryGetValue(list, out var listConfig))
+                    {
+                        var temp = new TomlConfig();
+                        temp.Sections.Add(section.Key, listConfig);
+
+                        TomlConfigMerger.Merge(temp, mergedConfig);
+                    }
+                }
+            }
+        }
+
+        TomlConfigMerger.Merge(mainConfig, mergedConfig);
+
+        return mergedConfig;
     }
 
     private static void CreateDefaultConfigFile(string configPath)

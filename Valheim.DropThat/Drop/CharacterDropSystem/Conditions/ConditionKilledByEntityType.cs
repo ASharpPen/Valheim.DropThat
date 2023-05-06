@@ -2,7 +2,6 @@
 using System.Linq;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -48,11 +47,13 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (entityTypes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionKilledByEntityType(entityTypes));
+            template.Conditions
+                .GetOrCreate<ConditionKilledByEntityType>()
+                .EntityTypes = entityTypes.Distinct().ToArray();
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionKilledByEntityType);
+            template.Conditions.Remove<ConditionKilledByEntityType>();
         }
 
         return template;

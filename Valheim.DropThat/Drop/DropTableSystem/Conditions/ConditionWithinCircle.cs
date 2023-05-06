@@ -1,6 +1,5 @@
 ﻿using System;
 using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
@@ -53,17 +52,21 @@ internal static partial class IHaveDropConditionsExtensions
             centerZ is null &&
             radius is null)
         {
-            template.Conditions.RemoveAll(x => x is ConditionWithinCircle);
+            template.Conditions.Remove<ConditionWithinCircle>();
         }
         else if (
             radius is null || 
             radius < 0)
         {
-            template.Conditions.RemoveAll(x => x is ConditionWithinCircle);
+            template.Conditions.Remove<ConditionWithinCircle>();
         }
         else
         {
-            template.Conditions.AddOrReplaceByType(new ConditionWithinCircle(centerX, centerZ, radius));
+            var cond = template.Conditions.GetOrCreate<ConditionWithinCircle>();
+
+            cond.CenterX = centerX ?? default;
+            cond.CenterZ = centerZ ?? default;
+            cond.Radius = radius ?? default;
         }
 
         return template;

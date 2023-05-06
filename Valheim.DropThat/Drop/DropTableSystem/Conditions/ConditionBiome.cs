@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
@@ -12,6 +11,11 @@ public class ConditionBiome : IDropCondition
     public ConditionBiome() { }
 
     public ConditionBiome(IEnumerable<Heightmap.Biome> biomes)
+    {
+        SetBiomes(biomes);
+    }
+
+    public void SetBiomes(IEnumerable<Heightmap.Biome> biomes)
     {
         BiomeMask = Heightmap.Biome.None;
 
@@ -45,11 +49,11 @@ internal static partial class IHaveDropConditionsExtensions
     {
         if (biomes?.Any() == true)
         {
-            template.Conditions.AddOrReplaceByType(new ConditionBiome(biomes));
+            template.Conditions.GetOrCreate<ConditionBiome>().SetBiomes(biomes);
         }
         else
         {
-            template.Conditions.RemoveAll(x => x is ConditionBiome);
+            template.Conditions.Remove<ConditionBiome>();
         }
 
         return template;
