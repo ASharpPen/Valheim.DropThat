@@ -40,7 +40,7 @@ public class MappingTests
     {
         // Arrange
         var schema = _mapper.BuildSchema();
-        var configMapper = _mapper.CreateMapperForMobConfigs(new());
+        var configMapper = _mapper.CreateMapper(new());
 
         TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
 
@@ -62,7 +62,7 @@ public class MappingTests
         var config = new CharacterDropSystemConfiguration();
 
         var schema = _mapper.BuildSchema();
-        var configMapper = _mapper.CreateMapperForMobConfigs(config);
+        var configMapper = _mapper.CreateMapper(config);
 
         TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
 
@@ -86,7 +86,7 @@ public class MappingTests
         var config = new CharacterDropSystemConfiguration();
 
         var schema = _mapper.BuildSchema();
-        var configMapper = _mapper.CreateMapperForMobConfigs(config);
+        var configMapper = _mapper.CreateMapper(config);
 
         TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
 

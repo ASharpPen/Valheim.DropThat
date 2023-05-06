@@ -10,7 +10,6 @@ using ThatCore.Config.Toml;
 using ThatCore.Config.Toml.Mapping;
 using ThatCore.Config.Toml.Schema;
 using ThatCore.Logging;
-using static System.Collections.Specialized.BitVector32;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
@@ -23,7 +22,6 @@ internal static partial class ConfigurationFileManager
     public static ITomlSchemaLayer Schema;
     public static ITomlSchemaLayer ListSchema;
 
-    private static ConfigToObjectMapper<CharacterDropSystemConfiguration> _listConfigMapper;
     private static ConfigToObjectMapper<CharacterDropSystemConfiguration> _configMapper;
 
     public static CharacterDropConfigMapper Mapper;
@@ -38,7 +36,6 @@ internal static partial class ConfigurationFileManager
         Mapper = new CharacterDropConfigMapper();
 
         RegisterMainMappings(Mapper);
-        RegisterListMappings(Mapper);
 
         Schema = Mapper.BuildSchema();
         ListSchema = Mapper.BuildListSchema();
@@ -53,8 +50,7 @@ internal static partial class ConfigurationFileManager
             PrepareMappings();
         }
 
-        _configMapper = Mapper.CreateMapperForMobConfigs(configuration);
-        _listConfigMapper = Mapper.CreateMapperForListConfigs(configuration);
+        _configMapper = Mapper.CreateMapper(configuration);
 
         var listConfig = LoadAllCharacterDropLists();
         var mainConfig = LoadAllCharacterDropConfigurations();

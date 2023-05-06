@@ -43,7 +43,7 @@ public class MappingListTests
     {
         // Arrange
         var schema = _mapper.BuildListSchema();
-        var configMapper = _mapper.CreateMapperForListConfigs(new());
+        var configMapper = _mapper.CreateMapper(new());
 
         TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestListMapping, schema);
 
@@ -67,14 +67,14 @@ public class MappingListTests
         var listSchema = _mapper.BuildListSchema();
         var schema = _mapper.BuildSchema();
 
-        var configListMapper = _mapper.CreateMapperForListConfigs(config);
-        var configMapper = _mapper.CreateMapperForMobConfigs(config);
+        var configMapper = _mapper.CreateMapper(config);
 
         TomlConfig listConfigFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestListMapping, listSchema);
-        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
+        TomlConfig mainConfigFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
+
+        var configFile = ConfigurationFileManager.MergeLists(listConfigFile, mainConfigFile);
 
         // Act
-        configListMapper.Execute(listConfigFile);
         configMapper.Execute(configFile);
         config.Build();
 
@@ -96,7 +96,7 @@ public class MappingListTests
         var listSchema = _mapper.BuildListSchema();
         var schema = _mapper.BuildSchema();
 
-        var configMapper = _mapper.CreateMapperForMobConfigs(config);
+        var configMapper = _mapper.CreateMapper(config);
 
         TomlConfig listConfigFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestListMapping, listSchema);
         TomlConfig mainConfigFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
@@ -115,7 +115,7 @@ public class MappingListTests
     }
 
     [TestMethod]
-    public void CanLoadLoadMultipleLists()
+    public void CanLoadMultipleLists()
     {
         // Arrange
         CharacterDropTemplateManager.Templates.Clear();
@@ -125,7 +125,7 @@ public class MappingListTests
         var listSchema = _mapper.BuildListSchema();
         var schema = _mapper.BuildSchema();
 
-        var configMapper = _mapper.CreateMapperForMobConfigs(config);
+        var configMapper = _mapper.CreateMapper(config);
 
         TomlConfig listConfigFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestListMapping, listSchema);
         TomlConfig listConfigFile2 = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestListMapping2, listSchema);

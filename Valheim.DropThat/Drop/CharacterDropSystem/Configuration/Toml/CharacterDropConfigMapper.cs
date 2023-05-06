@@ -11,15 +11,6 @@ namespace DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 internal class CharacterDropConfigMapper
 {
     private TomlSchemaBuilder Builder { get; set; } = new();
-    private TomlSchemaBuilder ListBuilder { get; set; } = new();
-
-    private ITomlSchemaNodeBuilder ListNode { get; set; }
-    private ITomlSchemaNodeBuilder ListDropNode { get; set; }
-    private ITomlNamedSchemaLayerBuilder ListDropModLayer { get; set; }
-    private Dictionary<string, ITomlSchemaNodeBuilder> ListDropModNodes { get; } = new();
-    private MappingLayer<CharacterDropSystemConfiguration, object, CharacterDropListBuilder> ListLayer { get; set; }
-    private MappingLayer<CharacterDropBuilder, object, CharacterDropDropBuilder> ListDropLayer { get; set; }
-    private Dictionary<string, MappingLayer<CharacterDropListBuilder, object, CharacterDropDropBuilder>> ListDropModLayers { get; } = new();
 
     private ITomlSchemaNodeBuilder MobNode { get; set; }
     private MappingLayer<CharacterDropSystemConfiguration, CharacterDropMobTemplate, CharacterDropBuilder> MobLayer { get; set; }
@@ -32,29 +23,6 @@ internal class CharacterDropConfigMapper
     private Dictionary<string, MappingLayer<CharacterDropDropBuilder, CharacterDropDropTemplate, CharacterDropDropBuilder>> DropModLayers { get; } = new();
 
     public CharacterDropConfigMapper()
-    {
-        InitLists();
-        InitMobs();
-    }
-
-    private void InitLists()
-    {
-        ListNode = ListBuilder.SetLayerAsCollection().GetNode();
-        ListDropNode = ListNode.SetNextLayerAsCollection().GetNode();
-        ListDropModLayer = ListDropNode.SetNextLayerAsNamed();
-
-        ListLayer = new(
-            TomlPathSegmentType.Collection,
-            _ => string.Empty, // Lists just won't ever map back to files
-            ListNode);
-
-        ListDropLayer = new(
-            TomlPathSegmentType.Collection,
-            _ => string.Empty, // Lists just won't ever map back to files
-            ListDropNode);
-    }
-
-    private void InitMobs()
     {
         MobNode = Builder.SetLayerAsCollection().GetNode();
         DropNode = MobNode.SetNextLayerAsCollection().GetNode();
@@ -73,9 +41,17 @@ internal class CharacterDropConfigMapper
 
     public ITomlSchemaLayer BuildSchema() => Builder.Build();
 
-    public ITomlSchemaLayer BuildListSchema() => ListBuilder.Build();
+    public ITomlSchemaLayer BuildListSchema()
+    {
+        // Just duplicate mob builder
+        var schema = Builder.Build();
+        // Clear mob settings, as these don't exist for lists.
+        schema.AsIndexed().Node.Settings.Clear();
 
-    public ConfigToObjectMapper<CharacterDropSystemConfiguration> CreateMapperForMobConfigs(CharacterDropSystemConfiguration configSystem)
+        return schema;
+    }
+
+    public ConfigToObjectMapper<CharacterDropSystemConfiguration> CreateMapper(CharacterDropSystemConfiguration configSystem)
     {
         List<IMappingInstantiationForParent<CharacterDropDropBuilder>> modLayerMappings = new();
 
@@ -151,82 +127,6 @@ internal class CharacterDropConfigMapper
         };
     }
 
-    public ConfigToObjectMapper<CharacterDropSystemConfiguration> CreateMapperForListConfigs(CharacterDropSystemConfiguration configSystem)
-    {
-        List<IMappingInstantiationForParent<CharacterDropDropBuilder>> modLayerMappings = new();
-
-        foreach (var entry in ListDropModLayers)
-        {
-            MappingInstantiationForParent<CharacterDropDropBuilder, CharacterDropDropBuilder> mapping = new()
-            {
-                SubPath = new()
-                {
-                    TomlPath.Create(TomlPathSegmentType.Named, entry.Key)
-                },
-                Instantiation = new()
-                {
-                    Instantiation = (builder, config) => builder,
-                    InstanceActions = new()
-                    {
-                        entry.Value.BuildMapping(),
-                    }
-                }
-            };
-
-            modLayerMappings.Add(mapping);
-        }
-
-        var dropLayerMappings = new MappingInstantiationForParent<CharacterDropListBuilder, CharacterDropDropBuilder>()
-        {
-            SubPath = new()
-            {
-                TomlPath.Create(TomlPathSegmentType.Collection)
-            },
-            Instantiation = new()
-            {
-                Instantiation = (CharacterDropListBuilder builder, TomlConfig config) => builder.GetDrop(uint.Parse(config.PathSegment.Name)),
-                InstanceActions = new()
-                {
-                    ListDropLayer.BuildMapping(),
-                }
-            },
-            SubInstantiations = modLayerMappings,
-        };
-
-        var listLayerMappings = new MappingInstantiationForParent<CharacterDropSystemConfiguration, CharacterDropListBuilder>()
-        {
-            SubPath = new()
-            {
-                TomlPath.Create(TomlPathSegmentType.Collection)
-            },
-            Instantiation = new()
-            {
-                Instantiation = (CharacterDropSystemConfiguration system, TomlConfig config) => system.GetListBuilder(config.PathSegment.Name),
-                InstanceActions = new()
-                {
-                    ListLayer.BuildMapping()
-                }
-            },
-            SubInstantiations = new()
-            {
-                dropLayerMappings
-            }
-        };
-
-        return new ConfigToObjectMapper<CharacterDropSystemConfiguration>()
-        {
-            Path = new(),
-            Instantiation = new()
-            {
-                Instantiation = (_) => configSystem,
-            },
-            SubInstantiations = new()
-            {
-                listLayerMappings
-            }
-        };
-    }
-
     public TomlConfig MapToConfigFromTemplates(IEnumerable<CharacterDropMobTemplate> entries)
     {
         TomlConfig config = new();
@@ -282,37 +182,6 @@ internal class CharacterDropConfigMapper
 
         layer.AddLayerRequirement(requirement);
 
-        if (!ListDropModLayers.TryGetValue(modName, out var listLayer))
-        {
-            var modNode = ListDropModNodes[modName] = ListDropModLayer.AddNode(modName);
-
-            listLayer = ListDropModLayers[modName] = new(
-                TomlPathSegmentType.Named,
-                x => modName,
-                modNode);
-        }
-
-        listLayer.AddLayerRequirement(requirement);
-
         return this;
-    }
-
-    public IOptionBuilder<CharacterDropListBuilder, object> AddListSetting() => ListLayer.AddOption();
-
-    public IOptionBuilder<CharacterDropDropBuilder, object> AddListDropSetting() => ListDropLayer.AddOption();
-
-    public IOptionBuilder<CharacterDropDropBuilder, object> AddListModSettings(string modName)
-    {
-        var modNode = ListDropModNodes[modName] = ListDropModLayer.AddNode(modName);
-
-        if (!ListDropModLayers.TryGetValue(modName, out var modLayer))
-        {
-            modLayer = ListDropModLayers[modName] = new(
-                TomlPathSegmentType.Named,
-                x => modName,
-                modNode);
-        }
-
-        return modLayer.AddOption();
     }
 }
