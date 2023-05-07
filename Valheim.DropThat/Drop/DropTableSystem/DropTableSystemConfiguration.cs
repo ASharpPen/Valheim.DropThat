@@ -8,21 +8,9 @@ namespace DropThat.Drop.DropTableSystem;
 
 internal class DropTableSystemConfiguration : IDropSystemConfig
 {
-    private Dictionary<string, DropTableListBuilder> _listBuilders = new();
-
     private Dictionary<string, DropTableBuilder> _builders = new();
 
     private bool _finalized = false;
-
-    public DropTableListBuilder GetListBuilder(string name)
-    {
-        if (_listBuilders.TryGetValue(name, out var existing))
-        {
-            return existing;
-        }
-
-        return _listBuilders[name] = new(name, this);
-    }
 
     public DropTableBuilder GetBuilder(string name)
     {

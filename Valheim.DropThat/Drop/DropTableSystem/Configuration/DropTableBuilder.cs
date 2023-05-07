@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DropThat.Drop.DropTableSystem.Models;
 using ThatCore.Models;
 
@@ -47,19 +44,6 @@ internal class DropTableBuilder
 
     public DropTableTemplate Build()
     {
-        if (ListNames.IsSet)
-        {
-            foreach (var list in ListNames.Value)
-            {
-                var listBuilder = BuilderCollection.GetListBuilder(list);
-
-                foreach (var listDropBuilder in listBuilder.DropBuilders)
-                {
-                    GetDrop(listDropBuilder.Key).Configure(listDropBuilder.Value);
-                }
-            }
-        }
-
         var drops = DropBuilders
             .Values
             .Select(x => x.Build())

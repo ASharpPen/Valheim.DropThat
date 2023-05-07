@@ -8,21 +8,9 @@ namespace DropThat.Drop.CharacterDropSystem;
 
 internal class CharacterDropSystemConfiguration : IDropSystemConfig
 {
-    private Dictionary<string, CharacterDropListBuilder> _listBuilders = new();
-
     private Dictionary<string, CharacterDropBuilder> _builders = new();
 
     private bool finalized = false;
-
-    public CharacterDropListBuilder GetListBuilder(string name)
-    {
-        if (_listBuilders.TryGetValue(name, out var existing))
-        {
-            return existing;
-        }
-
-        return _listBuilders[name] = new(name);
-    }
 
     public CharacterDropBuilder GetBuilder(string mob)
     {

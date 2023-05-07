@@ -42,19 +42,6 @@ internal class DropTableDropBuilder
         Parent = parent;
     }
 
-    public void Configure(DropTableDropBuilder from)
-    {
-        from.Conditions.ForEach(Conditions.Set);
-        from.ItemModifiers.ForEach(ItemModifiers.Set);
-
-        from.PrefabName.DoIfSet(x => PrefabName = x);
-        from.Enabled.DoIfSet(x => Enabled = x);
-        from.TemplateEnabled.DoIfSet(x => TemplateEnabled = x);
-        from.AmountMin.DoIfSet(x => AmountMin = x);
-        from.AmountMax.DoIfSet(x => AmountMax = x);
-        from.Weight.DoIfSet(x => Weight = x);
-    }
-
     public DropTableDropTemplate Build()
     {
         DropTableDropTemplate template = new()

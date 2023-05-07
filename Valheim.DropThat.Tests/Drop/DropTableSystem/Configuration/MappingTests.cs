@@ -92,7 +92,9 @@ public class MappingTests
         var schema = _mapper.BuildSchema();
         var configMapper = _mapper.CreateMapper(config);
 
-        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.DropTable.TestMapping, schema);
+        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(
+            Resources.ResourceManager.DropTable.TestMapping, 
+            schema);
 
         // Act
         configMapper.Execute(configFile);
@@ -101,6 +103,6 @@ public class MappingTests
 
         // Assert
         var dropTemplate = template.Drops.First().Value;
-        dropTemplate.PrefabName.Value.Should().Be("RawMeat");
+        dropTemplate.PrefabName.Value.Should().Be("Guck");
     }
 }

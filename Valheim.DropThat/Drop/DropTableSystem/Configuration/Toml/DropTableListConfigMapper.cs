@@ -32,6 +32,11 @@ internal class DropTableListConfigMapper
         ListNode = Builder.SetLayerAsCollection().GetNode();
         DropNode = ListNode.SetNextLayerAsCollection().GetNode();
         ModLayer = DropNode.SetNextLayerAsNamed();
+
+        DropMappingLayer = new(
+            TomlPathSegmentType.Collection,
+            _ => null, // Lists just won't ever map back to files
+            DropNode);
     }
 
     public ITomlSchemaLayer BuildSchema() => Builder.Build();

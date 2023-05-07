@@ -35,22 +35,6 @@ internal class CharacterDropBuilder : IHaveDropBuilders
 
     public CharacterDropMobTemplate Build()
     {
-        /*
-        // Initialize drops by applying list configs first.
-        if (ListNames.IsSet)
-        {
-            foreach (var list in ListNames.Value)
-            {
-                var listBuilder = BuilderCollection.GetListBuilder(list);
-
-                foreach (var listDropBuilder in listBuilder.DropBuilders)
-                {
-                    GetDrop(listDropBuilder.Key).Configure(listDropBuilder.Value);
-                }
-            }
-        }
-        */
-
         var drops = DropBuilders
             .Values
             .Select(x => x.Build())

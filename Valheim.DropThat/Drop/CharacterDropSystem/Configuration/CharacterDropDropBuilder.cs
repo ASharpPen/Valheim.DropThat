@@ -1,7 +1,6 @@
 ﻿using DropThat.Drop.CharacterDropSystem.Conditions;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Drop.Options;
-using ThatCore.Extensions;
 using ThatCore.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
@@ -43,23 +42,6 @@ internal class CharacterDropDropBuilder
         AmountLimit.DoIfSet(x => template.AmountLimit = x);
 
         return template;
-    }
-
-    public void Configure(CharacterDropDropBuilder from)
-    {
-        from.Conditions.ForEach(Conditions.Set);
-        from.ItemModifiers.ForEach(ItemModifiers.Set);
-
-        from.PrefabName.DoIfSet(x => PrefabName = x);
-        from.Enabled.DoIfSet(x => Enabled = x);
-        from.TemplateEnabled.DoIfSet(x => TemplateEnabled = x);
-        from.AmountMin.DoIfSet(x => AmountMin = x);
-        from.AmountMax.DoIfSet(x => AmountMax = x);
-        from.ChanceToDrop.DoIfSet(x => ChanceToDrop = x);
-        from.DropOnePerPlayer.DoIfSet(x => DropOnePerPlayer = x);
-        from.ScaleByLevel.DoIfSet(x => ScaleByLevel = x);
-        from.AutoStack.DoIfSet(x => AutoStack = x);
-        from.AmountLimit.DoIfSet(x => AmountLimit = x);
     }
 
     public TypeSet<IDropCondition> Conditions { get; } = new();
