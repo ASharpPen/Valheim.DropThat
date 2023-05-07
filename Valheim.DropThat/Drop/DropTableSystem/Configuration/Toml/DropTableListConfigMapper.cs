@@ -7,6 +7,11 @@ using ThatCore.Config.Toml;
 
 namespace DropThat.Drop.DropTableSystem.Configuration.Toml;
 
+// TODO: More stuff to clean up in here for sure.
+// We don't really need the full MappingLayer, as lists are a bunch
+// of hacked together stuff anyway. We just need to have the schemas
+// so that we can load the config files and merge things together in
+// the configuration file manager.
 internal class DropTableListConfigMapper
 {
     private TomlSchemaBuilder Builder { get; set; }
@@ -17,7 +22,6 @@ internal class DropTableListConfigMapper
     private ITomlNamedSchemaLayerBuilder ModLayer { get; set; }
     private Dictionary<string, ITomlSchemaNodeBuilder> ModNodes { get; set; } = new();
 
-    private MappingLayer<DropTableSystemConfiguration, object, DropTableListBuilder> ListMappingLayer { get; set; }
     private MappingLayer<DropTableSystemConfiguration, object, DropTableDropBuilder> DropMappingLayer { get; set; }
     private Dictionary<string, MappingLayer<DropTableSystemConfiguration, object, DropTableDropBuilder>> ModMappingLayers { get; } = new();
 
@@ -28,70 +32,9 @@ internal class DropTableListConfigMapper
         ListNode = Builder.SetLayerAsCollection().GetNode();
         DropNode = ListNode.SetNextLayerAsCollection().GetNode();
         ModLayer = DropNode.SetNextLayerAsNamed();
-
-        ListMappingLayer = new(
-            TomlPathSegmentType.Collection,
-            _ => null, // Lists just won't ever map back to files
-            ListNode);
-
-        DropMappingLayer = new(
-            TomlPathSegmentType.Collection,
-            _ => null, // Lists just won't ever map back to files
-            DropNode);
     }
 
     public ITomlSchemaLayer BuildSchema() => Builder.Build();
-
-    public ConfigToObjectMapper<DropTableSystemConfiguration> CreateMapper(DropTableSystemConfiguration configSystem)
-    {
-        List<IMappingInstantiationForParent<DropTableDropBuilder>> modLayerMappings = new();
-
-        foreach (var entry in ModMappingLayers)
-        {
-            MappingInstantiationForParent<DropTableDropBuilder, DropTableDropBuilder> mapping = new()
-            {
-                SubPath = new() { TomlPath.Create(TomlPathSegmentType.Named, entry.Key) },
-                Instantiation = new()
-                {
-                    Instantiation = (builder, config) => builder,
-                    InstanceActions = new() { entry.Value.BuildMapping() }
-                }
-            };
-
-            modLayerMappings.Add(mapping);
-        }
-
-        MappingInstantiationForParent<DropTableListBuilder, DropTableDropBuilder> dropLayerMapping = new()
-        {
-            SubPath = new() { TomlPath.Create(TomlPathSegmentType.Collection) },
-            Instantiation = new()
-            {
-                Instantiation = (builder, config) => builder.GetDrop(uint.Parse(config.PathSegment.Name)),
-                InstanceActions = new() { DropMappingLayer.BuildMapping() }
-            },
-            SubInstantiations = modLayerMappings
-        };
-
-        MappingInstantiationForParent<DropTableSystemConfiguration, DropTableListBuilder> listLayerMappings = new()
-        {
-            SubPath = new() { TomlPath.Create(TomlPathSegmentType.Collection) },
-            Instantiation = new()
-            {
-                Instantiation = (system, config) => system.GetListBuilder(config.PathSegment.Name),
-                InstanceActions = new() { ListMappingLayer.BuildMapping() }
-            },
-            SubInstantiations = new() { dropLayerMapping }
-        };
-
-        return new ConfigToObjectMapper<DropTableSystemConfiguration>()
-        {
-            Path = new(),
-            Instantiation = new() { Instantiation = (_) => configSystem },
-            SubInstantiations = new() { listLayerMappings }
-        };
-    }
-
-    public IOptionBuilder<DropTableListBuilder, object> AddListOption() => ListMappingLayer.AddOption();
 
     public IOptionBuilder<DropTableDropBuilder, object> AddDropOption() => DropMappingLayer.AddOption();
 

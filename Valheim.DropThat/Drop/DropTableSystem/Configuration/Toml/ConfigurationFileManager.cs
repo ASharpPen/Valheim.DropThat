@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using BepInEx;
 using DropThat.Configuration;
@@ -20,7 +22,6 @@ internal static partial class ConfigurationFileManager
     private static ITomlSchemaLayer _listSchema;
 
     private static ConfigToObjectMapper<DropTableSystemConfiguration> _configMapper;
-    private static ConfigToObjectMapper<DropTableSystemConfiguration> _listConfigMapper;
 
     public static DropTableConfigMapper ConfigMapper { get; set; }
     public static DropTableListConfigMapper ConfigListMapper { get; set; }
@@ -40,15 +41,18 @@ internal static partial class ConfigurationFileManager
         }
 
         _configMapper = ConfigMapper.CreateMapper(configuration);
-        _listConfigMapper = ConfigListMapper.CreateMapper(configuration);
 
-        LoadAllDropTableLists();
-        LoadAllDropTables();
+        var listConfig = LoadAllDropTableLists();
+        var mainConfig = LoadAllDropTables();
+
+        var result = MergeListAndMain(listConfig, mainConfig);
+
+        _configMapper.Execute(result);
 
         Log.Debug?.Log("Finished loading drop_table configs");
     }
 
-    private static void LoadAllDropTableLists()
+    private static TomlConfig LoadAllDropTableLists()
     {
         var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, DropTableListsFiles, SearchOption.AllDirectories);
 
@@ -68,35 +72,27 @@ internal static partial class ConfigurationFileManager
             }
         });
 
-        foreach (var config in configs)
-        {
-            _listConfigMapper.Execute(config);
-        }
+        return MergeConfigs(configs);
     }
 
-    private static void LoadAllDropTables()
+    private static TomlConfig LoadAllDropTables()
     {
         var customFiles = Directory.GetFiles(Paths.ConfigPath, DropTableFiles, SearchOption.AllDirectories);
         Log.Debug?.Log($"Loading '{customFiles.Length + 1}' drop_table files");
 
-        TomlConfig[] configs = new TomlConfig[customFiles.Length];
+        List<TomlConfig> configs = new(customFiles.Length + 1);
 
         Parallel.For(0, customFiles.Length, (i) =>
         {
             try
             {
-                configs[i] = TomlSchemaFileLoader.LoadFile(customFiles[i], _schema);
+                configs.Add(TomlSchemaFileLoader.LoadFile(customFiles[i], _schema));
             }
             catch (Exception e)
             {
                 Log.Error?.Log($"Failed to load config file '{customFiles[i]}'.", e);
             }
         });
-
-        foreach (var config in configs)
-        {
-            _configMapper.Execute(config);
-        }
 
         // Load and apply main config last
         var configPath = Path.Combine(Paths.ConfigPath, MainDropFile);
@@ -108,7 +104,56 @@ internal static partial class ConfigurationFileManager
 
         var mainConfig = TomlSchemaFileLoader.LoadFile(configPath, _schema);
 
-        _configMapper.Execute(mainConfig);
+        configs.Add(mainConfig);
+
+        return MergeConfigs(configs);
+    }
+
+    public static TomlConfig MergeConfigs(IList<TomlConfig> configs)
+    {
+        // Override based on order of occurence. Later loaded overrides earlier.
+        var combinedConfig = new TomlConfig();
+
+        foreach (var config in configs)
+        {
+            TomlConfigMerger.Merge(config, combinedConfig);
+        }
+
+        return combinedConfig;
+    }
+
+    public static TomlConfig MergeListAndMain(TomlConfig listToml, TomlConfig mainToml)
+    {
+        TomlConfig mergedConfig = new();
+
+        Dictionary<string, TomlConfig> listConfigsByName = listToml
+            .Sections?
+            .ToDictionary(x => x.Key.Name, x => x.Value)
+            ?? new();
+
+        foreach (var section in mainToml.Sections)
+        {
+            if (section.Value.Settings.TryGetValue("UseDropList", out var setting) &&
+                setting.IsSet &&
+                setting is TomlSetting<List<string>> useDropLists &&
+                useDropLists.Value is not null)
+            {
+                foreach (var list in useDropLists.Value)
+                {
+                    if (listConfigsByName.TryGetValue(list, out var listConfig))
+                    {
+                        var temp = new TomlConfig();
+                        temp.Sections.Add(section.Key, listConfig);
+
+                        TomlConfigMerger.Merge(temp, mergedConfig);
+                    }
+                }
+            }
+        }
+
+        TomlConfigMerger.Merge(mainToml, mergedConfig);
+
+        return mergedConfig;
     }
 
     private static void CreateDefaultConfigFile(string configPath)

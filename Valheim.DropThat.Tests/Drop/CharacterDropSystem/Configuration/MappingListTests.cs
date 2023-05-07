@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem;

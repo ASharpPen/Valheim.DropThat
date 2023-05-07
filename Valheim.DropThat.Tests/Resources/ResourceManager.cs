@@ -12,5 +12,7 @@ internal static class ResourceManager
     public static class DropTable
     {
         public const string TestMapping = @".\Resources\drop_that.drop_table.test_mapping.cfg";
+        public const string TestListMapping = @".\Resources\drop_that.drop_table_list.test_mapping.cfg";
+        public const string TestListMapping2 = @".\Resources\drop_that.drop_table_list.test_mapping_2.cfg";
     }
 }
