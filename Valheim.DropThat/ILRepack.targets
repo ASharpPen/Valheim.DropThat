@@ -19,7 +19,7 @@
 		<ILRepack
 			Parallel="true"
 			Internalize="true"
-			RenameInternalized="true"
+			RenameInternalized="false"
 			InternalizeExclude="@(DoNotInternalizeAssemblies )"
 			InputAssemblies="@(InputAssemblies)"
 			TargetKind="Dll"

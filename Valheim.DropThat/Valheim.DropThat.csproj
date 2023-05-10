@@ -25,6 +25,7 @@
   
   <ItemGroup>
 	  <PackageReference Include="HarmonyX" Version="2.10.1" />
+	  <PackageReference Include="ILRename" Version="1.0.0" />
 	  <PackageReference Include="YamlDotNet" Version="12.2.1" />
 	  <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
 	  <PackageReference Include="Microsoft.Unity.Analyzers" Version="1.12.0">
@@ -80,4 +81,13 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="Valheim.DropThat.Tests" />
 	</ItemGroup>
+
+	<UsingTask TaskName="ILRenameNamespace" AssemblyFile="$(OutputPath)ILRename.dll" />
+	
+	<Target Name="ILRenamer" AfterTargets="ILRepacker" Condition="'$(Configuration)' != 'Test'">
+
+		<ILRenameNamespace InputAssemblies="$(OutputPath)\Valheim.DropThat.dll" Match="ThatCore" ReplaceWith="DropThat.Core" />
+
+		<ILRenameNamespace InputAssemblies="$(OutputPath)\Valheim.DropThat.dll" Match="YamlDotNet" ReplaceWith="DropThat.YamlDotNet" />
+	</Target>
 </Project>
