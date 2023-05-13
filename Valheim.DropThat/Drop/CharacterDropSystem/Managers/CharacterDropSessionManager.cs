@@ -6,7 +6,9 @@ using DropThat.Configuration;
 using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Drop.CharacterDropSystem.Services;
+using DropThat.Drop.DropTableSystem.Managers;
 using DropThat.Drop.Options;
+using ThatCore.Cache;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
@@ -17,14 +19,20 @@ namespace DropThat.Drop.CharacterDropSystem.Managers;
 /// Logic for general workflow surrounding configuring
 /// drop table, running conditions and applying modifiers.
 /// </summary>
-internal static class DropTableManager
+internal static class CharacterDropSessionManager
 {
+    public static ManagedCache<CharacterDrop> CharacterDropInstances { get; } = new();
+
     public static ConditionalWeakTable<CharacterDrop.Drop, DropConfigInfo> DropInstanceTable { get; } = new();
 
     public static void Initialize(CharacterDrop droptable)
     {
         try
         {
+            Log.Development?.Log($"CharacterDrop for '{droptable.GetName()}' initializing.");
+
+            CharacterDropInstances.Set(droptable, droptable);
+
             // Record spawn data if missing.
             CharacterDropEventManager.DropTableInitialize(droptable);
 
@@ -52,6 +60,8 @@ internal static class DropTableManager
                 Log.Trace?.Log($"[{sourceName}] Clearing '{existingDrops.Count}' drops.");
                 existingDrops.Clear();
             }
+
+            Log.Development?.Log($"[{sourceName}] Found {dropTemplates.Count} templates.");
 
             if (dropTemplates.Count == 0)
             {

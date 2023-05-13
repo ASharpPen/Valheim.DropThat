@@ -5,7 +5,7 @@ using ThatCore.Network;
 
 namespace DropThat.Core;
 
-internal class SyncManager
+internal static class SyncManager
 {
     private class HandlerPair
     {
@@ -35,7 +35,7 @@ internal class SyncManager
             if (ZNet.instance.IsServer())
             {
                 Log.Debug?.Log("Registering server RPC for sending configs on request from client.");
-                peer.m_rpc.Register(nameof(RPC_RequestConfigsDropThat), new ZRpc.RpcMethod.Method(RPC_RequestConfigsDropThat));
+                peer.m_rpc.Register(nameof(RPC_RequestConfigsDropThat), RPC_RequestConfigsDropThat);
             }
             else
             {
@@ -72,6 +72,35 @@ internal class SyncManager
             }
 
             Log.Trace?.Log("Sending config packages.");
+        }
+        catch (Exception e)
+        {
+            Log.Error?.Log("Unexpected error while attempting to create and send config packages from server to client.", e);
+        }
+    }
+
+    public static void SyncConfigs()
+    {
+        try
+        {
+            if (!ZNet.instance.IsServer())
+            {
+                Log.Warning?.Log("Non-server instance cannot sync configs. Ignoring request.");
+            }
+
+            foreach (var peer in ZNet.instance.GetPeers())
+            {
+                // Skip server.
+                if (peer.m_server)
+                {
+                    continue;
+                }
+                
+                foreach (var handler in PackageHandlers.Values)
+                {
+                    OutgoingMessageService.AddToQueue(handler.Packer(), handler.UnpackerRpcName, peer.m_rpc);
+                }
+            }
         }
         catch (Exception e)
         {

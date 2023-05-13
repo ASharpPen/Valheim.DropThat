@@ -25,7 +25,7 @@ internal class CharacterDropConfigMessage : IMessage
 
     public void AfterUnpack()
     {
-        CharacterDropTemplateManager.Templates = Templates ?? new();
+        CharacterDropTemplateManager.ResetTemplates(Templates.Values.ToList());
 
         Log.Debug?.Log($"Unpacked CharacterDrop configurations: " +
             $"{Templates.Values.Sum(x => x.Drops.Count)} drops for {Templates.Count} creatures");

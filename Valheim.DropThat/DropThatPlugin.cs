@@ -20,6 +20,10 @@ public class DropThatPlugin : BaseUnityPlugin
     {
         Log.SetLogger(new BepInExLogger(Logger));
 
+#if DEBUG
+        Log.DevelopmentEnabled = true;
+#endif
+
         GeneralConfigManager.Load();
 
         new Harmony(ModId).PatchAll();

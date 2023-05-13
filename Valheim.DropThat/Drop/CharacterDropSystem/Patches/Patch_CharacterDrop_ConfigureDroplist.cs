@@ -17,7 +17,7 @@ internal static class Patch_CharacterDrop_ConfigureDroplist
     [HarmonyPriority(Priority.Last)]
     private static void Init(CharacterDrop __instance)
     {
-        DropTableManager.Initialize(__instance);
+        CharacterDropSessionManager.Initialize(__instance);
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ internal static class Patch_CharacterDrop_ConfigureDroplist
     {
         return new CodeMatcher(instructions)
             .MatchForward(false, new CodeMatch(OpCodes.Ldfld, AccessTools.DeclaredField(typeof(CharacterDrop), nameof(CharacterDrop.m_drops))))
-            .SetInstructionAndAdvance(Transpilers.EmitDelegate(DropTableManager.FilterDrops))
+            .SetInstructionAndAdvance(Transpilers.EmitDelegate(CharacterDropSessionManager.FilterDrops))
             .InstructionEnumeration();
     }
 
@@ -42,6 +42,6 @@ internal static class Patch_CharacterDrop_ConfigureDroplist
     [HarmonyPriority(Priority.Last)]
     private static void LimitAmounts(CharacterDrop __instance, List<KeyValuePair<GameObject, int>> __result)
     {
-        DropTableManager.LimitDropAmounts(__instance, __result);
+        CharacterDropSessionManager.LimitDropAmounts(__instance, __result);
     }
 }

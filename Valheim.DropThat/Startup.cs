@@ -1,4 +1,5 @@
-﻿using DropThat.Configuration;
+﻿using DropThat.Commands;
+using DropThat.Configuration;
 using DropThat.Core;
 using DropThat.Drop;
 using DropThat.Drop.CharacterDropSystem;
@@ -26,6 +27,7 @@ internal static class Startup
 
         // Misc
         LocationSyncManager.Configure();
+        LoadCommands();
     }
 
     private static void LoadConfigs()
@@ -39,5 +41,10 @@ internal static class Startup
         {
             DropSystemConfigManager.LoadConfigs();
         }
+    }
+
+    private static void LoadCommands()
+    {
+        ReloadConfigsCommand.Register();
     }
 }

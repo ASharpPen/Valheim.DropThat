@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Configuration;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using ThatCore.Logging;
@@ -39,10 +40,8 @@ internal class CharacterDropSystemConfiguration : IDropSystemConfig
 
         finalized = true;
 
-        foreach (var builder in _builders)
-        {
-            var template = builder.Value.Build();
-            CharacterDropTemplateManager.SetTemplate(builder.Key, template);
-        }
+        var templates = _builders.Select(x => x.Value.Build());
+
+        CharacterDropTemplateManager.ResetTemplates(templates);
     }
 }

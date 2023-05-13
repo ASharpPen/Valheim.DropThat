@@ -45,7 +45,7 @@ internal static class Patch_CharacterDrop_ConfigureDroppedItems
         int index = GetIndex(drops, count);
         LoopCounter.Increment(drops);
 
-        DropTableManager.ModifyDrop(item, drops, index); 
+        CharacterDropSessionManager.ModifyDrop(item, drops, index); 
     }
 
     // TODO: Figure out how to add an index by transpiler instead, to avoid having to do this weird counter shit.

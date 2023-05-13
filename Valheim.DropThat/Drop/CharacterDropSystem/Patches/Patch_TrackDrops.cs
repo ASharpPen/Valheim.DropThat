@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using DropThat.Drop.CharacterDropSystem.Models;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Patches;
 
@@ -49,6 +50,7 @@ public static class Patch_TrackDrops
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_3)) //Load current CharacterDrop.Drop
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0)) //Load instance
             .InsertAndAdvance(Transpilers.EmitDelegate(KeepTrack))
+            .Print(20, 20)
             .InstructionEnumeration();
     }
 
@@ -56,12 +58,14 @@ public static class Patch_TrackDrops
     {
         try
         {
+            Log.Development?.Log($"[{characterDrop.GetName()}:{drop.m_prefab.name}] Attempting to track drop");
+
             if (drop is null)
             {
                 return;
             }
 
-            if (DropTableManager.DropInstanceTable.TryGetValue(drop, out var configInfo))
+            if (CharacterDropSessionManager.DropInstanceTable.TryGetValue(drop, out var configInfo))
             {
                 Log.Development?.Log($"Carrying configs for drop {configInfo.DisplayName}:{drop.m_prefab.name}:{characterDrop.GetHashCode()}");
 
