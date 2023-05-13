@@ -32,6 +32,7 @@ namespace DropThat.Drop.CharacterDropSystem.Patches;
 /// This whole setup is still extremely volatile, but there are almost no carriers with unique identifiers available 
 /// for keeping the config references associated with the item to be spawned :s
 /// </summary>
+[HarmonyPatch]
 public static class Patch_TrackDrops
 {
     private static MethodInfo Anchor = AccessTools.Method(typeof(List<CharacterDrop.Drop>.Enumerator), "MoveNext");
