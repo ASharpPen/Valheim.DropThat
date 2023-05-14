@@ -1,0 +1,55 @@
+﻿using System;
+using DropThat.Debugging;
+using DropThat.Drop.DropTableSystem.Configuration.Toml;
+using DropThat.Drop.DropTableSystem.Debug;
+using DropThat.Drop.DropTableSystem.Managers;
+using ThatCore.Config.Toml;
+using ThatCore.Logging;
+
+namespace DropThat.Commands;
+internal class WriteLoadedDropTablesCommand
+{
+    public const string CommandName = "dropthat:print_droptables_loaded";
+
+    internal static void Register()
+    {
+        new Terminal.ConsoleCommand(
+            CommandName,
+            "Reload configurations and re-syncronize.",
+            (args) =>
+            {
+                try
+                {
+                    if (ZNet.instance.IsServer())
+                    {
+                        TemplateWriter.PrintLoadedDropTables();
+                    }
+                    else
+                    {
+                        RequestPrint();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error?.Log($"Error while attempting to execute {CommandName}.", e);
+                }
+            });
+    }
+
+    private static void ConfigureRPCs(ZNetPeer peer)
+    {
+        if (ZNet.instance.IsServer())
+        {
+            peer.m_rpc.Register(
+                nameof(RPC_DropThatCommand_PrintDropTablesLoaded),
+                RPC_DropThatCommand_PrintDropTablesLoaded);
+        }
+    }
+
+    private static void RPC_DropThatCommand_PrintDropTablesLoaded(ZRpc zrpc) => TemplateWriter.PrintLoadedDropTables();
+
+    private static void RequestPrint()
+    {
+        ZNet.instance.GetServerRPC().Invoke(nameof(RPC_DropThatCommand_PrintDropTablesLoaded));
+    }
+}

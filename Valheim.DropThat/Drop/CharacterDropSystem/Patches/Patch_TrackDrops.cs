@@ -50,7 +50,6 @@ public static class Patch_TrackDrops
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_3)) //Load current CharacterDrop.Drop
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0)) //Load instance
             .InsertAndAdvance(Transpilers.EmitDelegate(KeepTrack))
-            .Print(20, 20)
             .InstructionEnumeration();
     }
 

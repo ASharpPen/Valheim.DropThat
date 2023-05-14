@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem.Models;
@@ -25,7 +26,7 @@ internal class CharacterDropConfigMessage : IMessage
 
     public void AfterUnpack()
     {
-        CharacterDropTemplateManager.ResetTemplates(Templates.Values.ToList());
+        CharacterDropTemplateManager.ResetTemplates(Templates.Values);
 
         Log.Debug?.Log($"Unpacked CharacterDrop configurations: " +
             $"{Templates.Values.Sum(x => x.Drops.Count)} drops for {Templates.Count} creatures");

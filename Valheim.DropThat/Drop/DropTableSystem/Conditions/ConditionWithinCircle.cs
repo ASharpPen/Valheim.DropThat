@@ -5,33 +5,21 @@ namespace DropThat.Drop.DropTableSystem.Conditions;
 
 public class ConditionWithinCircle : IDropCondition
 {
-    public float CenterX { get; set; }
-    public float CenterZ { get; set; }
-    public float Radius { get; set; }
-
-    public ConditionWithinCircle()
-    {
-    }
-
-    public ConditionWithinCircle(
-        float? centerX,
-        float? centerZ,
-        float? radius)
-    {
-        CenterX = centerX ?? default;
-        CenterZ = centerZ ?? default;
-        Radius = radius ?? default;
-    }
+    public float? CenterX { get; set; }
+    public float? CenterZ { get; set; }
+    public float? Radius { get; set; }
 
     public bool IsValid(DropContext context)
     {
-        if (Radius < 0)
+        if (!Radius.HasValue ||
+            !CenterX.HasValue ||
+            !CenterZ.HasValue)
         {
             return true;
         }
 
-        double distX = context.Pos.x - CenterX;
-        double distZ = context.Pos.z - CenterZ;
+        double distX = context.Pos.x - CenterX.Value;
+        double distZ = context.Pos.z - CenterZ.Value;
 
         var dist = Math.Sqrt(distX * distX + distZ * distZ);
 
@@ -64,9 +52,9 @@ internal static partial class IHaveDropConditionsExtensions
         {
             var cond = template.Conditions.GetOrCreate<ConditionWithinCircle>();
 
-            cond.CenterX = centerX ?? default;
-            cond.CenterZ = centerZ ?? default;
-            cond.Radius = radius ?? default;
+            cond.CenterX = centerX;
+            cond.CenterZ = centerZ;
+            cond.Radius = radius;
         }
 
         return template;

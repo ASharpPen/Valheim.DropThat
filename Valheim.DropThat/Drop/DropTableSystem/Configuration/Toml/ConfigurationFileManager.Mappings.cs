@@ -139,24 +139,27 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<bool?>(
-                    "ConditionNotDay", default, "If true, will not drop during daytime.",
+                    "ConditionNotDay", null, "If true, will not drop during daytime.",
                     (value, builder) => builder.ConditionDaytimeNotDay(value)))
             .ToFile(c => c
-                .Map("ConditionNotDay", x => x.Conditions.GetOrDefault<ConditionDaytimeNotDay>() is not null));
+                .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotDay>())
+                .Map("ConditionNotDay", x => true));
 
         mapper.AddDropOption()
             .FromFile(c => c.Map<bool?>(
-                "ConditionNotNight", default, "If true, will not drop during night.",
+                "ConditionNotNight", null, "If true, will not drop during night.",
                 (value, builder) => builder.ConditionDaytimeNotNight(value)))
             .ToFile(c => c
-                .Map("ConditionNotNight", x => x.Conditions.GetOrDefault<ConditionDaytimeNotNight>() is not null));
+                .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotNight>())
+                .Map("ConditionNotNight", x => true));
 
         mapper.AddDropOption()
             .FromFile(c => c.Map<bool?>(
-                "ConditionNotAfternoon", default, "If true, will not drop during afternoon.",
+                "ConditionNotAfternoon", null, "If true, will not drop during afternoon.",
                 (value, builder) => builder.ConditionDaytimeNotAfternoon(value)))
             .ToFile(c => c
-                .Map("ConditionNotAfternoon", x => x.Conditions.GetOrDefault<ConditionDaytimeNotAfternoon>() is not null));
+                .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotAfternoon>())
+                .Map("ConditionNotAfternoon", x => true));
 
         mapper.AddDropOption()
             .FromFile(c => c.Map<List<string>>(
@@ -218,14 +221,14 @@ internal static partial class ConfigurationFileManager
             .FromFile(c => c
                 .Using(x => x.Conditions.GetOrCreate<ConditionWithinCircle>())
                 .Map<float?>(
-                    "ConditionWithinCircle.CenterX", 0, "Center X coordinate of circle within which drop is enabled.",
+                    "ConditionWithinCircle.CenterX", null, "Center X coordinate of circle within which drop is enabled.",
                     (value, condition) => condition.CenterX = value ?? 0f)
                 .Map<float?>(
-                    "ConditionWithinCircle.CenterZ", 0, "Center Z coordinate of circle within which drop is enabled.",
+                    "ConditionWithinCircle.CenterZ", null, "Center Z coordinate of circle within which drop is enabled.",
                     (value, condition) => condition.CenterZ = value ?? 0f)
                 .Map<float?>(
-                    "ConditionWithinCircle.Radius", -1, "Radius of circle within which drop is enabled.",
-                    (value, condition) => condition.Radius = value ?? 0f))
+                    "ConditionWithinCircle.Radius", null, "Radius of circle within which drop is enabled.",
+                    (value, condition) => condition.Radius = value ?? -1f))
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionWithinCircle>())
                 .Map("ConditionWithinCircle.CenterX", x => x.CenterX)

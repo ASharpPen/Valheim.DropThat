@@ -21,8 +21,7 @@ internal static partial class ConfigurationFileManager
     private static ITomlSchemaLayer _schema;
     private static ITomlSchemaLayer _listSchema;
 
-    private static ConfigToObjectMapper<DropTableSystemConfiguration> _configMapper;
-
+    public static ConfigToObjectMapper<DropTableSystemConfiguration> ConfigObjectMapper;
     public static DropTableConfigMapper ConfigMapper { get; set; }
     public static DropTableListConfigMapper ConfigListMapper { get; set; }
 
@@ -40,14 +39,14 @@ internal static partial class ConfigurationFileManager
             _listSchema = ConfigListMapper.BuildSchema();
         }
 
-        _configMapper = ConfigMapper.CreateMapper(configuration);
+        ConfigObjectMapper = ConfigMapper.CreateMapper(configuration);
 
         var listConfig = LoadAllDropTableLists();
         var mainConfig = LoadAllDropTables();
 
         var result = MergeListAndMain(listConfig, mainConfig);
 
-        _configMapper.Execute(result);
+        ConfigObjectMapper.Execute(result);
 
         Log.Debug?.Log("Finished loading drop_table configs");
     }

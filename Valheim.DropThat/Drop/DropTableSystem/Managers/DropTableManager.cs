@@ -7,6 +7,7 @@ using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
 using DropThat.Drop.DropTableSystem.Wrapper;
 using DropThat.Drop.Options;
+using ThatCore.Cache;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace DropThat.Drop.DropTableSystem.Managers;
 /// </summary>
 internal static class DropTableManager
 {
+    public static ManagedCache<GameObject> DropTableInstances { get; } = new();
+
     private static ConditionalWeakTable<DropTable, GameObject> SourceLinkTable { get; } = new();
     private static ConditionalWeakTable<DropTable, DropTableTemplate> TemplateLinkTable { get; } = new();
     private static ConditionalWeakTable<DropTable, List<DropTableDrop>> DropsByTable { get; } = new();
@@ -46,6 +49,7 @@ internal static class DropTableManager
                 return;
             }
 
+            DropTableInstances.Set(source.gameObject, source.gameObject);
             SourceLinkTable.Add(dropTable, source.gameObject);
 
             if (DropTableTemplateManager.TryGetTemplate(source.GetCleanedName(), out var template))

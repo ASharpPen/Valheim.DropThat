@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DropThat.Drop.DropTableSystem.Configuration;
 using DropThat.Drop.DropTableSystem.Managers;
 using ThatCore.Logging;
@@ -39,10 +40,6 @@ internal class DropTableSystemConfiguration : IDropSystemConfig
 
         _finalized = true;
 
-        foreach (var builder in _builders)
-        {
-            var template = builder.Value.Build();
-            DropTableTemplateManager.SetTemplate(builder.Key, template);
-        }
+        DropTableTemplateManager.ResetTemplates(_builders.Values.Select(x => x.Build()));
     }
 }

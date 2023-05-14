@@ -12,6 +12,7 @@ internal static class CharacterDropSystemStartup
 
         // Setup config file loading on configuration time.
         DropSystemConfigManager.OnConfigureLate += LoadFileConfigs;
+
     }
 
     private static void LoadFileConfigs(IDropSystemConfigCollection configCollection)

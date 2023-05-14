@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Managers;
 using DropThat.Drop.DropTableSystem.Models;
@@ -25,7 +26,7 @@ internal class DropTableConfigMessage : IMessage
 
     public void AfterUnpack()
     {
-        DropTableTemplateManager.Templates = new(Templates);
+        DropTableTemplateManager.ResetTemplates(Templates.Values);
 
         Log.Debug?.Log($"Unpacked DropTable configurations: " +
             $"{Templates.Values.Sum(x => x.Drops.Count)} drops for {Templates.Count} drop tables");
