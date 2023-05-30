@@ -65,7 +65,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                 .InstructionEnumeration();
         }
 
-        [HarmonyPatch("GetDropList", new[] {typeof(int)})]
+        [HarmonyPatch(nameof(DropTable.GetDropList), new[] {typeof(int)})]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> DropListOverhaul(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {

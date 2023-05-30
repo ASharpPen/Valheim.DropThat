@@ -13,7 +13,7 @@ namespace Valheim.DropThat.Utilities.Valheim
 
             foreach (Heightmap.Biome potentialBiome in Enum.GetValues(typeof(Heightmap.Biome)))
             {
-                if (potentialBiome == Heightmap.Biome.BiomesMax || potentialBiome == Heightmap.Biome.None)
+                if (potentialBiome == Heightmap.Biome.None)
                 {
                     continue;
                 }
