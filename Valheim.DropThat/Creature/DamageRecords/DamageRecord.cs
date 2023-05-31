@@ -1,4 +1,5 @@
-﻿using Valheim.DropThat.Utilities.Valheim;
+﻿using Valheim.DropThat.Drop.CharacterDropSystem.Models;
+using Valheim.DropThat.Utilities.Valheim;
 
 namespace Valheim.DropThat.Creature.DamageRecords
 {
@@ -22,5 +23,7 @@ namespace Valheim.DropThat.Creature.DamageRecords
         /// Znet time when hit was recorded.
         /// </summary>
         public double Timestamp { get; set; }
+
+        public EntityType AttackerType { get; set; } = EntityType.Other;
     }
 }
