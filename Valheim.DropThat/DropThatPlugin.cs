@@ -9,9 +9,13 @@ namespace Valheim.DropThat
     [BepInDependency("asharppen.valheim.spawn_that", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("randyknapp.mods.epicloot", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("org.bepinex.plugins.creaturelevelcontrol", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInPlugin("asharppen.valheim.drop_that", "Drop That!", "2.3.4")]
+    [BepInPlugin(ModId, PluginName, Version)]
     public class DropThatPlugin : BaseUnityPlugin
     {
+        public const string ModId = "asharppen.valheim.drop_that";
+        public const string PluginName = "Drop That!";
+        public const string Version = "2.3.6";
+
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()
         {
@@ -19,7 +23,7 @@ namespace Valheim.DropThat
 
             ConfigurationManager.LoadGeneralConfigurations();
 
-            new Harmony("mod.drop_that").PatchAll();
+            new Harmony(ModId).PatchAll();
 
             NetworkSetup.SetupNetworking();
         }

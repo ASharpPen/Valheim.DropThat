@@ -64,7 +64,7 @@ public class ConditionHitByEntityTypeRecently : ICondition
         Log.LogTrace($"[{character.name}] Searching for hits by: " + entities.Join());
 #endif
 
-        var match = recentHits.Any(x => entities.Contains(GetHitterType(x)));
+        var match = recentHits.Any(x => entities.Contains(x.AttackerType));
 
         if (!match)
         {
@@ -72,31 +72,5 @@ public class ConditionHitByEntityTypeRecently : ICondition
         }
 
         return !match;
-    }
-
-    private EntityType GetHitterType(DamageRecord record)
-    {
-        EntityType hitBy = EntityType.Other;
-
-        if (record.Hit.HaveAttacker())
-        {
-            GameObject attacker = ZNetScene.instance.FindInstance(record.Hit.m_attacker);
-
-            var attackerCharacter = ComponentCache.GetComponent<Character>(attacker);
-
-            if (attackerCharacter is not null)
-            {
-                if (attackerCharacter.IsPlayer())
-                {
-                    hitBy = EntityType.Player;
-                }
-                else
-                {
-                    hitBy = EntityType.Creature;
-                }
-            }
-        }
-
-        return hitBy;
     }
 }

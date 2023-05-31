@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Valheim.DropThat.Drop.CharacterDropSystem.Models;
 
 namespace Valheim.DropThat.Utilities;
 

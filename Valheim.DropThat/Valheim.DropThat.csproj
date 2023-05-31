@@ -4,7 +4,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>2.3.4</Version>
+    <Version>2.3.6</Version>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <AssemblyName>Valheim.DropThat</AssemblyName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -43,9 +43,6 @@
     <Reference Include="EpicLoot">
       <HintPath>..\Libs\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
     </Reference>
-    <Reference Include="ExtendedItemDataFramework">
-      <HintPath>..\Libs\RandyKnapp-ExtendedItemDataFramework\ExtendedItemDataFramework.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
     </Reference>
@@ -65,14 +62,9 @@
   
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ThunderstoreResources\manifest.json" />
     <None Include="packages.config" />
-    <None Include="ThunderstoreResources\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Drop\DropTableSystem\Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LibsStripped\Readme.md" />
   </ItemGroup>
 </Project>

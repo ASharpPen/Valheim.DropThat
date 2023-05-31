@@ -1,1 +1,0 @@
-﻿All libs contained here are stripped, publicized and only intended for building the project.
