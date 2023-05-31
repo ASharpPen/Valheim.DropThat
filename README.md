@@ -91,6 +91,8 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
+- v2.3.6:
+	- Fixed potential null-reference error when using ConditionHitByEntityTypeRecently, and improved fallback for edge cases.
 - v2.3.5:
 	- Compatibility with Epic Loot v0.9.5.
 - v2.3.4:
