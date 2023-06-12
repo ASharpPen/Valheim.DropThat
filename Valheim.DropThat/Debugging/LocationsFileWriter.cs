@@ -60,7 +60,7 @@ namespace Valheim.DropThat.Debugging
 
             foreach(var b in Enum.GetValues(typeof(Heightmap.Biome)))
             {
-                if(b is Heightmap.Biome biome && biome != Heightmap.Biome.BiomesMax)
+                if(b is Heightmap.Biome biome)
                 {
                     if (biome == 0 && bitmaskedBiome == 0)
                     {
