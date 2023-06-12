@@ -14,7 +14,7 @@ namespace Valheim.DropThat
     {
         public const string ModId = "asharppen.valheim.drop_that";
         public const string PluginName = "Drop That!";
-        public const string Version = "2.3.6";
+        public const string Version = "2.3.7";
 
         // Awake is called once when both the game and the plug-in are loaded
         void Awake()

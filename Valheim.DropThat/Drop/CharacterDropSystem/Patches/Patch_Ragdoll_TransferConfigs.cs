@@ -32,7 +32,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
         private static MethodInfo StoreConfigsMethod = AccessTools.Method(typeof(Patch_Ragdoll_TransferConfigs), nameof(StoreConfigReferences));
         private static MethodInfo LoadConfigsMethod = AccessTools.Method(typeof(Patch_Ragdoll_TransferConfigs), nameof(LoadConfigReferences));
 
-        [HarmonyPatch("SaveLootList")]
+        [HarmonyPatch(nameof(Ragdoll.SaveLootList))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> TranspileStoreConfigReferences(IEnumerable<CodeInstruction> instructions)
         {
@@ -46,7 +46,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
                 .InstructionEnumeration();
         }
 
-        [HarmonyPatch("SpawnLoot")]
+        [HarmonyPatch(nameof(Ragdoll.SpawnLoot))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> TranspileLoadConfigReferences(IEnumerable<CodeInstruction> instructions)
         {
