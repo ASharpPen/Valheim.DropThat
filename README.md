@@ -91,6 +91,8 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
+- v2.3.9:
+	- Fixed: Compatibility with Valheim v.0.217.14.
 - v2.3.8:
 	- Fixed: Vanilla bug that causes the internal name of rocks to change. This resulted in Drop That configs for DropTables coming from MineRock5 to be unable to work.
 - v2.3.7:

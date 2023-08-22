@@ -98,11 +98,12 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                     new CodeMatch(OpCodes.Call, DropInstantiation))
                 .Advance(-2)
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, UnwrapDropMethod))
-                // Move to right after drop is instantiated, and replace the pop
+                // Move to right after drop is instantiated, and duplicate reference
                 .MatchForward(true,
-                    new CodeMatch(OpCodes.Call, DropInstantiation),
-                    new CodeMatch(OpCodes.Pop))
-                .RemoveInstruction()
+                    new CodeMatch(OpCodes.Call, DropInstantiation))
+                .Advance(1)
+                .InsertAndAdvance(new CodeInstruction(OpCodes.Dup))
+                // Insert own call
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, ModifyDropMethod))
                 .InstructionEnumeration();
         }
