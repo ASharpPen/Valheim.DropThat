@@ -23,7 +23,7 @@ Documentation can be found on the [Drop That! wiki](https://github.com/ASharpPen
 - Server-side configs
 - Adds mod specific options for: 
 	- [Creature Level and Loot Control](https://valheim.thunderstore.io/package/Smoothbrain/CreatureLevelAndLootControl/)
-	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/) (Experimental as it is in beta. Tested against v0.8.8)
+	- [Epic Loot](https://valheim.thunderstore.io/package/RandyKnapp/EpicLoot/)
 	- [Spawn That](https://valheim.thunderstore.io/package/ASharpPen/Spawn_That/)
 - Performance improvements
 	- Drop stacks instead of individual items. Want to have a stack of coins, that isn't a massive lag tower of individual coins?
@@ -91,6 +91,12 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
+- v2.3.9:
+	- Fixed: Compatibility with Valheim v.0.217.14.
+- v2.3.8:
+	- Fixed: Vanilla bug that causes the internal name of rocks to change. This resulted in Drop That configs for DropTables coming from MineRock5 to be unable to work.
+- v2.3.7:
+	- Fixed: Compatibility with Valheim v0.216.9.
 - v2.3.6:
 	- Fixed potential null-reference error when using ConditionHitByEntityTypeRecently, and improved fallback for edge cases.
 - v2.3.5:

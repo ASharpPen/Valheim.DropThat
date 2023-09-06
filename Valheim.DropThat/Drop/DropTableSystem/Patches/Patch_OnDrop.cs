@@ -23,7 +23,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
         [HarmonyPatch(typeof(Container))]
         internal static class Patch_Container_AddDefaultItems
         {
-            [HarmonyPatch("AddDefaultItems")]
+            [HarmonyPatch(nameof(Container.AddDefaultItems))]
             [HarmonyTranspiler]
             private static IEnumerable<CodeInstruction> InsertItemManagement(IEnumerable<CodeInstruction> instructions)
             {
@@ -39,7 +39,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
         [HarmonyPatch(typeof(DropOnDestroyed))]
         internal static class Patch_DropOnDestroyed_OnDestroyed
         {
-            [HarmonyPatch("OnDestroyed")]
+            [HarmonyPatch(nameof(DropOnDestroyed.OnDestroyed))]
             [HarmonyTranspiler]
             private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
                 instructions.InsertDropManagementInstructions();
@@ -48,7 +48,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
         [HarmonyPatch(typeof(LootSpawner))]
         internal static class Patch_LootSpawner_UpdateSpawner
         {
-            [HarmonyPatch("UpdateSpawner")]
+            [HarmonyPatch(nameof(LootSpawner.UpdateSpawner))]
             [HarmonyTranspiler]
             private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
                 instructions.InsertDropManagementInstructions();
@@ -57,7 +57,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
         [HarmonyPatch(typeof(TreeLog))]
         internal static class Patch_TreeLog_Destroy
         {
-            [HarmonyPatch("Destroy")]
+            [HarmonyPatch(nameof(TreeLog.Destroy))]
             [HarmonyTranspiler]
             private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
                 instructions.InsertDropManagementInstructions();
@@ -66,7 +66,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
         [HarmonyPatch(typeof(TreeBase))]
         internal static class Patch_TreeBase_RPC_Damage
         {
-            [HarmonyPatch("RPC_Damage")]
+            [HarmonyPatch(nameof(TreeBase.RPC_Damage))]
             [HarmonyTranspiler]
             private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
                 instructions.InsertDropManagementInstructions();
@@ -75,7 +75,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
         [HarmonyPatch(typeof(MineRock))]
         internal static class Patch_MineRock_RPC_Hit
         {
-            [HarmonyPatch("RPC_Hit")]
+            [HarmonyPatch(nameof(MineRock.RPC_Hit))]
             [HarmonyTranspiler]
             private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
                 instructions.InsertDropManagementInstructions();
@@ -84,7 +84,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
         [HarmonyPatch(typeof(MineRock5))]
         internal static class Patch_MineRock5_DamageArea
         {
-            [HarmonyPatch("DamageArea")]
+            [HarmonyPatch(nameof(MineRock5.DamageArea))]
             [HarmonyTranspiler]
             private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) => 
                 instructions.InsertDropManagementInstructions();
@@ -98,11 +98,12 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Patches
                     new CodeMatch(OpCodes.Call, DropInstantiation))
                 .Advance(-2)
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, UnwrapDropMethod))
-                // Move to right after drop is instantiated, and replace the pop
+                // Move to right after drop is instantiated, and duplicate reference
                 .MatchForward(true,
-                    new CodeMatch(OpCodes.Call, DropInstantiation),
-                    new CodeMatch(OpCodes.Pop))
-                .RemoveInstruction()
+                    new CodeMatch(OpCodes.Call, DropInstantiation))
+                .Advance(1)
+                .InsertAndAdvance(new CodeInstruction(OpCodes.Dup))
+                // Insert own call
                 .InsertAndAdvance(new CodeInstruction(OpCodes.Call, ModifyDropMethod))
                 .InstructionEnumeration();
         }
