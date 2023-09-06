@@ -18,12 +18,7 @@ public class ConditionLocation : IDropCondition
         CharacterDropEventManager.OnDropTableInitialize += SetSpawnLocationIfMissing;
     }
 
-    public ConditionLocation() { }
-
-    public ConditionLocation(IEnumerable<string> locations) 
-    {
-        SetLocations(locations);
-    }
+    public bool IsPointless() => (Locations?.Count ?? 0) == 0;
 
     public void SetLocations(IEnumerable<string> locations)
     {

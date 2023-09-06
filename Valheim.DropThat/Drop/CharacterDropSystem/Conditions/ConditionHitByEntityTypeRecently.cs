@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using DropThat.Caches;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
@@ -12,14 +10,7 @@ public class ConditionHitByEntityTypeRecently : IDropCondition
 {
     public HashSet<EntityType> EntityTypes { get; set; }
 
-    public ConditionHitByEntityTypeRecently() { }
-
-    public ConditionHitByEntityTypeRecently(IEnumerable<EntityType> entityTypes)
-    {
-        EntityTypes = entityTypes
-            .Distinct()
-            .ToHashSet();
-    }
+    public bool IsPointless() => (EntityTypes?.Count ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

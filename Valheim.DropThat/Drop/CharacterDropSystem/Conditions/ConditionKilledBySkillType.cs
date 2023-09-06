@@ -10,12 +10,7 @@ public class ConditionKilledBySkillType : IDropCondition
 {
     public HashSet<Skills.SkillType> SkillTypes { get; set; }
 
-    public ConditionKilledBySkillType() { }
-
-    public ConditionKilledBySkillType(IEnumerable<Skills.SkillType> skillTypes)
-    {
-        SkillTypes = skillTypes.ToHashSet();
-    }
+    public bool IsPointless() => (SkillTypes?.Count ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

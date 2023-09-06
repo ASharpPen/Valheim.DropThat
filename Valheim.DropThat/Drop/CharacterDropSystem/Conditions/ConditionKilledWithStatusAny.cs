@@ -9,13 +9,6 @@ public class ConditionKilledWithStatusAny : IDropCondition
 {
     public string[] Statuses { get; set; }
 
-    public ConditionKilledWithStatusAny() { }
-
-    public ConditionKilledWithStatusAny(IEnumerable<string> statuses)
-    {
-        SetStatuses(statuses);
-    }
-
     public void SetStatuses(IEnumerable<string> statuses)
     {
         Statuses = statuses
@@ -25,6 +18,8 @@ public class ConditionKilledWithStatusAny : IDropCondition
             .Distinct()
             .ToArray();
     }
+
+    public bool IsPointless() => (Statuses?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

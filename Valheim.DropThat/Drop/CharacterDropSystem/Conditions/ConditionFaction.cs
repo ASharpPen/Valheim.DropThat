@@ -9,16 +9,13 @@ public class ConditionFaction : IDropCondition
 {
     public Character.Faction[] Factions { get; set; }
 
-    public ConditionFaction() { }
-
-    public ConditionFaction(IEnumerable<Character.Faction> factions)
-    {
-        Factions = factions.ToArray();
-    }
+    public bool IsPointless() => (Factions?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {
-        if (context.Character.IsNull())
+        if (Factions is null ||
+            Factions.Length == 0 ||
+            context.Character.IsNull())
         {
             return true;
         }

@@ -10,13 +10,6 @@ public class ConditionInventory : IDropCondition
 {
     public HashSet<string> Items { get; set; }
 
-    public ConditionInventory() { }
-
-    public ConditionInventory(IEnumerable<string> items)
-    {
-        SetItems(items);
-    }
-
     public void SetItems(IEnumerable<string> items)
     {
         Items = items
@@ -25,6 +18,8 @@ public class ConditionInventory : IDropCondition
                 .ToUpperInvariant())
             .ToHashSet();
     }
+
+    public bool IsPointless() => (Items?.Count ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

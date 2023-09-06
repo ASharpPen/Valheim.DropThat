@@ -9,12 +9,7 @@ public class ConditionNotFaction : IDropCondition
 {
     public Character.Faction[] Factions { get; set; }
 
-    public ConditionNotFaction() { }
-
-    public ConditionNotFaction(IEnumerable<Character.Faction> factions)
-    {
-        Factions = factions.ToArray();
-    }
+    public bool IsPointless() => (Factions?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

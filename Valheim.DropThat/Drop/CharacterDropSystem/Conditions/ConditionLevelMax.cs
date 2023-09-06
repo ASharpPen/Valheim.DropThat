@@ -7,12 +7,7 @@ public class ConditionLevelMax : IDropCondition
 {
     public int? MaxLevel { get; set; }
 
-    public ConditionLevelMax() { }
-
-    public ConditionLevelMax(int? maxLevel)
-    {
-        MaxLevel = maxLevel;
-    }
+    public bool IsPointless() => MaxLevel is null;
 
     public bool IsValid(DropContext context)
     {

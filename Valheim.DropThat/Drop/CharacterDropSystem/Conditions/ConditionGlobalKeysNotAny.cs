@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -9,12 +8,7 @@ internal class ConditionGlobalKeysNotAny : IDropCondition
 {
     public string[] GlobalKeys { get; set; }
 
-    public ConditionGlobalKeysNotAny() { }
-
-    public ConditionGlobalKeysNotAny(IEnumerable<string> keys)
-    {
-        GlobalKeys = keys.ToArray();
-    }
+    public bool IsPointless() => (GlobalKeys?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

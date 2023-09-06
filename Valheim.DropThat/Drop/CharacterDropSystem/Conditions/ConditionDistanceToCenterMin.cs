@@ -6,12 +6,7 @@ public class ConditionDistanceToCenterMin : IDropCondition
 {
     public float DistanceToCenterMin { get; set; }
 
-    public ConditionDistanceToCenterMin() { }
-
-    public ConditionDistanceToCenterMin(float minDistance)
-    {
-        DistanceToCenterMin = minDistance;
-    }
+    public bool IsPointless() => DistanceToCenterMin <= 0;
 
     public bool IsValid(DropContext context)
     {

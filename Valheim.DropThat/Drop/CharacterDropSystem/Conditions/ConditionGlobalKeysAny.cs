@@ -9,12 +9,7 @@ public class ConditionGlobalKeysAny : IDropCondition
 {
     public string[] GlobalKeys { get; set; }
 
-    public ConditionGlobalKeysAny() { }
-
-    public ConditionGlobalKeysAny(IEnumerable<string> keys)
-    {
-        GlobalKeys = keys.ToArray();
-    }
+    public bool IsPointless() => (GlobalKeys?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

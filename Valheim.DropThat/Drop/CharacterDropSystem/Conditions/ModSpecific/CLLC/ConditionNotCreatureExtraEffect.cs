@@ -12,12 +12,7 @@ public class ConditionNotCreatureExtraEffect : IDropCondition
 {
     public CllcCreatureExtraEffect[] ExtraEffects { get; set; }
 
-    public ConditionNotCreatureExtraEffect() { }
-
-    public ConditionNotCreatureExtraEffect(IEnumerable<CllcCreatureExtraEffect> extraEffects)
-    {
-        ExtraEffects = extraEffects.ToArray();
-    }
+    public bool IsPointless() => (ExtraEffects?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

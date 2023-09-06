@@ -12,12 +12,7 @@ public class ConditionNotBossAffix : IDropCondition
 {
     public CllcBossAffix[] BossAffixes { get; set; }
 
-    public ConditionNotBossAffix() { }
-
-    public ConditionNotBossAffix(IEnumerable<CllcBossAffix> bossAffixes)
-    {
-        BossAffixes = bossAffixes.ToArray();
-    }
+    public bool IsPointless() => (BossAffixes?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

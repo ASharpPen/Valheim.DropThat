@@ -7,12 +7,7 @@ public class ConditionLevelMin : IDropCondition
 {
     public int? MinLevel { get; set; }
 
-    public ConditionLevelMin() { }
-
-    public ConditionLevelMin(int? minLevel)
-    {
-        MinLevel = minLevel;
-    }
+    public bool IsPointless() => MinLevel is null;
 
     public bool IsValid(DropContext context)
     {

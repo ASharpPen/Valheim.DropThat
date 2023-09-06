@@ -6,12 +6,7 @@ public class ConditionDistanceToCenterMax : IDropCondition
 {
     public float DistanceToCenterMax { get; set; }
 
-    public ConditionDistanceToCenterMax() { }
-
-    public ConditionDistanceToCenterMax(float maxDistance)
-    {
-        DistanceToCenterMax = maxDistance;
-    }
+    public bool IsPointless() => DistanceToCenterMax <= 0;
 
     public bool IsValid(DropContext context)
     {

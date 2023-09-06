@@ -10,14 +10,7 @@ public class ConditionCreatureState : IDropCondition
 {
     public CreatureState[] CreatureStates { get; set; }
 
-    public ConditionCreatureState()
-    {
-    }
-
-    public ConditionCreatureState(IEnumerable<CreatureState> creatureStates)
-    {
-        CreatureStates = creatureStates.ToArray();
-    }
+    public bool IsPointless() => (CreatureStates?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

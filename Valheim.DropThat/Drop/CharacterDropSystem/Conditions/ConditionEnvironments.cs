@@ -9,13 +9,6 @@ public class ConditionEnvironments : IDropCondition
 {
     public HashSet<string> Environments { get; set; }
 
-    public ConditionEnvironments() { }
-
-    public ConditionEnvironments(IEnumerable<string> environments)
-    {
-        SetEnvironments(environments);
-    }
-
     public void SetEnvironments(IEnumerable<string> environments)
     {
         Environments = environments
@@ -24,6 +17,8 @@ public class ConditionEnvironments : IDropCondition
                 .ToUpperInvariant())
             .ToHashSet();
     }
+
+    public bool IsPointless() => (Environments?.Count ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

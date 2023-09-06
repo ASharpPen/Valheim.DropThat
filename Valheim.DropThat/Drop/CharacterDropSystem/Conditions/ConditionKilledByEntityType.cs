@@ -9,14 +9,7 @@ public class ConditionKilledByEntityType : IDropCondition
 {
     public EntityType[] EntityTypes { get; set; }
 
-    public ConditionKilledByEntityType() { }
-
-    public ConditionKilledByEntityType(IEnumerable<EntityType> entityTypes)
-    {
-        EntityTypes = entityTypes
-            .Distinct()
-            .ToArray();
-    }
+    public bool IsPointless() => (EntityTypes?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

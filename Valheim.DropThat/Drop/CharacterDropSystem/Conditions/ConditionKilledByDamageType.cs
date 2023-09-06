@@ -2,7 +2,6 @@
 using System.Linq;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
-using ThatCore.Extensions;
 using ThatCore.Utilities.Valheim;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
@@ -11,15 +10,7 @@ public class ConditionKilledByDamageType : IDropCondition
 {
     public HitData.DamageType DamageTypeMask { get; set; } = 0;
 
-    public ConditionKilledByDamageType() { }
-
-    public ConditionKilledByDamageType(IEnumerable<HitData.DamageType> damageTypes)
-    {
-        foreach (var damageType in damageTypes)
-        {
-            DamageTypeMask |= damageType;
-        }
-    }
+    public bool IsPointless() => DamageTypeMask == 0;
 
     public bool IsValid(DropContext context)
     {

@@ -8,12 +8,10 @@ public class ConditionWorldLevelMin : IDropCondition
 {
     public int? MinLevel { get; set; }
 
-    public ConditionWorldLevelMin() { }
-
-    public ConditionWorldLevelMin(int? minWorldLevel)
-    {
-        MinLevel = minWorldLevel;
-    }
+    public bool IsPointless() => 
+        MinLevel is null || 
+        MinLevel == 0 ||
+        !InstallationManager.CLLCInstalled;
 
     public bool IsValid(DropContext context)
     {

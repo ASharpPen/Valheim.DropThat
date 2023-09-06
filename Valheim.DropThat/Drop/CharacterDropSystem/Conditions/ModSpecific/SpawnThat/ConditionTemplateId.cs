@@ -9,12 +9,7 @@ public class ConditionTemplateId : IDropCondition
 {
     public string[] TemplateIds { get; set; }
 
-    public ConditionTemplateId() { }
-
-    public ConditionTemplateId(IEnumerable<string> ids) 
-    {
-        TemplateIds = ids.ToArray();
-    }
+    public bool IsPointless() => (TemplateIds?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

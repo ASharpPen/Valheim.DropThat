@@ -1,4 +1,5 @@
-﻿using DropThat.Drop.CharacterDropSystem.Conditions;
+﻿using System.Linq;
+using DropThat.Drop.CharacterDropSystem.Conditions;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Drop.Options;
 using ThatCore.Models;
@@ -40,6 +41,12 @@ internal class CharacterDropDropBuilder
         ScaleByLevel.DoIfSet(x => template.ScaleByLevel = x);
         AutoStack.DoIfSet(x => template.AutoStack = x);
         AmountLimit.DoIfSet(x => template.AmountLimit = x);
+
+        // Clean up irrelevant conditions
+        foreach (var condition in template.Conditions.Where(x => x.IsPointless()))
+        {
+            template.Conditions.Remove(condition);
+        }
 
         return template;
     }

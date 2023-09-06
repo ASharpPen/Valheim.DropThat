@@ -12,12 +12,7 @@ public class ConditionNotInfusion : IDropCondition
 {
     public CllcCreatureInfusion[] Infusions { get; set; }
 
-    public ConditionNotInfusion() { }
-
-    public ConditionNotInfusion(IEnumerable<CllcCreatureInfusion> infusions)
-    {
-        Infusions = infusions.ToArray();
-    }
+    public bool IsPointless() => (Infusions?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {

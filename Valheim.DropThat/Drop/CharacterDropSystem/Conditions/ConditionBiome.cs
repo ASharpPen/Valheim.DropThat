@@ -17,14 +17,7 @@ public class ConditionBiome : IDropCondition
         CharacterDropEventManager.OnDropTableInitialize += SetSpawnBiomeIfMissing;
     }
 
-    public ConditionBiome()
-    {
-    }
-
-    public ConditionBiome(params Heightmap.Biome[] biomes)
-    {
-        BiomeBitmask = biomes.ToBitmask();
-    }
+    public bool IsPointless() => BiomeBitmask == Heightmap.Biome.None;
 
     public bool IsValid(DropContext context)
     {
