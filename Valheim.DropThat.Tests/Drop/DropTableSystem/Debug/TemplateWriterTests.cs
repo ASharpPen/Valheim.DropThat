@@ -7,6 +7,7 @@ using DropThat.Drop.DropTableSystem.Configuration.Toml;
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Debug;
 using FluentAssertions;
+using ThatCore.Logging;
 
 namespace Valheim.DropThat.Tests.Drop.DropTableSystem.Debug;
 
