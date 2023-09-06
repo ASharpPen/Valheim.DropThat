@@ -20,11 +20,11 @@ internal static partial class ConfigurationFileManager
         mapper
             .AddTableOption()
             .FromFile(config => config
-                .Map(
+                .Map<int?>(
                     "SetDropMin", 1, "Minimum of randomly selected entries from drop list. Entries can be picked more than once.",
                     (value, builder) => builder.DropMin = value))
             .ToFile(config => config
-                .Map("SetDropMin", x => x.DropMin))
+                .Map("SetDropMin", x => x.DropMin.Value))
             ;
 
         mapper
@@ -34,7 +34,7 @@ internal static partial class ConfigurationFileManager
                     "SetDropMax", 1, "Maximum of randomly selected entries from drop list. Entries can be picked more than once.",
                     (value, builder) => builder.DropMax = value))
             .ToFile(config => config
-                .Map("SetDropMax", x => x.DropMax));
+                .Map("SetDropMax", x => x.DropMax.Value));
             ;
 
         mapper.AddTableOption()
@@ -43,14 +43,15 @@ internal static partial class ConfigurationFileManager
                     "SetDropChance", 100, "Chance to drop anything at all.",
                     (value, builder) => builder.DropChance = value))
             .ToFile(config => config
-                .Map("SetDropChance", x => x.DropChance));
+                .Map("SetDropChance", x => x.DropChance.Value));
 
         mapper.AddTableOption()
             .FromFile(config => config
                 .Map<bool?>(
                     "SetDropOnlyOnce", false, "If true, will ensure that when selecting entries from drop list, same entry will only be picked once.",
                     (value, builder) => builder.DropOnlyOnce = value))
-            .ToFile(config => config.Map("SetDropOnlyOnce", x => x.DropOnlyOnce));
+            .ToFile(config => config
+                .Map("SetDropOnlyOnce", x => x.DropOnlyOnce.Value));
 
         mapper.AddTableOption()
             .FromFile(config => config
@@ -65,7 +66,7 @@ internal static partial class ConfigurationFileManager
                     "PrefabName", default, "Name of prefab to drop.",
                     (value, builder) => builder.PrefabName = value))
             .ToFile(config => config
-                .Map("PrefabName", x => x.PrefabName));
+                .Map("PrefabName", x => x.PrefabName.Value));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -73,7 +74,7 @@ internal static partial class ConfigurationFileManager
                     "EnableConfig", true, "Toggle this specific config entry on/off.",
                     (value, builder) => builder.TemplateEnabled = value))
             .ToFile(config => config
-                .Map("EnableConfig", x => x.TemplateEnabled));
+                .Map("EnableConfig", x => x.TemplateEnabled.Value));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -81,7 +82,7 @@ internal static partial class ConfigurationFileManager
                     "Enable", true, "Toggle this specific drop. This can be used to disable existing drops.",
                     (value, builder) => builder.Enabled = value))
             .ToFile(config => config
-                .Map("Enable", x => x.Enabled));
+                .Map("Enable", x => x.Enabled.Value));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -89,7 +90,7 @@ internal static partial class ConfigurationFileManager
                     "SetAmountMin", 1, "Sets minimum amount pr drop. Behaviour depends on entity and item.",
                     (value, builder) => builder.AmountMin = value))
             .ToFile(config => config
-                .Map("SetAmountMin", x => x.AmountMin));
+                .Map("SetAmountMin", x => x.AmountMin.Value));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -97,7 +98,7 @@ internal static partial class ConfigurationFileManager
                     "SetAmountMax", 1, "Sets maximum amount pr drop. Behaviour depends on entity and item.",
                     (value, builder) => builder.AmountMax = value))
             .ToFile(config => config
-                .Map("SetAmountMax", x => x.AmountMax));
+                .Map("SetAmountMax", x => x.AmountMax.Value));
 
         mapper.AddDropOption()
             .FromFile(c => c
@@ -105,7 +106,7 @@ internal static partial class ConfigurationFileManager
                     "SetTemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
                     (value, builder) => builder.Weight = value))
             .ToFile(c => c
-                .Map("SetTemplateWeight", x => x.Weight));
+                .Map("SetTemplateWeight", x => x.Weight.Value));
 
         // Drop conditions
         mapper.AddDropOption()
@@ -146,17 +147,19 @@ internal static partial class ConfigurationFileManager
                 .Map("ConditionNotDay", x => true));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<bool?>(
-                "ConditionNotNight", null, "If true, will not drop during night.",
-                (value, builder) => builder.ConditionDaytimeNotNight(value)))
+            .FromFile(c => c
+                .Map<bool?>(
+                    "ConditionNotNight", null, "If true, will not drop during night.",
+                    (value, builder) => builder.ConditionDaytimeNotNight(value)))
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotNight>())
                 .Map("ConditionNotNight", x => true));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<bool?>(
-                "ConditionNotAfternoon", null, "If true, will not drop during afternoon.",
-                (value, builder) => builder.ConditionDaytimeNotAfternoon(value)))
+            .FromFile(c => c
+                .Map<bool?>(
+                    "ConditionNotAfternoon", null, "If true, will not drop during afternoon.",
+                    (value, builder) => builder.ConditionDaytimeNotAfternoon(value)))
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotAfternoon>())
                 .Map("ConditionNotAfternoon", x => true));

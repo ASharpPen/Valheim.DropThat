@@ -57,7 +57,7 @@ internal static partial class ConfigurationFileManager
                     "Minimum amount dropped.",
                     (value, builder) => builder.AmountMin = value))
             .ToFile(config => config
-                .Map("SetAmountMin", x => x.AmountMin))
+                .Map("SetAmountMin", x => x.AmountMin.Value))
 
             .AddOption()
             .FromFile(config => config
@@ -67,7 +67,7 @@ internal static partial class ConfigurationFileManager
                     "Maximum amount dropped.",
                     (value, builder) => builder.AmountMax = value))
             .ToFile(config => config
-                .Map("SetAmountMax", x => x.AmountMax))
+                .Map("SetAmountMax", x => x.AmountMax.Value))
 
             .AddOption()
             .FromFile(config => config
@@ -83,7 +83,7 @@ internal static partial class ConfigurationFileManager
                     "SetDropOnePerPlayer", false, "If set, will drop one of this item per player. Ignoring other factors such as SetAmountMin / Max.",
                     (value, builder) => builder.DropOnePerPlayer = value))
             .ToFile(config => config
-                .Map("SetDropOnePerPlayer", x => x.DropOnePerPlayer))
+                .Map("SetDropOnePerPlayer", x => x.DropOnePerPlayer.Value))
 
             .AddOption()
             .FromFile(config => config
@@ -91,7 +91,7 @@ internal static partial class ConfigurationFileManager
                     "SetScaleByLevel", true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.",
                     (value, builder) => builder.ScaleByLevel = value))
             .ToFile(config => config
-                .Map("SetScaleByLevel", x => x.ScaleByLevel))
+                .Map("SetScaleByLevel", x => x.ScaleByLevel.Value))
             ;
 
         // Modifiers
