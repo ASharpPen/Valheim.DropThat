@@ -1,5 +1,7 @@
-﻿using ThatCore.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
+#if TEST
+using ThatCore.Extensions;
+#endif
 
 namespace DropThat.Utilities.Valheim;
 
@@ -7,7 +9,7 @@ public static class ZdoExtensions
 {
     private const string Prefix = "DropThat_";
 
-#if DEBUG
+#if TEST
     private static readonly int _spawnBiomeHash = (Prefix + "spawn-biome").HashInteger();
     private static readonly int _spawnPositionHash = (Prefix + "spawn-position").HashInteger();
 #else
@@ -42,7 +44,8 @@ public static class ZdoExtensions
 
     public static Vector3? GetSpawnPosition(this ZDO zdo)
     {
-        if (zdo.m_vec3.TryGetValue(_spawnPositionHash, out Vector3 result))
+        if (ZDOExtraData.s_vec3.TryGetValue(zdo.m_uid, out var zdoCache) &&
+            zdoCache.TryGetValue(_spawnPositionHash, out Vector3 result))
         {
             return result;
         }
@@ -59,24 +62,6 @@ public static class ZdoExtensions
         else
         {
             zdo.Set(_spawnPositionHash, value.Value);
-        }
-    }
-
-    public static void RemoveInt(this ZDO zdo, int hash)
-    {
-        if (zdo.m_ints is not null &&
-            zdo.m_ints.Remove(hash))
-        {
-            zdo.IncreseDataRevision();
-        }
-    }
-
-    public static void RemoveVector3(this ZDO zdo, int hash)
-    {
-        if (zdo.m_vec3 is not null &&
-            zdo.m_vec3.Remove(hash))
-        {
-            zdo.IncreseDataRevision();
         }
     }
 }

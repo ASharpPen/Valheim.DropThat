@@ -20,7 +20,7 @@ public class DropThatPlugin : BaseUnityPlugin
     {
         Log.SetLogger(new BepInExLogger(Logger));
 
-#if DEBUG
+#if DEBUG || TEST
         Log.DevelopmentEnabled = true;
 #endif
 

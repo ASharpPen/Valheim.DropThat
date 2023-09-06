@@ -27,6 +27,8 @@ public class DamageRecord
     /// </summary>
     public double Timestamp { get; set; }
 
+    public EntityType AttackerType { get; set; } = EntityType.Other;
+
     public EntityType GetHitterType()
     {
         EntityType hitBy = EntityType.Other;

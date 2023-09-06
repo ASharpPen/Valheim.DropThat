@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DropThat.Utilities.Valheim;
 
-public static class BiomeExtensions
+internal static class BiomeExtensions
 {
     public static string GetNames(this Heightmap.Biome biome)
     {
@@ -13,7 +13,7 @@ public static class BiomeExtensions
 
         foreach (Heightmap.Biome potentialBiome in Enum.GetValues(typeof(Heightmap.Biome)))
         {
-            if (potentialBiome == Heightmap.Biome.BiomesMax || potentialBiome == Heightmap.Biome.None)
+            if (potentialBiome == Heightmap.Biome.None)
             {
                 continue;
             }

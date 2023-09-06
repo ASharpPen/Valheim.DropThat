@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Utilities;
 using ThatCore.Cache;
+using UnityEngine;
 
 namespace DropThat.Creature.DamageRecords;
 
@@ -26,7 +29,8 @@ internal static class RecordRecentHits
 
     public static void SetRecentHit(Character character, HitData hitData)
     {
-        if (hitData is null)
+        if (hitData is null ||
+            character.IsNull())
         {
             return;
         }
@@ -36,10 +40,13 @@ internal static class RecordRecentHits
         // Clean up old hits
         CleanUpOldHits(recentHits);
 
+
+
         recentHits.Add(new DamageRecord
         {
             Hit = hitData,
-            Timestamp = GetTimestamp()
+            Timestamp = GetTimestamp(),
+            AttackerType = GetAttackerEntityType(hitData)
         });
     }
 
@@ -64,5 +71,31 @@ internal static class RecordRecentHits
     private static double GetTimestamp()
     {
         return (ZNet.instance.IsNotNull() ? ZNet.instance.GetTimeSeconds() : 0);
+    }
+
+    private static EntityType GetAttackerEntityType(HitData hit)
+    {
+        if (!hit.HaveAttacker())
+        {
+            return EntityType.Other;
+        }
+
+        GameObject attacker = ZNetScene.instance.FindInstance(hit.m_attacker);
+
+        if (attacker.IsNull())
+        {
+            return EntityType.Other;
+        }
+
+        var attackerCharacter = ComponentCache.Get<Character>(attacker);
+
+        if (attackerCharacter.IsNull())
+        {
+            return EntityType.Other;
+        }
+
+        return attackerCharacter.IsPlayer()
+            ? EntityType.Player
+            : EntityType.Creature;
     }
 }

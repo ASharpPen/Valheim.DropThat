@@ -3,6 +3,7 @@ using System.Linq;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
+using ThatCore.Logging;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -29,7 +30,19 @@ public class ConditionHitByEntityTypeRecently : IDropCondition
 
         var recentHits = RecordRecentHits.GetRecentHits(character);
 
-        return recentHits.Any(x => EntityTypes.Contains(x.GetHitterType()));
+#if DEBUG && VERBOSE
+        Log.LogTrace($"[{character.name}] Checking recent hits: " + recentHits.Select(x => GetHitterType(x)).Join());
+        Log.LogTrace($"[{character.name}] Searching for hits by: " + entities.Join());
+#endif
+
+        var match = recentHits.Any(x => EntityTypes.Contains(x.AttackerType));
+
+        if (!match)
+        {
+            Log.Trace?.Log($"Filtered drop '{context.Item.name}' due not being hit recently by required entity type.");
+        }
+
+        return !match;
     }
 }
 

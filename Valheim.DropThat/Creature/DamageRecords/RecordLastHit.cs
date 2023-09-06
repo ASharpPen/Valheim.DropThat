@@ -1,5 +1,8 @@
-﻿using DropThat.Utilities;
+﻿using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Utilities;
 using ThatCore.Cache;
+using UnityEngine;
 
 namespace DropThat.Creature.DamageRecords;
 
@@ -27,7 +30,8 @@ public static class RecordLastHit
 
     public static void SetLastHit(Character character, HitData hitData)
     {
-        if (character.IsNull())
+        if (hitData is null ||
+            character.IsNull())
         {
             return;
         }
@@ -39,5 +43,33 @@ public static class RecordLastHit
         {
             lastHit.Timestamp = ZNet.instance.GetTimeSeconds();
         }
+
+        lastHit.AttackerType = GetAttackerEntityType(hitData);
+    }
+
+    private static EntityType GetAttackerEntityType(HitData hit)
+    {
+        if (!hit.HaveAttacker())
+        {
+            return EntityType.Other;
+        }
+
+        GameObject attacker = ZNetScene.instance.FindInstance(hit.m_attacker);
+
+        if (attacker.IsNull())
+        {
+            return EntityType.Other;
+        }
+
+        var attackerCharacter = ComponentCache.Get<Character>(attacker);
+
+        if (attackerCharacter.IsNull())
+        {
+            return EntityType.Other;
+        }
+
+        return attackerCharacter.IsPlayer()
+            ? EntityType.Player
+            : EntityType.Creature;
     }
 }
