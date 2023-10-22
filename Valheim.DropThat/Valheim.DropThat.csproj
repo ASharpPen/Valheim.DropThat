@@ -4,7 +4,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>2.3.9</Version>
+    <Version>2.3.10</Version>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <AssemblyName>Valheim.DropThat</AssemblyName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -70,7 +70,7 @@
     <None Include="packages.config" />
   </ItemGroup>
 
-	<Target Name="PropagateVersionNumber" BeforeTargets="Build" Condition="'$(Configuration)'=='Release'">
+	<Target Name="PropagateVersionNumber" BeforeTargets="Build">
 
 		<PropertyGroup>
 			<RepoDir>$([System.IO.Path]::GetFullPath($([System.IO.Path]::Combine($(MSBuildProjectDirectory),'..'))))</RepoDir>

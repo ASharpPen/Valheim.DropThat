@@ -58,10 +58,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
             sBuilder.AppendLine($"## DropTable Source: {source.GetType().Name}; " + additionalHeaders.Join(delimiter: "; "));
             sBuilder.AppendLine($"[{sourceName}]");
 
-            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropChance)}={(dropTable.m_dropChance * 100).ToString(CultureInfo.InvariantCulture)}");
-            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropOnlyOnce)}={dropTable.m_oneOfEach}");
-            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropMin)}={dropTable.m_dropMin}");
-            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropMax)}={dropTable.m_dropMax}");
+            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropChance)} = {(dropTable.m_dropChance * 100).ToString(CultureInfo.InvariantCulture)}");
+            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropOnlyOnce)} = {dropTable.m_oneOfEach}");
+            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropMin)} = {dropTable.m_dropMin}");
+            sBuilder.AppendLine($"{nameof(DropTableEntityConfiguration.SetDropMax)} = {dropTable.m_dropMax}");
 
             for (int i = 0; i < dropTable.m_drops.Count; ++i)
             {
@@ -69,10 +69,11 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
                 sBuilder.AppendLine();
                 sBuilder.AppendLine($"[{sourceName}.{i}]");
-                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.PrefabName)}={(drop.m_item.IsNotNull() ? drop.m_item.name : "")}");
-                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetTemplateWeight)}={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
-                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMin)}={drop.m_stackMin}");
-                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMax)}={drop.m_stackMax}");
+                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.PrefabName)} = {(drop.m_item.IsNotNull() ? drop.m_item.name : "")}");
+                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetTemplateWeight)} = {drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
+                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMin)} = {drop.m_stackMin}");
+                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.SetAmountMax)} = {drop.m_stackMax}");
+                sBuilder.AppendLine($"{nameof(DropTableItemConfiguration.DisableResourceModifierScaling)} = {drop.m_dontScale}");
             }
 
             return sBuilder.ToString();

@@ -85,6 +85,7 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<int> SetAmountMin = new(1, "Sets minimum amount pr drop. Behaviour depends on entity and item.");
         public ConfigurationEntry<int> SetAmountMax = new(1, "Sets maximum amount pr drop. Behaviour depends on entity and item.");
         public ConfigurationEntry<float> SetTemplateWeight = new(1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.");
+        public ConfigurationEntry<bool> DisableResourceModifierScaling = new(false, "Disables resource scaling from world-modifiers if true.");
 
         public ConfigurationEntry<float> ConditionAltitudeMin = new(-10000, "Minimum distance above or below sea-level for drop to be enabled.");
         public ConfigurationEntry<float> ConditionAltitudeMax = new(10000, "Maximum distance above or below sea-level for drop to be enabled.");

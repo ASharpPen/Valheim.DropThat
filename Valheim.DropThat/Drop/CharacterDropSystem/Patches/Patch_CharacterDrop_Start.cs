@@ -107,6 +107,7 @@ namespace Valheim.DropThat.Drop.CharacterDropSystem.Patches
                 m_chance = dropConfig.SetChanceToDrop.Value / 100,
                 m_levelMultiplier = dropConfig.SetScaleByLevel.Value,
                 m_onePerPlayer = dropConfig.SetDropOnePerPlayer.Value,
+                m_dontScale = dropConfig.DisableResourceModifierScaling.Value,
             };
 
             DropExtended.Set(newDrop, dropConfig);

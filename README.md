@@ -2,11 +2,9 @@
 
 Drop That! is a mod that enables changing existing loot tables through configuration files. It can either add or replace existing drops.
 
-The goal is a reasonably simple tool for either players or modders to set up the loot they want, when they want it.
+See the [Jötunn item data](https://valheim-modding.github.io/Jotunn/data/objects/item-list.html) to get a list of item names which can be used.
 
-See the [Valheim wiki](https://github.com/Valheim-Modding/Wiki/wiki/ObjectDB-Table) to get a list of item names which can be used.
-
-A pretty comprehensive guide for prefabs can be found [here](https://gist.github.com/Sonata26/e2b85d53e125fb40081b18e2aee6d584)
+A full list of prefabs can also be found at [Jotunn prefab data](https://valheim-modding.github.io/Jotunn/data/prefabs/prefab-list.html).
 
 # Documentation
 
@@ -91,6 +89,9 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
+- v2.3.10:
+	- Added DisableResourceModifierScaling to both CharacterDrop and DropTable settings.
+	- Added support for world-modifier resource scaling when using DropTable configs.
 - v2.3.9:
 	- Fixed: Compatibility with Valheim v.0.217.14.
 - v2.3.8:

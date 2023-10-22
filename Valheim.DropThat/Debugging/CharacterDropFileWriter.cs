@@ -41,13 +41,14 @@ namespace Valheim.DropThat.Debugging
                         : item.m_prefab.GetCleanedName();
 
                     lines.Add($"[{itemName}.{i}]");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.PrefabName)}={itemPrefabName}");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.EnableConfig)}={true}");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMin)}={item.m_amountMin}");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMax)}={item.m_amountMax}");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetChanceToDrop)}={(item.m_chance * 100).ToString(CultureInfo.InvariantCulture)}");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetDropOnePerPlayer)}={item.m_onePerPlayer}");
-                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetScaleByLevel)}={item.m_levelMultiplier}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.PrefabName)} = {itemPrefabName}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.EnableConfig)} = {true}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMin)} = {item.m_amountMin}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetAmountMax)} = {item.m_amountMax}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetChanceToDrop)} = {(item.m_chance * 100).ToString(CultureInfo.InvariantCulture)}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetDropOnePerPlayer)} = {item.m_onePerPlayer}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.SetScaleByLevel)} = {item.m_levelMultiplier}");
+                    lines.Add($"{nameof(CharacterDropItemConfiguration.DisableResourceModifierScaling)} = {item.m_dontScale}");
                     lines.Add("");
                 }
             }

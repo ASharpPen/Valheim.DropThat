@@ -58,7 +58,8 @@ namespace Valheim.DropThat.Configuration.ConfigTypes
         public ConfigurationEntry<float> SetChanceToDrop = new ConfigurationEntry<float>(100, "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15");
         public ConfigurationEntry<bool> SetDropOnePerPlayer = new ConfigurationEntry<bool>(false, "If set, will drop one of this item per player. Ignoring other factors such as SetAmountMin / Max.");
         public ConfigurationEntry<bool> SetScaleByLevel = new ConfigurationEntry<bool>(true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.");
-
+        public ConfigurationEntry<bool> DisableResourceModifierScaling = new ConfigurationEntry<bool>(false, "Disables resource scaling from world-modifiers if true.");
+ 
         #endregion
 
         #region DropExtended Modifiers

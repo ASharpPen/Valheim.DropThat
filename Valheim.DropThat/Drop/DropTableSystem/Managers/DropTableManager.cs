@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EpicLoot;
 using UnityEngine;
 using Valheim.DropThat.Core;
 using Valheim.DropThat.Drop.DropTableSystem.Caches;
 using Valheim.DropThat.Drop.DropTableSystem.Managers;
 using Valheim.DropThat.Drop.DropTableSystem.Wrapper;
+using static ItemDrop;
 
 namespace Valheim.DropThat.Drop.DropTableSystem
 {
@@ -13,11 +15,14 @@ namespace Valheim.DropThat.Drop.DropTableSystem
     {
         public static List<ItemDrop.ItemData> GetItemDrops(DropTable dropTable, DropSourceTemplateLink context)
         {
-            var drops = GetDrops(dropTable, context, ConvertTemplateToItem);
+            var drops = GetDrops(
+                dropTable,
+                context,
+                ConvertTemplateToItem);
 
 #if DEBUG
             Log.LogDebug($"Dropping {drops.Count} items:");
-            foreach(var drop in drops)
+            foreach (var drop in drops)
             {
                 Log.LogDebug($"\t{drop.m_shared.m_name}");
             }
@@ -28,7 +33,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem
 
         public static List<GameObject> GetDrops(DropTable dropTable, DropSourceTemplateLink context)
         {
-            var drops = GetDrops(dropTable, context, ConvertTemplateToDrop);
+            var drops = GetDrops(
+                dropTable,
+                context,
+                ConvertTemplateToDrop);
 
 #if DEBUG
             Log.LogDebug($"Dropping {drops.Count} items:");
@@ -40,7 +48,11 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             return drops;
         }
 
-        private static List<T> GetDrops<T>(DropTable dropTable, DropSourceTemplateLink context, Func<DropTemplate, IEnumerable<T>> DropConverter) where T : class
+        private static List<T> GetDrops<T>(
+            DropTable dropTable,
+            DropSourceTemplateLink context,
+            Func<DropTemplate, IEnumerable<T>> DropConverter) 
+            where T : class
         {
             var dropTemplates = DropConfigManager.GetPossibleDrops(context, dropTable);
 
@@ -72,7 +84,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
 
 #if DEBUG
             Log.LogDebug("Drops after filter:");
-            foreach(var drop in workingList)
+            foreach (var drop in workingList)
             {
                 Log.LogDebug("\t" + drop.Drop.m_item.name);
             }
@@ -130,7 +142,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
                         result.AddRange(DropConverter(workingList.First()));
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Log.LogWarning("Error while rolling drop. Skipping roll\n", e);
                 }
@@ -147,24 +159,68 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             {
                 ItemDrop.ItemData itemData = template.Drop.m_item.GetComponent<ItemDrop>().m_itemData.Clone();
 
-                int minAmount = Math.Max(1, template.Drop.m_stackMin);
-                int maxAmount = Math.Min(itemData.m_shared.m_maxStackSize, template.Drop.m_stackMax) + 1;
+                // Calculate resource scaled amount
+                var amount = CalculateAmount(template);
 
-                itemData.m_dropPrefab = template.Drop.m_item.Wrap();
-                itemData.m_stack = UnityEngine.Random.Range(minAmount, maxAmount);
-                itemData.m_quality = template.Config?.SetQualityLevel ?? 1;
-                itemData.m_durability = (template.Config?.SetDurability ?? -1f) >= 0
-                    ? template.Config.SetDurability
-                    : itemData.m_durability; //Use whatever is default
+                // Split into multiple items if stackSize less than amount.
+                if (amount > itemData.m_shared.m_maxStackSize)
+                {
+                    int stacks = Mathf.CeilToInt(amount / (float)itemData.m_shared.m_maxStackSize);
 
-                // Store reference to both wrapped prefab and ItemData object, to ensure we can keep track of it.
-                DropTemplateCache.RegisterTemplate(itemData, template);
-                DropTemplateCache.RegisterTemplate(itemData.m_dropPrefab, template);
+#if DEBUG
+                    Log.LogDebug($"Splitting '{amount}' drops of '{itemData.m_shared.m_name}' into '{stacks}' stacks.");
+#endif
 
-                Item[0] = itemData;
-                return Item;
+                    List<ItemDrop.ItemData> drops = new(stacks);
+
+                    int remainingAmount = amount;
+
+                    for (int i = 0; i < stacks; ++i)
+                    {
+                        ItemDrop.ItemData dropItemData = template.Drop.m_item.GetComponent<ItemDrop>().m_itemData.Clone();
+
+                        var dropAmount = Math.Min(remainingAmount, itemData.m_shared.m_maxStackSize);
+
+#if DEBUG
+                        Log.LogDebug($"    {itemData.m_shared.m_name}: {dropAmount}");
+#endif
+
+
+                        dropItemData.m_dropPrefab = template.Drop.m_item.Wrap();
+                        dropItemData.m_stack = dropAmount;
+                        dropItemData.m_quality = template.Config?.SetQualityLevel ?? 1;
+                        dropItemData.m_durability = (template.Config?.SetDurability ?? -1f) >= 0
+                            ? template.Config.SetDurability
+                            : dropItemData.m_durability; //Use whatever is default
+
+                        // Store reference to both wrapped prefab and ItemData object, to ensure we can keep track of it.
+                        DropTemplateCache.RegisterTemplate(dropItemData, template);
+                        DropTemplateCache.RegisterTemplate(dropItemData.m_dropPrefab, template);
+
+                        drops.Add(dropItemData);
+                        remainingAmount -= dropAmount;
+                    }
+
+                    return drops;
+                }
+                else
+                {
+                    itemData.m_dropPrefab = template.Drop.m_item.Wrap();
+                    itemData.m_stack = amount;
+                    itemData.m_quality = template.Config?.SetQualityLevel ?? 1;
+                    itemData.m_durability = (template.Config?.SetDurability ?? -1f) >= 0
+                        ? template.Config.SetDurability
+                        : itemData.m_durability; //Use whatever is default
+
+                    // Store reference to both wrapped prefab and ItemData object, to ensure we can keep track of it.
+                    DropTemplateCache.RegisterTemplate(itemData, template);
+                    DropTemplateCache.RegisterTemplate(itemData.m_dropPrefab, template);
+
+                    Item[0] = itemData;
+                    return Item;
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.LogError("Error while attempting to prepare new item data", e);
                 return Enumerable.Empty<ItemDrop.ItemData>();
@@ -176,10 +232,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             var drop = template.Drop.m_item.Wrap();
             DropTemplateCache.RegisterTemplate(drop, template);
 
-            int minAmount = Math.Max(1, template.Drop.m_stackMin);
-            int maxAmount = template.Drop.m_stackMax + 1;
-
-            int amount = UnityEngine.Random.Range(minAmount, maxAmount);
+            var amount = CalculateAmount(template);
 
             GameObject[] result = new GameObject[amount];
 
@@ -189,6 +242,42 @@ namespace Valheim.DropThat.Drop.DropTableSystem
             }
 
             return result;
+        }
+
+        private static int CalculateAmount(DropTemplate template)
+        {
+            int minAmount = Math.Max(1, template.Drop.m_stackMin);
+            int maxAmount = template.Drop.m_stackMax + 1;
+
+            int preScaledAmount = UnityEngine.Random.Range(minAmount, maxAmount);
+
+#if DEBUG
+            Log.LogDebug($"Calculated prescaled amount '{preScaledAmount}' in range [{minAmount}, {maxAmount}]");
+#endif
+
+            if (template.Drop.m_dontScale)
+            {
+
+                return preScaledAmount;
+            }
+
+            float scaledAmount = preScaledAmount * Game.m_resourceRate;
+
+            float remainderAmount = scaledAmount % 1f;
+
+            int finalAmount = (int)scaledAmount;
+
+            const float epsilon = 0.001f;
+            if (remainderAmount > epsilon &&
+                remainderAmount <= UnityEngine.Random.Range(0, 1f))
+            {
+                finalAmount++;
+            }
+
+#if DEBUG
+            Log.LogDebug($"Calculated scaled amount '{scaledAmount}' resulting in '{(int)scaledAmount}' + '1 * {remainderAmount*100}%'");
+#endif
+            return finalAmount;
         }
     }
 }
