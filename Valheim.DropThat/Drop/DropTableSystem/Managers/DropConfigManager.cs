@@ -136,6 +136,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Managers
                     m_weight = itemConfig.SetTemplateWeight,
                     m_stackMin = itemConfig.SetAmountMin,
                     m_stackMax = itemConfig.SetAmountMax,
+                    m_dontScale = itemConfig.DisableResourceModifierScaling,                    
                 },
                 Conditions = ExtractConditions(itemConfig),
                 Modifiers = ExtractModifiers(itemConfig),
