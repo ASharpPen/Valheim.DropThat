@@ -61,6 +61,7 @@ internal static class CharacterDropFileWriter
                     lines.Add($"SetChanceToDrop={(item.m_chance * 100).ToString(CultureInfo.InvariantCulture)}");
                     lines.Add($"SetDropOnePerPlayer={item.m_onePerPlayer}");
                     lines.Add($"SetScaleByLevel={item.m_levelMultiplier}");
+                    lines.Add($"DisableResourceModifierScaling={item.m_dontScale}");
                     lines.Add("");
                 }
             }

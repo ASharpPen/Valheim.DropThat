@@ -72,6 +72,7 @@ internal static class DropTableDataWriter
             sBuilder.AppendLine($"SetTemplateWeight={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
             sBuilder.AppendLine($"SetAmountMin={drop.m_stackMin}");
             sBuilder.AppendLine($"SetAmountMax={drop.m_stackMax}");
+            sBuilder.AppendLine($"DisableResourceModifierScaling={drop.m_dontScale}");
         }
 
         return sBuilder.ToString();

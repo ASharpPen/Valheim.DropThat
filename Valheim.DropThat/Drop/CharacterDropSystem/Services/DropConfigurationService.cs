@@ -27,6 +27,7 @@ internal static class DropConfigurationService
             m_chance = template.ChanceToDrop.Value.GetValueOrDefault() / 100,
             m_levelMultiplier = template.ScaleByLevel.Value.GetValueOrDefault(),
             m_onePerPlayer = template.DropOnePerPlayer.Value.GetValueOrDefault(),
+            m_dontScale = template.DisableResourceModifierScaling.Value.GetValueOrDefault(),
         };
 
         return true;
@@ -54,6 +55,7 @@ internal static class DropConfigurationService
         template.AmountMin.SetIfNotNull(ref drop.m_amountMin);
         template.ScaleByLevel.SetIfNotNull(ref drop.m_levelMultiplier);
         template.DropOnePerPlayer.SetIfNotNull(ref drop.m_onePerPlayer);
+        template.DisableResourceModifierScaling.SetIfNotNull(ref drop.m_dontScale);
 
         if (template.ChanceToDrop.IsSet &&
             template.ChanceToDrop.Value is not null)

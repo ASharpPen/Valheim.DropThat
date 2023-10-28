@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using DropThat.Drop.CharacterDropSystem.Conditions;
 using DropThat.Drop.Options;
 using ThatCore.Models;
@@ -38,4 +37,6 @@ public class CharacterDropDropTemplate
     public Optional<bool?> AutoStack { get; set; }
 
     public Optional<int?> AmountLimit { get; set; }
+
+    public Optional<bool?> DisableResourceModifierScaling { get; set; }
 }

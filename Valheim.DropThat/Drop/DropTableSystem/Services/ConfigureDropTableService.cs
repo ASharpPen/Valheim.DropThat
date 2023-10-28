@@ -153,6 +153,12 @@ internal static class ConfigureDropTableService
             drop.m_weight = dropTemplate.Weight.Value.Value;
         }
 
+        if (dropTemplate.DisableResourceModifierScaling.IsSet &&
+            dropTemplate.DisableResourceModifierScaling.Value is not null)
+        {
+            drop.m_dontScale = dropTemplate.DisableResourceModifierScaling.Value.Value;
+        }
+
         return true;
     }
 
@@ -196,6 +202,12 @@ internal static class ConfigureDropTableService
             dropTemplate.Weight.Value is not null)
         {
             drop.m_weight = dropTemplate.Weight.Value.Value;
+        }
+
+        if (dropTemplate.DisableResourceModifierScaling.IsSet &&
+            dropTemplate.DisableResourceModifierScaling.Value is not null)
+        {
+            drop.m_dontScale = dropTemplate.DisableResourceModifierScaling.Value.Value;
         }
 
         return drop;

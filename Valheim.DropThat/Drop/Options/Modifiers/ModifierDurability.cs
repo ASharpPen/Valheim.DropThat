@@ -31,7 +31,7 @@ public class ModifierDurability : IItemModifier
             return;
         }
 
-        Log.Debug?.Log($"Setting durability of item '{itemDrop.name}' to {Durability}.");
+        Log.Trace?.Log($"Setting durability of item '{itemDrop.name}' to {Durability}.");
         itemDrop.m_itemData.m_durability = Durability.Value;
     }
 

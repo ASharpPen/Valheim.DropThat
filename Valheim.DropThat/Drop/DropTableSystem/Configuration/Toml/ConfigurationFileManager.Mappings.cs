@@ -108,6 +108,14 @@ internal static partial class ConfigurationFileManager
             .ToFile(c => c
                 .Map("SetTemplateWeight", x => x.Weight.Value));
 
+        mapper.AddDropOption()
+            .FromFile(config => config
+                .Map<bool?>(
+                    "DisableResourceModifierScaling", false, "Disables resource scaling from world-modifiers if true.",
+                    (value, builder) => builder.DisableResourceModifierScaling = value))
+            .ToFile(x => x
+                .Map("DisableResourceModifierScaling", x => x.DisableResourceModifierScaling.Value));
+
         // Drop conditions
         mapper.AddDropOption()
             .FromFile(c => c

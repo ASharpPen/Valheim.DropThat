@@ -51,6 +51,12 @@ internal static partial class ConfigurationFileManager
                     "SetTemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
                     (value, builder) => builder.Weight = value));
 
+        mapper.AddDropOption()
+            .FromFile(config => config
+                .Map<bool?>(
+                    "DisableResourceModifierScaling", false, "Disables resource scaling from world-modifiers if true.",
+                    (value, builder) => builder.DisableResourceModifierScaling = value));
+
         // Drop conditions
         mapper.AddDropOption()
             .FromFile(c => c

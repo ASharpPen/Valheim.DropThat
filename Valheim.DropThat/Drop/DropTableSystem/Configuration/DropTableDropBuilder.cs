@@ -34,6 +34,8 @@ internal class DropTableDropBuilder
 
     public Optional<float?> Weight { get; set; }
 
+    public Optional<bool?> DisableResourceModifierScaling { get; set; }
+
     public DropTableDropBuilder(
         uint id,
         IHaveDropBuilders parent)
@@ -57,6 +59,7 @@ internal class DropTableDropBuilder
         AmountMin.DoIfSet(x => template.AmountMin = x);
         AmountMax.DoIfSet(x => template.AmountMax = x);
         Weight.DoIfSet(x => template.Weight = x);
+        DisableResourceModifierScaling.DoIfSet(x => template.DisableResourceModifierScaling = x);
 
         return template;
     }

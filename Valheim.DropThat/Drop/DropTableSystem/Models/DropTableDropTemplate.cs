@@ -29,4 +29,6 @@ public class DropTableDropTemplate
     public Optional<int?> AmountMax { get; set; }
 
     public Optional<float?> Weight { get; set; }
+
+    public Optional<bool?> DisableResourceModifierScaling { get; set; }
 }

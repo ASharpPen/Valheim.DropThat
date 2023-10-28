@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using DropThat.Caches;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
 using DropThat.Drop.DropTableSystem.Wrapper;
@@ -99,7 +98,6 @@ internal static class DropTableManager
 
         var rolledDrops = DropRollerService.RollDrops(dropTable, source, drops);
 
-        // Apply modifiers and finalize results as ItemData.
         if (Log.TraceEnabled)
         {
             Log.Trace?.Log($"Dropping {drops.Count} items:");
@@ -109,49 +107,9 @@ internal static class DropTableManager
             }
         }
 
-        var convertedDrops = drops.Select((drop) =>
-        {
-            var itemDrop = ComponentCache.Get<ItemDrop>(drop.DropData.m_item);
-
-            if (itemDrop.IsNull())
-            {
-                return null;
-            }
-
-            ItemDrop.ItemData itemData = itemDrop.m_itemData.Clone();
-
-            itemData.m_dropPrefab = drop.DropData.m_item;
-            itemData.m_stack = UnityEngine.Random.Range(
-                Math.Max(1, drop.DropData.m_stackMin),
-                1 + Math.Min(itemData.m_shared.m_maxStackSize, drop.DropData.m_stackMax)
-                );
-
-            if (drop.DropTemplate?.ItemModifiers is not null)
-            {
-                // Apply modifiers to ItemData.
-                ItemModifierContext<ItemDrop.ItemData> dropContext = new()
-                {
-                    Item = itemData,
-                    Position = source.transform.position
-                };
-
-                foreach (var modifier in drop.DropTemplate.ItemModifiers)
-                {
-                    try
-                    {
-                        modifier.Modify(dropContext);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error?.Log(
-                            $"Error while attempting to apply modifier '{modifier.GetType().Name}' " +
-                            $"to '{drop.TableTemplate.PrefabName}.{drop.DropTemplate.Id}'.", e);
-                    }
-                }
-            }
-
-            return itemData;
-        });
+        // Apply modifiers, roll/scale drop amount and finalize results as ItemData.
+        var convertedDrops = drops.SelectMany(drop =>
+            DropScalerService.ScaleDropsAsItemData(source, drop));
 
         return convertedDrops
             .Where(x => x is not null)
@@ -207,22 +165,8 @@ internal static class DropTableManager
                 dropObject = wrapper.gameObject;
             }
 
-            // GameObject drops are handled individually.
-            // Roll drop amount, and duplicate entries correspondingly.
-            // TODO: Consider handling amount based on stack-size, and setting the size on the instantiated drop.
-            int amount = UnityEngine.Random.Range(
-                Math.Max(1, drop.DropData.m_stackMin),
-                1 + drop.DropData.m_stackMax
-                );
-
-            var results = new GameObject[amount];
-
-            for (int i = 0; i < amount; ++i)
-            {
-                results[i] = dropObject;
-            }
-
-            return results;
+            // Calculate dropped amount as indivual gameobjects.
+            return DropScalerService.ScaleDropsAsGameObjects(drop);
         });
 
         return convertedDrops

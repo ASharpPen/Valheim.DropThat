@@ -41,6 +41,7 @@ internal class CharacterDropDropBuilder
         ScaleByLevel.DoIfSet(x => template.ScaleByLevel = x);
         AutoStack.DoIfSet(x => template.AutoStack = x);
         AmountLimit.DoIfSet(x => template.AmountLimit = x);
+        DisableResourceModifierScaling.DoIfSet(x => template.DisableResourceModifierScaling = x);
 
         // Clean up irrelevant conditions
         foreach (var condition in template.Conditions.Where(x => x.IsPointless()))
@@ -74,4 +75,6 @@ internal class CharacterDropDropBuilder
     public Optional<bool?> AutoStack { get; set; }
 
     public Optional<int?> AmountLimit { get; set; }
+
+    public Optional<bool?> DisableResourceModifierScaling { get; set; }
 }

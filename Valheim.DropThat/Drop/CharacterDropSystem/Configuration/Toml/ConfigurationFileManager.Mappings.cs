@@ -92,6 +92,14 @@ internal static partial class ConfigurationFileManager
                     (value, builder) => builder.ScaleByLevel = value))
             .ToFile(config => config
                 .Map("SetScaleByLevel", x => x.ScaleByLevel.Value))
+
+            .AddOption()
+            .FromFile(config => config
+                .Map<bool?>(
+                    "DisableResourceModifierScaling", false, "Disables resource scaling from world-modifiers if true.",
+                    (value, builder) => builder.DisableResourceModifierScaling = value))
+            .ToFile(config => config
+                .Map("DisableResourceModifierScaling", x => x.DisableResourceModifierScaling.Value))
             ;
 
         // Modifiers
