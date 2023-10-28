@@ -20,6 +20,8 @@ public static class WrapperGameObjectExtensions
         GameObject wrapperObj = new GameObject(gameObject.name);
         var wrapper = wrapperObj.AddComponent<WrapperComponent>();
 
+        wrapper.SourceId = wrapperObj.GetInstanceID();
+
         WrapperCache.Set(wrapper, gameObject);
 
         return wrapper;

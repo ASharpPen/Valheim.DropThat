@@ -146,28 +146,7 @@ internal static class DropTableManager
 
         // Convert to GameObject.
         // In vanilla, these are the prefabs referenced by the ItemDrop.
-        var convertedDrops = rolledDrops.SelectMany((drop) =>
-        {
-            GameObject dropObject = drop.DropData.m_item;
-
-            if (drop.DropTemplate is not null)
-            {
-                // We need an object instance to track, so that we can run modifiers after instantiation.
-                // So we create a Wrapper object that can be tracked if list and its order is modified later.
-                // Multiple other mods are doing operations in here that muddy the tracking,
-                // so this is necessary even if it is costly and fiddly.
-                var wrapper = dropObject.Wrap();
-
-                // Store reference to template objects
-                wrapper.Drop = drop;
-
-                // Use wrapper object instead of original prefab.
-                dropObject = wrapper.gameObject;
-            }
-
-            // Calculate dropped amount as indivual gameobjects.
-            return DropScalerService.ScaleDropsAsGameObjects(drop);
-        });
+        var convertedDrops = rolledDrops.SelectMany(DropScalerService.ScaleDropsAsGameObjects);
 
         return convertedDrops
             .Where(x => x is not null)

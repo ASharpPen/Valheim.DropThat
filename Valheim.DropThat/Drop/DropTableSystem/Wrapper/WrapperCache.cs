@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using ThatCore.Cache;
+using System.Collections.Generic;
+using DropThat.Drop.DropTableSystem.Models;
+using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Wrapper;
 
@@ -13,6 +16,8 @@ internal class WrapperCache
 
     internal static ManagedCache<WrapperCache> Cache { get; } = new();
 
+    internal static Dictionary<int, WrapperCache> CacheById { get; } = new();
+
     internal static bool TryGet(GameObject key, out WrapperCache cache)
     {
         if (Cache.TryGet(key, out cache))
@@ -23,13 +28,32 @@ internal class WrapperCache
         return false;
     }
 
+    internal static bool TryGet(int instanceId, out WrapperCache cache)
+    {
+        if (CacheById.TryGetValue(instanceId, out cache))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     internal static void Set(WrapperComponent wrapper, GameObject wrapped, bool unwrapped = false)
     {
-        Cache.Set(wrapper, new()
+        var cached = new WrapperCache()
         {
             Wrapper = wrapper,
             Wrapped = wrapped,
             Unwrapped = unwrapped
-        });
+        };
+
+        Cache.Set(wrapper.gameObject, cached);
+
+        CacheById[wrapper.SourceId] = cached;
+    }
+
+    internal static void CleanUp(int instanceId)
+    {
+        CacheById.Remove(instanceId);
     }
 }

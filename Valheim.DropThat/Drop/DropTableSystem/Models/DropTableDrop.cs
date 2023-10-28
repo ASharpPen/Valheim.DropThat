@@ -1,6 +1,6 @@
 ﻿namespace DropThat.Drop.DropTableSystem.Models;
 
-internal class DropTableDrop
+public class DropTableDrop
 {
     public int DropTableIndex { get; set; }
 
