@@ -1,12 +1,9 @@
 ﻿using System;
-using DropThat.Debugging;
-using DropThat.Drop.DropTableSystem.Configuration.Toml;
 using DropThat.Drop.DropTableSystem.Debug;
-using DropThat.Drop.DropTableSystem.Managers;
-using ThatCore.Config.Toml;
 using ThatCore.Logging;
 
 namespace DropThat.Commands;
+
 internal class WriteLoadedDropTablesCommand
 {
     public const string CommandName = "dropthat:print_droptables_loaded";
@@ -33,7 +30,8 @@ internal class WriteLoadedDropTablesCommand
                 {
                     Log.Error?.Log($"Error while attempting to execute {CommandName}.", e);
                 }
-            });
+            },
+            onlyAdmin: true);
     }
 
     private static void ConfigureRPCs(ZNetPeer peer)

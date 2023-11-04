@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using DropThat.Core;
 using DropThat.Drop;
 using ThatCore.Lifecycle;
 using ThatCore.Logging;
 
 namespace DropThat.Commands;
-
-internal interface ITerminalCommand
-{
-    void RegisterCommand();
-}
 
 internal class ReloadConfigsCommand
 {
@@ -40,7 +34,8 @@ internal class ReloadConfigsCommand
                 {
                     Log.Error?.Log($"Error while attempting to execute {CommandName}.", e);
                 }
-            });
+            },
+            onlyAdmin: true);
     }
 
     private static void ConfigureRPCs(ZNetPeer peer)
