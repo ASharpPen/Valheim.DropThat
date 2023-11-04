@@ -4,7 +4,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-internal class ConditionGlobalKeysNotAny : IDropCondition
+public class ConditionGlobalKeysNotAny : IDropCondition
 {
     public string[] GlobalKeys { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
@@ -19,8 +19,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="LibsStripped\**" />
+    <Compile Remove="ThunderstoreResources\**" />
     <EmbeddedResource Remove="LibsStripped\**" />
+    <EmbeddedResource Remove="ThunderstoreResources\**" />
     <None Remove="LibsStripped\**" />
+    <None Remove="ThunderstoreResources\**" />
   </ItemGroup>
   
   <ItemGroup>
@@ -50,10 +53,13 @@
       <HintPath>..\Libs\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore">
-      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.dll</HintPath>
+      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net472\ThatCore.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore.Shared">
-      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net48\ThatCore.Shared.dll</HintPath>
+      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore.Shared\bin\Debug\net472\ThatCore.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="ThatCore.Valheim">
+      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore.Valheim\bin\Debug\ThatCore.Valheim.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
@@ -70,11 +76,6 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>..\Libs\Unity\UnityEngine.UI.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Include="ThunderstoreResources\manifest.json" />
-    <None Include="ThunderstoreResources\README.md" />
   </ItemGroup>
 
 	<ItemGroup>

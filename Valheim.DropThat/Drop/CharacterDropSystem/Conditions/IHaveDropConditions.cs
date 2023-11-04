@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-internal interface IHaveDropConditions
+public interface IHaveDropConditions
 {
     TypeSet<IDropCondition> Conditions { get; }
 }

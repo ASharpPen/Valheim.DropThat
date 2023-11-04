@@ -60,6 +60,7 @@ public static class CharacterDropTemplateManager
 
         Templates = templates.ToDictionary(x => x.PrefabName);
 
+#if !TEST
         // Reset currently loaded creatures, so that drop tables can be re-applied.
         foreach (var instance in CharacterDropSessionManager.CharacterDropInstances.Values)
         {
@@ -82,5 +83,6 @@ public static class CharacterDropTemplateManager
                 ZNetScene.instance.m_instances.Remove(zdo);
             }
         }
+#endif
     }
 }

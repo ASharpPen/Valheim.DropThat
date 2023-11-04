@@ -7,6 +7,7 @@
 			<InputAssemblies Include="$(OutputPath)\YamlDotNet.dll" />
 			<InputAssemblies Include="$(OutputPath)\ThatCore.dll" />
 			<InputAssemblies Include="$(OutputPath)\ThatCore.Shared.dll" />
+			<InputAssemblies Include="$(OutputPath)\ThatCore.Valheim.dll" />
 			<LibraryPath  Include="$(OutputPath)" />
 		</ItemGroup>
 

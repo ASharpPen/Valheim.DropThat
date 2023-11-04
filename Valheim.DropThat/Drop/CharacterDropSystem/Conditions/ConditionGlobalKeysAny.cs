@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Models;
-using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
