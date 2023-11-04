@@ -79,11 +79,15 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="ThatCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net472\ThatCore.dll</HintPath>
+      <HintPath>..\Libs\ThatCore\ThatCore.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore.Shared\bin\Debug\net472\ThatCore.Shared.dll</HintPath>
+      <HintPath>..\Libs\ThatCore\ThatCore.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="ThatCore.Valheim, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\ThatCore\ThatCore.Valheim.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

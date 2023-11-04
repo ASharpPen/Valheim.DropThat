@@ -28,7 +28,7 @@
   
   <ItemGroup>
 	  <PackageReference Include="HarmonyX" Version="2.10.1" />
-	  <PackageReference Include="YamlDotNet" Version="12.2.1" />
+	  <PackageReference Include="YamlDotNet" Version="13.7.1" />
 	  <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
 	  <PackageReference Include="Microsoft.Unity.Analyzers" Version="1.12.0">
 		  <PrivateAssets>all</PrivateAssets>
@@ -53,13 +53,13 @@
       <HintPath>..\Libs\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore">
-      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore\bin\Debug\net472\ThatCore.dll</HintPath>
+      <HintPath>..\Libs\ThatCore\ThatCore.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore.Shared">
-      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore.Shared\bin\Debug\net472\ThatCore.Shared.dll</HintPath>
+      <HintPath>..\Libs\ThatCore\ThatCore.Shared.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore.Valheim">
-      <HintPath>..\..\..\Valheim.ThatCore\src\ThatCore.Valheim\bin\Debug\ThatCore.Valheim.dll</HintPath>
+      <HintPath>..\Libs\ThatCore\ThatCore.Valheim.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
