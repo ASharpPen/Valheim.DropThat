@@ -103,6 +103,6 @@ public class MappingTests
 
         // Assert
         var dropTemplate = template.Drops.First().Value;
-        dropTemplate.PrefabName.Value.Should().Be("Guck");
+        dropTemplate.PrefabName.Should().Be("Guck");
     }
 }

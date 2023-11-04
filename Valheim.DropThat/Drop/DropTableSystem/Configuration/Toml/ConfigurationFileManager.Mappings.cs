@@ -24,7 +24,7 @@ internal static partial class ConfigurationFileManager
                     "SetDropMin", 1, "Minimum of randomly selected entries from drop list. Entries can be picked more than once.",
                     (value, builder) => builder.DropMin = value))
             .ToFile(config => config
-                .Map("SetDropMin", x => x.DropMin.Value))
+                .Map("SetDropMin", x => x.DropMin))
             ;
 
         mapper
@@ -34,7 +34,7 @@ internal static partial class ConfigurationFileManager
                     "SetDropMax", 1, "Maximum of randomly selected entries from drop list. Entries can be picked more than once.",
                     (value, builder) => builder.DropMax = value))
             .ToFile(config => config
-                .Map("SetDropMax", x => x.DropMax.Value));
+                .Map("SetDropMax", x => x.DropMax));
             ;
 
         mapper.AddTableOption()
@@ -43,7 +43,7 @@ internal static partial class ConfigurationFileManager
                     "SetDropChance", 100, "Chance to drop anything at all.",
                     (value, builder) => builder.DropChance = value))
             .ToFile(config => config
-                .Map("SetDropChance", x => x.DropChance.Value));
+                .Map("SetDropChance", x => x.DropChance));
 
         mapper.AddTableOption()
             .FromFile(config => config
@@ -51,7 +51,7 @@ internal static partial class ConfigurationFileManager
                     "SetDropOnlyOnce", false, "If true, will ensure that when selecting entries from drop list, same entry will only be picked once.",
                     (value, builder) => builder.DropOnlyOnce = value))
             .ToFile(config => config
-                .Map("SetDropOnlyOnce", x => x.DropOnlyOnce.Value));
+                .Map("SetDropOnlyOnce", x => x.DropOnlyOnce));
 
         mapper.AddTableOption()
             .FromFile(config => config
@@ -66,7 +66,7 @@ internal static partial class ConfigurationFileManager
                     "PrefabName", default, "Name of prefab to drop.",
                     (value, builder) => builder.PrefabName = value))
             .ToFile(config => config
-                .Map("PrefabName", x => x.PrefabName.Value));
+                .Map("PrefabName", x => x.PrefabName));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -74,7 +74,7 @@ internal static partial class ConfigurationFileManager
                     "EnableConfig", true, "Toggle this specific config entry on/off.",
                     (value, builder) => builder.TemplateEnabled = value))
             .ToFile(config => config
-                .Map("EnableConfig", x => x.TemplateEnabled.Value));
+                .Map("EnableConfig", x => x.TemplateEnabled));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -82,7 +82,7 @@ internal static partial class ConfigurationFileManager
                     "Enable", true, "Toggle this specific drop. This can be used to disable existing drops.",
                     (value, builder) => builder.Enabled = value))
             .ToFile(config => config
-                .Map("Enable", x => x.Enabled.Value));
+                .Map("Enable", x => x.Enabled));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -90,7 +90,7 @@ internal static partial class ConfigurationFileManager
                     "SetAmountMin", 1, "Sets minimum amount pr drop. Behaviour depends on entity and item.",
                     (value, builder) => builder.AmountMin = value))
             .ToFile(config => config
-                .Map("SetAmountMin", x => x.AmountMin.Value));
+                .Map("SetAmountMin", x => x.AmountMin));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -98,7 +98,7 @@ internal static partial class ConfigurationFileManager
                     "SetAmountMax", 1, "Sets maximum amount pr drop. Behaviour depends on entity and item.",
                     (value, builder) => builder.AmountMax = value))
             .ToFile(config => config
-                .Map("SetAmountMax", x => x.AmountMax.Value));
+                .Map("SetAmountMax", x => x.AmountMax));
 
         mapper.AddDropOption()
             .FromFile(c => c
@@ -106,7 +106,7 @@ internal static partial class ConfigurationFileManager
                     "SetTemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
                     (value, builder) => builder.Weight = value))
             .ToFile(c => c
-                .Map("SetTemplateWeight", x => x.Weight.Value));
+                .Map("SetTemplateWeight", x => x.Weight));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -114,7 +114,7 @@ internal static partial class ConfigurationFileManager
                     "DisableResourceModifierScaling", false, "Disables resource scaling from world-modifiers if true.",
                     (value, builder) => builder.DisableResourceModifierScaling = value))
             .ToFile(x => x
-                .Map("DisableResourceModifierScaling", x => x.DisableResourceModifierScaling.Value));
+                .Map("DisableResourceModifierScaling", x => x.DisableResourceModifierScaling));
 
         // Drop conditions
         mapper.AddDropOption()

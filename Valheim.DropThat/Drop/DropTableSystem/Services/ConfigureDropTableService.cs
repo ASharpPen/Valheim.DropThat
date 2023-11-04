@@ -10,28 +10,24 @@ internal static class ConfigureDropTableService
 {
     public static void ConfigureTable(DropTable table, DropTableTemplate template)
     {
-        if (template.DropMin.IsSet &&
-            template.DropMin.Value is not null)
+        if (template.DropMin is not null)
         {
-            table.m_dropMin = template.DropMin.Value.Value;
+            table.m_dropMin = template.DropMin.Value;
         }
 
-        if (template.DropMax.IsSet &&
-            template.DropMax.Value is not null)
+        if (template.DropMax is not null)
         {
-            table.m_dropMax = template.DropMax.Value.Value;
+            table.m_dropMax = template.DropMax.Value;
         }
 
-        if (template.DropChance.IsSet &&
-            template.DropChance.Value is not null)
+        if (template.DropChance is not null)
         {
-            table.m_dropChance = template.DropChance.Value.Value / 100f;
+            table.m_dropChance = template.DropChance.Value / 100f;
         }
 
-        if (template.DropOnlyOnce.IsSet &&
-            template.DropOnlyOnce.Value is not null)
+        if (template.DropOnlyOnce is not null)
         {
-            table.m_oneOfEach = template.DropOnlyOnce.Value.Value;
+            table.m_oneOfEach = template.DropOnlyOnce.Value;
         }
     }
 
@@ -62,7 +58,7 @@ internal static class ConfigureDropTableService
             {
                 var existingDropPrefab = table.m_drops[dropTemplate.Key].m_item.GetCleanedName();
 
-                if (dropTemplate.Value.PrefabName.IsSet &&
+                if (!string.IsNullOrEmpty(dropTemplate.Value.PrefabName) &&
                     existingDropPrefab == template.PrefabName)
                 {
                     Log.Trace?.Log($"Configuring existing drop '{dropTemplate.Key}:{existingDropPrefab}'.");
@@ -116,8 +112,7 @@ internal static class ConfigureDropTableService
             m_weight = 1
         };
 
-        if (dropTemplate.PrefabName.IsSet &&
-            !string.IsNullOrWhiteSpace(dropTemplate.PrefabName))
+        if (!string.IsNullOrWhiteSpace(dropTemplate.PrefabName))
         {
             // Try find object
             var prefab = ZNetScene.instance.GetPrefab(dropTemplate.PrefabName);
@@ -135,28 +130,24 @@ internal static class ConfigureDropTableService
             drop.m_item = prefab;
         }
 
-        if (dropTemplate.AmountMin.IsSet &&
-            dropTemplate.AmountMin.Value is not null)
+        if (dropTemplate.AmountMin is not null)
         {
-            drop.m_stackMin = dropTemplate.AmountMin.Value.Value;
+            drop.m_stackMin = dropTemplate.AmountMin.Value;
         }
 
-        if (dropTemplate.AmountMax.IsSet &&
-            dropTemplate.AmountMax.Value is not null)
+        if (dropTemplate.AmountMax is not null)
         {
-            drop.m_stackMax = dropTemplate.AmountMax.Value.Value;
+            drop.m_stackMax = dropTemplate.AmountMax.Value;
         }
 
-        if (dropTemplate.Weight.IsSet &&
-            dropTemplate.Weight.Value is not null)
+        if (dropTemplate.Weight is not null)
         {
-            drop.m_weight = dropTemplate.Weight.Value.Value;
+            drop.m_weight = dropTemplate.Weight.Value;
         }
 
-        if (dropTemplate.DisableResourceModifierScaling.IsSet &&
-            dropTemplate.DisableResourceModifierScaling.Value is not null)
+        if (dropTemplate.DisableResourceModifierScaling is not null)
         {
-            drop.m_dontScale = dropTemplate.DisableResourceModifierScaling.Value.Value;
+            drop.m_dontScale = dropTemplate.DisableResourceModifierScaling.Value;
         }
 
         return true;
@@ -167,8 +158,7 @@ internal static class ConfigureDropTableService
         DropTableTemplate tableTemplate, 
         DropTableDropTemplate dropTemplate)
     {
-        if (dropTemplate.PrefabName.IsSet &&
-            !string.IsNullOrWhiteSpace(dropTemplate.PrefabName))
+        if (!string.IsNullOrWhiteSpace(dropTemplate.PrefabName))
         {
             // Try find object
             var prefab = ZNetScene.instance.GetPrefab(dropTemplate.PrefabName);
@@ -186,28 +176,24 @@ internal static class ConfigureDropTableService
             drop.m_item = prefab;
         }
 
-        if (dropTemplate.AmountMin.IsSet &&
-            dropTemplate.AmountMin.Value is not null)
+        if (dropTemplate.AmountMin is not null)
         {
-            drop.m_stackMin = dropTemplate.AmountMin.Value.Value;
+            drop.m_stackMin = dropTemplate.AmountMin.Value;
         }
 
-        if (dropTemplate.AmountMax.IsSet &&
-            dropTemplate.AmountMax.Value is not null)
+        if (dropTemplate.AmountMax is not null)
         {
-            drop.m_stackMax = dropTemplate.AmountMax.Value.Value;
+            drop.m_stackMax = dropTemplate.AmountMax.Value;
         }
 
-        if (dropTemplate.Weight.IsSet &&
-            dropTemplate.Weight.Value is not null)
+        if (dropTemplate.Weight is not null)
         {
-            drop.m_weight = dropTemplate.Weight.Value.Value;
+            drop.m_weight = dropTemplate.Weight.Value;
         }
 
-        if (dropTemplate.DisableResourceModifierScaling.IsSet &&
-            dropTemplate.DisableResourceModifierScaling.Value is not null)
+        if (dropTemplate.DisableResourceModifierScaling is not null)
         {
-            drop.m_dontScale = dropTemplate.DisableResourceModifierScaling.Value.Value;
+            drop.m_dontScale = dropTemplate.DisableResourceModifierScaling.Value;
         }
 
         return drop;

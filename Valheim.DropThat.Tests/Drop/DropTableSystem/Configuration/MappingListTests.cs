@@ -137,9 +137,9 @@ public class MappingListTests
             3,
             "two drops were merged from list, two from main, with one overlapping");
 
-        template.Drops[0].PrefabName.Value.Should().Be("RawMeat", "added by list");
-        template.Drops[3].PrefabName.Value.Should().Be("Guck", "added by list, overridden by main");
-        template.Drops[4].PrefabName.Value.Should().Be("Guck", "added by main");
+        template.Drops[0].PrefabName.Should().Be("RawMeat", "added by list");
+        template.Drops[3].PrefabName.Should().Be("Guck", "added by list, overridden by main");
+        template.Drops[4].PrefabName.Should().Be("Guck", "added by main");
     }
 
     [TestMethod]
@@ -180,9 +180,9 @@ public class MappingListTests
             4,
             "three drops were merged from list, two from main, with one overlapping");
 
-        template.Drops[0].PrefabName.Value.Should().Be("IronScrap", "added by list, overridden by list 2");
-        template.Drops[1].PrefabName.Value.Should().Be("IronScrap", "added by list 2");
-        template.Drops[3].PrefabName.Value.Should().Be("Guck", "added by list, overridden by main");
-        template.Drops[4].PrefabName.Value.Should().Be("Guck", "added by main");
+        template.Drops[0].PrefabName.Should().Be("IronScrap", "added by list, overridden by list 2");
+        template.Drops[1].PrefabName.Should().Be("IronScrap", "added by list 2");
+        template.Drops[3].PrefabName.Should().Be("Guck", "added by list, overridden by main");
+        template.Drops[4].PrefabName.Should().Be("Guck", "added by main");
     }
 }

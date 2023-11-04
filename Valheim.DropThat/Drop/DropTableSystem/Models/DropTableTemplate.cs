@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ThatCore.Models;
 
 namespace DropThat.Drop.DropTableSystem.Models;
 
@@ -9,11 +8,11 @@ public class DropTableTemplate
 
     public Dictionary<int, DropTableDropTemplate> Drops { get; set; } = new();
 
-    public Optional<int?> DropMin { get; set; }
+    public int? DropMin { get; set; }
 
-    public Optional<int?> DropMax { get; set; }
+    public int? DropMax { get; set; }
 
-    public Optional<float?> DropChance { get; set; }
+    public float? DropChance { get; set; }
 
-    public Optional<bool?> DropOnlyOnce { get; set; }
+    public bool? DropOnlyOnce { get; set; }
 }

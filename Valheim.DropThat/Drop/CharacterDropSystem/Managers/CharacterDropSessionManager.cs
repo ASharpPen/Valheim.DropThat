@@ -197,13 +197,12 @@ internal static class CharacterDropSessionManager
 
                 var config = TempDropListCache.GetDrop(droptable, i);
 
-                if (config?.DropTemplate?.AmountLimit.IsSet == true &&
-                    config.DropTemplate.AmountLimit.Value > 0 &&
+                if (config?.DropTemplate?.AmountLimit >= 0 &&
                     item.Value > config.DropTemplate.AmountLimit)
                 {
                     Log.Trace?.Log($"{config.DisplayName} Limiting drop amount from '{item.Value}' to '{config.DropTemplate.AmountLimit}'");
 
-                    drops[i] = Limit(item, config.DropTemplate.AmountLimit.Value.Value);
+                    drops[i] = Limit(item, config.DropTemplate.AmountLimit.Value);
                 }
             }
         }

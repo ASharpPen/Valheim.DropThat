@@ -24,19 +24,19 @@ public class CharacterDropDropTemplate
     public bool? TemplateEnabled { get; set; } = true;
 
     // TODO: Reconsider if the default settings should actually be optional.
-    public Optional<int?> AmountMin { get; set; }
+    public int? AmountMin { get; set; }
 
-    public Optional<int?> AmountMax { get; set; }
+    public int? AmountMax { get; set; }
 
-    public Optional<float?> ChanceToDrop { get; set; }
+    public float? ChanceToDrop { get; set; }
 
-    public Optional<bool?> DropOnePerPlayer { get; set; }
+    public bool? DropOnePerPlayer { get; set; }
 
-    public Optional<bool?> ScaleByLevel { get; set; }
+    public bool? ScaleByLevel { get; set; }
 
-    public Optional<bool?> AutoStack { get; set; }
+    public bool? AutoStack { get; set; }
 
-    public Optional<int?> AmountLimit { get; set; }
+    public int? AmountLimit { get; set; }
 
-    public Optional<bool?> DisableResourceModifierScaling { get; set; }
+    public bool? DisableResourceModifierScaling { get; set; }
 }

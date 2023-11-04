@@ -22,12 +22,12 @@ internal static class DropConfigurationService
         drop = new()
         {
             m_prefab = prefab,
-            m_amountMax = template.AmountMax.Value.GetValueOrDefault(),
-            m_amountMin = template.AmountMin.Value.GetValueOrDefault(),
-            m_chance = template.ChanceToDrop.Value.GetValueOrDefault() / 100,
-            m_levelMultiplier = template.ScaleByLevel.Value.GetValueOrDefault(),
-            m_onePerPlayer = template.DropOnePerPlayer.Value.GetValueOrDefault(),
-            m_dontScale = template.DisableResourceModifierScaling.Value.GetValueOrDefault(),
+            m_amountMax = template.AmountMax.GetValueOrDefault(),
+            m_amountMin = template.AmountMin.GetValueOrDefault(),
+            m_chance = template.ChanceToDrop.GetValueOrDefault() / 100,
+            m_levelMultiplier = template.ScaleByLevel.GetValueOrDefault(),
+            m_onePerPlayer = template.DropOnePerPlayer.GetValueOrDefault(),
+            m_dontScale = template.DisableResourceModifierScaling.GetValueOrDefault(),
         };
 
         return true;
@@ -57,10 +57,9 @@ internal static class DropConfigurationService
         template.DropOnePerPlayer.SetIfNotNull(ref drop.m_onePerPlayer);
         template.DisableResourceModifierScaling.SetIfNotNull(ref drop.m_dontScale);
 
-        if (template.ChanceToDrop.IsSet &&
-            template.ChanceToDrop.Value is not null)
+        if (template.ChanceToDrop is not null)
         {
-            drop.m_chance = template.ChanceToDrop.Value.Value / 100f;
+            drop.m_chance = template.ChanceToDrop.Value / 100f;
         }
     }
 
@@ -81,13 +80,12 @@ internal static class DropConfigurationService
         return true;
     }
 
-    private static void SetIfNotNull<T>(this Optional<T?> source, ref T dest)
+    private static void SetIfNotNull<T>(this T? source, ref T dest)
         where T : struct
     {
-        if (source.IsSet &&
-            source.Value is not null)
+        if (source is not null)
         {
-            dest = source.Value.Value;
+            dest = source.Value;
         }
     }
 }

@@ -16,7 +16,7 @@ public class DropTableDropTemplate
 
     public int Id { get; set; }
 
-    public Optional<string> PrefabName { get; set; }
+    public string PrefabName { get; set; }
 
     [DefaultValue(true)]
     public bool? Enabled { get; set; } = true;
@@ -24,11 +24,11 @@ public class DropTableDropTemplate
     [DefaultValue(true)]
     public bool? TemplateEnabled { get; set; } = true;
 
-    public Optional<int?> AmountMin { get; set; }
+    public int? AmountMin { get; set; }
 
-    public Optional<int?> AmountMax { get; set; }
+    public int? AmountMax { get; set; }
 
-    public Optional<float?> Weight { get; set; }
+    public float? Weight { get; set; }
 
-    public Optional<bool?> DisableResourceModifierScaling { get; set; }
+    public bool? DisableResourceModifierScaling { get; set; }
 }

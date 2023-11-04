@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using DropThat.Drop.CharacterDropSystem;
 using DropThat.Drop.CharacterDropSystem.Configuration;
 using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
