@@ -135,6 +135,7 @@ public static class Patch_TrackDrops
     }
 
     private const string ZdoConfigReferenceKey = "DropThatConfigs";
+    private static BinaryFormatter BinaryFormatter = new BinaryFormatter();
 
     private static void StoreConfigReferences(ZDO zdo, CharacterDrop drop, List<KeyValuePair<GameObject, int>> drops)
     {
@@ -162,8 +163,7 @@ public static class Patch_TrackDrops
 
             using (MemoryStream memStream = new MemoryStream())
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(memStream, configReferences);
+                BinaryFormatter.Serialize(memStream, configReferences);
 
                 byte[] serialized = memStream.ToArray();
 
@@ -179,7 +179,7 @@ public static class Patch_TrackDrops
     }
 
     [Serializable]
-    private class ConfigReferenceDto
+    private struct ConfigReferenceDto
     {
         public string Mob { get; set; }
 
@@ -207,8 +207,7 @@ public static class Patch_TrackDrops
 
             using MemoryStream stream = new(serialized);
 
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            var references = binaryFormatter.Deserialize(stream) as List<ConfigReferenceDto>;
+            var references = BinaryFormatter.Deserialize(stream) as List<ConfigReferenceDto>;
 
             Log.Development?.Log($"Deserialized config package for zdo {zdo.m_uid}");
             Log.Development?.Log($"\t" + references?.Join(x => $"{x.Index}:{x.Mob}.{x.Id}"));
