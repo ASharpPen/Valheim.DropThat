@@ -16,11 +16,16 @@ namespace DropThat.Drop.CharacterDropSystem.Patches;
 [HarmonyPatch]
 internal static class Patch_CharacterDrop_ConfigureDroppedItems
 {
+    private static int ItemCount = 0;
+
     [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.DropItems))]
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> HookSpawnedItem(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
         return new CodeMatcher(instructions, generator)
+            // Initialize drop session
+            .Start()
+            .InsertAndAdvance(Transpilers.EmitDelegate(Init))
             // Move to right after object instantiation
             .MatchForward(false, new CodeMatch(OpCodes.Ldloc_3))
             .Advance(3)
@@ -37,27 +42,23 @@ internal static class Patch_CharacterDrop_ConfigureDroppedItems
             .InstructionEnumeration();
     }
 
-    // TODO: Figure out how to add an index by transpiler instead, to avoid having to do this weird counter shit.
-    // Maybe just count it in a static... And skip the whole madness.
+    private static void Init() => ItemCount = 0;
+
     private static void OnSpawnedItem(GameObject item, List<KeyValuePair<GameObject, int>> drops, Vector3 centerPos)
     {
-        int count = LoopCounter.GetCount(drops);
-        int index = GetIndex(drops, count);
-        LoopCounter.Increment(drops);
+        int index = GetIndex(drops, ItemCount);
+        ItemCount++;
 
         CharacterDropSessionManager.ModifyDrop(item, drops, index); 
     }
 
-    // TODO: Figure out how to add an index by transpiler instead, to avoid having to do this weird counter shit.
-    // Maybe just count it in a static... And skip the whole madness.
     private static int StackDropsAndReturnNewIndex(GameObject item, List<KeyValuePair<GameObject, int>> drops, int index)
     {
         var resultIndex = index;
 
         try
         {
-            var count = LoopCounter.GetCount(drops) - 1;
-            int itemIndex = GetIndex(drops, count);
+            int itemIndex = GetIndex(drops, ItemCount - 1);
 
             if (itemIndex >= drops.Count)
             {
@@ -101,7 +102,7 @@ internal static class Patch_CharacterDrop_ConfigureDroppedItems
                     itemDrop.SetStack(stackSize);
 
                     // Deduct 1 from result, since loop will increment on its own, and OnSpawnedItem will have incremented loop too.
-                    LoopCounter.Increment(drops, stackSize - 1);
+                    ItemCount += stackSize - 1;
                     resultIndex += stackSize - 1;
                 }
             }
@@ -112,19 +113,19 @@ internal static class Patch_CharacterDrop_ConfigureDroppedItems
         }
 
         return resultIndex;
+    }
 
-        static int GetMaxStackSize(GameObject item)
+    private static int GetMaxStackSize(GameObject item)
+    {
+        var itemDrop = ComponentCache.Get<ItemDrop>(item);
+
+        if (itemDrop.IsNull() ||
+            itemDrop.m_itemData?.m_shared is null)
         {
-            var itemDrop = ComponentCache.Get<ItemDrop>(item);
-
-            if (itemDrop.IsNull() ||
-                itemDrop.m_itemData?.m_shared is null)
-            {
-                return -1;
-            }
-
-            return itemDrop.m_itemData.m_shared.m_maxStackSize;
+            return -1;
         }
+
+        return itemDrop.m_itemData.m_shared.m_maxStackSize;
     }
 
     private static int GetIndex(List<KeyValuePair<GameObject, int>> drops, int itemCount)
@@ -143,38 +144,5 @@ internal static class Patch_CharacterDrop_ConfigureDroppedItems
             ++index;
         }
         return index;
-    }
-
-    /// <summary>
-    /// Because I am shit at transpiling apparently. Just gonna hack the living hell out of this.
-    /// </summary>
-    private class LoopCounter
-    {
-        private static ConditionalWeakTable<object, LoopCounter> LoopCounterTable = new ConditionalWeakTable<object, LoopCounter>();
-
-        public static void Increment(object obj)
-        {
-            var counter = LoopCounterTable.GetOrCreateValue(obj);
-
-            counter.Count++;
-        }
-
-        public static void Increment(object obj, int count)
-        {
-            var counter = LoopCounterTable.GetOrCreateValue(obj);
-            counter.Count += count;
-        }
-
-        public static int GetCount(object obj)
-        {
-            if (LoopCounterTable.TryGetValue(obj, out LoopCounter counter))
-            {
-                return counter.Count;
-            }
-
-            return 0;
-        }
-
-        public int Count;
     }
 }
