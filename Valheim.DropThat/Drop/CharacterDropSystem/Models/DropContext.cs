@@ -20,9 +20,6 @@ public class DropContext
 
     public CharacterDrop CharacterDrop { get; }
 
-    // TODO: Move this to a new context for drop modifications.
-    public GameObject Item { get; set; }
-
     public Vector3 Pos { get; set; }
 
     public ZDO ZDO

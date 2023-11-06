@@ -45,8 +45,6 @@ public class GeneralConfig
     {
         Config = configFile;
 
-        EnableTraceLogging.Bind(Config, "Debug", nameof(EnableTraceLogging));
-
         AlwaysAutoStack.Bind(Config, "Performance", nameof(AlwaysAutoStack));
         DropLimit.Bind(Config, "Performance", nameof(DropLimit));
 
@@ -61,6 +59,7 @@ public class GeneralConfig
         WriteLoadedDropTableDropsToFile.Bind(Config, "DropTable", "WriteLoadedConfigsToFile");
 
         EnableDebugLogging.Bind(Config, "Debug", "EnableDebugLogging");
+        EnableTraceLogging.Bind(Config, "Debug", nameof(EnableTraceLogging));
         WriteCharacterDropsToFile.Bind(Config, "Debug", nameof(WriteCharacterDropsToFile));
         WriteCreatureItemsToFile.Bind(Config, "Debug", nameof(WriteCreatureItemsToFile));
         WriteLocationsToFile.Bind(Config, "Debug", nameof(WriteLocationsToFile));

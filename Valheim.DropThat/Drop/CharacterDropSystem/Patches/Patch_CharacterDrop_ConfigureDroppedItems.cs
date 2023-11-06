@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
 using DropThat.Caches;
 using DropThat.Configuration;
 using DropThat.Drop.CharacterDropSystem.Caches;

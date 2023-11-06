@@ -39,7 +39,7 @@ public class ConditionHitByEntityTypeRecently : IDropCondition
 
         if (!match)
         {
-            Log.Trace?.Log($"Filtered drop '{context.Item.name}' due not being hit recently by required entity type.");
+            Log.Trace?.Log($"Filtered drop '{context.DropInfo.DisplayName}' due not being hit recently by required entity type.");
         }
 
         return !match;
