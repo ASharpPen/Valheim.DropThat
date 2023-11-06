@@ -42,6 +42,16 @@ internal static partial class ConfigurationFileManager
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
+                    "Enabled",
+                    true,
+                    "Enable/disable this drop.",
+                    (value, builder) => builder.Enabled = value))
+            .ToFile(config => config
+                .Map("Enabled", x => x.Enabled))
+
+            .AddOption()
+            .FromFile(config => config
+                .Map<bool?>(
                     "EnableConfig",
                     true,
                     "Enable/disable this specific drop configuration.",

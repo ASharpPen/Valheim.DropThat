@@ -79,6 +79,11 @@ internal static class CharacterDropSessionManager
                 if (id >= existingDrops.Count ||
                     GeneralConfigManager.Config?.AlwaysAppendCharacterDrops == true)
                 {
+                    if (dropInfo.DropTemplate.Enabled == false)
+                    {
+                        continue;
+                    }
+
                     Log.Trace?.Log($"{dropInfo.DisplayName} Inserting drop '{template.PrefabName}'");
 
                     if (DropConfigurationService.TryConfigureNewDrop(dropInfo, out var newDrop))
@@ -135,6 +140,12 @@ internal static class CharacterDropSessionManager
                 {
                     // No settings for drop.
                     validDrops.Add(drop);
+                    continue;
+                }
+
+                if (dropInfo.DropTemplate.Enabled == false)
+                {
+                    // Drop is disabled. Skip it.
                     continue;
                 }
 

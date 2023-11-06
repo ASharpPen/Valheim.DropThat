@@ -78,7 +78,7 @@ internal static class ConfigureDropTableService
                 drop.TableTemplate = template;
                 drop.DropTemplate = dropTemplate.Value;
             }
-            else
+            else if (dropTemplate.Value.Enabled != false)
             {
                 Log.Trace.Log($"Inserting drop '{dropTemplate.Value.PrefabName}'.");
 
