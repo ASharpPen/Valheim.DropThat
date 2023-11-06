@@ -21,37 +21,59 @@ internal static partial class ConfigurationFileManager
             .AddTableOption()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetDropMin", 1, "Minimum of randomly selected entries from drop list. Entries can be picked more than once.",
-                    (value, builder) => builder.DropMin = value))
+                    "SetDropMin", 1, "Deprecated (use DropMin). Minimum of randomly selected entries from drop list. Entries can be picked more than once.",
+                    (value, builder) => builder.DropMin = value)
+                .Map<int?>(
+                    "DropMin", 1, "Minimum of randomly selected entries from drop list. Entries can be picked more than once.",
+                    (value, builder) => builder.DropMin = value)
+                )
             .ToFile(config => config
-                .Map("SetDropMin", x => x.DropMin))
+                .Map("DropMin", x => x.DropMin))
             ;
 
         mapper
             .AddTableOption()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetDropMax", 1, "Maximum of randomly selected entries from drop list. Entries can be picked more than once.",
-                    (value, builder) => builder.DropMax = value))
+                    "SetDropMax", 
+                    1, 
+                    "Deprecated (use DropMax). Maximum of randomly selected entries from drop list. Entries can be picked more than once.",
+                    (value, builder) => builder.DropMax = value)
+                .Map<int?>(
+                    "DropMax", 1, "Maximum of randomly selected entries from drop list. Entries can be picked more than once.",
+                    (value, builder) => builder.DropMax = value)
+                )
             .ToFile(config => config
-                .Map("SetDropMax", x => x.DropMax));
+                .Map("DropMax", x => x.DropMax));
             ;
 
         mapper.AddTableOption()
             .FromFile(config => config
                 .Map<float?>(
-                    "SetDropChance", 100, "Chance to drop anything at all.",
-                    (value, builder) => builder.DropChance = value))
+                    "SetDropChance", 
+                    100, 
+                    "Deprecated (use DropChance). Chance to drop anything at all.",
+                    (value, builder) => builder.DropChance = value)
+                .Map<float?>(
+                    "DropChance", 100, "Chance to drop anything at all.",
+                    (value, builder) => builder.DropChance = value)
+                )
             .ToFile(config => config
-                .Map("SetDropChance", x => x.DropChance));
+                .Map("DropChance", x => x.DropChance));
 
         mapper.AddTableOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "SetDropOnlyOnce", false, "If true, will ensure that when selecting entries from drop list, same entry will only be picked once.",
-                    (value, builder) => builder.DropOnlyOnce = value))
+                    "SetDropOnlyOnce", 
+                    false, 
+                    "Deprecated (use DropOnlyOnce). If true, will ensure that when selecting entries from drop list, same entry will only be picked once.",
+                    (value, builder) => builder.DropOnlyOnce = value)
+                .Map<bool?>(
+                    "DropOnlyOnce", false, "If true, will ensure that when selecting entries from drop list, same entry will only be picked once.",
+                    (value, builder) => builder.DropOnlyOnce = value)
+                )
             .ToFile(config => config
-                .Map("SetDropOnlyOnce", x => x.DropOnlyOnce));
+                .Map("DropOnlyOnce", x => x.DropOnlyOnce));
 
         mapper.AddTableOption()
             .FromFile(config => config
@@ -87,26 +109,44 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetAmountMin", 1, "Sets minimum amount pr drop. Behaviour depends on entity and item.",
-                    (value, builder) => builder.AmountMin = value))
+                    "SetAmountMin", 
+                    1, 
+                    "Deprecated (use AmountMin). Sets minimum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMin = value)
+                .Map<int?>(
+                    "AmountMin", 1, "Sets minimum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMin = value)
+                )
             .ToFile(config => config
-                .Map("SetAmountMin", x => x.AmountMin));
+                .Map("AmountMin", x => x.AmountMin));
 
         mapper.AddDropOption()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetAmountMax", 1, "Sets maximum amount pr drop. Behaviour depends on entity and item.",
-                    (value, builder) => builder.AmountMax = value))
+                    "SetAmountMax", 
+                    1, 
+                    "Deprecated (use AmountMax). Sets maximum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMax = value)
+                .Map<int?>(
+                    "AmountMax", 1, "Sets maximum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMax = value)
+                )
             .ToFile(config => config
-                .Map("SetAmountMax", x => x.AmountMax));
+                .Map("AmountMax", x => x.AmountMax));
 
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<float?>(
-                    "SetTemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
-                    (value, builder) => builder.Weight = value))
+                    "SetTemplateWeight", 
+                    1, 
+                    "Deprecated (use TemplateWeight). Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
+                    (value, builder) => builder.Weight = value)
+                .Map<float?>(
+                    "TemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
+                    (value, builder) => builder.Weight = value)
+                )
             .ToFile(c => c
-                .Map("SetTemplateWeight", x => x.Weight));
+                .Map("TemplateWeight", x => x.Weight));
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -251,20 +291,32 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<float?>(
-                    "SetDurability", -1, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
-                    (value, builder) => builder.ModifierDurability(value)))
+                    "SetDurability", 
+                    -1, 
+                    "Deprecated (use Durability). Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
+                    (value, builder) => builder.ModifierDurability(value))
+                .Map<float?>(
+                    "Durability", -1, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
+                    (value, builder) => builder.ModifierDurability(value))
+                )
             .ToFile(c => c
                 .Using(x => x.ItemModifiers.GetOrDefault<ModifierDurability>())
-                .Map("SetDurability", x => x.Durability));
+                .Map("Durability", x => x.Durability));
 
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<int?>(
-                    "SetQualityLevel", 1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
-                    (value, builder) => builder.ModifierQualityLevel(value)))
+                    "SetQualityLevel", 
+                    1, 
+                    "Deprecated (use QualityLevel). Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
+                    (value, builder) => builder.ModifierQualityLevel(value))
+                .Map<int?>(
+                    "QualityLevel", 1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
+                    (value, builder) => builder.ModifierQualityLevel(value))
+                )
             .ToFile(c => c
                 .Using(x => x.ItemModifiers.GetOrDefault<ModifierQualityLevel>())
-                .Map("SetQualityLevel", x => x.QualityLevel));
+                .Map("QualityLevel", x => x.QualityLevel));
 
         // Mod - SpawnThat
 

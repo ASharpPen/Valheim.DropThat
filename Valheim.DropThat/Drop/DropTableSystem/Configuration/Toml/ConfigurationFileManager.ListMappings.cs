@@ -36,20 +36,38 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetAmountMin", 1, "Sets minimum amount pr drop. Behaviour depends on entity and item.",
-                    (value, builder) => builder.AmountMin = value));
+                    "SetAmountMin",
+                    1,
+                    "Deprecated (use AmountMin). Sets minimum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMin = value)
+                .Map<int?>(
+                    "AmountMin", 1, "Sets minimum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMin = value)
+                );
 
         mapper.AddDropOption()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetAmountMax", 1, "Sets maximum amount pr drop. Behaviour depends on entity and item.",
-                    (value, builder) => builder.AmountMax = value));
+                    "SetAmountMax",
+                    1,
+                    "Deprecated (use AmountMax). Sets maximum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMax = value)
+                .Map<int?>(
+                    "AmountMax", 1, "Sets maximum amount pr drop. Behaviour depends on entity and item.",
+                    (value, builder) => builder.AmountMax = value)
+                );
 
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<float?>(
-                    "SetTemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
-                    (value, builder) => builder.Weight = value));
+                    "SetTemplateWeight",
+                    1,
+                    "Deprecated (use TemplateWeight). Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
+                    (value, builder) => builder.Weight = value)
+                .Map<float?>(
+                    "TemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
+                    (value, builder) => builder.Weight = value)
+                );
 
         mapper.AddDropOption()
             .FromFile(config => config
@@ -145,14 +163,26 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<float?>(
-                    "SetDurability", -1, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
-                    (value, builder) => builder.ModifierDurability(value)));
+                    "SetDurability",
+                    -1,
+                    "Deprecated (use Durability). Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
+                    (value, builder) => builder.ModifierDurability(value))
+                .Map<float?>(
+                    "Durability", -1, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
+                    (value, builder) => builder.ModifierDurability(value))
+                );
 
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<int?>(
-                    "SetQualityLevel", 1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
-                    (value, builder) => builder.ModifierQualityLevel(value)));
+                    "SetQualityLevel",
+                    1,
+                    "Deprecated (use QualityLevel). Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
+                    (value, builder) => builder.ModifierQualityLevel(value))
+                .Map<int?>(
+                    "QualityLevel", 1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
+                    (value, builder) => builder.ModifierQualityLevel(value))
+                );
 
         // Mod - SpawnThat
 

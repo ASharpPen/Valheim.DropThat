@@ -100,8 +100,8 @@ public class MappingListTests
         var dropTableSection = mergedConfig.Sections.Values.First();
 
         dropTableSection.Settings.Should().HaveCount(5, "5 settings are defined in test_Mapping file");
-        dropTableSection.Settings["SetDropChance"].IsSet.Should().BeTrue();
-        dropTableSection.Settings["SetDropChance"].GetValue().Should().Be(70);
+        dropTableSection.Settings["DropChance"].IsSet.Should().BeTrue();
+        dropTableSection.Settings["DropChance"].GetValue().Should().Be(70);
     }
 
     [TestMethod]

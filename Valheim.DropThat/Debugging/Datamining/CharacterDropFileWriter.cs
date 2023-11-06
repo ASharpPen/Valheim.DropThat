@@ -56,11 +56,11 @@ internal static class CharacterDropFileWriter
                     lines.Add($"[{itemName}.{i}]");
                     lines.Add($"PrefabName={itemPrefabName}");
                     lines.Add($"EnableConfig={true}");
-                    lines.Add($"SetAmountMin={item.m_amountMin}");
-                    lines.Add($"SetAmountMax={item.m_amountMax}");
-                    lines.Add($"SetChanceToDrop={(item.m_chance * 100).ToString(CultureInfo.InvariantCulture)}");
-                    lines.Add($"SetDropOnePerPlayer={item.m_onePerPlayer}");
-                    lines.Add($"SetScaleByLevel={item.m_levelMultiplier}");
+                    lines.Add($"AmountMin={item.m_amountMin}");
+                    lines.Add($"AmountMax={item.m_amountMax}");
+                    lines.Add($"ChanceToDrop={(item.m_chance * 100).ToString(CultureInfo.InvariantCulture)}");
+                    lines.Add($"DropOnePerPlayer={item.m_onePerPlayer}");
+                    lines.Add($"ScaleByLevel={item.m_levelMultiplier}");
                     lines.Add($"DisableResourceModifierScaling={item.m_dontScale}");
                     lines.Add("");
                 }

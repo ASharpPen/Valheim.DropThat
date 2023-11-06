@@ -42,12 +42,12 @@ internal static partial class ConfigurationFileManager
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "Enabled",
+                    "Enable",
                     true,
                     "Enable/disable this drop.",
                     (value, builder) => builder.Enabled = value))
             .ToFile(config => config
-                .Map("Enabled", x => x.Enabled))
+                .Map("Enable", x => x.Enabled))
 
             .AddOption()
             .FromFile(config => config
@@ -64,44 +64,73 @@ internal static partial class ConfigurationFileManager
                 .Map<int?>(
                     "SetAmountMin",
                     1,
+                    "Deprecated (use AmountMin). Minimum amount dropped.",
+                    (value, builder) => builder.AmountMin = value)
+                .Map<int?>(
+                    "AmountMin",
+                    1,
                     "Minimum amount dropped.",
-                    (value, builder) => builder.AmountMin = value))
+                    (value, builder) => builder.AmountMin = value)
+                )
             .ToFile(config => config
-                .Map("SetAmountMin", x => x.AmountMin))
+                .Map("AmountMin", x => x.AmountMin))
 
             .AddOption()
             .FromFile(config => config
                 .Map<int?>(
                     "SetAmountMax",
                     1,
+                    "Deprecated (use AmountMax). Maximum amount dropped.",
+                    (value, builder) => builder.AmountMax = value)
+                .Map<int?>(
+                    "AmountMax",
+                    1,
                     "Maximum amount dropped.",
-                    (value, builder) => builder.AmountMax = value))
+                    (value, builder) => builder.AmountMax = value)
+                )
             .ToFile(config => config
-                .Map("SetAmountMax", x => x.AmountMax))
+                .Map("AmountMax", x => x.AmountMax))
 
             .AddOption()
             .FromFile(config => config
                 .Map<float?>(
-                    "SetChanceToDrop", 100f, "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
+                    "SetChanceToDrop", 
+                    100f, 
+                    "Deprecated (use ChanceToDrop). Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
+                    (value, builder) => builder.ChanceToDrop = value)
+                .Map<float?>(
+                    "ChanceToDrop", 100f, "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
                     (value, builder) => builder.ChanceToDrop = value))
             .ToFile(config => config
-                .Map("SetChanceToDrop", x => x.ChanceToDrop))
+                .Map("ChanceToDrop", x => x.ChanceToDrop))
 
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "SetDropOnePerPlayer", false, "If set, will drop one of this item per player. Ignoring other factors such as SetAmountMin / Max.",
-                    (value, builder) => builder.DropOnePerPlayer = value))
+                    "SetDropOnePerPlayer", 
+                    false, 
+                    "Deprecated (use DropOnePerPlayer). If set, will drop one of this item per player. Ignoring other factors such as SetAmountMin / Max.",
+                    (value, builder) => builder.DropOnePerPlayer = value)
+                .Map<bool?>(
+                    "DropOnePerPlayer", false, "If set, will drop one of this item per player. Ignoring other factors such as SetAmountMin / Max.",
+                    (value, builder) => builder.DropOnePerPlayer = value)
+                )
             .ToFile(config => config
-                .Map("SetDropOnePerPlayer", x => x.DropOnePerPlayer))
+                .Map("DropOnePerPlayer", x => x.DropOnePerPlayer))
 
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "SetScaleByLevel", true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.",
-                    (value, builder) => builder.ScaleByLevel = value))
+                    "SetScaleByLevel", 
+                    true, 
+                    "Deprecated (use ScaleByLevel). Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.",
+                    (value, builder) => builder.ScaleByLevel = value)
+                .Map<bool?>(
+                    "ScaleByLevel", true, "Toggles mob levels scaling up dropped amount. Be aware, this scales up very quickly and may cause issues when dropping many items.",
+                    (value, builder) => builder.ScaleByLevel = value)
+                )
             .ToFile(config => config
-                .Map("SetScaleByLevel", x => x.ScaleByLevel))
+                .Map("ScaleByLevel", x => x.ScaleByLevel))
 
             .AddOption()
             .FromFile(config => config
@@ -117,36 +146,60 @@ internal static partial class ConfigurationFileManager
             .AddDropSetting()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetQualityLevel", -1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
-                    (value, builder) => builder.ModifierQualityLevel(value)))
+                    "SetQualityLevel", 
+                    -1, 
+                    "Deprecated (use QualityLevel). Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
+                    (value, builder) => builder.ModifierQualityLevel(value))
+                .Map<int?>(
+                    "QualityLevel", -1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
+                    (value, builder) => builder.ModifierQualityLevel(value))
+                )
             .ToFile(config => config
                 .Using(x => x.ItemModifiers.GetOrDefault<ModifierQualityLevel>())
-                .Map("SetQualityLevel", x => x.QualityLevel))
+                .Map("QualityLevel", x => x.QualityLevel))
 
             .AddOption()
             .FromFile(config => config
                 .Map<int?>(
-                    "SetAmountLimit", -1, "Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.",
-                    (value, builder) => builder.AmountLimit = value))
+                    "SetAmountLimit", 
+                    -1, 
+                    "Deprecated (use AmountLimit). Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.",
+                    (value, builder) => builder.AmountLimit = value)
+                .Map<int?>(
+                    "AmountLimit", -1, "Sets an absolute limit to the number of drops. This will stop multipliers from generating more than the amount set in this condition. Ignored if 0 or less.",
+                    (value, builder) => builder.AmountLimit = value)
+                )
             .ToFile(config => config
-                .Map("SetAmountLimit", x => x.AmountLimit))
+                .Map("AmountLimit", x => x.AmountLimit))
 
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "SetAutoStack", false, "If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.",
-                    (value, builder) => builder.AutoStack = value))
+                    "SetAutoStack", 
+                    false, 
+                    "Deprecated (use AutoStack). If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.",
+                    (value, builder) => builder.AutoStack = value)
+                .Map<bool?>(
+                    "AutoStack", false, "If true, will attempt to stack items before dropping them. This means the item generation will only be run once per stack.",
+                    (value, builder) => builder.AutoStack = value)
+                )
             .ToFile(config => config
-                .Map("SetAutoStack", x => x.AutoStack))
+                .Map("AutoStack", x => x.AutoStack))
 
             .AddOption()
             .FromFile(config => config
                 .Map<float?>(
-                    "SetDurability", -1f, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
-                    (value, builder) => builder.ModifierDurability(value)))
+                    "SetDurability", 
+                    -1f, 
+                    "Deprecated (use Durability). Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
+                    (value, builder) => builder.ModifierDurability(value))
+                .Map<float?>(
+                    "Durability", -1f, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
+                    (value, builder) => builder.ModifierDurability(value))
+                )
             .ToFile(config => config
                 .Using(x => x.ItemModifiers.GetOrDefault<ModifierDurability>())
-                .Map("SetDurability", x => x.Durability))
+                .Map("Durability", x => x.Durability))
             ;
 
         // Conditions

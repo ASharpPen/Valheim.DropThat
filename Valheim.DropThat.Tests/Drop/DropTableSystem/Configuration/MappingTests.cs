@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DropThat.Drop.CharacterDropSystem;
-using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.DropTableSystem;
 using DropThat.Drop.DropTableSystem.Configuration.Toml;
 using DropThat.Drop.DropTableSystem.Managers;

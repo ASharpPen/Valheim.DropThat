@@ -57,10 +57,10 @@ internal static class DropTableDataWriter
         sBuilder.AppendLine($"## DropTable Source: {source.GetType().Name}; " + additionalHeaders.Join(delimiter: "; "));
         sBuilder.AppendLine($"[{sourceName}]");
 
-        sBuilder.AppendLine($"SetDropChance={(dropTable.m_dropChance * 100).ToString(CultureInfo.InvariantCulture)}");
-        sBuilder.AppendLine($"SetDropOnlyOnce={dropTable.m_oneOfEach}");
-        sBuilder.AppendLine($"SetDropMin={dropTable.m_dropMin}");
-        sBuilder.AppendLine($"SetDropMax={dropTable.m_dropMax}");
+        sBuilder.AppendLine($"DropChance={(dropTable.m_dropChance * 100).ToString(CultureInfo.InvariantCulture)}");
+        sBuilder.AppendLine($"DropOnlyOnce={dropTable.m_oneOfEach}");
+        sBuilder.AppendLine($"DropMin={dropTable.m_dropMin}");
+        sBuilder.AppendLine($"DropMax={dropTable.m_dropMax}");
 
         for (int i = 0; i < dropTable.m_drops.Count; ++i)
         {
@@ -69,9 +69,9 @@ internal static class DropTableDataWriter
             sBuilder.AppendLine();
             sBuilder.AppendLine($"[{sourceName}.{i}]");
             sBuilder.AppendLine($"PrefabName={(drop.m_item.IsNotNull() ? drop.m_item.name : "")}");
-            sBuilder.AppendLine($"SetTemplateWeight={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
-            sBuilder.AppendLine($"SetAmountMin={drop.m_stackMin}");
-            sBuilder.AppendLine($"SetAmountMax={drop.m_stackMax}");
+            sBuilder.AppendLine($"TemplateWeight={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
+            sBuilder.AppendLine($"AmountMin={drop.m_stackMin}");
+            sBuilder.AppendLine($"AmountMax={drop.m_stackMax}");
             sBuilder.AppendLine($"DisableResourceModifierScaling={drop.m_dontScale}");
         }
 
