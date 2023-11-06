@@ -23,7 +23,6 @@ public class CharacterDropDropTemplate
     [DefaultValue(true)]
     public bool? TemplateEnabled { get; set; } = true;
 
-    // TODO: Reconsider if the default settings should actually be optional.
     public int? AmountMin { get; set; }
 
     public int? AmountMax { get; set; }

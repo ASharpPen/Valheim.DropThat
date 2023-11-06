@@ -6,7 +6,6 @@ using DropThat.Configuration;
 using DropThat.Drop.CharacterDropSystem.Caches;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Drop.CharacterDropSystem.Services;
-using DropThat.Drop.DropTableSystem.Managers;
 using DropThat.Drop.Options;
 using ThatCore.Cache;
 using ThatCore.Extensions;

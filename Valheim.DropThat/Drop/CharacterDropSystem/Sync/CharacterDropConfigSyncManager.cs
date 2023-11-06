@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Reflection;
 using DropThat.Core;
 using DropThat.Drop.CharacterDropSystem.Conditions;
 using DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 using DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
-using DropThat.Drop.Options;
 using DropThat.Drop.Options.Modifiers;
 using DropThat.Drop.Options.Modifiers.ModEpicLoot;
 using ThatCore.Logging;

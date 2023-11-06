@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem.Models;

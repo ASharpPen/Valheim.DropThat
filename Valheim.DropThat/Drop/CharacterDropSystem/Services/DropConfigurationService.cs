@@ -1,7 +1,6 @@
 ﻿using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
 using ThatCore.Logging;
-using ThatCore.Models;
 using UnityEngine;
 
 namespace DropThat.Drop.CharacterDropSystem.Services;

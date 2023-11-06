@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using ThatCore.Cache;
 using System.Collections.Generic;
-using DropThat.Drop.DropTableSystem.Models;
-using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Wrapper;
 

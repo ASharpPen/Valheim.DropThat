@@ -1,7 +1,6 @@
 ﻿using System;
 using DropThat.Core;
 using DropThat.Drop.DropTableSystem.Conditions;
-using DropThat.Drop.Options;
 using DropThat.Drop.Options.Modifiers.ModEpicLoot;
 using DropThat.Drop.Options.Modifiers;
 using ThatCore.Logging;
