@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat", "Valheim.DropThat\Valheim.DropThat.csproj", "{E4A48037-A956-459B-B49F-850E0FA4BD00}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat.BossMetal", "Valheim.DropThat.BossMetal\Valheim.DropThat.BossMetal.csproj", "{740949B6-6174-4D2A-AE27-6ACA7E15B647}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Valheim.DropThat", "Valheim.DropThat\Valheim.DropThat.csproj", "{E4A48037-A956-459B-B49F-850E0FA4BD00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat.Tests", "Valheim.DropThat.Tests\Valheim.DropThat.Tests.csproj", "{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}"
 EndProject
@@ -25,10 +23,6 @@ Global
 		{E4A48037-A956-459B-B49F-850E0FA4BD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4A48037-A956-459B-B49F-850E0FA4BD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4A48037-A956-459B-B49F-850E0FA4BD00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{740949B6-6174-4D2A-AE27-6ACA7E15B647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{740949B6-6174-4D2A-AE27-6ACA7E15B647}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{740949B6-6174-4D2A-AE27-6ACA7E15B647}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{740949B6-6174-4D2A-AE27-6ACA7E15B647}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
