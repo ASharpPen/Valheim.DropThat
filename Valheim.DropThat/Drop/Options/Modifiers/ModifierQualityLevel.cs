@@ -11,12 +11,11 @@ public sealed class ModifierQualityLevel : IItemModifier
 
     public bool IsPointless() =>
         QualityLevel is null ||
-        QualityLevel < 0;
+        QualityLevel <= 0;
 
     public void Modify(ItemModifierContext<GameObject> drop)
     {
-        if (QualityLevel is null ||
-            QualityLevel < 0)
+        if (IsPointless())
         {
             return;
         }
@@ -34,8 +33,7 @@ public sealed class ModifierQualityLevel : IItemModifier
 
     public void Modify(ItemModifierContext<ItemDrop.ItemData> drop)
     {
-        if (QualityLevel is null ||
-            QualityLevel < 0)
+        if (IsPointless())
         {
             return;
         }

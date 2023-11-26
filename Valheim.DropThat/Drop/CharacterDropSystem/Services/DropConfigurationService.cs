@@ -21,12 +21,12 @@ internal static class DropConfigurationService
         drop = new()
         {
             m_prefab = prefab,
-            m_amountMax = template.AmountMax.GetValueOrDefault(),
-            m_amountMin = template.AmountMin.GetValueOrDefault(),
-            m_chance = template.ChanceToDrop.GetValueOrDefault() / 100,
-            m_levelMultiplier = template.ScaleByLevel.GetValueOrDefault(),
-            m_onePerPlayer = template.DropOnePerPlayer.GetValueOrDefault(),
-            m_dontScale = template.DisableResourceModifierScaling.GetValueOrDefault(),
+            m_amountMax = template.AmountMax ?? 1,
+            m_amountMin = template.AmountMin ?? 1,
+            m_chance = (template.ChanceToDrop ?? 100) / 100,
+            m_levelMultiplier = template.ScaleByLevel ?? true,
+            m_onePerPlayer = template.DropOnePerPlayer ?? false,
+            m_dontScale = template.DisableResourceModifierScaling ?? false,
         };
 
         return true;

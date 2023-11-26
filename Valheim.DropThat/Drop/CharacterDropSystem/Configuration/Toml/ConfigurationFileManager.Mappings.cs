@@ -99,7 +99,9 @@ internal static partial class ConfigurationFileManager
                     "Deprecated (use ChanceToDrop). Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
                     (value, builder) => builder.ChanceToDrop = value)
                 .Map<float?>(
-                    "ChanceToDrop", 100f, "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
+                    "ChanceToDrop", 
+                    100f, 
+                    "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
                     (value, builder) => builder.ChanceToDrop = value))
             .ToFile(config => config
                 .Map("ChanceToDrop", x => x.ChanceToDrop))

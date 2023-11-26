@@ -85,7 +85,7 @@ internal static partial class ConfigurationFileManager
                 .Using(x => x.Conditions.GetOrCreate<ConditionAltitudeMin>())
                 .Map<float?>(
                     "ConditionAltitudeMin",
-                    -10_000,
+                    null,
                     "Minimum distanc e above or below sea-level for  drop to be enabled.",
                     (value, builder) => builder.AltitudeMin = value)
                 );
@@ -95,7 +95,7 @@ internal static partial class ConfigurationFileManager
                     .Using(x => x.Conditions.GetOrCreate<ConditionAltitudeMax>())
                 .Map<float?>(
                     "ConditionAltitudeMax",
-                    10_000,
+                    null,
                     "Maximum distance  above or below sea-level for  drop to be enabled.",
                     (value, builder) => builder.AltitudeMax = value)
                 );
@@ -223,8 +223,8 @@ internal static partial class ConfigurationFileManager
                 .Using(x => x.Conditions.GetOrCreate<ConditionDistanceToCenterMin>())
                 .Map<float?>(
                     "ConditionDistanceToCenterMin",
-                    0, description:
-                    "Minimum  distance to center of map, for drop t o be enabled.",
+                    0, 
+                    "Minimum distance to center of map, for drop to be enabled.",
                     (value, builder) => builder.MinDistance = value)
                 );
 
@@ -234,7 +234,7 @@ internal static partial class ConfigurationFileManager
                 .Map<float?>(
                     "ConditionDistanceToCenterMax",
                     0,
-                    "Maximum distance to c enter of map, within whi ch drop is enabled. 0 means limitless.",
+                    "Maximum distance to center of map, within which drop is enabled. 0 means limitless.",
                     (value, builder) => builder.MaxDistance = value)
                 );
 
@@ -270,12 +270,12 @@ internal static partial class ConfigurationFileManager
                 .Map<float?>(
                     "SetDurability",
                     -1,
-                    "Deprecated (use Dura bility). Sets the durabil ity of the item. Does not change max durability. If less than 0, uses default.",
+                    "Deprecated (use Durability). Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
                     (value, builder) => builder.Durability = value)
                 .Map<float?>(
                     "Durability",
                     -1,
-                    "Sets the durability  of the item. Does not cha nge max durability. If less than 0, uses default.",
+                    "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
                     (value, builder) => builder.Durability = value)
                 );
 
@@ -285,12 +285,12 @@ internal static partial class ConfigurationFileManager
                 .Map<int?>(
                     "SetQualityLevel",
                     1,
-                    "Deprecated (use Quali tyLevel). Sets the quali ty level of the item. If 0 or less, uses default quality level of drop.",
+                    "Deprecated (use QualityLevel). Sets thequali ty level of the item. If 0 or less, uses default quality level of drop.",
                     (value, builder) => builder.QualityLevel = value)
                 .Map<int?>(
                     "QualityLevel",
                     1,
-                    "Sets the quality leve l of the item. If 0 or l ess, uses default quality level of drop.",
+                    "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
                     (value, builder) => builder.QualityLevel = value)
                 );
 

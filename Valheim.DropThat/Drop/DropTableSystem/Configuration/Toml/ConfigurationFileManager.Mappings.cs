@@ -112,10 +112,10 @@ internal static partial class ConfigurationFileManager
                 .Map<int?>(
                     "SetAmountMin", 
                     1, 
-                    "Deprecated (use AmountMin). Sets minimum amount pr drop. Behaviour depends on entity and item.",
+                    "Deprecated (use AmountMin). Sets minimum amount pr drop.",
                     (value, builder) => builder.AmountMin = value)
                 .Map<int?>(
-                    "AmountMin", 1, "Sets minimum amount pr drop. Behaviour depends on entity and item.",
+                    "AmountMin", 1, "Sets minimum amount pr drop.",
                     (value, builder) => builder.AmountMin = value)
                 )
             .ToFile(config => config
@@ -126,10 +126,10 @@ internal static partial class ConfigurationFileManager
                 .Map<int?>(
                     "SetAmountMax", 
                     1, 
-                    "Deprecated (use AmountMax). Sets maximum amount pr drop. Behaviour depends on entity and item.",
+                    "Deprecated (use AmountMax). Sets maximum amount pr drop.",
                     (value, builder) => builder.AmountMax = value)
                 .Map<int?>(
-                    "AmountMax", 1, "Sets maximum amount pr drop. Behaviour depends on entity and item.",
+                    "AmountMax", 1, "Sets maximum amount pr drop.",
                     (value, builder) => builder.AmountMax = value)
                 )
             .ToFile(config => config
@@ -140,10 +140,10 @@ internal static partial class ConfigurationFileManager
                 .Map<float?>(
                     "SetTemplateWeight", 
                     1, 
-                    "Deprecated (use TemplateWeight). Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
+                    "Deprecated (use TemplateWeight). Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. \nNote, same drop can be selected multiple times during table rolling.",
                     (value, builder) => builder.Weight = value)
                 .Map<float?>(
-                    "TemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. Note, same drop can be selected multiple times during table rolling.",
+                    "TemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops.\nNote, same drop can be selected multiple times during table rolling.",
                     (value, builder) => builder.Weight = value)
                 )
             .ToFile(c => c
@@ -163,7 +163,7 @@ internal static partial class ConfigurationFileManager
                 .Using(x => x.Conditions.GetOrCreate<ConditionAltitudeMin>())
                 .Map<float?>(
                     "ConditionAltitudeMin", 
-                    -10_000, 
+                    null, 
                     "Minimum distance above or below sea-level for drop to be enabled.",
                     (value, builder) => builder.AltitudeMin = value)
                 )
@@ -177,7 +177,7 @@ internal static partial class ConfigurationFileManager
                 .Using(x => x.Conditions.GetOrCreate<ConditionAltitudeMax>())
                 .Map<float?>(
                     "ConditionAltitudeMax", 
-                    10_000, 
+                    null, 
                     "Maximum distance above or below sea-level for drop to be enabled.",
                     (value, builder) => builder.AltitudeMax = value)
                 )
@@ -334,7 +334,7 @@ internal static partial class ConfigurationFileManager
                 .Using(x => x.Conditions.GetOrCreate<ConditionDistanceToCenterMin>())
                 .Map<float?>(
                     "ConditionDistanceToCenterMin", 
-                    0, description: 
+                    0, 
                     "Minimum distance to center of map, for drop to be enabled.",
                     (value, builder) => builder.MinDistance = value)
                 )
@@ -397,7 +397,7 @@ internal static partial class ConfigurationFileManager
                     "Deprecated (use Durability). Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
                     (value, builder) => builder.Durability = value)
                 .Map<float?>(
-                    "Durability", 
+                    "Durability",
                     -1, 
                     "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
                     (value, builder) => builder.Durability = value)
@@ -411,12 +411,12 @@ internal static partial class ConfigurationFileManager
                 .Using(x => x.ItemModifiers.GetOrCreate<ModifierQualityLevel>())
                 .Map<int?>(
                     "SetQualityLevel", 
-                    1, 
+                    -1, 
                     "Deprecated (use QualityLevel). Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
                     (value, builder) => builder.QualityLevel = value)
                 .Map<int?>(
                     "QualityLevel", 
-                    1, 
+                    -1, 
                     "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
                     (value, builder) => builder.QualityLevel = value)
                 )
@@ -461,7 +461,7 @@ internal static partial class ConfigurationFileManager
             .FromFile(c => c
                 .Using(x => x.Conditions.GetOrCreate<ConditionWorldLevelMax>())
                 .Map<int?>(
-                    "ConditionWorldLevelMax", 
+                    "ConditionWorldLevelMax",
                     0, 
                     "Maximum CLLC world level, for which item will drop. 0 or less means no max.",
                     (value, builder) => builder.WorldLevel = value)
