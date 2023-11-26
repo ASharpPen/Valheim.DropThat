@@ -34,7 +34,9 @@ internal static class ConfigureDropTableService
     public static List<DropTableDrop> CreateDropList(DropTable table, DropTableTemplate template)
     {
         // Initialize with default drops.
-        List<DropTableDrop> drops = table.m_drops
+        var defaultDrops = table.m_drops ?? new();
+
+        List <DropTableDrop> drops = defaultDrops
             .Select((x, i) =>
                 new DropTableDrop()
                 {
@@ -56,7 +58,7 @@ internal static class ConfigureDropTableService
             if (dropTemplate.Key < drops.Count &&
                 dropTemplate.Key >= 0)
             {
-                var existingDropPrefab = table.m_drops[dropTemplate.Key].m_item.GetCleanedName();
+                var existingDropPrefab = defaultDrops[dropTemplate.Key].m_item.GetCleanedName();
 
                 if (!string.IsNullOrEmpty(dropTemplate.Value.PrefabName) &&
                     existingDropPrefab == template.PrefabName)
@@ -71,7 +73,7 @@ internal static class ConfigureDropTableService
                 var drop = drops[dropTemplate.Key];
 
                 drop.DropData = ConfigureDrop(
-                     table.m_drops[dropTemplate.Key], 
+                     defaultDrops[dropTemplate.Key], 
                      template,
                      dropTemplate.Value);
 
