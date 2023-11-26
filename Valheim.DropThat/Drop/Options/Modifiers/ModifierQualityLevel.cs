@@ -9,6 +9,10 @@ public sealed class ModifierQualityLevel : IItemModifier
 {
     public int? QualityLevel { get; set; }
 
+    public bool IsPointless() =>
+        QualityLevel is null ||
+        QualityLevel < 0;
+
     public void Modify(ItemModifierContext<GameObject> drop)
     {
         if (QualityLevel is null ||
@@ -38,27 +42,5 @@ public sealed class ModifierQualityLevel : IItemModifier
 
         Log.Trace?.Log($"Setting quality level of item '{drop.Item.m_dropPrefab.name}' to {QualityLevel}.");
         drop.Item.m_quality = QualityLevel.Value;
-    }
-}
-
-internal static partial class IHaveItemModifierExtensions
-{
-    public static T ModifierQualityLevel<T>(
-        this T template,
-        int? qualityLevel)
-        where T : IHaveItemModifiers
-    {
-        if (qualityLevel >= 0)
-        {
-            template.ItemModifiers
-                .GetOrCreate<ModifierQualityLevel>()
-                .QualityLevel = qualityLevel.Value;
-        }
-        else
-        {
-            template.ItemModifiers.Remove<ModifierQualityLevel>();
-        }
-
-        return template;
     }
 }

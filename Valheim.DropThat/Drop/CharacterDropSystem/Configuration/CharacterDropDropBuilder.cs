@@ -28,7 +28,9 @@ internal sealed class CharacterDropDropBuilder
             Conditions = Conditions
                 .Where(x => !x.IsPointless())
                 .ToList(),
-            ItemModifiers = ItemModifiers.ToList(),
+            ItemModifiers = ItemModifiers
+                .Where(x => !x.IsPointless())
+                .ToList(),
         };
 
         PrefabName.DoIfSet(x => template.PrefabName = x);

@@ -17,27 +17,7 @@ public sealed class ModifierEpicLootItem : IItemModifier
     public float? RarityWeightUnique { get; set; }
     public List<string> UniqueIds { get; set; }
 
-    public ModifierEpicLootItem() { }
-
-    public ModifierEpicLootItem(
-        float? rarityWeightNone,
-        float? rarityWeightMagic,
-        float? rarityWeightRare,
-        float? rarityWeightEpic,
-        float? rarityWeightLegendary,
-        float? rarityWeightUnique,
-        IEnumerable<string> uniqueIds)
-    {
-        RarityWeightNone = rarityWeightNone;
-        RarityWeightMagic = rarityWeightMagic;
-        RarityWeightRare = rarityWeightRare;
-        RarityWeightEpic = rarityWeightEpic;
-        RarityWeightLegendary = rarityWeightLegendary;
-        RarityWeightUnique = rarityWeightUnique;
-        UniqueIds = uniqueIds.ToList();
-    }
-
-    public bool IsPointless =>
+    public bool IsPointless() =>
         RarityWeightNone +
         RarityWeightMagic +
         RarityWeightRare +
@@ -50,7 +30,7 @@ public sealed class ModifierEpicLootItem : IItemModifier
     public void Modify(ItemModifierContext<GameObject> drop)
     {
         if (drop.Item.IsNull() ||
-            IsPointless)
+            IsPointless())
         {
             return;
         }
@@ -68,7 +48,7 @@ public sealed class ModifierEpicLootItem : IItemModifier
                 RarityWeightEpic = RarityWeightEpic ?? 0,
                 RarityWeightLegendary = RarityWeightLegendary ?? 0,
                 RarityWeightUnique = RarityWeightUnique ?? 0,
-                UniqueIds = UniqueIds,
+                UniqueIds = UniqueIds ?? new(0),
             }))
         {
             itemDrop.Save();
@@ -78,7 +58,7 @@ public sealed class ModifierEpicLootItem : IItemModifier
     public void Modify(ItemModifierContext<ItemDrop.ItemData> drop)
     {
         if (drop?.Item is null ||
-            IsPointless)
+            IsPointless())
         {
             return;
         }

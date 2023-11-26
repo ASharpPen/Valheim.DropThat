@@ -9,12 +9,9 @@ public sealed class ModifierDurability : IItemModifier
 {
     public float? Durability { get; set; }
 
-    public ModifierDurability() { }
-    
-    public ModifierDurability(float? durability)
-    {
-        Durability = durability;
-    }
+    public bool IsPointless() =>
+        Durability is null ||
+        Durability < 0;
 
     public void Modify(ItemModifierContext<GameObject> drop)
     {
@@ -45,27 +42,5 @@ public sealed class ModifierDurability : IItemModifier
 
         Log.Trace?.Log($"Setting durability of item '{drop.Item.m_dropPrefab.name}' to {Durability}.");
         drop.Item.m_durability = Durability.Value;
-    }
-}
-
-internal static partial class IHaveItemModifierExtensions
-{
-    public static T ModifierDurability<T>(
-        this T template,
-        float? durability)
-        where T : IHaveItemModifiers
-    {
-        if (durability is not null)
-        {
-            template.ItemModifiers
-                .GetOrCreate<ModifierDurability>()
-                .Durability = durability.Value;
-        }
-        else
-        {
-            template.ItemModifiers.Remove<ModifierDurability>();
-        }
-
-        return template;
     }
 }
