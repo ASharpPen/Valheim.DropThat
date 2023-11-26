@@ -23,10 +23,7 @@ public static class DropTableTemplateManager
     public static void SetTemplate(string prefabName, DropTableTemplate template) =>
         Templates[prefabName] = template;
 
-    public static List<(string prefabName, DropTableTemplate template)> GetTemplates() =>
-        Templates
-        .Select(x => (x.Key, x.Value))
-        .ToList();
+    public static List<DropTableTemplate> GetTemplates() => Templates.Values.ToList();
          
     public static DropTableTemplate GetTemplate(string prefabName)
     {
