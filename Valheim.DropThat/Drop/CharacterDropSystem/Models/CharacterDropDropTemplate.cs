@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using DropThat.Drop.CharacterDropSystem.Conditions;
 using DropThat.Drop.Options;
-using ThatCore.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Models;
 
@@ -9,9 +9,9 @@ public class CharacterDropDropTemplate
     : IHaveItemModifiers
     , IHaveDropConditions
 {
-    public TypeSet<IDropCondition> Conditions { get; set; } = new();
+    public ICollection<IDropCondition> Conditions { get; set; } = [];
 
-    public TypeSet<IItemModifier> ItemModifiers { get; set; } = new();
+    public ICollection<IItemModifier> ItemModifiers { get; set; } = [];
 
     public int Id { get; set; }
 

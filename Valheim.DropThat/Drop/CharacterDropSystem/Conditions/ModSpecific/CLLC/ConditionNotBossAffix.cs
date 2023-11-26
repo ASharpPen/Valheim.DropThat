@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CreatureLevelControl;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Integrations;
@@ -37,26 +36,5 @@ public class ConditionNotBossAffix : IDropCondition
         var currentBossAffix = API.GetAffixBoss(character);
 
         return BossAffixes.Any(x => x.Convert() == currentBossAffix);
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionNotBossAffix(
-        this IHaveDropConditions template,
-        IEnumerable<CllcBossAffix> bossAffixes)
-    {
-        if (bossAffixes?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionNotBossAffix>()
-                .BossAffixes = bossAffixes.ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionNotBossAffix>();
-        }
-
-        return template;
     }
 }

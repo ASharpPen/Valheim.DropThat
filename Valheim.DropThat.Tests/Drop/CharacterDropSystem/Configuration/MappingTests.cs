@@ -110,4 +110,26 @@ public class MappingTests
         // Assert
         result.Should().NotBeNullOrWhiteSpace();
     }
+
+    [TestMethod]
+    public void CanMapToFile()
+    {
+        // Arrange
+        CharacterDropTemplateManager.Templates.Clear();
+
+        var config = new CharacterDropSystemConfiguration();
+
+        var schema = _mapper.BuildSchema();
+        var configMapper = _mapper.CreateMapper(config);
+
+        TomlConfig configFile = TomlSchemaFileLoader.LoadFile(Resources.ResourceManager.CharacterDrop.TestMapping, schema);
+
+        // Act
+        configMapper.Execute(configFile);
+        config.Build();
+        var tomlFile = ConfigurationFileManager.Mapper.MapToConfigFromTemplates(CharacterDropTemplateManager.GetTemplates());
+
+        // Assert
+        tomlFile.Should().NotBeNull();
+    }
 }

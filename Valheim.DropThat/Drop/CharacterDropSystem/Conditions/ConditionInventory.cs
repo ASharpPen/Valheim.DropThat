@@ -12,7 +12,7 @@ public class ConditionInventory : IDropCondition
 
     public void SetItems(IEnumerable<string> items)
     {
-        Items = items
+        Items = items?
             .Select(x => x
                 .Trim()
                 .ToUpperInvariant())
@@ -101,24 +101,5 @@ public class ConditionInventory : IDropCondition
         }
 
         return inventoryItems;
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionInventory(
-        this IHaveDropConditions template,
-        IEnumerable<string> items)
-    {
-        if (items?.Any() == true)
-        {
-            template.Conditions.GetOrCreate<ConditionInventory>().SetItems(items);
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionInventory>();
-        }
-
-        return template;
     }
 }

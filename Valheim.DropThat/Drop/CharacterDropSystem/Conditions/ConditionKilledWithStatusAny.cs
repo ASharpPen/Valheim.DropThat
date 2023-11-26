@@ -11,7 +11,7 @@ public class ConditionKilledWithStatusAny : IDropCondition
 
     public void SetStatuses(IEnumerable<string> statuses)
     {
-        Statuses = statuses
+        Statuses = statuses?
             .Select(x => x
                 .Trim()
                 .ToUpperInvariant())
@@ -43,26 +43,5 @@ public class ConditionKilledWithStatusAny : IDropCondition
             .ToHashSet();
 
         return Statuses.Any(lastStatuses.Contains);
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionKilledWithStatusAny(
-        this IHaveDropConditions template,
-        IEnumerable<string> statuses)
-    {
-        if (statuses?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionKilledWithStatusAny>()
-                .SetStatuses(statuses);
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionKilledWithStatusAny>();
-        }
-
-        return template;
     }
 }

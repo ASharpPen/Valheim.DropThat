@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DropThat.Creature.DamageRecords;
+﻿using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
-using ThatCore.Utilities.Valheim;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -27,26 +24,5 @@ public class ConditionKilledByDamageType : IDropCondition
         }
 
         return (lastHit.DamageType & DamageTypeMask) > 0;
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionKilledByDamageType(
-        this IHaveDropConditions template,
-        IEnumerable<HitData.DamageType> damageTypes)
-    {
-        if (damageTypes?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionKilledByDamageType>()
-                .DamageTypeMask = damageTypes.ToBitmask();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionKilledByDamageType>();
-        }
-
-        return template;
     }
 }

@@ -5,37 +5,13 @@ namespace DropThat.Drop.DropTableSystem.Conditions.ModSpecific.CLLC;
 
 public class ConditionWorldLevelMin : IDropCondition
 {
-    public int WorldLevel { get; set; }
+    public int? WorldLevel { get; set; }
 
-    public ConditionWorldLevelMin()
-    {
-    }
+    public bool IsPointless() =>
+        WorldLevel is null ||
+        WorldLevel <= 0;
 
-    public ConditionWorldLevelMin(int? worldLevel)
-    {
-        WorldLevel = worldLevel ?? default;
-    }
-
-    public bool IsValid(DropContext context) => WorldLevel >= API.GetWorldLevel();
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionWorldLevelMin(
-        this IHaveDropConditions template,
-        int? worldLevel)
-    {
-        if (worldLevel >= 0)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionWorldLevelMin>()
-                .WorldLevel = worldLevel.Value;
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionWorldLevelMin>();
-        }
-
-        return template;
-    }
+    public bool IsValid(DropContext context) => 
+        WorldLevel is null || 
+        WorldLevel >= API.GetWorldLevel();
 }

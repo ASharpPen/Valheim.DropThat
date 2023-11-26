@@ -3,6 +3,7 @@ using System.Linq;
 using DropThat.Drop.DropTableSystem.Conditions;
 using DropThat.Drop.DropTableSystem.Conditions.ModSpecific.CLLC;
 using DropThat.Drop.DropTableSystem.Conditions.ModSpecific.SpawnThat;
+using DropThat.Drop.Options;
 using DropThat.Drop.Options.Modifiers;
 using DropThat.Drop.Options.Modifiers.ModEpicLoot;
 using DropThat.Integrations;
@@ -159,9 +160,13 @@ internal static partial class ConfigurationFileManager
         // Drop conditions
         mapper.AddDropOption()
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionAltitudeMin>())
                 .Map<float?>(
-                    "ConditionAltitudeMin", -10_000, "Minimum distance above or below sea-level for drop to be enabled.",
-                    (value, builder) => builder.ConditionAltitudeMin(value)))
+                    "ConditionAltitudeMin", 
+                    -10_000, 
+                    "Minimum distance above or below sea-level for drop to be enabled.",
+                    (value, builder) => builder.AltitudeMin = value)
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionAltitudeMin>())
                 .Map("ConditionAltitudeMin", x => x.AltitudeMin));
@@ -169,18 +174,26 @@ internal static partial class ConfigurationFileManager
 
         mapper.AddDropOption()
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionAltitudeMax>())
                 .Map<float?>(
-                    "ConditionAltitudeMax", 10_000, "Maximum distance above or below sea-level for drop to be enabled.",
-                    (value, builder) => builder.ConditionAltitudeMax(value)))
+                    "ConditionAltitudeMax", 
+                    10_000, 
+                    "Maximum distance above or below sea-level for drop to be enabled.",
+                    (value, builder) => builder.AltitudeMax = value)
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionAltitudeMax>())
                 .Map("ConditionAltitudeMax", x => x.AltitudeMax));
 
         mapper.AddDropOption()
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionBiome>())
                 .Map<List<Heightmap.Biome>>(
-                    "ConditionBiomes", default, "Biomes in which drop is enabled. If empty, condition will be ignored.",
-                    (value, builder) => builder.ConditionBiome(value)))
+                    "ConditionBiomes", 
+                    default, 
+                    "Biomes in which drop is enabled. If empty, condition will be ignored.",
+                    (value, builder) => builder.SetBiomes(value))
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionBiome>())
                 .Map("ConditionBiomes", x => x.BiomeMask.Split()));
@@ -188,8 +201,21 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<bool?>(
-                    "ConditionNotDay", null, "If true, will not drop during daytime.",
-                    (value, builder) => builder.ConditionDaytimeNotDay(value)))
+                    "ConditionNotDay",
+                    null,
+                    "If true, will not drop during daytime.",
+                    (value, builder) =>
+                    {
+                        if (value == true)
+                        {
+                            builder.Conditions.GetOrCreate<ConditionDaytimeNotDay>();
+                        }
+                        else
+                        {
+                            builder.Conditions.Remove<ConditionDaytimeNotDay>();
+                        }
+                    })
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotDay>())
                 .Map("ConditionNotDay", x => true));
@@ -197,8 +223,21 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<bool?>(
-                    "ConditionNotNight", null, "If true, will not drop during night.",
-                    (value, builder) => builder.ConditionDaytimeNotNight(value)))
+                    "ConditionNotNight", 
+                    null, 
+                    "If true, will not drop during night.",
+                    (value, builder) =>
+                    {
+                        if (value == true)
+                        {
+                            builder.Conditions.GetOrCreate<ConditionDaytimeNotDay>();
+                        }
+                        else
+                        {
+                            builder.Conditions.Remove<ConditionDaytimeNotDay>();
+                        }
+                    })
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotNight>())
                 .Map("ConditionNotNight", x => true));
@@ -206,64 +245,112 @@ internal static partial class ConfigurationFileManager
         mapper.AddDropOption()
             .FromFile(c => c
                 .Map<bool?>(
-                    "ConditionNotAfternoon", null, "If true, will not drop during afternoon.",
-                    (value, builder) => builder.ConditionDaytimeNotAfternoon(value)))
+                    "ConditionNotAfternoon", 
+                    null, 
+                    "If true, will not drop during afternoon.",
+                    (value, builder) => 
+                    { 
+                        if (value == true) 
+                        { 
+                            builder.Conditions.GetOrCreate<ConditionDaytimeNotAfternoon>(); 
+                        } 
+                        else 
+                        { 
+                            builder.Conditions.Remove<ConditionDaytimeNotAfternoon>(); 
+                        } 
+                    })
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionDaytimeNotAfternoon>())
                 .Map("ConditionNotAfternoon", x => true));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<List<string>>(
-                "ConditionEnvironments", default, "List of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.",
-                (value, builder) => builder.ConditionEnvironments(value)))
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionEnvironments>())
+                .Map<List<string>>(
+                    "ConditionEnvironments", 
+                    default, 
+                    "List of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.",
+                    (value, builder) => builder.SetEnvironments(value))
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionEnvironments>())
-                .Map("ConditionEnvironments", x => x.Environments.ToList()));
+                .Map("ConditionEnvironments", x => x.Environments?.ToList()));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<List<string>>(
-                "ConditionGlobalKeys", default, "List of global keys names of which at least one must be present for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
-                (value, builder) => builder.ConditionGlobalKeysAny(value)))
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionGlobalKeysAny>())
+                .Map<List<string>>(
+                    "ConditionGlobalKeys", 
+                    default, 
+                    "List of global keys names of which at least one must be present for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
+                    (value, builder) => builder.GlobalKeys = value?.ToArray())
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionGlobalKeysAny>())
-                .Map("ConditionGlobalKeys", x => x.GlobalKeys.ToList()));
+                .Map("ConditionGlobalKeys", x => x.GlobalKeys?.ToList()));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<List<string>>(
-                "ConditionGlobalKeysAll", default, "List of global keys names that must all be present for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
-                (value, builder) => builder.ConditionGlobalKeysAll(value)))
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionGlobalKeysAll>())
+                .Map<List<string>>(
+                    "ConditionGlobalKeysAll", 
+                    default, 
+                    "List of global keys names that must all be present for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
+                    (value, builder) => builder.GlobalKeys = value?.ToArray())
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionGlobalKeysAll>())
-                .Map("ConditionGlobalKeysAll", x => x.GlobalKeys.ToList()));
+                .Map("ConditionGlobalKeysAll", x => x.GlobalKeys?.ToList()));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<List<string>>(
-                "ConditionGlobalKeysNotAny", default, "List of global keys names of which none must be present for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
-                (value, builder) => builder.ConditionGlobalKeysNotAny(value)))
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionGlobalKeysNotAny>())
+                .Map<List<string>>(
+                    "ConditionGlobalKeysNotAny", 
+                    default, 
+                    "List of global keys names of which none must be present for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
+                    (value, builder) => builder.GlobalKeys = value?.ToArray())
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionGlobalKeysNotAny>())
-                .Map("ConditionGlobalKeysNotAny", x => x.GlobalKeys.ToList()));
+                .Map("ConditionGlobalKeysNotAny", x => x.GlobalKeys?.ToList()));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<List<string>>(
-                "ConditionGlobalKeysNotAll", default, "List of global keys names of which all of the keys must be missing for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
-                (value, builder) => builder.ConditionGlobalKeysNotAll(value)))
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionGlobalKeysNotAll>())
+                .Map<List<string>>(
+                    "ConditionGlobalKeysNotAll", 
+                    default, 
+                    "List of global keys names of which all of the keys must be missing for item to drop.\nEg. defeated_eikthyr,defeated_gdking. Leave empty to always allow.",
+                    (value, builder) => builder.GlobalKeys = value?.ToArray())
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionGlobalKeysNotAll>())
-                .Map("ConditionGlobalKeysNotAll", x => x.GlobalKeys.ToList()));
+                .Map("ConditionGlobalKeysNotAll", x => x.GlobalKeys?.ToList()));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<float?>(
-                "ConditionDistanceToCenterMin", 0, description: "Minimum distance to center of map, for drop to be enabled.",
-                (value, builder) => builder.ConditionDistanceToCenterMin(value)))
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionDistanceToCenterMin>())
+                .Map<float?>(
+                    "ConditionDistanceToCenterMin", 
+                    0, description: 
+                    "Minimum distance to center of map, for drop to be enabled.",
+                    (value, builder) => builder.MinDistance = value)
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionDistanceToCenterMin>())
                 .Map("ConditionDistanceToCenterMin", x => x.MinDistance));
 
         mapper.AddDropOption()
-            .FromFile(c => c.Map<float?>(
-                "ConditionDistanceToCenterMax", 0, "Maximum distance to center of map, within which drop is enabled. 0 means limitless.",
-                (value, builder) => builder.ConditionDistanceToCenterMax(value)))
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionDistanceToCenterMax>())
+                .Map<float?>(
+                    "ConditionDistanceToCenterMax", 
+                    0, 
+                    "Maximum distance to center of map, within which drop is enabled. 0 means limitless.",
+                    (value, builder) => builder.MaxDistance = value)
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionDistanceToCenterMax>())
                 .Map("ConditionDistanceToCenterMax", x => x.MaxDistance));
@@ -286,18 +373,34 @@ internal static partial class ConfigurationFileManager
                 .Map("ConditionWithinCircle.CenterZ", x => x.CenterZ)
                 .Map("ConditionWithinCircle.Radius", x => x.Radius));
 
+        mapper.AddDropOption()
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionLocation>())
+                .Map<List<string>>(
+            "ConditionLocation",
+            null,
+            "List of location names. When spawned in one of the listed locations, this drop is enabled.\nEg.Runestone_Boars",
+                    (value, condition) => condition.SetLocations(value))
+                )
+            .ToFile(c => c
+                .Using(x => x.Conditions.GetOrDefault<ConditionLocation>())
+                .Map("ConditionLocation", x => x.Locations?.ToList()));
+
         // Drop modifiers
 
         mapper.AddDropOption()
             .FromFile(c => c
+                .Using(x => x.ItemModifiers.GetOrCreate<ModifierDurability>())
                 .Map<float?>(
                     "SetDurability", 
                     -1, 
                     "Deprecated (use Durability). Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
-                    (value, builder) => builder.ModifierDurability(value))
+                    (value, builder) => builder.Durability = value)
                 .Map<float?>(
-                    "Durability", -1, "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
-                    (value, builder) => builder.ModifierDurability(value))
+                    "Durability", 
+                    -1, 
+                    "Sets the durability of the item. Does not change max durability. If less than 0, uses default.",
+                    (value, builder) => builder.Durability = value)
                 )
             .ToFile(c => c
                 .Using(x => x.ItemModifiers.GetOrDefault<ModifierDurability>())
@@ -305,14 +408,17 @@ internal static partial class ConfigurationFileManager
 
         mapper.AddDropOption()
             .FromFile(c => c
+                .Using(x => x.ItemModifiers.GetOrCreate<ModifierQualityLevel>())
                 .Map<int?>(
                     "SetQualityLevel", 
                     1, 
                     "Deprecated (use QualityLevel). Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
-                    (value, builder) => builder.ModifierQualityLevel(value))
+                    (value, builder) => builder.QualityLevel = value)
                 .Map<int?>(
-                    "QualityLevel", 1, "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
-                    (value, builder) => builder.ModifierQualityLevel(value))
+                    "QualityLevel", 
+                    1, 
+                    "Sets the quality level of the item. If 0 or less, uses default quality level of drop.",
+                    (value, builder) => builder.QualityLevel = value)
                 )
             .ToFile(c => c
                 .Using(x => x.ItemModifiers.GetOrDefault<ModifierQualityLevel>())
@@ -324,30 +430,42 @@ internal static partial class ConfigurationFileManager
             .AddModRequirement("SpawnThat", () => InstallationManager.SpawnThatInstalled)
             .AddModOption("SpawnThat")
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionTemplateId>())
                 .Map<List<string>>(
-                    "ConditionTemplateId", default, "Array of Spawn That TemplateId values to enable to drop for.",
-                    (value, builder) => builder.ConditionTemplateId(value)))
+                    "ConditionTemplateId", 
+                    default, 
+                    "List of Spawn That TemplateId values to enable to drop for.",
+                    (value, builder) => builder.TemplateIds = value?.ToArray())
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionTemplateId>())
-                .Map("ConditionTemplateId", x => x.TemplateIds.ToList()));
+                .Map("ConditionTemplateId", x => x.TemplateIds?.ToList()));
 
         // Mod - CLLC
         mapper
             .AddModRequirement("CreatureLevelAndLootControl", () => InstallationManager.CLLCInstalled)
             .AddModOption("CreatureLevelAndLootControl")
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionWorldLevelMin>())
                 .Map<int?>(
-                    "ConditionWorldLevelMin", 0, "Minimum CLLC world level, for which item will drop.",
-                    (value, builder) => builder.ConditionWorldLevelMin(value)))
+                    "ConditionWorldLevelMin", 
+                    0, 
+                    "Minimum CLLC world level, for which item will drop.",
+                    (value, builder) => builder.WorldLevel = value)
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionWorldLevelMin>())
                 .Map("ConditionWorldLevelMin", x => x.WorldLevel))
             
             .AddOption()
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionWorldLevelMax>())
                 .Map<int?>(
-                    "ConditionWorldLevelMax", 0, "Maximum CLLC world level, for which item will drop. 0 or less means no max.",
-                    (value, builder) => builder.ConditionWorldLevelMax(value)))
+                    "ConditionWorldLevelMax", 
+                    0, 
+                    "Maximum CLLC world level, for which item will drop. 0 or less means no max.",
+                    (value, builder) => builder.WorldLevel = value)
+                )
             .ToFile(c => c
                 .Using(x => x.Conditions.GetOrDefault<ConditionWorldLevelMax>())
                 .Map("ConditionWorldLevelMax", x => x.WorldLevel));

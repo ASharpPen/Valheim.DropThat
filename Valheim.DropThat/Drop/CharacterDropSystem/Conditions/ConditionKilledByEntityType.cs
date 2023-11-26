@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using DropThat.Creature.DamageRecords;
 using DropThat.Drop.CharacterDropSystem.Models;
 
@@ -29,26 +28,5 @@ public class ConditionKilledByEntityType : IDropCondition
         EntityType lastHitter = lastHit.GetHitterType();
 
         return EntityTypes.Any(x => x == lastHitter);
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionKilledByEntityType(
-        this IHaveDropConditions template,
-        IEnumerable<EntityType> entityTypes)
-    {
-        if (entityTypes?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionKilledByEntityType>()
-                .EntityTypes = entityTypes.Distinct().ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionKilledByEntityType>();
-        }
-
-        return template;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using CreatureLevelControl;
 using System.Linq;
 using DropThat.Integrations.CllcIntegration;
-using System.Collections.Generic;
 using ThatCore.Extensions;
 using DropThat.Integrations;
 using DropThat.Drop.CharacterDropSystem.Models;
@@ -36,26 +35,5 @@ public class ConditionInfusion : IDropCondition
         var currentInfusion = API.GetInfusionCreature(character);
 
         return Infusions.Any(x => x.Convert() == currentInfusion);
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionInfusion(
-        this IHaveDropConditions template,
-        IEnumerable<CllcCreatureInfusion> infusions)
-    {
-        if (infusions?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionInfusion>()
-                .Infusions = infusions.ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionInfusion>();
-        }
-
-        return template;
     }
 }

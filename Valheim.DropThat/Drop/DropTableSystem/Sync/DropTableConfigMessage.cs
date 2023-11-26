@@ -25,6 +25,8 @@ internal class DropTableConfigMessage : IMessage
 
     public void AfterUnpack()
     {
+        Templates ??= new(0);
+
         DropTableTemplateManager.ResetTemplates(Templates.Values);
 
         Log.Debug?.Log($"Unpacked DropTable configurations: " +

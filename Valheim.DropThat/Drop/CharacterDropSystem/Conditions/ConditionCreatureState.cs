@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using DropThat.Caches;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
@@ -39,24 +38,5 @@ public class ConditionCreatureState : IDropCondition
                     return true;
             }
         });
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionCreatureState(
-        this IHaveDropConditions template, 
-        List<CreatureState> states)
-    {
-        if (states?.Any() == true)
-        {
-            template.Conditions.GetOrCreate<ConditionCreatureState>().CreatureStates = states.ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionCreatureState>();
-        }
-
-        return template;
     }
 }

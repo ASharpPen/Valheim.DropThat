@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using ThatCore.Extensions;
 using DropThat.Caches;
 using System.Linq;
-using DropThat.Integrations;
-using ThatCore.Models;
 
 namespace DropThat.Drop.Options.Modifiers.ModEpicLoot;
 
@@ -99,61 +97,5 @@ public class ModifierEpicLootItem : IItemModifier
                 UniqueIds = UniqueIds,
             })
             ;
-    }
-}
-
-internal static partial class IHaveItemModifierExtensions
-{
-    public static IHaveItemModifiers ModifierEpicLootItem(
-        this IHaveItemModifiers template,
-        Optional<float?> rarityWeightNone,
-        Optional<float?> rarityWeightMagic,
-        Optional<float?> rarityWeightRare,
-        Optional<float?> rarityWeightEpic,
-        Optional<float?> rarityWeightLegendary,
-        Optional<float?> rarityWeightUnique,
-        Optional<List<string>> uniqueIds
-        )
-    {
-        var modifier = template.ItemModifiers.GetOrCreate<ModifierEpicLootItem>();
-
-        if (modifier is null)
-        {
-            modifier = new();
-            template.ItemModifiers.Add(modifier);
-        }
-
-        rarityWeightNone.DoIfSet((x) => modifier.RarityWeightNone = x);
-        rarityWeightMagic.DoIfSet((x) => modifier.RarityWeightMagic = x);
-        rarityWeightRare.DoIfSet((x) => modifier.RarityWeightRare = x);
-        rarityWeightEpic.DoIfSet((x) => modifier.RarityWeightEpic = x);
-        rarityWeightLegendary.DoIfSet((x) => modifier.RarityWeightLegendary = x);
-        rarityWeightUnique.DoIfSet((x) => modifier.RarityWeightUnique = x);
-        uniqueIds.DoIfSet((x) => modifier.UniqueIds = x);
-
-        return template;
-    }
-
-    public static ModifierEpicLootItem ModifierEpicLootItem<T>(
-        this T template)
-        where T : IHaveItemModifiers
-    {
-        if (!InstallationManager.EpicLootInstalled)
-        {
-            return null;
-        }
-
-        var modifier = template
-            .ItemModifiers
-            .OfType<ModifierEpicLootItem>()
-            .FirstOrDefault();
-
-        if (modifier is null)
-        {
-            modifier = new();
-            template.ItemModifiers.Add(modifier);
-        }
-
-        return modifier;
     }
 }

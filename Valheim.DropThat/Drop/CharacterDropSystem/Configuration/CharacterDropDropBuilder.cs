@@ -7,8 +7,6 @@ using ThatCore.Models;
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
 internal class CharacterDropDropBuilder
-    : IHaveDropConditions
-    , IHaveItemModifiers
 {
     public CharacterDropDropBuilder(
         uint Id,
@@ -27,8 +25,10 @@ internal class CharacterDropDropBuilder
         CharacterDropDropTemplate template = new()
         {
             Id = (int)Id,
-            Conditions = Conditions.Clone(),
-            ItemModifiers = ItemModifiers.Clone(),
+            Conditions = Conditions
+                .Where(x => !x.IsPointless())
+                .ToList(),
+            ItemModifiers = ItemModifiers.ToList(),
         };
 
         PrefabName.DoIfSet(x => template.PrefabName = x);
@@ -42,12 +42,6 @@ internal class CharacterDropDropBuilder
         AutoStack.DoIfSet(x => template.AutoStack = x);
         AmountLimit.DoIfSet(x => template.AmountLimit = x);
         DisableResourceModifierScaling.DoIfSet(x => template.DisableResourceModifierScaling = x);
-
-        // Clean up irrelevant conditions
-        foreach (var condition in template.Conditions.Where(x => x.IsPointless()))
-        {
-            template.Conditions.Remove(condition);
-        }
 
         return template;
     }

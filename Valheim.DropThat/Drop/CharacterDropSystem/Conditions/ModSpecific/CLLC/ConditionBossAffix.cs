@@ -39,24 +39,3 @@ public class ConditionBossAffix : IDropCondition
         return BossAffixes.Any(x => x.Convert() == currentBossAffix);
     }
 }
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionBossAffix(
-        this IHaveDropConditions template,
-        IEnumerable<CllcBossAffix> bossAffixes)
-    {
-        if (bossAffixes?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionBossAffix>()
-                .BossAffixes = bossAffixes.ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionBossAffix>();
-        }
-
-        return template;
-    }
-}

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
@@ -51,6 +51,9 @@
     </Reference>
     <Reference Include="EpicLoot">
       <HintPath>..\Libs\RandyKnapp-EpicLoot\EpicLoot.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>..\Libs\Unity\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="ThatCore">
       <HintPath>..\Libs\ThatCore\ThatCore.dll</HintPath>

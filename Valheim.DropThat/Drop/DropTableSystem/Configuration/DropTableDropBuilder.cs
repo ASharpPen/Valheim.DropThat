@@ -1,14 +1,12 @@
-﻿using DropThat.Drop.DropTableSystem.Conditions;
+﻿using System.Linq;
+using DropThat.Drop.DropTableSystem.Conditions;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.Options;
-using ThatCore.Extensions;
 using ThatCore.Models;
 
 namespace DropThat.Drop.DropTableSystem.Configuration;
 
 internal class DropTableDropBuilder
-    : IHaveDropConditions
-    , IHaveItemModifiers
 {
     // Builder settings
 
@@ -49,8 +47,10 @@ internal class DropTableDropBuilder
         DropTableDropTemplate template = new()
         {
             Id = (int)Id,
-            Conditions = Conditions.Clone(),
-            ItemModifiers = ItemModifiers.Clone(),
+            Conditions = Conditions
+                .Where(x => !x.IsPointless())
+                .ToList(),
+            ItemModifiers = ItemModifiers.ToList(),
         };
 
         PrefabName.DoIfSet(x => template.PrefabName = x);

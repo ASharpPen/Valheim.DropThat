@@ -22,7 +22,7 @@ public class ConditionLocation : IDropCondition
 
     public void SetLocations(IEnumerable<string> locations)
     {
-        Locations = locations
+        Locations = locations?
             .Select(x => x
                 .Trim()
                 .ToUpperInvariant())
@@ -61,26 +61,5 @@ public class ConditionLocation : IDropCondition
         {
             zdo.SetSpawnPosition(zdo.m_position);
         }
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionLocation(
-        this IHaveDropConditions template,
-        IEnumerable<string> locations)
-    {
-        if (locations?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionLocation>()
-                .SetLocations(locations);
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionLocation>();
-        }
-
-        return template;
     }
 }

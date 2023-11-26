@@ -20,24 +20,3 @@ public class ConditionLevelMax : IDropCondition
         return context.Character.GetLevel() <= MaxLevel;
     }
 }
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionLevelMax(
-        this IHaveDropConditions template,
-        int? maxLevel)
-    {
-        if (maxLevel is not null)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionLevelMax>()
-                .MaxLevel = maxLevel.Value;
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionLevelMax>();
-        }
-
-        return template;
-    }
-}

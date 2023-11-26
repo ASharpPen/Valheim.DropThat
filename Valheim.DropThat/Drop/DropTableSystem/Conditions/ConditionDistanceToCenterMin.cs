@@ -6,12 +6,9 @@ public class ConditionDistanceToCenterMin : IDropCondition
 {
     public float? MinDistance { get; set; }
 
-    public ConditionDistanceToCenterMin() { }
-
-    public ConditionDistanceToCenterMin(float? minDistance)
-    {
-        MinDistance = minDistance;
-    }
+    public bool IsPointless() =>
+        MinDistance is null ||
+        MinDistance <= 0;
 
     public bool IsValid(DropContext context)
     {
@@ -22,24 +19,5 @@ public class ConditionDistanceToCenterMin : IDropCondition
         }
 
         return MinDistance <= context.Pos.magnitude;
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionDistanceToCenterMin(
-        this IHaveDropConditions template,
-        float? distance)
-    {
-        if (distance > 0)
-        {
-            template.Conditions.GetOrCreate<ConditionDistanceToCenterMin>().MinDistance = distance;
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionDistanceToCenterMin>();
-        }
-
-        return template;
     }
 }

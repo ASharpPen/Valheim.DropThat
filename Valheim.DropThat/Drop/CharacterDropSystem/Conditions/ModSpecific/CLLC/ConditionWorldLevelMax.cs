@@ -24,24 +24,3 @@ public class ConditionWorldLevelMax : IDropCondition
         return API.GetWorldLevel() <= MaxLevel;
     }
 }
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionWorldLevelMax(
-        this IHaveDropConditions template,
-        int? maxWorldLevel)
-    {
-        if (maxWorldLevel > 0)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionWorldLevelMax>()
-                .MaxLevel = maxWorldLevel.Value;
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionWorldLevelMax>();
-        }
-
-        return template;
-    }
-}

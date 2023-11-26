@@ -20,24 +20,3 @@ public class ConditionLevelMin : IDropCondition
         return context.Character.GetLevel() >= MinLevel;
     }
 }
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionLevelMin(
-        this IHaveDropConditions template,
-        int? minLevel)
-    {
-        if (minLevel is not null)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionLevelMin>()
-                .MinLevel = minLevel.Value;
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionLevelMin>();
-        }
-
-        return template;
-    }
-}

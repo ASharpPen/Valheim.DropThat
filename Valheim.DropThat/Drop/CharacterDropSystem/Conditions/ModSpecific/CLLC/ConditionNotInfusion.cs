@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CreatureLevelControl;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Integrations;
@@ -36,26 +35,5 @@ public class ConditionNotInfusion : IDropCondition
         var currentInfusion = API.GetInfusionCreature(character);
 
         return Infusions.Any(x => x.Convert() == currentInfusion);
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionNotInfusion(
-        this IHaveDropConditions template,
-        IEnumerable<CllcCreatureInfusion> infusions)
-    {
-        if (infusions?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionNotInfusion>()
-                .Infusions = infusions.ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionNotInfusion>();
-        }
-
-        return template;
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
@@ -8,14 +7,7 @@ public class ConditionGlobalKeysAny : IDropCondition
 {
     public string[] GlobalKeys { get; set; }
 
-    public ConditionGlobalKeysAny()
-    {
-    }
-
-    public ConditionGlobalKeysAny(IEnumerable<string> keys)
-    {
-        GlobalKeys = keys.ToArray();
-    }
+    public bool IsPointless() => (GlobalKeys?.Length ?? 0) == 0;
 
     public bool IsValid(DropContext context)
     {
@@ -26,24 +18,5 @@ public class ConditionGlobalKeysAny : IDropCondition
         }
 
         return GlobalKeys.Any(ZoneSystem.instance.GetGlobalKey);
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionGlobalKeysAny(
-        this IHaveDropConditions template,
-        IEnumerable<string> globalKeys)
-    {
-        if (globalKeys?.Any() == true)
-        {
-            template.Conditions.GetOrCreate<ConditionGlobalKeysAny>().GlobalKeys = globalKeys.ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionGlobalKeysAny>();
-        }
-
-        return template;
     }
 }

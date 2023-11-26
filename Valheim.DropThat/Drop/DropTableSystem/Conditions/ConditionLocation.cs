@@ -9,18 +9,11 @@ public class ConditionLocation : IDropCondition
 {
     public HashSet<string> Locations { get; set; }
 
-    public ConditionLocation()
-    {
-    }
-
-    public ConditionLocation(IEnumerable<string> locations)
-    {
-        SetLocations(locations);
-    }
+    public bool IsPointless() => (Locations?.Count ?? 0) == 0;
 
     public void SetLocations(IEnumerable<string> locations)
     {
-        Locations = locations
+        Locations = locations?
             .Select(x =>
                 x.Trim()
                 .ToUpperInvariant())
@@ -47,24 +40,5 @@ public class ConditionLocation : IDropCondition
             .ToUpperInvariant();
 
         return Locations.Contains(currentLocationName);
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionLocation(
-        this IHaveDropConditions template,
-        IEnumerable<string> locations)
-    {
-        if (locations?.Any() == true)
-        {
-            template.Conditions.GetOrCreate<ConditionLocation>().SetLocations(locations);
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionLocation>();
-        }
-
-        return template;
     }
 }

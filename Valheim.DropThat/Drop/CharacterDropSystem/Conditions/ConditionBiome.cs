@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DropThat.Caches;
+﻿using DropThat.Caches;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Utilities.Valheim;
-using ThatCore.Utilities.Valheim;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
@@ -47,24 +44,5 @@ public class ConditionBiome : IDropCondition
 
             zdo.SetSpawnBiome(biome);
         }
-    }
-}
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionBiome(
-        this IHaveDropConditions template, 
-        IEnumerable<Heightmap.Biome> biomes)
-    {
-        if (biomes?.Any() == true)
-        {
-            template.Conditions.GetOrCreate<ConditionBiome>().BiomeBitmask = biomes.ToBitmask();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionBiome>();
-        }
-
-        return template;
     }
 }

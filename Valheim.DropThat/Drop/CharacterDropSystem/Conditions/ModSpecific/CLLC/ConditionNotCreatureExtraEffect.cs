@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CreatureLevelControl;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Integrations;
@@ -38,25 +37,3 @@ public class ConditionNotCreatureExtraEffect : IDropCondition
         return ExtraEffects.Any(x => x.Convert() == creatureExtraEffect);
     }
 }
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionNotCreatureExtraEffect(
-        this IHaveDropConditions template,
-        IEnumerable<CllcCreatureExtraEffect> creatureExtraEffects)
-    {
-        if (creatureExtraEffects?.Any() == true)
-        {
-            template.Conditions
-                .GetOrCreate<ConditionNotCreatureExtraEffect>()
-                .ExtraEffects = creatureExtraEffects.ToArray();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionNotCreatureExtraEffect>();
-        }
-
-        return template;
-    }
-}
-

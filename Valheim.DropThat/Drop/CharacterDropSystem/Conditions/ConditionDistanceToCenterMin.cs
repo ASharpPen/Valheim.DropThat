@@ -15,22 +15,3 @@ public class ConditionDistanceToCenterMin : IDropCondition
         return distance >= DistanceToCenterMin;
     }
 }
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionDistanceToCenterMin(
-        this IHaveDropConditions template,
-        float? distance)
-    {
-        if (distance > 0)
-        {
-            template.Conditions.GetOrCreate<ConditionDistanceToCenterMin>().DistanceToCenterMin = distance.Value;
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionDistanceToCenterMin>();
-        }
-
-        return template;
-    }
-}

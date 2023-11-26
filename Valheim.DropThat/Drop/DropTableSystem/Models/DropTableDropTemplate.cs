@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using DropThat.Drop.DropTableSystem.Conditions;
 using DropThat.Drop.Options;
-using ThatCore.Models;
 
 namespace DropThat.Drop.DropTableSystem.Models;
 
@@ -10,9 +9,9 @@ public class DropTableDropTemplate
     : IHaveItemModifiers
     , IHaveDropConditions
 {
-    public TypeSet<IDropCondition> Conditions { get; set; } = new();
+    public ICollection<IDropCondition> Conditions { get; set; } = [];
 
-    public TypeSet<IItemModifier> ItemModifiers { get; set; } = new();
+    public ICollection<IItemModifier> ItemModifiers { get; set; } = [];
 
     public int Id { get; set; }
 

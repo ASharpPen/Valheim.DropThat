@@ -45,22 +45,3 @@ public class ConditionHitByEntityTypeRecently : IDropCondition
         return !match;
     }
 }
-
-internal static partial class IHaveDropConditionsExtensions
-{
-    public static IHaveDropConditions ConditionHitByEntityTypeRecently(
-        this IHaveDropConditions template,
-        IEnumerable<EntityType> entityTypes)
-    {
-        if (entityTypes?.Any() == true)
-        {
-            template.Conditions.GetOrCreate<ConditionHitByEntityTypeRecently>().EntityTypes = entityTypes.ToHashSet();
-        }
-        else
-        {
-            template.Conditions.Remove<ConditionHitByEntityTypeRecently>();
-        }
-
-        return template;
-    }
-}
