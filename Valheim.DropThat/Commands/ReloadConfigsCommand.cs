@@ -16,7 +16,7 @@ internal static class ReloadConfigsCommand
 
         new Terminal.ConsoleCommand(
             CommandName,
-            "Reload configurations and re-syncronize.",
+            "Reload configurations and re-syncronize. This will also reload all nearby entities with drop tables.",
             (args) =>
             {
                 try

@@ -1,18 +1,21 @@
 ﻿using System;
 using DropThat.Drop.DropTableSystem.Debug;
+using ThatCore.Lifecycle;
 using ThatCore.Logging;
 
 namespace DropThat.Commands;
 
 internal static class WriteLoadedDropTablesCommand
 {
-    public const string CommandName = "dropthat:print_droptables_loaded";
+    public const string CommandName = "dropthat:debug_write_configs";
 
     internal static void Register()
     {
+        LifecycleManager.OnNewConnection += ConfigureRPCs;
+
         new Terminal.ConsoleCommand(
             CommandName,
-            "Reload configurations and re-syncronize.",
+            "Writes the currently loaded configs to disk in the Debug folder.",
             (args) =>
             {
                 try
@@ -44,7 +47,11 @@ internal static class WriteLoadedDropTablesCommand
         }
     }
 
-    private static void RPC_DropThatCommand_PrintDropTablesLoaded(ZRpc zrpc) => TemplateWriter.PrintLoadedDropTables();
+    private static void RPC_DropThatCommand_PrintDropTablesLoaded(ZRpc zrpc)
+    {
+        TemplateWriter.PrintLoadedDropTables();
+        Drop.CharacterDropSystem.Debug.TemplateWriter.WriteLoadedConfigsToDisk();
+    }
 
     private static void RequestPrint()
     {
