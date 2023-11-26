@@ -1,14 +1,13 @@
 ﻿using CreatureLevelControl;
 using System.Linq;
 using DropThat.Integrations.CllcIntegration;
-using System.Collections.Generic;
 using ThatCore.Extensions;
 using DropThat.Integrations;
 using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionBossAffix : IDropCondition
+public sealed class ConditionBossAffix : IDropCondition
 {
     public CllcBossAffix[] BossAffixes { get; set; }
 

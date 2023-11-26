@@ -5,7 +5,7 @@ using DropThat.Utilities.Valheim;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionBiome : IDropCondition
+public sealed class ConditionBiome : IDropCondition
 {
     public Heightmap.Biome BiomeBitmask { get; set; }
 

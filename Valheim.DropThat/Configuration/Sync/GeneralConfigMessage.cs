@@ -3,7 +3,7 @@ using ThatCore.Network;
 
 namespace DropThat.Configuration.Sync;
 
-internal class GeneralConfigMessage : IMessage
+internal sealed class GeneralConfigMessage : IMessage
 {
     public GeneralConfig GeneralConfig;
 

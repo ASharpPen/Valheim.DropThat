@@ -5,7 +5,7 @@ using DropThat.Drop.Options;
 
 namespace DropThat.Drop.DropTableSystem.Models;
 
-public class DropTableDropTemplate
+public sealed class DropTableDropTemplate
     : IHaveItemModifiers
     , IHaveDropConditions
 {

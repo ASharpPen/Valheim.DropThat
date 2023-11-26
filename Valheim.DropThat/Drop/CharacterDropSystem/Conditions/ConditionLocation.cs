@@ -9,7 +9,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionLocation : IDropCondition
+public sealed class ConditionLocation : IDropCondition
 {
     public HashSet<string> Locations { get; set; }
 

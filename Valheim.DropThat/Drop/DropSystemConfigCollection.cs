@@ -5,7 +5,7 @@ using ThatCore.Logging;
 
 namespace DropThat.Drop;
 
-internal class DropSystemConfigCollection : IDropSystemConfigCollection
+internal sealed class DropSystemConfigCollection : IDropSystemConfigCollection
 {
     private Dictionary<Type, IDropSystemConfig> _dropSystemConfigs = new();
 

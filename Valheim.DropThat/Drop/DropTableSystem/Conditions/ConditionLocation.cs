@@ -5,7 +5,7 @@ using DropThat.Locations;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionLocation : IDropCondition
+public sealed class ConditionLocation : IDropCondition
 {
     public HashSet<string> Locations { get; set; }
 

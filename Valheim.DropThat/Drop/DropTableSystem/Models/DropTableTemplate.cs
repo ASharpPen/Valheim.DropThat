@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.DropTableSystem.Models;
 
-public class DropTableTemplate
+public sealed class DropTableTemplate
 {
     public string PrefabName { get; set; }
 

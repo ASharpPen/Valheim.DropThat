@@ -4,7 +4,7 @@ using ThatCore.Network;
 
 namespace DropThat.Locations.Sync;
 
-internal class SimpleLocationMessage : IMessage
+internal sealed class SimpleLocationMessage : IMessage
 {
     public string[] LocationNames;
 

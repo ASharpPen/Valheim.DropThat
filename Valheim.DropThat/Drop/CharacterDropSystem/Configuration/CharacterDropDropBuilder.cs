@@ -6,7 +6,7 @@ using ThatCore.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
-internal class CharacterDropDropBuilder
+internal sealed class CharacterDropDropBuilder
 {
     public CharacterDropDropBuilder(
         uint Id,

@@ -4,7 +4,7 @@ using ThatCore.Logging;
 
 namespace DropThat.Commands;
 
-internal class WriteLoadedDropTablesCommand
+internal static class WriteLoadedDropTablesCommand
 {
     public const string CommandName = "dropthat:print_droptables_loaded";
 

@@ -7,7 +7,7 @@ using ThatCore.Logging;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionHitByEntityTypeRecently : IDropCondition
+public sealed class ConditionHitByEntityTypeRecently : IDropCondition
 {
     public HashSet<EntityType> EntityTypes { get; set; }
 

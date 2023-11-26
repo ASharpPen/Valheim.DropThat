@@ -3,7 +3,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionKilledByDamageType : IDropCondition
+public sealed class ConditionKilledByDamageType : IDropCondition
 {
     public HitData.DamageType DamageTypeMask { get; set; } = 0;
 

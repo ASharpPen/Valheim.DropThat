@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.CharacterDropSystem.Models;
 
-public class CharacterDropMobTemplate
+public sealed class CharacterDropMobTemplate
 {
     public string PrefabName { get; set; }
 

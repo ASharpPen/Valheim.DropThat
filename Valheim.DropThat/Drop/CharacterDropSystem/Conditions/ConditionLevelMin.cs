@@ -3,7 +3,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionLevelMin : IDropCondition
+public sealed class ConditionLevelMin : IDropCondition
 {
     public int? MinLevel { get; set; }
 

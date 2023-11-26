@@ -7,7 +7,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionCreatureExtraEffect : IDropCondition
+public sealed class ConditionCreatureExtraEffect : IDropCondition
 {
     public CllcCreatureExtraEffect[] ExtraEffects { get; set; }
 

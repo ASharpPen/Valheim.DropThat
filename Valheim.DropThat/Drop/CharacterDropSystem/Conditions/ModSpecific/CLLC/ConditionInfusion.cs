@@ -7,7 +7,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionInfusion : IDropCondition
+public sealed class ConditionInfusion : IDropCondition
 {
     public CllcCreatureInfusion[] Infusions { get; set; }
 

@@ -7,7 +7,7 @@ using ThatCore.Logging;
 
 namespace DropThat.Drop.CharacterDropSystem;
 
-internal class CharacterDropSystemConfiguration : IDropSystemConfig
+internal sealed class CharacterDropSystemConfiguration : IDropSystemConfig
 {
     private Dictionary<string, CharacterDropBuilder> _builders = new();
 

@@ -5,7 +5,7 @@ using ThatCore.Models;
 
 namespace DropThat.Drop.DropTableSystem.Configuration;
 
-internal class DropTableBuilder
+internal sealed class DropTableBuilder
     : IHaveDropBuilders
 {
     public DropTableBuilder(

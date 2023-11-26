@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionDistanceToCenterMin : IDropCondition
+public sealed class ConditionDistanceToCenterMin : IDropCondition
 {
     public float DistanceToCenterMin { get; set; }
 

@@ -10,7 +10,7 @@ namespace DropThat.Drop.CharacterDropSystem.Caches;
 /// <summary>
 /// Temporary caching for carrying config information between CharacterDrop.GenerateDropList and CharacterDrop.DropItems.
 /// </summary>
-internal class TempDropListCache
+internal sealed class TempDropListCache
 {
     private static ConditionalWeakTable<object, TempDropListCache> DropListTable = new ConditionalWeakTable<object, TempDropListCache>();
 

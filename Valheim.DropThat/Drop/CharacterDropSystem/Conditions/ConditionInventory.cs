@@ -6,7 +6,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionInventory : IDropCondition
+public sealed class ConditionInventory : IDropCondition
 {
     public HashSet<string> Items { get; set; }
 

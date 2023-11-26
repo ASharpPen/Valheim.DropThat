@@ -4,7 +4,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionFaction : IDropCondition
+public sealed class ConditionFaction : IDropCondition
 {
     public Character.Faction[] Factions { get; set; }
 

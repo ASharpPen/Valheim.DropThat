@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DropThat.Creature.DamageRecords;
 
-public class DamageRecord
+public sealed class DamageRecord
 {
     public HitData Hit { get; set; }
 

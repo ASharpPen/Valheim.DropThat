@@ -5,16 +5,9 @@ using UnityEngine;
 
 namespace DropThat.Drop.Options.Modifiers;
 
-public class ModifierQualityLevel : IItemModifier
+public sealed class ModifierQualityLevel : IItemModifier
 {
     public int? QualityLevel { get; set; }
-
-    public ModifierQualityLevel() { }
-
-    public ModifierQualityLevel(int? qualityLevel)
-    {
-        QualityLevel = qualityLevel;
-    }
 
     public void Modify(ItemModifierContext<GameObject> drop)
     {

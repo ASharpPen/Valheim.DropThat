@@ -1,6 +1,6 @@
 ﻿namespace DropThat.Drop.CharacterDropSystem.Models;
 
-public class DropConfigInfo
+public sealed class DropConfigInfo
 {
     public CharacterDropMobTemplate MobTemplate { get; set; }
 

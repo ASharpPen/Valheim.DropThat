@@ -7,7 +7,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionNotCreatureExtraEffect : IDropCondition
+public sealed class ConditionNotCreatureExtraEffect : IDropCondition
 {
     public CllcCreatureExtraEffect[] ExtraEffects { get; set; }
 

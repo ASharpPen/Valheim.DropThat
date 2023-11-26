@@ -7,7 +7,7 @@ using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem;
 
-internal class DropTableSystemConfiguration : IDropSystemConfig
+internal sealed class DropTableSystemConfiguration : IDropSystemConfig
 {
     private Dictionary<string, DropTableBuilder> _builders = new();
 

@@ -3,7 +3,7 @@ using DropThat.Drop.DropTableSystem.Models;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionGlobalKeysNotAll : IDropCondition
+public sealed class ConditionGlobalKeysNotAll : IDropCondition
 {
     public string[] GlobalKeys { get; set; }
 

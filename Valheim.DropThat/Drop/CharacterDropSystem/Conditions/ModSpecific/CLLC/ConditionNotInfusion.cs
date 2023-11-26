@@ -7,7 +7,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionNotInfusion : IDropCondition
+public sealed class ConditionNotInfusion : IDropCondition
 {
     public CllcCreatureInfusion[] Infusions { get; set; }
 

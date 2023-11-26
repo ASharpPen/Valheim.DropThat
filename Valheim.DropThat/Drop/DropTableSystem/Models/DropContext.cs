@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.DropTableSystem.Models;
 
-public class DropContext
+public sealed class DropContext
 {
     private Vector3? _pos;
 

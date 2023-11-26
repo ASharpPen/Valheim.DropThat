@@ -5,7 +5,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionCreatureState : IDropCondition
+public sealed class ConditionCreatureState : IDropCondition
 {
     public CreatureState[] CreatureStates { get; set; }
 

@@ -8,7 +8,7 @@ using ThatCore.Config.Toml.Schema;
 
 namespace DropThat.Drop.DropTableSystem.Configuration.Toml;
 
-internal class DropTableConfigMapper
+internal sealed class DropTableConfigMapper
 {
     private TomlSchemaBuilder Builder { get; set; }
 

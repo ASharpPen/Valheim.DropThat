@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionAltitudeMin : IDropCondition
+public sealed class ConditionAltitudeMin : IDropCondition
 {
     public float? AltitudeMin { get; set; }
 

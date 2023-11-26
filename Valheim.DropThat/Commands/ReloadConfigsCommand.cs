@@ -6,7 +6,7 @@ using ThatCore.Logging;
 
 namespace DropThat.Commands;
 
-internal class ReloadConfigsCommand
+internal static class ReloadConfigsCommand
 {
     public const string CommandName = "dropthat:reload";
 

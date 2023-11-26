@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DropThat.Drop.Options.Modifiers;
 
-public class ModifierDurability : IItemModifier
+public sealed class ModifierDurability : IItemModifier
 {
     public float? Durability { get; set; }
 

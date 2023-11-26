@@ -8,7 +8,7 @@ using ThatCore.Config.Toml.Schema;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 
-internal class CharacterDropConfigMapper
+internal sealed class CharacterDropConfigMapper
 {
     private TomlSchemaBuilder Builder { get; set; } = new();
 

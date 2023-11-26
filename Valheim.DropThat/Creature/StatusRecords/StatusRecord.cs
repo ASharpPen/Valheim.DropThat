@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DropThat.Creature.StatusRecords;
 
-public class StatusRecord
+public sealed class StatusRecord
 {
     private HashSet<string> statusSet = null;
     private List<string> statusList;

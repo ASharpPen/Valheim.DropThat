@@ -2,7 +2,7 @@
 
 namespace DropThat.Locations;
 
-public class SimpleLocation
+public sealed class SimpleLocation
 {
     public Vector3 Position;
 

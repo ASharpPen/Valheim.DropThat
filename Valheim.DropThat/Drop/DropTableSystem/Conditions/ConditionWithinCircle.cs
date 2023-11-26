@@ -3,7 +3,7 @@ using DropThat.Drop.DropTableSystem.Models;
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionWithinCircle : IDropCondition
+public sealed class ConditionWithinCircle : IDropCondition
 {
     public float? CenterX { get; set; }
     public float? CenterZ { get; set; }

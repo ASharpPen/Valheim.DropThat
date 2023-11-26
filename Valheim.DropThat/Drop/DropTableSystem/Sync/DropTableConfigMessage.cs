@@ -7,7 +7,7 @@ using ThatCore.Network;
 
 namespace DropThat.Drop.DropTableSystem.Sync;
 
-internal class DropTableConfigMessage : IMessage
+internal sealed class DropTableConfigMessage : IMessage
 {
     public Dictionary<string, DropTableTemplate> Templates { get; set; }
 

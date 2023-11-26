@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DropThat.Drop.DropTableSystem.Wrapper;
 
-internal class WrapperCache
+internal sealed class WrapperCache
 {
     public WrapperComponent Wrapper { get; set; }
 

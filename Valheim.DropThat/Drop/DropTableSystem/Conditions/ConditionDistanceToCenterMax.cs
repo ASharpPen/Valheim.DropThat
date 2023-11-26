@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionDistanceToCenterMax : IDropCondition
+public sealed class ConditionDistanceToCenterMax : IDropCondition
 {
     public float? MaxDistance { get; set; }
 

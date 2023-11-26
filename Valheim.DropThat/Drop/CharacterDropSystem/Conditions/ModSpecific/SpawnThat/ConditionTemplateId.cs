@@ -4,7 +4,7 @@ using DropThat.Integrations;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
 
-public class ConditionTemplateId : IDropCondition
+public sealed class ConditionTemplateId : IDropCondition
 {
     public string[] TemplateIds { get; set; }
 

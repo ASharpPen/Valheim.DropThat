@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DropThat.Drop.Options.Modifiers.ModEpicLoot;
 
-public class ModifierEpicLootItem : IItemModifier
+public sealed class ModifierEpicLootItem : IItemModifier
 {
     public float? RarityWeightNone { get; set; }
     public float? RarityWeightMagic { get; set; }

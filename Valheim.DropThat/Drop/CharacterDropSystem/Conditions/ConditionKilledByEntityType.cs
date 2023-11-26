@@ -4,7 +4,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionKilledByEntityType : IDropCondition
+public sealed class ConditionKilledByEntityType : IDropCondition
 {
     public EntityType[] EntityTypes { get; set; }
 

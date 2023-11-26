@@ -3,7 +3,7 @@ using DropThat.Drop.DropTableSystem.Models;
 
 namespace DropThat.Drop.DropTableSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionWorldLevelMin : IDropCondition
+public sealed class ConditionWorldLevelMin : IDropCondition
 {
     public int? WorldLevel { get; set; }
 

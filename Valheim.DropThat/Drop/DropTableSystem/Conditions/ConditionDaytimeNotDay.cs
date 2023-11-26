@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionDaytimeNotDay : IDropCondition
+public sealed class ConditionDaytimeNotDay : IDropCondition
 {
     public bool IsPointless() => false;
 

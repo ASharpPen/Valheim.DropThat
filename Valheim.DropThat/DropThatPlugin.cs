@@ -9,7 +9,7 @@ namespace DropThat;
 [BepInDependency("randyknapp.mods.epicloot", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("org.bepinex.plugins.creaturelevelcontrol", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(ModId, PluginName, Version)]
-public class DropThatPlugin : BaseUnityPlugin
+public sealed class DropThatPlugin : BaseUnityPlugin
 {
     public const string ModId = "asharppen.valheim.drop_that";
     public const string PluginName = "Drop That!";

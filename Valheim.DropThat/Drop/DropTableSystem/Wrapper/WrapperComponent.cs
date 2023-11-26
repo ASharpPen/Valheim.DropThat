@@ -12,7 +12,7 @@ namespace DropThat.Drop.DropTableSystem.Wrapper;
 /// 
 /// Intended for wrapper objects that should never be instantiated by themself.
 /// </summary>
-public class WrapperComponent : MonoBehaviour
+public sealed class WrapperComponent : MonoBehaviour
 {
     public DropTableDrop Drop;
 

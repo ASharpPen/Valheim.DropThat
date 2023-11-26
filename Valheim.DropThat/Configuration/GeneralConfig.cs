@@ -3,7 +3,7 @@ using DropThat.Core.Configuration;
 
 namespace DropThat.Configuration;
 
-public class GeneralConfig
+public sealed class GeneralConfig
 {
     private ConfigFile Config;
 

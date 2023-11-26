@@ -4,7 +4,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionEnvironments : IDropCondition
+public sealed class ConditionEnvironments : IDropCondition
 {
     public HashSet<string> Environments { get; set; }
 

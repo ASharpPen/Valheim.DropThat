@@ -1,6 +1,6 @@
 ﻿namespace DropThat.Drop.DropTableSystem.Models;
 
-internal class DropLink
+internal sealed class DropLink
 {
     public DropTableTemplate Table { get; set; }
 

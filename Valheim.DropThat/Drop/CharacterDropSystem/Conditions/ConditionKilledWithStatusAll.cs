@@ -5,7 +5,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionKilledWithStatusAll : IDropCondition
+public sealed class ConditionKilledWithStatusAll : IDropCondition
 {
     public string[] Statuses { get; set; }
 

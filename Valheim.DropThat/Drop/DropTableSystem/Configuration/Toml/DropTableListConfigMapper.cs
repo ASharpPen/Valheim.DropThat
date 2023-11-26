@@ -12,7 +12,7 @@ namespace DropThat.Drop.DropTableSystem.Configuration.Toml;
 // of hacked together stuff anyway. We just need to have the schemas
 // so that we can load the config files and merge things together in
 // the configuration file manager.
-internal class DropTableListConfigMapper
+internal sealed class DropTableListConfigMapper
 {
     private TomlSchemaBuilder Builder { get; set; }
 

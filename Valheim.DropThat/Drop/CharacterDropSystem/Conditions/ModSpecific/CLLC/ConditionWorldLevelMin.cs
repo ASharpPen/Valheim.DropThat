@@ -4,7 +4,7 @@ using DropThat.Integrations;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionWorldLevelMin : IDropCondition
+public sealed class ConditionWorldLevelMin : IDropCondition
 {
     public int? MinLevel { get; set; }
 

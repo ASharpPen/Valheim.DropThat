@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionNotAfternoon : IDropCondition
+public sealed class ConditionNotAfternoon : IDropCondition
 {
     public bool IsPointless() => false;
 

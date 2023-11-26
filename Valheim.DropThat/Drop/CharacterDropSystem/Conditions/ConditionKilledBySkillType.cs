@@ -4,7 +4,7 @@ using DropThat.Drop.CharacterDropSystem.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionKilledBySkillType : IDropCondition
+public sealed class ConditionKilledBySkillType : IDropCondition
 {
     public HashSet<Skills.SkillType> SkillTypes { get; set; }
 

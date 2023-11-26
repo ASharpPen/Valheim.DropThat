@@ -1,8 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿namespace DropThat.Caches;
 
-namespace DropThat.Caches;
-
-public class CharacterExtended
+public sealed class CharacterExtended
 {
     public bool? HasMonsterAI { get; set; }
 

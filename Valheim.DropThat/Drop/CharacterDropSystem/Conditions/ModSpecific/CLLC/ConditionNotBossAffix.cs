@@ -7,7 +7,7 @@ using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionNotBossAffix : IDropCondition
+public sealed class ConditionNotBossAffix : IDropCondition
 {
     public CllcBossAffix[] BossAffixes { get; set; }
 

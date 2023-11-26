@@ -5,7 +5,7 @@ using ThatCore.Models;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration;
 
-internal class CharacterDropBuilder : IHaveDropBuilders
+internal sealed class CharacterDropBuilder : IHaveDropBuilders
 {
     public CharacterDropBuilder(
         string mob, 

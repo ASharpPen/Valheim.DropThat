@@ -2,7 +2,7 @@
 
 namespace DropThat.Drop.DropTableSystem.Conditions;
 
-public class ConditionDistanceToCenterMin : IDropCondition
+public sealed class ConditionDistanceToCenterMin : IDropCondition
 {
     public float? MinDistance { get; set; }
 

@@ -4,7 +4,7 @@ using DropThat.Caches;
 
 namespace DropThat.Drop.CharacterDropSystem.Models;
 
-public class DropContext
+public sealed class DropContext
 {
     private Heightmap _heightmap;
     private Character _character = null;

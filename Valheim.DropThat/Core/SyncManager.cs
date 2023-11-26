@@ -7,7 +7,7 @@ namespace DropThat.Core;
 
 internal static class SyncManager
 {
-    private class HandlerPair
+    private sealed class HandlerPair
     {
         public string UnpackerRpcName { get; }
         public Func<IMessage> Packer { get; }

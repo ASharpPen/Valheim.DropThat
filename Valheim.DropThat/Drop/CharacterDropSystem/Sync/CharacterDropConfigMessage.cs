@@ -7,7 +7,7 @@ using ThatCore.Network;
 
 namespace DropThat.Drop.CharacterDropSystem.Sync;
 
-internal class CharacterDropConfigMessage : IMessage
+internal sealed class CharacterDropConfigMessage : IMessage
 {
     public Dictionary<string, CharacterDropMobTemplate> Templates { get; set; }
 

@@ -4,7 +4,7 @@ using DropThat.Integrations;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
 
-public class ConditionWorldLevelMax : IDropCondition
+public sealed class ConditionWorldLevelMax : IDropCondition
 {
     public int? MaxLevel { get; set; }
 

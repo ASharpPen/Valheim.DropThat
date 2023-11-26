@@ -5,7 +5,7 @@ using DropThat.Drop.Options;
 
 namespace DropThat.Drop.CharacterDropSystem.Models;
 
-public class CharacterDropDropTemplate
+public sealed class CharacterDropDropTemplate
     : IHaveItemModifiers
     , IHaveDropConditions
 {

@@ -6,7 +6,7 @@ using DropThat.Utilities;
 
 namespace DropThat.Caches;
 
-public class ComponentCache
+public sealed class ComponentCache
 {
     private static ManagedCache<ComponentCache> CacheTable { get; } = new();
 
