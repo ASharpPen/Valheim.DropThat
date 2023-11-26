@@ -4,7 +4,7 @@ using ThatCore.Config.Toml.Writers;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using ThatCore.Config.Toml.Schema;
 using DropThat.Debugging;
-using DropThat.Drop.CharacterDropSystem.Configuration;
+using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 
 namespace DropThat.Drop.CharacterDropSystem.Debug;
 

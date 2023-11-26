@@ -18,8 +18,8 @@ internal static partial class ConfigurationFileManager
     public const string DropTableFiles = "drop_that.drop_table.*.cfg";
     public const string DropTableListsFiles = "drop_that.drop_table_list.*.cfg";
 
-    private static ITomlSchemaLayer _schema;
-    private static ITomlSchemaLayer _listSchema;
+    internal static ITomlSchemaLayer Schema;
+    internal static ITomlSchemaLayer ListSchema;
 
     public static ConfigToObjectMapper<DropTableSystemConfiguration> ConfigObjectMapper;
     public static DropTableConfigMapper ConfigMapper { get; set; }
@@ -30,13 +30,13 @@ internal static partial class ConfigurationFileManager
         if (ConfigMapper is null)
         {
             ConfigMapper = RegisterMainMappings();
-            _schema = ConfigMapper.BuildSchema();
+            Schema = ConfigMapper.BuildSchema();
         }
 
         if (ConfigListMapper is null)
         {
             ConfigListMapper = RegisterListMappings();
-            _listSchema = ConfigListMapper.BuildSchema();
+            ListSchema = ConfigListMapper.BuildSchema();
         }
 
         ConfigObjectMapper = ConfigMapper.CreateMapper(configuration);
@@ -70,7 +70,7 @@ internal static partial class ConfigurationFileManager
         {
             try
             {
-                configs[i] = TomlSchemaFileLoader.LoadFile(supplementalFiles[i], _listSchema);
+                configs[i] = TomlSchemaFileLoader.LoadFile(supplementalFiles[i], ListSchema);
             }
             catch (Exception e)
             {
@@ -100,7 +100,7 @@ internal static partial class ConfigurationFileManager
         {
             try
             {
-                configs.Add(TomlSchemaFileLoader.LoadFile(supplementalFiles[i], _schema));
+                configs.Add(TomlSchemaFileLoader.LoadFile(supplementalFiles[i], Schema));
             }
             catch (Exception e)
             {
@@ -116,7 +116,7 @@ internal static partial class ConfigurationFileManager
             CreateDefaultConfigFile(configPath);
         };
 
-        var mainConfig = TomlSchemaFileLoader.LoadFile(configPath, _schema);
+        var mainConfig = TomlSchemaFileLoader.LoadFile(configPath, Schema);
 
         configs.Add(mainConfig);
 

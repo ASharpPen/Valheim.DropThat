@@ -1,4 +1,4 @@
-﻿using DropThat.Drop.CharacterDropSystem.Configuration;
+﻿using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using DropThat.Drop.CharacterDropSystem.Sync;
 
 namespace DropThat.Drop.CharacterDropSystem;

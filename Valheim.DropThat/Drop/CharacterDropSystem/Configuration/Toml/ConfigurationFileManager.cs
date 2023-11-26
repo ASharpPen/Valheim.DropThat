@@ -5,13 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using BepInEx;
 using DropThat.Configuration;
-using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using ThatCore.Config.Toml;
 using ThatCore.Config.Toml.Mapping;
 using ThatCore.Config.Toml.Schema;
 using ThatCore.Logging;
 
-namespace DropThat.Drop.CharacterDropSystem.Configuration;
+namespace DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 
 internal static partial class ConfigurationFileManager
 {

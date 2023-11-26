@@ -10,10 +10,9 @@ using DropThat.Integrations.CllcIntegration;
 using DropThat.Integrations;
 using ThatCore.Utilities.Valheim;
 using ThatCore.Extensions;
-using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using DropThat.Drop.Options;
 
-namespace DropThat.Drop.CharacterDropSystem.Configuration;
+namespace DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 
 internal static partial class ConfigurationFileManager
 {
