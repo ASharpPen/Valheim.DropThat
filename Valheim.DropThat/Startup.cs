@@ -47,5 +47,6 @@ internal static class Startup
     {
         ReloadConfigsCommand.Register();
         WriteLoadedDropTablesCommand.Register();
+        WriteSchemaCommand.Register();
     }
 }

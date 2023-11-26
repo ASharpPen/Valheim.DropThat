@@ -7,7 +7,7 @@ namespace DropThat.Commands;
 
 internal static class WriteLoadedDropTablesCommand
 {
-    public const string CommandName = "dropthat:debug_write_configs";
+    public const string CommandName = "dropthat:print_loaded_cfgs";
 
     internal static void Register()
     {
@@ -23,6 +23,7 @@ internal static class WriteLoadedDropTablesCommand
                     if (ZNet.instance.IsServer())
                     {
                         TemplateWriter.PrintLoadedDropTables();
+                        Drop.CharacterDropSystem.Debug.TemplateWriter.WriteLoadedConfigsToDisk();
                     }
                     else
                     {
