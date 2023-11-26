@@ -12,26 +12,10 @@ public static class DropSystemConfigManager
 
     public static event Action OnConfigsLoaded;
 
-    public static event Action OnReceivedCharacterDropConfigs;
-
-    public static event Action OnReceivedDropTableConfigs;
-
     internal static void ConfigsLoaded()
     {
         Log.Trace?.Log("Running OnConfigsLoaded actions.");
         OnConfigsLoaded.Raise("Error during configs loaded event.");
-    }
-
-    internal static void ReceivedCharacterDropConfigs()
-    {
-        Log.Trace?.Log("Running OnReceivedCharacterDropConfigs actions.");
-        OnReceivedCharacterDropConfigs.Raise("Error during character_drop configs received event.");
-    }
-
-    internal static void ReceivedDropTableConfigs()
-    {
-        Log.Trace?.Log("Running OnReceivedDropTableConfigs actions.");
-        OnReceivedDropTableConfigs.Raise("Error during drop_table configs received event.");
     }
 
     internal static void LoadConfigs()
