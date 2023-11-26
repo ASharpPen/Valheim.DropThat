@@ -64,7 +64,15 @@ internal static partial class ConfigurationFileManager
 
     private static TomlConfig LoadAllCharacterDropLists()
     {
-        var supplementalFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropListsFiles, SearchOption.AllDirectories);
+        var pluginFiles = Directory.GetFiles(Paths.PluginPath, CharacterDropListsFiles, SearchOption.AllDirectories);
+
+        var configFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropListsFiles, SearchOption.AllDirectories);
+
+        var supplementalFiles =
+            pluginFiles
+            .Concat(configFiles)
+            .ToArray();
+
         Log.Debug?.Log($"Loading '{supplementalFiles.Length}' character_drop list files");
 
         TomlConfig[] configs = new TomlConfig[supplementalFiles.Length];
@@ -94,20 +102,28 @@ internal static partial class ConfigurationFileManager
 
     private static TomlConfig LoadAllCharacterDropConfigurations()
     {
-        var customFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropFiles, SearchOption.AllDirectories);
-        Log.Debug?.Log($"Loading '{customFiles.Length + 1}' character_drop files");
+        var pluginFiles = Directory.GetFiles(Paths.PluginPath, CharacterDropFiles, SearchOption.AllDirectories);
 
-        TomlConfig[] configs = new TomlConfig[customFiles.Length];
+        var configFiles = Directory.GetFiles(Paths.ConfigPath, CharacterDropFiles, SearchOption.AllDirectories);
 
-        Parallel.For(0, customFiles.Length, (i) =>
+        var supplementalFiles = 
+            pluginFiles
+            .Concat(configFiles)
+            .ToArray();
+
+        Log.Debug?.Log($"Loading '{supplementalFiles.Length + 1}' character_drop files");
+
+        TomlConfig[] configs = new TomlConfig[supplementalFiles.Length];
+
+        Parallel.For(0, supplementalFiles.Length, (i) =>
         {
             try
             {
-                configs[i] = TomlSchemaFileLoader.LoadFile(customFiles[i], Schema);
+                configs[i] = TomlSchemaFileLoader.LoadFile(supplementalFiles[i], Schema);
             }
             catch (Exception e)
             {
-                Log.Error?.Log($"Failed to load config file '{customFiles[i]}'.", e);
+                Log.Error?.Log($"Failed to load config file '{supplementalFiles[i]}'.", e);
             }
         });
 
