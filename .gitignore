@@ -1,4 +1,4 @@
-﻿Libs
+﻿Libs/*/
 obj
 packages
 bin
@@ -7,3 +7,4 @@ bin
 Examples/*/*/*
 *.zip
 Thunderstore
+Scripts/NStrip
