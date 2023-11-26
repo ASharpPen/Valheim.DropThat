@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Valheim.DropThat", "Valheim.DropThat\Valheim.DropThat.csproj", "{E4A48037-A956-459B-B49F-850E0FA4BD00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat.BossMetal", "Valheim.DropThat.BossMetal\Valheim.DropThat.BossMetal.csproj", "{740949B6-6174-4D2A-AE27-6ACA7E15B647}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valheim.DropThat.Tests", "Valheim.DropThat.Tests\Valheim.DropThat.Tests.csproj", "{EF36DCB6-04BF-4D2C-872B-D9FFB17A6CA1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F26D5ED2-F227-4F80-8562-351B9DE16996}"
