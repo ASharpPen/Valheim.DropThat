@@ -67,6 +67,8 @@ internal static class CharacterDropSessionManager
                 return;
             }
 
+            List<int> indexesToRemove = new();
+
             foreach ((int id, CharacterDropDropTemplate template) in dropTemplates)
             {
                 var dropInfo = new DropConfigInfo()
@@ -98,6 +100,14 @@ internal static class CharacterDropSessionManager
                     var existingDrop = existingDrops[id];
                     var existingDropPrefab = existingDrop.m_prefab.GetCleanedName();
 
+                    if (dropInfo.DropTemplate.Enabled == false)
+                    {
+                        Log.Trace?.Log($"{dropInfo.DisplayName} Disabling existing drop '{existingDropPrefab}'.");
+
+                        indexesToRemove.Add(id);
+                        continue;
+                    }
+
                     if (existingDropPrefab == template.PrefabName)
                     {
                         Log.Trace?.Log($"{dropInfo.DisplayName} Configuring existing drop '{existingDropPrefab}'.");
@@ -113,6 +123,12 @@ internal static class CharacterDropSessionManager
                     DropInstanceTable.Add(existingDrop, dropInfo);
                 }
             }
+
+            for(int i = indexesToRemove.Count; i > 0; --i)
+            {
+                existingDrops.RemoveAt(indexesToRemove[i - 1]);
+            }
+
             CharacterDropEventManager.DropTableConfigured(droptable);
         }
         catch (Exception e)
