@@ -48,5 +48,39 @@ public sealed class ComponentCache
         return Get<T>(obj.gameObject);
     }
 
+    public static bool TryGet<T>(GameObject obj, out T comp) where T : Component
+    {
+        if (obj.IsNull())
+        {
+            comp = null;
+            return false;
+        }
+
+        ComponentCache cache = CacheTable.GetOrCreate(obj);
+
+        Type componentType = typeof(T);
+
+        if (cache.ComponentTable.TryGetValue(componentType, out Component cached))
+        {
+            comp = (T)cached;
+            return true;
+        }
+
+        if (obj.TryGetComponent(componentType, out Component component))
+        {
+            cache.ComponentTable.Add(componentType, component);
+            
+            comp = (T)component;
+            return true;
+        }
+        else
+        {
+            cache.ComponentTable.Add(componentType, null);
+
+            comp = null;
+            return false;
+        }
+    }
+
     private Dictionary<Type, Component> ComponentTable { get; } = new();
 }

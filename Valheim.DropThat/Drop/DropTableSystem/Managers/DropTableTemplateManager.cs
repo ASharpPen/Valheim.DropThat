@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
+using DropThat.Drop.DropTableSystem.Services;
 using ThatCore.Extensions;
 using ThatCore.Lifecycle;
 using ThatCore.Logging;
@@ -80,4 +81,32 @@ public static class DropTableTemplateManager
         }
 #endif
     }
+
+    /// <summary>
+    /// <para>
+    ///     Scans all prefabs and returns the expected drop tables after <see cref="DropTableTemplate"/>s
+    ///     (if any) have been applied.
+    /// </para>
+    /// <para>
+    ///     This will include default drops if no templates existed.
+    /// </para> 
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If accessed prior to ZnetScene being instantiated.</exception>
+    public static Dictionary<string, ExpectedDropTable> GetAllExpectedDropTables()
+    {
+        return DropExpectationService.AllExpectedDrops();
+    }
+
+    /// <summary>
+    /// <para>
+    ///     Returns the expected drop tables after <see cref="DropTableTemplate"/> 
+    ///     (if any) has been applied.
+    /// </para>
+    /// <para>
+    ///     This show default drops if no templates existed for prefab.
+    /// </para>
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If accessed prior to ZnetScene being instantiated.</exception>
+    public static bool TryGetExpectedDrops(string prefab, out ExpectedDropTable expectedDropTable) =>
+        DropExpectationService.TryGetExpectedDrops(prefab, out expectedDropTable);
 }

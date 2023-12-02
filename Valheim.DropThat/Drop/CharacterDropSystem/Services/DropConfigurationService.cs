@@ -62,7 +62,7 @@ internal static class DropConfigurationService
         }
     }
 
-    private static bool TryFindPrefab(string prefabName, out GameObject prefab)
+    public static bool TryFindPrefab(string prefabName, out GameObject prefab)
     {
         prefab = ObjectDB.instance.GetItemPrefab(prefabName);
 

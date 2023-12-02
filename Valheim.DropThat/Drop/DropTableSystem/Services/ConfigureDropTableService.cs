@@ -102,7 +102,7 @@ internal static class ConfigureDropTableService
         return drops;
     }
 
-    private static bool TryCreateDrop(
+    internal static bool TryCreateDrop(
         DropTableTemplate tableTemplate,
         DropTableDropTemplate dropTemplate,
         out DropTable.DropData drop)
@@ -155,7 +155,7 @@ internal static class ConfigureDropTableService
         return true;
     }
 
-    private static DropTable.DropData ConfigureDrop(
+    internal static DropTable.DropData ConfigureDrop(
         DropTable.DropData drop, 
         DropTableTemplate tableTemplate, 
         DropTableDropTemplate dropTemplate)

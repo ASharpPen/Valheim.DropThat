@@ -25,10 +25,6 @@ internal static class DropTableManager
     private static ConditionalWeakTable<DropTable, DropTableTemplate> TemplateLinkTable { get; } = new();
     private static ConditionalWeakTable<DropTable, List<DropTableDrop>> DropsByTable { get; } = new();
 
-    // TODO: Experimental idea. Consider using this for caching of configs. It feels like this list will probably never change between instantiations of same prefab.
-    // TODO: Might want to consider cloning some of these objects to avoid accidental changes?
-    private static Dictionary<string, List<DropTableDrop>> DropsByPrefab { get; } = new();
-
     /// <summary>
     /// Initialize references from drop table to source.
     /// </summary>
