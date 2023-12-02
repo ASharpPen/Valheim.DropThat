@@ -113,6 +113,7 @@ internal static class CharacterDropSessionManager
                     DropInstanceTable.Add(existingDrop, dropInfo);
                 }
             }
+            CharacterDropEventManager.DropTableConfigured(droptable);
         }
         catch (Exception e)
         {
