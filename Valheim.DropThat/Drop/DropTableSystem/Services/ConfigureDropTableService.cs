@@ -36,7 +36,7 @@ internal static class ConfigureDropTableService
         // Initialize with default drops.
         var defaultDrops = table.m_drops ?? new();
 
-        List <DropTableDrop> drops = defaultDrops
+        List<DropTableDrop> drops = defaultDrops
             .Select((x, i) =>
                 new DropTableDrop()
                 {
@@ -82,7 +82,7 @@ internal static class ConfigureDropTableService
             }
             else if (dropTemplate.Value.Enabled != false)
             {
-                Log.Trace.Log($"Inserting drop '{dropTemplate.Value.PrefabName}'.");
+                Log.Trace?.Log($"Inserting drop '{dropTemplate.Value.PrefabName}'.");
 
                 if (TryCreateDrop(template, dropTemplate.Value, out var newDrop))
                 {
