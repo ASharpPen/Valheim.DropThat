@@ -57,10 +57,10 @@ internal static partial class ConfigurationFileManager
                     (value, builder) => builder.DropChance = value)
                 .Map<float?>(
                     "DropChance", 100, "Chance to drop anything at all.",
-                    (value, builder) => builder.DropChance = value)
+                    (value, builder) => builder.DropChance = value / 100)
                 )
             .ToFile(config => config
-                .Map("DropChance", x => x.DropChance));
+                .Map("DropChance", x => x.DropChance * 100));
 
         mapper.AddTableOption()
             .FromFile(config => config

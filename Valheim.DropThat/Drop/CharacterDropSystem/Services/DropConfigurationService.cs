@@ -23,7 +23,7 @@ internal static class DropConfigurationService
             m_prefab = prefab,
             m_amountMax = template.AmountMax ?? 1,
             m_amountMin = template.AmountMin ?? 1,
-            m_chance = (template.ChanceToDrop ?? 100) / 100,
+            m_chance = template.ChanceToDrop ?? 1,
             m_levelMultiplier = template.ScaleByLevel ?? true,
             m_onePerPlayer = template.DropOnePerPlayer ?? false,
             m_dontScale = template.DisableResourceModifierScaling ?? false,
@@ -58,7 +58,7 @@ internal static class DropConfigurationService
 
         if (template.ChanceToDrop is not null)
         {
-            drop.m_chance = template.ChanceToDrop.Value / 100f;
+            drop.m_chance = template.ChanceToDrop.Value;
         }
     }
 

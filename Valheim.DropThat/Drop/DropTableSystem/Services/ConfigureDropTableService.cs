@@ -22,7 +22,7 @@ internal static class ConfigureDropTableService
 
         if (template.DropChance is not null)
         {
-            table.m_dropChance = template.DropChance.Value / 100f;
+            table.m_dropChance = template.DropChance.Value;
         }
 
         if (template.DropOnlyOnce is not null)

@@ -102,9 +102,9 @@ internal static partial class ConfigurationFileManager
                     "ChanceToDrop", 
                     100f, 
                     "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
-                    (value, builder) => builder.ChanceToDrop = value))
+                    (value, builder) => builder.ChanceToDrop = value / 100))
             .ToFile(config => config
-                .Map("ChanceToDrop", x => x.ChanceToDrop))
+                .Map("ChanceToDrop", x => x.ChanceToDrop * 100))
 
             .AddOption()
             .FromFile(config => config
