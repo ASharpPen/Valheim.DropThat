@@ -4,41 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using DropThat.Configuration;
 using DropThat.Utilities;
 using DropThat.Debugging;
 using DropThat.Utilities.Valheim;
 
 namespace DropThat.Drop.DropTableSystem.Debug;
-
-[HarmonyPatch(typeof(DungeonDB))]
-internal static class Patch_DungeonDB_Start
-{
-    [HarmonyPatch("Start")]
-    [HarmonyPostfix]
-    private static void WriteDropTableData()
-    {
-        if (GeneralConfigManager.Config?.WriteDropTablesToFiles)
-        {
-            DropTableDataWriter.PrintDungeonDropTables();
-        }
-    }
-}
-
-[HarmonyPatch(typeof(ZoneSystem))]
-internal static class Patch_ZoneSystem_Start
-{
-    [HarmonyPatch("Start")]
-    [HarmonyPostfix]
-    private static void WriteDropTableData()
-    {
-        if (GeneralConfigManager.Config?.WriteDropTablesToFiles)
-        {
-            DropTableDataWriter.PrintPrefabDropTables();
-            DropTableDataWriter.PrintLocationDropTables();
-        }
-    }
-}
 
 internal static class DropTableDataWriter
 {

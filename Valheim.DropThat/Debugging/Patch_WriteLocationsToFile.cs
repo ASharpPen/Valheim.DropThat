@@ -2,16 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DropThat.Configuration;
+using HarmonyLib;
+using ThatCore.Extensions;
 using ThatCore.Logging;
 using ThatCore.Utilities.Valheim;
 
-namespace DropThat.Debugging.Datamining;
+namespace DropThat.Debugging;
 
-internal static class LocationFileWriter
+[HarmonyPatch(typeof(ZoneSystem))]
+internal static class Patch_WriteLocationsToFile
 {
     private const string FileName = "drop_that.locations.txt";
 
-    public static void WriteToFile(List<ZoneSystem.ZoneLocation> zoneLocations)
+    [HarmonyPatch(nameof(ZoneSystem.Start))]
+    [HarmonyPostfix]
+    private static void WriteToFile(ZoneSystem __instance)
+    {
+        if (GeneralConfigManager.Config?.WriteLocationsToFile == true &&
+            __instance.IsNotNull() &&
+            __instance.m_locations is not null)
+        {
+            WriteLocationsToFile(__instance.m_locations);
+        }
+    }
+
+    private static void WriteLocationsToFile(List<ZoneSystem.ZoneLocation> zoneLocations)
     {
         try
         {

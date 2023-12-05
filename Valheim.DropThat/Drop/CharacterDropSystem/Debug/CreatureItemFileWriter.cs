@@ -5,14 +5,31 @@ using System.Linq;
 using UnityEngine;
 using DropThat.Utilities;
 using ThatCore.Logging;
+using DropThat.Debugging;
+using DropThat.Caches;
 
-namespace DropThat.Debugging.Datamining;
+namespace DropThat.Drop.CharacterDropSystem.Debug;
 
 internal static class CreatureItemFileWriter
 {
     private const string FileName = "drop_that.character_drop.items.txt";
 
-    public static void WriteToFile(List<Tuple<GameObject, CharacterDrop>> characters)
+    public static void WriteToFile()
+    {
+        List<(GameObject, CharacterDrop)> drops = new();
+
+        foreach (var prefab in ZNetScene.instance.m_prefabs)
+        {
+            if (ComponentCache.TryGet<CharacterDrop>(prefab, out var characterDrop))
+            {
+                drops.Add((prefab, characterDrop));
+            }
+        }
+
+        WriteToFile(drops);
+    }
+
+    public static void WriteToFile(List<(GameObject, CharacterDrop)> characters)
     {
         try
         {

@@ -17,6 +17,7 @@ public sealed class GeneralConfig
     public ConfigurationEntry<bool> AlwaysAppendCharacterDrops = new(false, "When enabled, drop configurations will not override existing items if their indexes match.");
     public ConfigurationEntry<bool> ApplyConditionsOnDeathCharacterDrops = new(false, "[Deprecated - No longer has any effect]\nWhen enabled, drop conditions are checked at time of death, instead of at time of spawn.");
     public ConfigurationEntry<bool> WriteLoadedCharacterDropsToFile = new(false, "When enabled creates a file on world start in the debug folder, containing the loaded CharacterDrop configurations.\nThese are the combined settings loaded from files, before they are applied to any existing drop tables.");
+    public ConfigurationEntry<bool> WriteCharacterDropsToFileAfterChanges = new(false, "Writes expected CharacterDrop tables after applying configuration changes, to a file in the debug folder.");
 
     // DropTable
 
@@ -24,6 +25,7 @@ public sealed class GeneralConfig
     public ConfigurationEntry<bool> ClearAllExistingDropTablesWhenModified = new(false, "When enabled, all existing items in drop tables are removed when a configuration for that entity exist.\nEg. if 'FirTree' is present in configuration table, the configured drops will be the only drops for 'FirTree'.");
     public ConfigurationEntry<bool> AlwaysAppendDropTables = new(false, "When enabled, drop configurations will not override existing items if their indexes match.");
     public ConfigurationEntry<bool> WriteLoadedDropTableDropsToFile = new(false, "When enabled creates a file on world start in the debug folder, containing the loaded DropTable configurations.\nThese are the combined settings loaded from files, before they are applied to any existing drop tables.");
+    public ConfigurationEntry<bool> WriteDropTablesToFileAfterChanges = new(false, "Writes expected DropTable tables after applying configuration changes, to a file in the debug folder.");
 
     // Performance
 
@@ -52,11 +54,13 @@ public sealed class GeneralConfig
         ClearAllExistingCharacterDropsWhenModified.Bind(Config, "CharacterDrop", "ClearAllExistingWhenModified");
         AlwaysAppendCharacterDrops.Bind(Config, "CharacterDrop", "AlwaysAppend");
         WriteLoadedCharacterDropsToFile.Bind(Config, "CharacterDrop", "WriteLoadedConfigsToFile");
+        WriteCharacterDropsToFileAfterChanges.Bind(Config, "CharacterDrop", "WriteDropTablesAfterChangesToFile");
 
         ClearAllExistingDropTables.Bind(Config, "DropTable", "ClearAllExisting");
         ClearAllExistingDropTablesWhenModified.Bind(Config, "DropTable", "ClearAllExistingWhenModified");
         AlwaysAppendDropTables.Bind(Config, "DropTable", "AlwaysAppend");
         WriteLoadedDropTableDropsToFile.Bind(Config, "DropTable", "WriteLoadedConfigsToFile");
+        WriteDropTablesToFileAfterChanges.Bind(Config, "DropTable", "WriteDropTablesAfterChangesToFile");
 
         EnableDebugLogging.Bind(Config, "Debug", "EnableDebugLogging");
         EnableTraceLogging.Bind(Config, "Debug", nameof(EnableTraceLogging));

@@ -22,8 +22,8 @@ internal static class WriteLoadedDropTablesCommand
                 {
                     if (ZNet.instance.IsServer())
                     {
-                        TemplateWriter.PrintLoadedDropTables();
-                        Drop.CharacterDropSystem.Debug.TemplateWriter.WriteLoadedConfigsToDisk();
+                        DebugWriter.WriteLoadedDropTablesToDisk();
+                        Drop.CharacterDropSystem.Debug.DebugWriter.WriteLoadedConfigsToDisk();
                     }
                     else
                     {
@@ -50,8 +50,8 @@ internal static class WriteLoadedDropTablesCommand
 
     private static void RPC_DropThatCommand_PrintDropTablesLoaded(ZRpc zrpc)
     {
-        TemplateWriter.PrintLoadedDropTables();
-        Drop.CharacterDropSystem.Debug.TemplateWriter.WriteLoadedConfigsToDisk();
+        DebugWriter.WriteLoadedDropTablesToDisk();
+        Drop.CharacterDropSystem.Debug.DebugWriter.WriteLoadedConfigsToDisk();
     }
 
     private static void RequestPrint()
