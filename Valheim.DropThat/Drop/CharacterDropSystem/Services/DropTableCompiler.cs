@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DropThat.Caches;
+using DropThat.Configuration;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
@@ -61,45 +62,71 @@ internal static class DropTableCompiler
         bool applyTemplate = true)
     {
         // Prepare drops.
-        CharacterDropMobTemplate resultMob = new()
-        {
-            PrefabName = prefabName,
-            Drops = prefab.m_drops?
-                .Select((x, i) => 
-                    new CharacterDropDropTemplate
-                    {
-                        Id = i,
-                        PrefabName = x.m_prefab.name,
-                        AmountMin = x.m_amountMin,
-                        AmountMax = x.m_amountMax,
-                        ChanceToDrop = x.m_chance,
-                        DropOnePerPlayer = x.m_onePerPlayer,
-                        ScaleByLevel = x.m_levelMultiplier,
-                        DisableResourceModifierScaling = x.m_dontScale
-                    })
-                .ToDictionary(x => x.Id) ?? new()
-        };
+        CharacterDropMobTemplate resultMob;
 
-        if (!applyTemplate)
+        bool hasTemplate = CharacterDropTemplateManager.TryGetTemplate(prefabName, out var mobTemplate);
+
+        if (GeneralConfigManager.Config?.ClearAllExistingCharacterDrops ||
+            GeneralConfigManager.Config?.ClearAllExistingCharacterDropsWhenModified && hasTemplate)
+        {
+            resultMob = new()
+            {
+                PrefabName = prefabName,
+            };
+        }
+        else
+        {
+            resultMob = new()
+            {
+                PrefabName = prefabName,
+                Drops = prefab.m_drops?
+                    .Select((x, i) =>
+                        new CharacterDropDropTemplate
+                        {
+                            Id = i,
+                            PrefabName = x.m_prefab.name,
+                            AmountMin = x.m_amountMin,
+                            AmountMax = x.m_amountMax,
+                            ChanceToDrop = x.m_chance,
+                            DropOnePerPlayer = x.m_onePerPlayer,
+                            ScaleByLevel = x.m_levelMultiplier,
+                            DisableResourceModifierScaling = x.m_dontScale
+                        })
+                    .ToDictionary(x => x.Id) ?? new()
+            };
+        }
+
+        if (!applyTemplate ||
+            !hasTemplate)
         {
             return resultMob;
         }
 
-        if (CharacterDropTemplateManager.TryGetTemplate(prefabName, out var mobTemplate))
+        List<int> idsToRemove = new();
+
+        foreach ((int id, CharacterDropDropTemplate template) in mobTemplate.Drops
+            .Select(x => (x.Key, x.Value))
+            .ToList())
         {
-            foreach ((int id, CharacterDropDropTemplate template) in mobTemplate.Drops
-                .Select(x => (x.Key, x.Value))
-                .ToList())
+            if (resultMob.Drops.TryGetValue(id, out var existingDrop))
             {
-                if (resultMob.Drops.TryGetValue(id, out var existingDrop))
+                Map(template, existingDrop);
+
+                if (existingDrop.Enabled == false)
                 {
-                    Map(template, existingDrop);
-                }
-                else
-                {
-                    resultMob.Drops[id] = template;
+                    idsToRemove.Add(id);
                 }
             }
+            else if(template.Enabled != false)
+            {
+                resultMob.Drops[id] = template;
+            }
+        }
+
+        // Clean up disabled drops
+        foreach (var id in idsToRemove)
+        {
+            resultMob.Drops.Remove(id);
         }
 
         return resultMob;

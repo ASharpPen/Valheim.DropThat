@@ -105,71 +105,69 @@ internal static class DropTableCompiler
         bool applyTemplate,
         DropTable table)
     {
-        var resultTemplate = new DropTableTemplate
-        {
-            PrefabName = prefabName,
-            DropChance = table.m_dropChance,
-            DropMin = table.m_dropMin,
-            DropMax = table.m_dropMax,
-            DropOnlyOnce = table.m_oneOfEach,
-            Drops = table.m_drops
-                .Select((x, i) =>
-                    new DropTableDropTemplate()
-                    {
-                        Id = i,
-                        PrefabName = x.m_item.GetCleanedName(),
-                        AmountMin = x.m_stackMin,
-                        AmountMax = x.m_stackMax,
-                        Weight = x.m_weight,
-                        DisableResourceModifierScaling = x.m_dontScale,
-                    })
-                .ToDictionary(x => x.Id)
-        };
+        DropTableTemplate resultTemplate = new DropTableTemplate
+            {
+                PrefabName = prefabName,
+                DropChance = table.m_dropChance,
+                DropMin = table.m_dropMin,
+                DropMax = table.m_dropMax,
+                DropOnlyOnce = table.m_oneOfEach,
+                Drops = table.m_drops
+                    .Select((x, i) =>
+                        new DropTableDropTemplate()
+                        {
+                            Id = i,
+                            PrefabName = x.m_item.GetCleanedName(),
+                            AmountMin = x.m_stackMin,
+                            AmountMax = x.m_stackMax,
+                            Weight = x.m_weight,
+                            DisableResourceModifierScaling = x.m_dontScale,
+                        })
+                    .ToDictionary(x => x.Id)
+            };
 
-        if (!applyTemplate)
+        if (!applyTemplate ||
+            !DropTableTemplateManager.TryGetTemplate(prefabName, out var template))
         {
             return resultTemplate;
         }
 
-        if (DropTableTemplateManager.TryGetTemplate(prefabName, out var template))
+        foreach (var entry in template.Drops.OrderBy(x => x.Key))
         {
-            foreach (var entry in template.Drops.OrderBy(x => x.Key))
+            var dropTemplate = entry.Value;
+
+            if (dropTemplate.TemplateEnabled == false)
             {
-                var dropTemplate = entry.Value;
+                continue;
+            }
 
-                if (dropTemplate.TemplateEnabled == false)
+            if (resultTemplate.Drops.TryGetValue(entry.Key, out var existing))
+            {
+                // Update existing
+                existing.PrefabName = dropTemplate.PrefabName ?? existing.PrefabName;
+                existing.Enabled = dropTemplate.Enabled ?? existing.Enabled;
+                existing.AmountMin = dropTemplate.AmountMin ?? existing.AmountMin;
+                existing.AmountMax = dropTemplate.AmountMax ?? existing.AmountMax;
+                existing.Weight = dropTemplate.Weight ?? existing.Weight;
+                existing.DisableResourceModifierScaling = dropTemplate.DisableResourceModifierScaling ?? existing.DisableResourceModifierScaling;
+
+                existing.ItemModifiers = dropTemplate.ItemModifiers.ToList();
+                existing.Conditions = dropTemplate.Conditions.ToList();
+            }
+            else if (dropTemplate.Enabled != false)
+            {
+                // Add new
+                resultTemplate.Drops[entry.Key] = new()
                 {
-                    continue;
-                }
+                    PrefabName = dropTemplate.PrefabName,
+                    AmountMin = dropTemplate.AmountMin,
+                    AmountMax = dropTemplate.AmountMax,
+                    Weight = dropTemplate.Weight,
+                    DisableResourceModifierScaling = dropTemplate.DisableResourceModifierScaling,
 
-                if (resultTemplate.Drops.TryGetValue(entry.Key, out var existing))
-                {
-                    // Update existing
-                    existing.PrefabName = dropTemplate.PrefabName ?? existing.PrefabName;
-                    existing.Enabled = dropTemplate.Enabled ?? existing.Enabled;
-                    existing.AmountMin = dropTemplate.AmountMin ?? existing.AmountMin;
-                    existing.AmountMax = dropTemplate.AmountMax ?? existing.AmountMax;
-                    existing.Weight = dropTemplate.Weight ?? existing.Weight;
-                    existing.DisableResourceModifierScaling = dropTemplate.DisableResourceModifierScaling ?? existing.DisableResourceModifierScaling;
-
-                    existing.ItemModifiers = dropTemplate.ItemModifiers.ToList();
-                    existing.Conditions = dropTemplate.Conditions.ToList();
-                }
-                else if (dropTemplate.Enabled != false)
-                {
-                    // Add new
-                    resultTemplate.Drops[entry.Key] = new()
-                    {
-                        PrefabName = dropTemplate.PrefabName,
-                        AmountMin = dropTemplate.AmountMin,
-                        AmountMax = dropTemplate.AmountMax,
-                        Weight = dropTemplate.Weight,
-                        DisableResourceModifierScaling = dropTemplate.DisableResourceModifierScaling,
-
-                        ItemModifiers = dropTemplate.ItemModifiers.ToList(),
-                        Conditions = dropTemplate.Conditions.ToList(),
-                    };
-                }
+                    ItemModifiers = dropTemplate.ItemModifiers.ToList(),
+                    Conditions = dropTemplate.Conditions.ToList(),
+                };
             }
         }
 

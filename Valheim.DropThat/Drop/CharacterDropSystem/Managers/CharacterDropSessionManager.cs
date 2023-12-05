@@ -77,8 +77,7 @@ internal static class CharacterDropSessionManager
                     DropTemplate = template,
                 };
 
-                if (id >= existingDrops.Count ||
-                    GeneralConfigManager.Config?.AlwaysAppendCharacterDrops == true)
+                if (id >= existingDrops.Count)
                 {
                     if (dropInfo.DropTemplate.Enabled == false)
                     {
