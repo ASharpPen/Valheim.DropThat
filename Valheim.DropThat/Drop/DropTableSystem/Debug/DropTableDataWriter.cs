@@ -39,7 +39,7 @@ internal static class DropTableDataWriter
             sBuilder.AppendLine();
             sBuilder.AppendLine($"[{sourceName}.{i}]");
             sBuilder.AppendLine($"PrefabName={(drop.m_item.IsNotNull() ? drop.m_item.name : "")}");
-            sBuilder.AppendLine($"TemplateWeight={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
+            sBuilder.AppendLine($"Weight={drop.m_weight.ToString(CultureInfo.InvariantCulture)}");
             sBuilder.AppendLine($"AmountMin={drop.m_stackMin}");
             sBuilder.AppendLine($"AmountMax={drop.m_stackMax}");
             sBuilder.AppendLine($"DisableResourceModifierScaling={drop.m_dontScale}");

@@ -143,11 +143,11 @@ internal static partial class ConfigurationFileManager
                     "Deprecated (use TemplateWeight). Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops. \nNote, same drop can be selected multiple times during table rolling.",
                     (value, builder) => builder.Weight = value)
                 .Map<float?>(
-                    "TemplateWeight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops.\nNote, same drop can be selected multiple times during table rolling.",
+                    "Weight", 1, "Set weight for this drop. Used to control how likely it is that this item will be selected when rolling for drops.\nNote, same drop can be selected multiple times during table rolling.",
                     (value, builder) => builder.Weight = value)
                 )
             .ToFile(c => c
-                .Map("TemplateWeight", x => x.Weight));
+                .Map("Weight", x => x.Weight));
 
         mapper.AddDropOption()
             .FromFile(config => config
