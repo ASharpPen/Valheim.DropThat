@@ -10,11 +10,15 @@ public static class DropSystemConfigManager
 
     internal static event Action<IDropSystemConfigCollection> OnConfigureLate;
 
+    internal static event Action OnConfigsLoadedEarly;
+
     public static event Action OnConfigsLoaded;
 
     internal static void ConfigsLoaded()
     {
         Log.Trace?.Log("Running OnConfigsLoaded actions.");
+        OnConfigsLoadedEarly.Raise("Error during configs loaded event.");
+
         OnConfigsLoaded.Raise("Error during configs loaded event.");
     }
 

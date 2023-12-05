@@ -23,6 +23,12 @@ public sealed class CharacterDropDropTemplate
     [DefaultValue(true)]
     public bool? TemplateEnabled { get; set; } = true;
 
+    public bool? AutoStack { get; set; }
+
+    public int? AmountLimit { get; set; }
+
+    // Vanilla options
+
     public int? AmountMin { get; set; }
 
     public int? AmountMax { get; set; }
@@ -32,10 +38,6 @@ public sealed class CharacterDropDropTemplate
     public bool? DropOnePerPlayer { get; set; }
 
     public bool? ScaleByLevel { get; set; }
-
-    public bool? AutoStack { get; set; }
-
-    public int? AmountLimit { get; set; }
 
     public bool? DisableResourceModifierScaling { get; set; }
 }

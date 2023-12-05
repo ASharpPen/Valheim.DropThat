@@ -85,33 +85,4 @@ public static class CharacterDropTemplateManager
         }
 #endif
     }
-
-    /// <summary>
-    /// <para>
-    ///     Scans all prefabs and returns the expected drop tables after <see cref="CharacterDropMobTemplate"/>s
-    ///     (if any) have been applied.
-    /// </para>
-    /// <para>
-    ///     This will include default drops if no templates existed.
-    /// </para> 
-    /// </summary>
-    /// <exception cref="InvalidOperationException">If accessed prior to ZnetScene being instantiated.</exception>
-    public static Dictionary<string, ExpectedCharacterDrop> GetAllExpectedDropTables()
-    {
-        return DropExpectationService.AllExpectedDrops();
-    }
-
-    /// <summary>
-    /// <para>
-    ///     Returns the expected drop tables after <see cref="CharacterDropMobTemplate"/> 
-    ///     (if any) has been applied.
-    /// </para>
-    /// <para>
-    ///     This show default drops if no templates existed for prefab.
-    /// </para>
-    /// </summary>
-    /// <exception cref="InvalidOperationException">If accessed prior to ZnetScene being instantiated.</exception>
-    public static bool TryGetExpectedDrops(string prefab, out ExpectedCharacterDrop expectedDropTable) =>
-        DropExpectationService.TryGetExpectedDrops(prefab, out expectedDropTable);
-
 }

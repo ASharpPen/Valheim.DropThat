@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DropThat.Drop.DropTableSystem.Models;
-using DropThat.Drop.DropTableSystem.Services;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Drop.CharacterDropSystem.Services;
 
-namespace DropThat.Drop.DropTableSystem.Managers;
+namespace DropThat.Drop.CharacterDropSystem.Managers;
 
-public static class DropTableManager
+public static class CharacterDropManager
 {
-    private static Dictionary<string, DropTableTemplate> Cache { get; } = new();
-    private static Dictionary<string, DropTableTemplate> CacheConfigured { get; } = new();
+    private static Dictionary<string, CharacterDropMobTemplate> Cache { get; } = new();
+    private static Dictionary<string, CharacterDropMobTemplate> CacheConfigured { get; } = new();
 
     private static bool CachedAll { get; set; }
     private static bool CachedConfigured { get; set; }
 
-    static DropTableManager()
+    static CharacterDropManager()
     {
         DropSystemConfigManager.OnConfigsLoadedEarly += () =>
         {
+            // Reset cached compiled drops when configs are reloaded.
             Cache.Clear();
             CacheConfigured.Clear();
             CachedAll = false;
@@ -26,7 +27,7 @@ public static class DropTableManager
 
     /// <summary>
     /// <para>
-    ///     Scans all prefabs and returns the expected drop tables after <see cref="DropTableTemplate"/>s
+    ///     Scans all prefabs and returns the expected drop tables after <see cref="CharacterDropMobTemplate"/>s
     ///     (if any) have been applied.
     /// </para>
     /// <para>
@@ -34,7 +35,7 @@ public static class DropTableManager
     /// </para> 
     /// </summary>
     /// <exception cref="InvalidOperationException">If accessed prior to ZnetScene being instantiated.</exception>
-    public static List<DropTableTemplate> CompileAllPrefabDrops()
+    public static List<CharacterDropMobTemplate> CompileAllPrefabDrops()
     {
         if (CachedAll)
         {
@@ -53,7 +54,7 @@ public static class DropTableManager
 
     /// <summary>
     /// <para>
-    ///     Returns the expected drop tables after <see cref="DropTableTemplate"/> 
+    ///     Returns the expected drop tables after <see cref="CharacterDropMobTemplate"/> 
     ///     (if any) has been applied.
     /// </para>
     /// <para>
@@ -61,14 +62,14 @@ public static class DropTableManager
     /// </para>
     /// </summary>
     /// <exception cref="InvalidOperationException">If accessed prior to ZnetScene being instantiated.</exception>
-    public static List<DropTableTemplate> CompiledConfiguredPrefabDrops()
+    public static List<CharacterDropMobTemplate> CompileConfiguredPrefabDrops()
     {
         if (CachedConfigured)
         {
             return CacheConfigured.Values.ToList();
         }
 
-        foreach (var prefabName in DropTableTemplateManager.Templates.Keys)
+        foreach (var prefabName in CharacterDropTemplateManager.Templates.Keys)
         {
             if (DropTableCompiler.TryCompileDrops(
                 prefabName, 
@@ -87,19 +88,20 @@ public static class DropTableManager
 
     /// <summary>
     /// <para>
-    ///     Returns the expected drop tables after <see cref="DropTableTemplate"/> 
+    ///     Returns the expected drop tables after <see cref="CharacterDropMobTemplate"/> 
     ///     (if any) has been applied.
     /// </para>
     /// <para>
     ///     This show default drops if no templates existed for prefab.
     /// </para>
     /// <para>
-    ///     Returns false if prefab could not be found, or if it had no component with a DropTable.
+    ///     Returns false if prefab could not be found, or if it had no CharacterDrop component.
     /// </para>
     /// </summary>
     /// <exception cref="InvalidOperationException">If accessed prior to ZnetScene being instantiated.</exception>
-
-    public static bool TryCompileDrops(string prefabName, out DropTableTemplate compiledDrops)
+    public static bool TryCompileDrops(
+        string prefabName, 
+        out CharacterDropMobTemplate compiledDrops)
     {
         if (Cache.TryGetValue(prefabName, out compiledDrops))
         {
@@ -108,7 +110,7 @@ public static class DropTableManager
 
         if (DropTableCompiler.TryCompileDrops(
             prefabName, 
-            applyTemplate: true,
+            applyTemplate: true, 
             out compiledDrops))
         {
             Cache[prefabName] = compiledDrops;
@@ -121,12 +123,12 @@ public static class DropTableManager
     /// <summary>
     /// Returns the expected drop tables, without applying any associated configs.
     /// </summary>
-    public static List<DropTableTemplate> CompileWithoutTemplates() =>
+    public static List<CharacterDropMobTemplate> CompileWithoutTemplates() => 
         DropTableCompiler.CompileAllDrops(applyTemplate: false);
 
     public static bool TryCompileWithoutTemplates(
-        string prefabName,
-        out DropTableTemplate compiledDrops)
+        string prefabName, 
+        out CharacterDropMobTemplate compiledDrops)
     {
         if (DropTableCompiler.TryCompileDrops(
             prefabName,

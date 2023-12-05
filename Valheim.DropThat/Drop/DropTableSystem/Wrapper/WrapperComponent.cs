@@ -89,7 +89,7 @@ public sealed class WrapperComponent : MonoBehaviour
             var dropPos = this.gameObject.transform.position;
 
             // Replicate normal behaviour - Unwrap -> Instantiate -> Modify
-            Managers.DropTableManager.UnwrapDrop(this.gameObject);
+            Managers.DropTableSessionManager.UnwrapDrop(this.gameObject);
 
             Log.Development?.Log($"Dummy object '{this.gameObject.name}' instantiated. Creating real object instead at '{dropPos}'. Has cache '{cached is not null}' and wrapper instance '{this.gameObject.GetInstanceID()}'");
             var actualDrop = Instantiate(prefab, dropPos, this.gameObject.transform.rotation);

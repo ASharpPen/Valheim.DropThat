@@ -80,14 +80,14 @@ internal static class Patch_ModifyInstantiatedDrops
                 new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
             .Advance(-2)
             // Insert unwrapping call in preparation for instantiation.
-            .InsertAndAdvance(Transpilers.EmitDelegate(DropTableManager.UnwrapDrop))
+            .InsertAndAdvance(Transpilers.EmitDelegate(DropTableSessionManager.UnwrapDrop))
             // Move to right after drop is instantiated, and duplicate reference
             .MatchForward(true,
                 new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
             .Advance(1)
             .InsertAndAdvance(new CodeInstruction(OpCodes.Dup))
             // Insert own call
-            .InsertAndAdvance(Transpilers.EmitDelegate(DropTableManager.ModifyInstantiatedDrop))
+            .InsertAndAdvance(Transpilers.EmitDelegate(DropTableSessionManager.ModifyInstantiatedDrop))
             .InstructionEnumeration();
     }
 }

@@ -19,7 +19,7 @@ internal static class Patch_Init
         [HarmonyPatch(nameof(Container.Awake))]
         [HarmonyPrefix]
         private static void SetLink(Container __instance) =>
-            DropTableManager.Initialize(__instance, __instance.m_defaultItems);
+            DropTableSessionManager.Initialize(__instance, __instance.m_defaultItems);
     }
 
     [HarmonyPatch(typeof(DropOnDestroyed))]
@@ -28,7 +28,7 @@ internal static class Patch_Init
         [HarmonyPatch(nameof(DropOnDestroyed.Awake))]
         [HarmonyPostfix]
         private static void SetLink(DropOnDestroyed __instance) =>
-            DropTableManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
+            DropTableSessionManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
     }
 
     [HarmonyPatch(typeof(LootSpawner))]
@@ -37,7 +37,7 @@ internal static class Patch_Init
         [HarmonyPatch(nameof(LootSpawner.Awake))]
         [HarmonyPostfix]
         private static void SetLink(LootSpawner __instance) =>
-            DropTableManager.Initialize(__instance, __instance.m_items);
+            DropTableSessionManager.Initialize(__instance, __instance.m_items);
     }
 
     [HarmonyPatch(typeof(TreeBase))]
@@ -46,7 +46,7 @@ internal static class Patch_Init
         [HarmonyPatch(nameof(TreeBase.Awake))]
         [HarmonyPostfix]
         private static void SetLink(TreeBase __instance) =>
-            DropTableManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
+            DropTableSessionManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
     }
 
     [HarmonyPatch(typeof(TreeLog))]
@@ -55,7 +55,7 @@ internal static class Patch_Init
         [HarmonyPatch(nameof(TreeLog.Awake))]
         [HarmonyPostfix]
         private static void SetLink(TreeLog __instance) =>
-            DropTableManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
+            DropTableSessionManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
     }
 
     [HarmonyPatch(typeof(MineRock))]
@@ -64,7 +64,7 @@ internal static class Patch_Init
         [HarmonyPatch(nameof(MineRock.Start))]
         [HarmonyPostfix]
         private static void SetLink(MineRock __instance) =>
-            DropTableManager.Initialize(__instance, __instance.m_dropItems);
+            DropTableSessionManager.Initialize(__instance, __instance.m_dropItems);
     }
 
     [HarmonyPatch(typeof(MineRock5))]
@@ -73,6 +73,6 @@ internal static class Patch_Init
         [HarmonyPatch(nameof(MineRock5.Start))]
         [HarmonyPostfix]
         private static void SetLink(MineRock5 __instance) =>
-            DropTableManager.Initialize(__instance, __instance.m_dropItems);
+            DropTableSessionManager.Initialize(__instance, __instance.m_dropItems);
     }
 }

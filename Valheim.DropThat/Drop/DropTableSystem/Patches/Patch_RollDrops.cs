@@ -24,9 +24,9 @@ internal static class Patch_RollDrops
     {
         try
         {
-            if (DropTableManager.HasChanges(__instance))
+            if (DropTableSessionManager.HasChanges(__instance))
             {
-                __result = DropTableManager.GenerateItemDrops(__instance);
+                __result = DropTableSessionManager.GenerateItemDrops(__instance);
 
                 // Skip original
                 return false;
@@ -48,9 +48,9 @@ internal static class Patch_RollDrops
     {
         try
         {
-            if (DropTableManager.HasChanges(__instance))
+            if (DropTableSessionManager.HasChanges(__instance))
             {
-                __result = DropTableManager.GenerateDrops(__instance);
+                __result = DropTableSessionManager.GenerateDrops(__instance);
 
                 // Skip original
                 return false;
