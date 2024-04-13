@@ -82,6 +82,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
         internal static void PrintDungeonDropTables()
         {
             var orderedLocations = ZoneSystem.instance.m_locations
+                .Where(x => x.m_enable)
                 .OrderBy(x => x.m_biome)
                 .ThenBy(x => x.m_prefabName);
 
@@ -89,9 +90,12 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
             foreach (var location in orderedLocations)
             {
-                var locPrefab = location.m_prefab;
+                // Need to ensure the asset is actually loaded for us to read the m_prefab.
+                location.m_prefab.Load();
 
-                if (locPrefab is null)
+                var locPrefab = location.m_prefab.Asset;
+
+                if (locPrefab.IsNull())
                 {
                     continue;
                 }
@@ -104,7 +108,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                     {
                         //Find rooms
                         var rooms = DungeonDB.GetRooms()
-                            .Where(x => (x.m_room.m_theme & dungeon.m_themes) == x.m_room.m_theme)
+                            .Select(x => x.RoomInPrefab)
+                            .Where(x => 
+                                x.IsNotNull() &&
+                                (x.m_theme & dungeon.m_themes) == x.m_theme)
                             .ToList();
 
                         if (rooms is null)
@@ -119,7 +126,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
                         foreach (var room in rooms)
                         {
-                            tableData.AddRange(Extract(room.m_room.gameObject, $"Biome: {location.m_biome.GetNames()}", $"Location: {location.m_prefabName}", $"Room Theme: {room.m_room.m_theme}", $"Room: {room.m_room.name}"));
+                            tableData.AddRange(Extract(room.gameObject, $"Biome: {location.m_biome.GetNames()}", $"Location: {location.m_prefabName}", $"Room Theme: {room.m_theme}", $"Room: {room.name}"));
                         }
                     }
                 }
@@ -132,6 +139,7 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
         internal static void PrintLocationDropTables()
         {
             var orderedLocations = ZoneSystem.instance.m_locations
+                .Where(x => x.m_enable)
                 .OrderBy(x => x.m_biome)
                 .ThenBy(x => x.m_prefabName);
 
@@ -139,7 +147,10 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
 
             foreach (var location in orderedLocations)
             {
-                var locPrefab = location.m_prefab;
+                // Need to ensure the asset is actually loaded for us to read the m_prefab.
+                location.m_prefab.Load();
+
+                var locPrefab = location.m_prefab.Asset;
 
                 if (locPrefab.IsNull())
                 {
