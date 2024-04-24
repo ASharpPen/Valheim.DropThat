@@ -89,6 +89,8 @@ If you feel like it
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 # Changelog
+- v2.3.13:
+	- Fixed: Unable to datamine dungeons if nothing else had caused them to load. Result was a bunch of unity logs about rooms not being loaded.
 - v2.3.12:
 	- Compatibility: Valheim v0.217.46.
 - v2.3.11:

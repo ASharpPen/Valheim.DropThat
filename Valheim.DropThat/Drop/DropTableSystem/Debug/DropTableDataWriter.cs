@@ -108,7 +108,12 @@ namespace Valheim.DropThat.Drop.DropTableSystem.Debug
                     {
                         //Find rooms
                         var rooms = DungeonDB.GetRooms()
-                            .Select(x => x.RoomInPrefab)
+                            .Select(x =>
+                            {
+                                // Need to ensure the asset is actually loaded for us to read the room.
+                                x.m_prefab.Load();
+                                return x.RoomInPrefab;
+                            })
                             .Where(x => 
                                 x.IsNotNull() &&
                                 (x.m_theme & dungeon.m_themes) == x.m_theme)

@@ -4,7 +4,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyVersion></AssemblyVersion>
     <FileVersion></FileVersion>
-    <Version>2.3.12</Version>
+    <Version>2.3.13</Version>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <AssemblyName>Valheim.DropThat</AssemblyName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
