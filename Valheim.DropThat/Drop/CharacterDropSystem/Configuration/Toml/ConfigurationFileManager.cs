@@ -44,10 +44,7 @@ internal static partial class ConfigurationFileManager
 
     public static void LoadConfigs(CharacterDropSystemConfiguration configuration)
     {
-        if (Mapper is null)
-        {
-            PrepareMappings();
-        }
+        PrepareMappings();
 
         _configMapper = Mapper.CreateMapper(configuration);
 

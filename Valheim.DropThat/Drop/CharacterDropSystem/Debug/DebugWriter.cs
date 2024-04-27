@@ -7,13 +7,23 @@ using DropThat.Debugging;
 using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using DropThat.Configuration;
 using ThatCore.Lifecycle;
+using DropThat.Core;
 
 namespace DropThat.Drop.CharacterDropSystem.Debug;
 
 internal static class DebugWriter
 {
+    private static bool ConfigsLoaded = false;
+    private static bool ZnetSceneStarted = false;
+
     public static void Configure()
     {
+        LifecycleManager.OnWorldInit += () =>
+        {
+            ConfigsLoaded = false;
+            ZnetSceneStarted = false;
+        };
+
         LifecycleManager.OnFindSpawnPointFirstTime += () =>
         {
             if (GeneralConfigManager.Config?.WriteCreatureItemsToFile)
@@ -22,8 +32,28 @@ internal static class DebugWriter
             }
         };
 
+        DropThatLifecycleManager.OnZnetSceneStarted += () =>
+        {
+            ConfigsLoaded = true;
+
+            TryWriteDebugFiles();
+        };
+
         DropSystemConfigManager.OnConfigsLoaded += () =>
         {
+            ZnetSceneStarted = true;
+
+            TryWriteDebugFiles();
+        };
+
+        static void TryWriteDebugFiles()
+        {
+            if (!ConfigsLoaded ||
+                !ZnetSceneStarted)
+            {
+                return;
+            }
+
             if (GeneralConfigManager.Config?.WriteCharacterDropsToFile)
             {
                 WriteExpectedPreChangesToDisk();
@@ -38,12 +68,17 @@ internal static class DebugWriter
             {
                 WriteExpectedPostChangesToDisk();
             }
-        };
+        }
     }
 
     public static void WriteExpectedPreChangesToDisk()
     {
         var drops = CharacterDropManager.CompileWithoutTemplates();
+
+        if (ConfigurationFileManager.Mapper is null)
+        {
+            ConfigurationFileManager.PrepareMappings();
+        }
 
         var config = ConfigurationFileManager.Mapper.MapToConfigFromTemplates(drops);
 

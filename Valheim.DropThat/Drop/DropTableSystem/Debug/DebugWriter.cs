@@ -1,18 +1,50 @@
 ﻿using System;
 using DropThat.Configuration;
+using DropThat.Core;
 using DropThat.Debugging;
 using DropThat.Drop.DropTableSystem.Configuration.Toml;
 using DropThat.Drop.DropTableSystem.Managers;
 using ThatCore.Config.Toml;
+using ThatCore.Lifecycle;
 
 namespace DropThat.Drop.DropTableSystem.Debug;
 
 internal static class DebugWriter
 {
+    private static bool ConfigsLoaded = false;
+
+    private static bool ZnetSceneStarted = false;
+
     public static void Configure()
     {
+        LifecycleManager.OnWorldInit += () =>
+        {
+            ConfigsLoaded = false;
+            ZnetSceneStarted = false;
+        };
+
+        DropThatLifecycleManager.OnZnetSceneStarted += () =>
+        {
+            ConfigsLoaded = true;
+
+            TryWriteFiles();
+        };
+
         DropSystemConfigManager.OnConfigsLoaded += () =>
         {
+            ZnetSceneStarted = true;
+
+            TryWriteFiles();
+        };
+
+        static void TryWriteFiles()
+        {
+            if (!ConfigsLoaded ||
+                !ZnetSceneStarted)
+            {
+                return;
+            }
+
             if (GeneralConfigManager.Config?.WriteLoadedDropTableDropsToFile)
             {
                 WriteLoadedDropTablesToDisk();
@@ -22,7 +54,7 @@ internal static class DebugWriter
             {
                 WriteExpectedPostChangesToDisk();
             }
-        };
+        }
     }
 
     public static void WriteLoadedDropTablesToDisk()

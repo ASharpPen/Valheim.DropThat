@@ -44,7 +44,6 @@ internal static class DropTableCompiler
 
         var prefab = ZNetScene.instance.GetPrefab(prefabName);
 
-
         if (prefab.IsNull() ||
             !ComponentCache.TryGet<CharacterDrop>(prefab, out var characterDrop))
         {
@@ -78,6 +77,7 @@ internal static class DropTableCompiler
         {
             resultMob = new()
             {
+
                 PrefabName = prefabName,
                 Drops = prefab.m_drops?
                     .Select((x, i) =>

@@ -62,6 +62,11 @@ internal static class WriteSchemaCommand
 
     private static void PrintDropTableSchema(Terminal terminal)
     {
+        if (Drop.DropTableSystem.Configuration.Toml.ConfigurationFileManager.Schema is null)
+        {
+            Drop.DropTableSystem.Configuration.Toml.ConfigurationFileManager.PrepareMappings();
+        }
+
         var schema = TomlSchemaWriter.WriteToString(
                 Drop.DropTableSystem.Configuration.Toml.ConfigurationFileManager.Schema,
                 new()
@@ -74,6 +79,11 @@ internal static class WriteSchemaCommand
 
     private static void PrintCharacterDropSchema(Terminal terminal)
     {
+        if (Drop.CharacterDropSystem.Configuration.Toml.ConfigurationFileManager.Schema is null)
+        {
+            Drop.CharacterDropSystem.Configuration.Toml.ConfigurationFileManager.PrepareMappings();
+        }
+
         var schema = TomlSchemaWriter.WriteToString(
                 Drop.CharacterDropSystem.Configuration.Toml.ConfigurationFileManager.Schema,
                 new()

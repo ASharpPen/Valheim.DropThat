@@ -62,6 +62,12 @@ public sealed class ComponentCache
 
         if (cache.ComponentTable.TryGetValue(componentType, out Component cached))
         {
+            if (cached.IsNull())
+            {
+                comp = null;
+                return false;
+            }
+
             comp = (T)cached;
             return true;
         }
@@ -70,8 +76,16 @@ public sealed class ComponentCache
         {
             cache.ComponentTable.Add(componentType, component);
             
-            comp = (T)component;
-            return true;
+            if (cached.IsNull())
+            {
+                comp = null;
+                return false;
+            }
+            else
+            {
+                comp = (T)component;
+                return true;
+            }
         }
         else
         {

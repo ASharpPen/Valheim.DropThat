@@ -25,19 +25,18 @@ internal static partial class ConfigurationFileManager
     public static DropTableConfigMapper ConfigMapper { get; set; }
     public static DropTableListConfigMapper ConfigListMapper { get; set; }
 
+    internal static void PrepareMappings()
+    {
+        ConfigMapper = RegisterMainMappings();
+        Schema = ConfigMapper.BuildSchema();
+
+        ConfigListMapper = RegisterListMappings();
+        ListSchema = ConfigListMapper.BuildSchema();
+    }
+
     public static void LoadConfigs(DropTableSystemConfiguration configuration)
     {
-        if (ConfigMapper is null)
-        {
-            ConfigMapper = RegisterMainMappings();
-            Schema = ConfigMapper.BuildSchema();
-        }
-
-        if (ConfigListMapper is null)
-        {
-            ConfigListMapper = RegisterListMappings();
-            ListSchema = ConfigListMapper.BuildSchema();
-        }
+        PrepareMappings();
 
         ConfigObjectMapper = ConfigMapper.CreateMapper(configuration);
 
