@@ -64,6 +64,9 @@
     <Reference Include="ThatCore.Valheim">
       <HintPath>..\Libs\ThatCore\ThatCore.Valheim.dll</HintPath>
     </Reference>
+    <Reference Include="SoftReferenceableAssets">
+      <HintPath>..\Libs\Valheim\SoftReferenceableAssets.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\Unity\UnityEngine.dll</HintPath>
     </Reference>
