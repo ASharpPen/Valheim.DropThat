@@ -4,10 +4,10 @@ using EpicLoot.LegendarySystem;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
+using ThatCore.Logging;
 using UnityEngine;
-using Valheim.DropThat.Core;
 
-namespace Valheim.DropThat.Integrations.EpicLootIntegration;
+namespace DropThat.Integrations.EpicLootIntegration;
 
 internal static class ItemService
 {
@@ -23,7 +23,7 @@ internal static class ItemService
 
         if (!UniqueLegendaryHelper.TryGetLegendaryInfo(randomId, out LegendaryInfo legendaryInfo))
         {
-            Log.LogWarning($"Attempted to roll Epic Loot unique legendary with id '{randomId}' but was unable to find matching info registered in Epic Loot.");
+            Log.Warning?.Log($"Attempted to roll Epic Loot unique legendary with id '{randomId}' but was unable to find matching info registered in Epic Loot.");
             return false;
         }
 
@@ -36,7 +36,7 @@ internal static class ItemService
 
         if (!legendaryInfo.Requirements.CheckRequirements(itemData, magicItem))
         {
-            Log.LogWarning($"Attempted to roll Epic Loot unique legendary with id '{randomId}' but requirements were not met. Skipping.");
+            Log.Warning?.Log($"Attempted to roll Epic Loot unique legendary with id '{randomId}' but requirements were not met. Skipping.");
             return false;
         }
 
@@ -56,7 +56,7 @@ internal static class ItemService
                 }
                 else
                 {
-                    Log.LogWarning($"Unable to find a guaranteed Epic Loot magic effect '{effect.Type}' while rolling unique legendary with id '{randomId}'. Skipping effect.");
+                    Log.Warning?.Log($"Unable to find a guaranteed Epic Loot magic effect '{effect.Type}' while rolling unique legendary with id '{randomId}'. Skipping effect.");
                 }
             }
         }
@@ -90,9 +90,7 @@ internal static class ItemService
         var luck = LootRoller.GetLuckFactor(position);
         MagicItem magicItem = LootRoller.RollMagicItem(rarity, itemData, luck);
 
-#if DEBUG
-        Log.LogTrace("\t" + magicItem.Effects.Join(x => x.EffectType));
-#endif
+        Log.Development?.Log("\t" + magicItem.Effects.Join(x => x.EffectType));
 
         magicComponent.SetMagicItem(magicItem);
 

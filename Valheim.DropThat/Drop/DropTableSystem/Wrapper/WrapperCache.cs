@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
-using Valheim.DropThat.Core;
+using ThatCore.Cache;
+using System.Collections.Generic;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Wrapper;
+namespace DropThat.Drop.DropTableSystem.Wrapper;
 
-internal class WrapperCache
+internal sealed class WrapperCache
 {
-    public GameObject Wrapper { get; set; }
+    public WrapperComponent Wrapper { get; set; }
 
     public GameObject Wrapped { get; set; }
 
@@ -13,31 +14,44 @@ internal class WrapperCache
 
     internal static ManagedCache<WrapperCache> Cache { get; } = new();
 
-    internal static WrapperCache Get(GameObject go)
+    internal static Dictionary<int, WrapperCache> CacheById { get; } = new();
+
+    internal static bool TryGet(GameObject key, out WrapperCache cache)
     {
-        if (Cache.TryGet(go, out WrapperCache cached))
+        if (Cache.TryGet(key, out cache))
         {
-            return cached;
+            return true;
         }
 
-        return null;
+        return false;
     }
 
-    internal static void SetStatus(GameObject wrapper, bool unwrapped = false)
+    internal static bool TryGet(int instanceId, out WrapperCache cache)
     {
-        if (Cache.TryGet(wrapper, out WrapperCache cached))
+        if (CacheById.TryGetValue(instanceId, out cache))
         {
-            cached.Unwrapped = unwrapped;
+            return true;
         }
+
+        return false;
     }
 
-    internal static void Set(GameObject wrapper, GameObject wrapped, bool unwrapped = false)
+    internal static void Set(WrapperComponent wrapper, GameObject wrapped, bool unwrapped = false)
     {
-        Cache.Set(wrapper, new()
+        var cached = new WrapperCache()
         {
             Wrapper = wrapper,
             Wrapped = wrapped,
             Unwrapped = unwrapped
-        });
+        };
+
+        Cache.Set(wrapper.gameObject, cached);
+
+        CacheById[wrapper.SourceId] = cached;
+    }
+
+    internal static void CleanUp(int instanceId)
+    {
+        CacheById.Remove(instanceId);
     }
 }

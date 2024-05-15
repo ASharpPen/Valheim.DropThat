@@ -1,37 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valheim.DropThat.Core;
+using ThatCore.Cache;
+using DropThat.Utilities;
 
-namespace Valheim.DropThat.Caches
+namespace DropThat.Caches;
+
+public sealed class ComponentCache
 {
-    public class ComponentCache
+    private static ManagedCache<ComponentCache> CacheTable { get; } = new();
+
+    public static T Get<T>(GameObject obj) where T : Component
     {
-        private static ManagedCache<ComponentCache> CacheTable { get; } = new();
-
-        public static T GetComponent<T>(GameObject obj) where T : Component
+        if (obj.IsNull())
         {
-            ComponentCache cache = CacheTable.GetOrCreate(obj);
+            return null;
+        }
 
-            Type componentType = typeof(T);
+        ComponentCache cache = CacheTable.GetOrCreate(obj);
 
-            if (cache.ComponentTable.TryGetValue(componentType, out Component cached))
+        Type componentType = typeof(T);
+
+        if (cache.ComponentTable.TryGetValue(componentType, out Component cached))
+        {
+            return (T)cached;
+        }
+
+        if (obj.TryGetComponent(componentType, out Component component))
+        {
+            cache.ComponentTable.Add(componentType, component);
+            return (T)component;
+        }
+        else
+        {
+            cache.ComponentTable.Add(componentType, null);
+            return null;
+        }
+    }
+
+    public static T Get<T>(Component obj) where T : Component
+    {
+        if (obj.IsNull())
+        {
+            return null;
+        }
+
+        return Get<T>(obj.gameObject);
+    }
+
+    public static bool TryGet<T>(GameObject obj, out T comp) where T : Component
+    {
+        if (obj.IsNull())
+        {
+            comp = null;
+            return false;
+        }
+
+        ComponentCache cache = CacheTable.GetOrCreate(obj);
+
+        Type componentType = typeof(T);
+
+        if (cache.ComponentTable.TryGetValue(componentType, out Component cached))
+        {
+            if (cached.IsNull())
             {
-                return (T)cached;
+                comp = null;
+                return false;
             }
 
-            if (obj.TryGetComponent(componentType, out Component component))
+            comp = (T)cached;
+            return true;
+        }
+
+        if (obj.TryGetComponent(componentType, out Component component))
+        {
+            cache.ComponentTable.Add(componentType, component);
+            
+            if (cached.IsNull())
             {
-                cache.ComponentTable.Add(componentType, component);
-                return (T)component;
+                comp = null;
+                return false;
             }
             else
             {
-                cache.ComponentTable.Add(componentType, null);
-                return null;
+                comp = (T)component;
+                return true;
             }
         }
+        else
+        {
+            cache.ComponentTable.Add(componentType, null);
 
-        private Dictionary<Type, Component> ComponentTable { get; } = new();
+            comp = null;
+            return false;
+        }
     }
+
+    private Dictionary<Type, Component> ComponentTable { get; } = new();
 }

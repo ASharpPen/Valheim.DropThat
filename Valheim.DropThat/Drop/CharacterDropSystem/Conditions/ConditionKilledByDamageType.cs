@@ -1,91 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Creature.DamageRecords;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+﻿using DropThat.Creature.DamageRecords;
+using DropThat.Drop.CharacterDropSystem.Models;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
+
+public sealed class ConditionKilledByDamageType : IDropCondition
 {
-    public class ConditionKilledByDamageType : ICondition
+    public HitData.DamageType DamageTypeMask { get; set; } = 0;
+
+    public bool IsPointless() => DamageTypeMask == 0;
+
+    public bool IsValid(DropContext context)
     {
-        private static ConditionKilledByDamageType _instance;
-
-        public static ConditionKilledByDamageType Instance => _instance ??= new();
-
-        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
+        if (DamageTypeMask == 0)
         {
-            if (!characterDrop || characterDrop is null || dropExtended?.Config is null)
-            {
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(dropExtended.Config.ConditionKilledByDamageType?.Value))
-            {
-                return false;
-            }
-
-            var character = CharacterCache.GetCharacter(characterDrop);
-
-            if (ValidConditionKilledByDamageType(drop, dropExtended.Config, character))
-            {
-                return false;
-            }
-
             return true;
         }
 
-        public bool ValidConditionKilledByDamageType(CharacterDrop.Drop drop, CharacterDropItemConfiguration config, Character character)
+        DamageRecord lastHit = RecordLastHit.GetLastHit(context.Character);
+
+        if (lastHit is null)
         {
-            if (config.ConditionKilledByDamageType.Value.Length > 0)
-            {
-                var causes = config.ConditionKilledByDamageType.Value.SplitByComma();
-
-                if (causes.Count == 0)
-                {
-                    //Skip if we have no states to check. This indicates all are allowed.
-                    return true;
-                }
-
-                var lastHit = RecordLastHit.GetLastHit(character);
-
-                if (lastHit is null)
-                {
-                    Log.LogTrace($"{nameof(config.ConditionKilledByDamageType)}: Disabling drop {drop.m_prefab.name} due to not finding any last hit data.");
-                    return false;
-                }
-
-                var causesDamageType = ConvertToBitmask(causes);
-
-#if DEBUG
-                Log.LogTrace($"Searching for damage types '{causes}' as {causesDamageType} among '{lastHit.DamageType}' with result '{causesDamageType & lastHit.DamageType}'");
-#endif
-
-                if ((causesDamageType & lastHit.DamageType) == 0)
-                {
-                    Log.LogTrace($"{nameof(config.ConditionKilledByDamageType)}: Disabling drop {drop.m_prefab.name} due to not finding any of the required damage types in last hit.");
-                    return false;
-                }
-            }
-
-            return true;
+            return false;
         }
 
-        private static HitData.DamageType ConvertToBitmask(List<string> damageTypes)
-        {
-            HitData.DamageType result = 0;
-
-            foreach (var type in damageTypes)
-            {
-                if (Enum.TryParse(type, true, out HitData.DamageType damageType))
-                {
-                    result |= damageType;
-                }
-            }
-
-            return result;
-        }
+        return (lastHit.DamageType & DamageTypeMask) > 0;
     }
 }

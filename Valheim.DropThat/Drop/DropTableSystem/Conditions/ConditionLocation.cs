@@ -1,48 +1,44 @@
-﻿using System.Linq;
-using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Locations;
-using Valheim.DropThat.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DropThat.Drop.DropTableSystem.Models;
+using DropThat.Locations;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Conditions
+namespace DropThat.Drop.DropTableSystem.Conditions;
+
+public sealed class ConditionLocation : IDropCondition
 {
-    public class ConditionLocation : IDropTableCondition
+    public HashSet<string> Locations { get; set; }
+
+    public bool IsPointless() => (Locations?.Count ?? 0) == 0;
+
+    public void SetLocations(IEnumerable<string> locations)
     {
-        private static ConditionLocation _instance;
+        Locations = locations?
+            .Select(x =>
+                x.Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
 
-        public static ConditionLocation Instance => _instance ??= new();
-
-        public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+    public bool IsValid(DropContext context)
+    {
+        if (Locations is null ||
+            Locations.Count == 0)
         {
-            if (IsValid(context.Source.transform.position, template.Config))
-            {
-                return false;
-            }
-
-            Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due to not being in required location.");
             return true;
         }
 
-        public bool IsValid(Vector3 position, DropTableItemConfiguration config)
+        var currentLocation = LocationHelper.FindLocation(context.Pos);
+
+        if (currentLocation is null)
         {
-            if (string.IsNullOrWhiteSpace(config?.ConditionLocations?.Value))
-            {
-                return true;
-            }
-
-            var locations = config.ConditionLocations.Value.SplitByComma(toUpper: true);
-
-            if (locations.Count == 0)
-            {
-                return true;
-            }
-
-            var currentLocation = LocationHelper.FindLocation(position);
-
-            var currentLocationName = currentLocation.LocationName.Trim().ToUpperInvariant();
-
-            return locations.Any(x => x == currentLocationName);
+            return false;
         }
+
+        var currentLocationName = currentLocation.LocationName
+            .Trim()
+            .ToUpperInvariant();
+
+        return Locations.Contains(currentLocationName);
     }
 }

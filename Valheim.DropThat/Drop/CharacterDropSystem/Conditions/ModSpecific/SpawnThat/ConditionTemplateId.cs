@@ -1,63 +1,27 @@
 ﻿using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Integrations;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat
+namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.SpawnThat;
+
+public sealed class ConditionTemplateId : IDropCondition
 {
-    public class ConditionTemplateId : ICondition
+    public string[] TemplateIds { get; set; }
+
+    public bool IsPointless() => (TemplateIds?.Length ?? 0) == 0;
+
+    public bool IsValid(DropContext context)
     {
-        private static ConditionTemplateId _instance;
-
-        public static ConditionTemplateId Instance
+        if (!InstallationManager.SpawnThatInstalled ||
+            TemplateIds is null ||
+            TemplateIds.Length == 0 ||
+            context.ZDO is null)
         {
-            get
-            {
-                return _instance ??= new ConditionTemplateId();
-            }
+            return true;
         }
 
-        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
-        {
-            if (!extended.Config.Subsections.TryGetValue(CharacterDropModConfigSpawnThat.ModName, out Config modConfig))
-            {
-                return false;
-            }
+        var templateId = context.ZDO.GetString("spawn_template_id", null);
 
-            var config = modConfig as CharacterDropModConfigSpawnThat;
-
-            if (config is null || string.IsNullOrWhiteSpace(config.ConditionTemplateId.Value))
-            {
-                return false;
-            }
-
-            var character = CharacterCache.GetCharacter(characterDrop);
-            if (!character || character is null)
-            {
-                return false;
-            }
-
-            var zdo = ZdoCache.GetZDO(character.gameObject);
-
-            if (zdo is null)
-            {
-                return false;
-            }
-
-            var templateId = zdo.GetString("spawn_template_id", null);
-
-            var configTemplateIds = config.ConditionTemplateId.Value.SplitByComma();
-
-            if (!configTemplateIds.Any(x => x == templateId))
-            {
-                Log.LogTrace($"{nameof(config.ConditionTemplateId)}: Disabling drop {drop.m_prefab.name} due to not having required spawn template id {config.ConditionTemplateId.Value}.");
-                return true;
-            }
-
-            return false;
-        }
+        return TemplateIds.Contains(templateId);
     }
 }

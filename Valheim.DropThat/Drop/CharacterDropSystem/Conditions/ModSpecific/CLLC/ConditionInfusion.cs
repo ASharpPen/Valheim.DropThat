@@ -1,112 +1,39 @@
 ﻿using CreatureLevelControl;
-using System;
 using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Configuration;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+using DropThat.Integrations.CllcIntegration;
+using ThatCore.Extensions;
+using DropThat.Integrations;
+using DropThat.Drop.CharacterDropSystem.Models;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC
+namespace DropThat.Drop.CharacterDropSystem.Conditions.ModSpecific.CLLC;
+
+public sealed class ConditionInfusion : IDropCondition
 {
-    internal class ConditionInfusion : ICondition
+    public CllcCreatureInfusion[] Infusions { get; set; }
+
+    public bool IsPointless() => (Infusions?.Length ?? 0) == 0;
+
+    public bool IsValid(DropContext context)
     {
-        private static ConditionInfusion _instance;
-
-        public static ConditionInfusion Instance
+        if (Infusions is null ||
+            Infusions.Length == 0 ||
+            context.Character.IsNull())
         {
-            get
-            {
-                return _instance ??= new ConditionInfusion();
-            }
-        }
-
-        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
-        {
-            if (extended?.Config?.Subsections is null)
-            {
-                return false;
-            }
-
-            var character = CharacterCache.GetCharacter(characterDrop);
-
-            if (extended.Config.Subsections.TryGetValue(CharacterDropModConfigCLLC.ModName, out Config config) && config is CharacterDropModConfigCLLC cllcConfig)
-            {
-                if (!ValidConditionInfusion(drop, cllcConfig, character))
-                {
-                    return true;
-                }
-
-                if (!ValidConditionNotInfusion(drop, cllcConfig, character))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static bool ValidConditionInfusion(CharacterDrop.Drop drop, CharacterDropModConfigCLLC config, Character character)
-        {
-            if (config.ConditionInfusion.Value.Length > 0)
-            {
-                var states = config.ConditionInfusion.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if ((states?.Length ?? 0) == 0)
-                {
-#if DEBUG
-                    Log.LogDebug("No conditions for CLLC infusions were found.");
-#endif
-                    //Skip if we have no states to check. This indicates all are allowed.
-                    return true;
-                }
-
-                if (!states.Any(x => HasState(character, x)))
-                {
-                    Log.LogTrace($"{nameof(config.ConditionInfusion)}: Disabling drop {drop.m_prefab.name} due to not finding any of the requires infusions '{config.ConditionInfusion.Value}'.");
-                    return false;
-                }
-            }
-
             return true;
         }
 
-        public static bool ValidConditionNotInfusion(CharacterDrop.Drop drop, CharacterDropModConfigCLLC config, Character character)
+        if (!InstallationManager.CLLCInstalled)
         {
-            if (config.ConditionNotInfusion.Value.Length > 0)
-            {
-                var states = config.ConditionNotInfusion.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if ((states?.Length ?? 0) == 0)
-                {
-#if DEBUG
-                    Log.LogDebug("No conditions for CLLC infusions were found.");
-#endif
-                    //Skip if we have no states to check. This indicates all are allowed.
-                    return true;
-                }
-
-                if (states.Any(x => HasState(character, x)))
-                {
-                    Log.LogTrace($"{nameof(config.ConditionNotInfusion)}: Disabling drop {drop.m_prefab.name} due finding one of the disabled infusions '{config.ConditionNotInfusion.Value}'.");
-                    return false;
-                }
-            }
-
             return true;
         }
 
-        private static bool HasState(Character character, string state)
-        {
-            if (Enum.TryParse(state.Trim(), true, out CreatureInfusion infusion))
-            {
-                return API.GetInfusionCreature(character) == infusion;
-            }
-            else
-            {
-                Log.LogWarning($"Unable to parse CLLC infusion '{state}'");
-                return false;
-            }
-        }
+        return HasInfusion(context.Character);
+    }
+
+    private bool HasInfusion(Character character)
+    {
+        var currentInfusion = API.GetInfusionCreature(character);
+
+        return Infusions.Any(x => x.Convert() == currentInfusion);
     }
 }

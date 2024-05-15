@@ -1,41 +1,48 @@
-﻿using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
+﻿using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Managers;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Utilities.Valheim;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
+
+public sealed class ConditionBiome : IDropCondition
 {
-    internal class ConditionBiome : ICondition
+    public Heightmap.Biome BiomeBitmask { get; set; }
+
+    static ConditionBiome()
     {
-        private static ConditionBiome _instance;
+        CharacterDropEventManager.OnDropTableInitialize += SetSpawnBiomeIfMissing;
+    }
 
-        public static ConditionBiome Instance => _instance ??= new();
+    public bool IsPointless() => BiomeBitmask == Heightmap.Biome.None;
 
-        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
+    public bool IsValid(DropContext context)
+    {
+        if (BiomeBitmask == Heightmap.Biome.None)
         {
-            if (!string.IsNullOrEmpty(dropExtended.Config.ConditionBiomes.Value))
-            {
-                var character = CharacterCache.GetCharacter(characterDrop);
+            return true;
+        }
 
-                var biomes = dropExtended.Config.ConditionBiomes.Value.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+        var spawnBiome = context.ZDO?.GetSpawnBiome();
 
-                var currentBiome = WorldGenerator.instance.GetBiome(character.GetCenterPoint()).ToString().ToUpperInvariant();
-                var currentBiomeCleaned = currentBiome.ToUpperInvariant();
-
-                if (biomes.Length > 0)
-                {
-                    bool foundBiome = biomes.Any(x => x.Trim().ToUpperInvariant() == currentBiome);
-
-                    if (!foundBiome)
-                    {
-                        Log.LogTrace($"{nameof(dropExtended.Config.ConditionBiomes)}: Disabling drop {drop.m_prefab.name} due to biome {currentBiome} not being in required list.");
-
-                        return true;
-                    }
-                }
-            }
-
+        if (spawnBiome is null)
+        {
             return false;
+        }
+
+        return (spawnBiome.Value & BiomeBitmask) > 0;
+    }
+
+    private static void SetSpawnBiomeIfMissing(CharacterDrop droptable)
+    {
+        var zdo = ZdoCache.GetZDO(droptable);
+
+        if (zdo is not null &&
+            zdo.GetSpawnBiome() is null)
+        {
+            var biome = Heightmap.FindBiome(zdo.m_position);
+
+            zdo.SetSpawnBiome(biome);
         }
     }
 }

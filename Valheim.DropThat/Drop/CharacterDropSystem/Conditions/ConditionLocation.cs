@@ -1,58 +1,65 @@
-﻿using System.Linq;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Locations;
-using Valheim.DropThat.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Managers;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Locations;
+using DropThat.Utilities.Valheim;
+using ThatCore.Extensions;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
+
+public sealed class ConditionLocation : IDropCondition
 {
-    public class ConditionLocation : ICondition
+    public HashSet<string> Locations { get; set; }
+
+    static ConditionLocation()
     {
-        private static ConditionLocation _instance;
+        CharacterDropEventManager.OnDropTableInitialize += SetSpawnLocationIfMissing;
+    }
 
-        public static ConditionLocation Instance => _instance ??= new();
+    public bool IsPointless() => (Locations?.Count ?? 0) == 0;
 
-        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
+    public void SetLocations(IEnumerable<string> locations)
+    {
+        Locations = locations?
+            .Select(x => x
+                .Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
+
+    public bool IsValid(DropContext context)
+    {
+        if (Locations is null ||
+            Locations.Count == 0 ||
+            context.Character.IsNull())
         {
-            if (!characterDrop || characterDrop is null || dropExtended?.Config?.ConditionLocation is null)
-            {
-                return false;
-            }
+            return true;
+        }
 
-            if (string.IsNullOrEmpty(dropExtended.Config.ConditionLocation.Value))
-            {
-                return false;
-            }
+        var pos = context.ZDO?.GetSpawnPosition()
+            ?? context.Character.GetCenterPoint();
 
-            var character = CharacterCache.GetCharacter(characterDrop);
+        var currentLocation = LocationHelper
+            .FindLocation(pos);
 
-            var locations = dropExtended.Config.ConditionLocation.Value.SplitByComma(toUpper: true);
+        if (currentLocation is null)
+        {
+            return true;
+        }
 
-            var currentLocation = LocationHelper.FindLocation(character.GetCenterPoint());
+        return Locations.Contains(currentLocation.LocationName.Trim().ToUpperInvariant());
+    }
 
-            if (locations.Count > 0)
-            {
-                if (currentLocation is null)
-                {
-                    Log.LogTrace($"{nameof(dropExtended.Config.ConditionLocation)}: Disabling drop {drop.m_prefab.name} due to not being in required location.");
-                    return true;
-                }
+    private static void SetSpawnLocationIfMissing(CharacterDrop droptable)
+    {
+        var zdo = ZdoCache.GetZDO(droptable);
 
-                var currentLocationName = currentLocation.LocationName.Trim().ToUpperInvariant();
-
-                if (locations.Any(x => x == currentLocationName))
-                {
-                    return false;
-                }
-                else
-                {
-                    Log.LogTrace($"{nameof(dropExtended.Config.ConditionLocation)}: Disabling drop {drop.m_prefab.name} due to not being in required location.");
-                    return true;
-                }
-            }
-
-            return false;
+        if (zdo is not null &&
+            zdo.GetSpawnPosition() is null)
+        {
+            zdo.SetSpawnPosition(zdo.m_position);
         }
     }
 }

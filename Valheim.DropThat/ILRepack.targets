@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ILRepacker" AfterTargets="Build" Condition="'$(Configuration)' != 'Test'">
+
+		<ItemGroup>
+			<InputAssemblies Include="$(TargetPath)" />
+			<InputAssemblies Include="$(OutputPath)\YamlDotNet.dll" />
+			<InputAssemblies Include="$(OutputPath)\ThatCore.dll" />
+			<InputAssemblies Include="$(OutputPath)\ThatCore.Shared.dll" />
+			<InputAssemblies Include="$(OutputPath)\ThatCore.Valheim.dll" />
+			<LibraryPath  Include="$(OutputPath)" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<!-- Must be a fully qualified name -->
+			<DoNotInternalizeAssemblies Include="ThatCore.Config.I" />
+			<DoNotInternalizeAssemblies Include="ThatCore.Models" />
+		</ItemGroup>
+
+		<ILRepack
+			Parallel="true"
+			Internalize="true"
+			RenameInternalized="false"
+			InternalizeExclude="@(DoNotInternalizeAssemblies )"
+			InputAssemblies="@(InputAssemblies)"
+			TargetKind="Dll"
+			OutputFile="$(OutputPath)\$(AssemblyName).dll"
+			LibraryPath="@(LibraryPath)"
+    />
+
+	</Target>
+</Project>

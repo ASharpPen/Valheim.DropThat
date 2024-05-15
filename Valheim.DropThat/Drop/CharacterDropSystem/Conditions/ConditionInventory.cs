@@ -1,104 +1,105 @@
-﻿using HarmonyLib;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Integrations;
-using Valheim.DropThat.Utilities;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Integrations;
+using ThatCore.Extensions;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
+
+public sealed class ConditionInventory : IDropCondition
 {
-    internal class ConditionInventory : ICondition
+    public HashSet<string> Items { get; set; }
+
+    public void SetItems(IEnumerable<string> items)
     {
-        private static ConditionInventory _instance;
+        Items = items?
+            .Select(x => x
+                .Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
 
-        public static ConditionInventory Instance => _instance ??= new();
+    public bool IsPointless() => (Items?.Count ?? 0) == 0;
 
-        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
+    public bool IsValid(DropContext context)
+    {
+        if (Items is null ||
+            Items.Count == 0)
         {
-            var character = CharacterCache.GetCharacter(characterDrop);
-            var inventory = CharacterCache.GetInventory(character);
+            return true;
+        }
 
-            if (inventory is null)
+        var character = context.Character;
+
+        if (character.IsNull() ||
+            character is not Humanoid humanoid ||
+            humanoid.m_inventory is null)
+        {
+            return true;
+        }
+
+        var inventoryItems = GetInventoryItems(humanoid);
+
+        return Items.Any(x => inventoryItems.Contains(x));
+    }
+
+    private static HashSet<string> GetInventoryItems(Humanoid humanoid)
+    {
+        HashSet<string> inventoryItems;
+
+        if (InstallationManager.RRRInstalled && humanoid.name.StartsWith("RRR"))
+        {
+            // This is an RRR creature, item names will have been set with a specific pattern.
+            inventoryItems = new();
+
+            foreach (var item in humanoid.m_inventory.GetAllItems())
             {
-#if DEBUG
-                Log.LogDebug("No inventory for creature were found.");
-#endif
-
-                //No inventory to compare against. Assume that all is allowed.
-                return false;
-            }
-
-            var items = extended.Config.ConditionHasItem.Value.SplitByComma(true);
-
-            if (items.Count == 0)
-            {
-                return false;
-            }
-
-            HashSet<string> inventoryItems;
-
-            if (InstallationManager.RRRInstalled && character.name.StartsWith("RRR"))
-            {
-                // This is an RRR creature, item names will have been set with a specific pattern.
-                inventoryItems = new();
-
-                foreach (var item in inventory.GetAllItems())
+                if (item.m_dropPrefab.IsNull())
                 {
-                    var firstSection = item.m_dropPrefab.name.IndexOf('@');
+                    continue;
+                }
 
-                    if (firstSection < 0)
-                    {
-                        // Unformatted item, add as is
-                        inventoryItems.Add(PrepareName(item.m_dropPrefab));
-                        continue;
-                    }
+                var firstSection = item.m_dropPrefab.name.IndexOf('@');
 
-                    var endSection = item.m_dropPrefab.name.IndexOf('@', firstSection + 1);
+                if (firstSection < 0)
+                {
+                    // Unformatted item, add as is
+                    inventoryItems.Add(item.m_dropPrefab.name
+                        .Trim()
+                        .ToUpperInvariant());
 
-                    if (endSection < 0)
-                    {
-                        inventoryItems.Add(CleanName(item.m_dropPrefab.name.Substring(firstSection + 1)));
-                    }
-                    else
-                    {
-                        inventoryItems.Add(CleanName(item.m_dropPrefab.name.Substring(firstSection + 1, endSection - firstSection - 1)));
-                    }
+                    continue;
+                }
+
+                var endSection = item.m_dropPrefab.name.IndexOf('@', firstSection + 1);
+
+                if (endSection < 0)
+                {
+                    inventoryItems.Add(item.m_dropPrefab.name
+                        .Substring(firstSection + 1)
+                        .Trim()
+                        .ToUpperInvariant());
+                }
+                else
+                {
+                    inventoryItems.Add(item.m_dropPrefab.name
+                        .Substring(firstSection + 1, endSection - firstSection - 1)
+                        .Trim()
+                        .ToUpperInvariant());
                 }
             }
-            else
-            {
-                inventoryItems = inventory
-                    .GetAllItems()
-                    .Select(x => x.m_dropPrefab.name.Trim().ToUpperInvariant())
-                    .ToHashSet();
-            }
-
-#if DEBUG
-            Log.LogTrace("Inventory: " + inventoryItems.Join());
-#endif
-            if (!items.Any(x => inventoryItems.Contains(x)))
-            {
-                //No inventory items matched an item in condition list.
-                Log.LogTrace($"{nameof(CharacterDropItemConfiguration.ConditionHasItem)}: Found none of the required items '{items.Join()}' in inventory.");
-
-                return true;
-            }
-
-            return false;
         }
-
-        private static string CleanName(string str)
+        else
         {
-            return str.Trim().ToUpperInvariant();
+            inventoryItems = humanoid.m_inventory
+                .GetAllItems()
+                .Where(x => x.m_dropPrefab.IsNotNull())
+                .Select(x => x.m_dropPrefab.name
+                    .Trim()
+                    .ToUpperInvariant())
+                .ToHashSet();
         }
 
-        private static string PrepareName(GameObject go)
-        {
-            return go.name.Trim().ToUpperInvariant();
-        }
+        return inventoryItems;
     }
 }

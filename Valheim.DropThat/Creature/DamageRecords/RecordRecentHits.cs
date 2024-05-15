@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Utilities;
+using ThatCore.Cache;
 using UnityEngine;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Models;
-using Valheim.DropThat.Utilities;
 
-namespace Valheim.DropThat.Creature.DamageRecords;
+namespace DropThat.Creature.DamageRecords;
 
 /// <summary>
 /// Local cache of recent hit data pr creature.
@@ -87,7 +87,7 @@ internal static class RecordRecentHits
             return EntityType.Other;
         }
 
-        var attackerCharacter = ComponentCache.GetComponent<Character>(attacker);
+        var attackerCharacter = ComponentCache.Get<Character>(attacker);
 
         if (attackerCharacter.IsNull())
         {

@@ -1,84 +1,90 @@
 ﻿using BepInEx.Configuration;
-using System;
-using System.Runtime.Serialization;
+using YamlDotNet.Serialization;
 
-namespace Valheim.DropThat.Core.Configuration
+namespace DropThat.Core.Configuration;
+
+public interface IConfigurationEntry
 {
-    public interface IConfigurationEntry
+    void Bind(ConfigFile config, string section, string key);
+}
+
+public class ConfigurationEntry<TIn> : IConfigurationEntry
+{
+    public ConfigurationEntry()
     {
-        void Bind(ConfigFile config, string section, string key);
+
     }
 
-    [Serializable]
-    public class ConfigurationEntry<TIn> : IConfigurationEntry
+    public ConfigurationEntry(TIn defaultValue, string description = null)
     {
-        public TIn DefaultValue { get; set; }
+        Description = description;
+        DefaultValue = defaultValue;
+    }
 
-        [NonSerialized]
-        private string Description;
+    public TIn DefaultValue { get; set; }
 
-        [NonSerialized]
-        private ConfigEntry<TIn> Config;
+    [YamlIgnore]
+    public string Description;
 
-        [OnSerializing]
-        internal void OnSerialize(StreamingContext _)
+    [YamlIgnore]
+    public ConfigEntry<TIn> Config;
+
+    public void Bind(ConfigFile config, string section, string key)
+    {
+        if (Description is null)
         {
-            // We cheat, and don't actually use the bepinex bindings for syncronized configurations.
-            // Due to Config not being set, this should result in DefaultValue always being used instead.
-            if(Config != null)
-            {
-                DefaultValue = Config.Value;
-            }
+            Config = config.Bind<TIn>(section, key, DefaultValue);
+            // Hack: Ensures default value get set before sync.
+            DefaultValue = Config.Value;
+        }
+        else
+        {
+            Config = config.Bind<TIn>(section, key, DefaultValue, Description);
+            // Hack: Ensures default value get set before sync.
+            DefaultValue = Config.Value;
         }
 
-        public void Bind(ConfigFile config, string section, string key)
+        PostBind();
+    }
+
+    protected virtual void PostBind() { }
+
+    public override string ToString()
+    {
+        if (Config == null)
         {
-            if (Description is null)
+            return $"[Entry: {DefaultValue}]";
+        }
+        return $"[{Config.Definition.Key}:{Config.Definition.Section}]: {Config.Value}";
+    }
+
+    [YamlIgnore]
+    public TIn Value
+    {
+        get
+        {
+            if (Config is null)
             {
-                Config = config.Bind<TIn>(section, key, DefaultValue);
+                return DefaultValue;
+            }
+
+            return Config.Value;
+        }
+        set
+        {
+            if (Config is null)
+            {
+                DefaultValue = value;
             }
             else
             {
-                Config = config.Bind<TIn>(section, key, DefaultValue, Description);
+                Config.Value = value;
             }
         }
+    }
 
-        public override string ToString()
-        {
-            if(Config == null)
-            {
-                return $"[Entry: {DefaultValue}]";
-            }
-            return $"[{Config.Definition.Key}:{Config.Definition.Section}]: {Config.Value}";
-        }
-
-        public TIn Value 
-        {
-            get
-            {
-                if(Config is null)
-                {
-                    return DefaultValue;
-                }
-
-                return Config.Value;
-            }
-        }
-
-        public static implicit operator TIn(ConfigurationEntry<TIn> entry)
-        {
-            return entry.Value;
-        }
-
-        public ConfigurationEntry()
-        {
-
-        }
-
-        public ConfigurationEntry(TIn defaultValue, string description = null)
-        {
-            Description = description;
-            DefaultValue = defaultValue;
-        }
+    public static implicit operator TIn(ConfigurationEntry<TIn> entry)
+    {
+        return entry.Value;
     }
 }

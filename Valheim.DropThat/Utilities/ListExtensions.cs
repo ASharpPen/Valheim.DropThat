@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Valheim.DropThat.Utilities;
+namespace DropThat.Utilities;
 
 internal static class ListExtensions
 {

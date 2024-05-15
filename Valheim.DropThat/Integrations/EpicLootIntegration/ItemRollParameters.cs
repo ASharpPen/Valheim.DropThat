@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Valheim.DropThat.Integrations.EpicLootIntegration;
+namespace DropThat.Integrations.EpicLootIntegration;
 
-internal class ItemRollParameters
+internal sealed class ItemRollParameters
 {
     public float RarityWeightNone { get; set; }
     public float RarityWeightMagic { get; set; }

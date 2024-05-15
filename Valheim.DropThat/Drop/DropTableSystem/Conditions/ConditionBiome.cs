@@ -1,46 +1,36 @@
-﻿using System.Linq;
-using UnityEngine;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+﻿using System.Collections.Generic;
+using DropThat.Drop.DropTableSystem.Models;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Conditions
+namespace DropThat.Drop.DropTableSystem.Conditions;
+
+public sealed class ConditionBiome : IDropCondition
 {
-    public class ConditionBiome : IDropTableCondition
+    public Heightmap.Biome BiomeMask { get; set; }
+
+    public bool IsPointless() => BiomeMask == Heightmap.Biome.None;
+
+    public void SetBiomes(IEnumerable<Heightmap.Biome> biomes)
     {
-        private static ConditionBiome _instance;
+        BiomeMask = Heightmap.Biome.None;
 
-        public static ConditionBiome Instance => _instance ??= new();
-
-        public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+        if (biomes is not null)
         {
-            if (IsValid(context.Source.transform.position, template?.Config))
+            foreach (var biome in biomes)
             {
-                return false;
+                BiomeMask |= biome;
             }
+        }
+    }
 
-            Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due being outside required biome.");
+    public bool IsValid(DropContext context)
+    {
+        if (BiomeMask == Heightmap.Biome.None)
+        {
             return true;
         }
 
-        public bool IsValid(Vector3 position, DropTableItemConfiguration config)
-        {
-            if (config is null)
-            {
-                return true;
-            }
+        var biome = Heightmap.FindBiome(context.Pos);
 
-            if (string.IsNullOrWhiteSpace(config.ConditionBiomes.Value))
-            {
-                return true;
-            }
-
-            var allowedBiomes = config.ConditionBiomes.Value.SplitByComma(true);
-
-            var currentBiome = Heightmap.FindBiome(position);
-            var currentBiomeCleaned = currentBiome.ToString().ToUpperInvariant();
-
-            return allowedBiomes.Any(x => x == currentBiomeCleaned);
-        }
+        return (BiomeMask & biome) > 0;
     }
 }

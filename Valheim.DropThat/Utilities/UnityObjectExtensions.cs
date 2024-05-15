@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
+using DropThat.Core;
 
-namespace Valheim.DropThat.Utilities;
+namespace DropThat.Utilities;
 
 public static class UnityObjectExtensions
 {

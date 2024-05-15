@@ -1,7 +1,7 @@
 ﻿using BepInEx;
 using System.IO;
 
-namespace Valheim.DropThat.BossMetal
+namespace DropThat.BossMetal
 {
     [BepInPlugin("asharppen.valheim.drop_that.boss_metal", "Drop That! Boss Metals", "1.0.0")]
     public class BossMetalPlugin : BaseUnityPlugin

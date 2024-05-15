@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using Valheim.DropThat.Utilities;
+using ThatCore.Extensions;
 
 namespace Valheim.DropThat.Drop.DropTableSystem.Patches;
 
@@ -11,7 +11,7 @@ internal static class Patch_MineRock5_Fix_Naming
 {
     private static string _originalPrefabName { get; set; }
 
-    [HarmonyPatch(nameof(MineRock5.Start))]
+    [HarmonyPatch(nameof(MineRock5.Awake))]
     private static void Prefix(MineRock5 __instance)
     {
         if (__instance.IsNotNull() &&
@@ -21,7 +21,7 @@ internal static class Patch_MineRock5_Fix_Naming
         }
     }
 
-    [HarmonyPatch(nameof(MineRock5.Start))]
+    [HarmonyPatch(nameof(MineRock5.Awake))]
     private static void Postfix(MineRock5 __instance)
     {
         if (__instance.IsNotNull() &&
