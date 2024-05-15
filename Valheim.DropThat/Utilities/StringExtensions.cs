@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DropThat.Drop.CharacterDropSystem.Models;
 
-namespace Valheim.DropThat.Utilities;
+namespace DropThat.Utilities;
 
 public static class StringExtensions
 {

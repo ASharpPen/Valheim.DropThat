@@ -1,50 +1,38 @@
-﻿using System.Linq;
-using Valheim.DropThat.Configuration.ConfigTypes;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DropThat.Drop.DropTableSystem.Models;
 
-namespace Valheim.DropThat.Drop.DropTableSystem.Conditions
+namespace DropThat.Drop.DropTableSystem.Conditions;
+
+public sealed class ConditionEnvironments : IDropCondition
 {
-    public class ConditionEnvironments : IDropTableCondition
+    public HashSet<string> Environments { get; set; }
+
+    public bool IsPointless() => (Environments?.Count ?? 0) == 0;
+
+    public void SetEnvironments(IEnumerable<string> environments)
     {
-        private static ConditionEnvironments _instance;
+        Environments = environments?
+            .Select(x => x
+                .Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
 
-        public static ConditionEnvironments Instance => _instance ??= new();
-
-        public bool ShouldFilter(DropSourceTemplateLink context, DropTemplate template)
+    public bool IsValid(DropContext context)
+    {
+        if (Environments is null ||
+            Environments.Count == 0)
         {
-            if (IsValid(template.Config))
-            {
-                return false;
-            }
-
-            Log.LogTrace($"Filtered drop '{template.Drop.m_item.name}' due to current environment.");
             return true;
         }
 
-        public bool IsValid(DropTableItemConfiguration config)
-        {
-            if (string.IsNullOrEmpty(config.ConditionEnvironments.Value))
-            {
-                return true;
-            }
+        var currentEnv = EnvMan.instance
+            .GetCurrentEnvironment()
+            .m_name
+            .Trim()
+            .ToUpperInvariant();
 
-            var envMan = EnvMan.instance;
-            var currentEnv = envMan.GetCurrentEnvironment().m_name.Trim().ToUpperInvariant();
-
-            var environments = config.ConditionEnvironments.Value.SplitByComma(toUpper: true);
-
-            if (environments.Count == 0)
-            {
-                return true;
-            }
-
-            if (environments.Any(x => x == currentEnv))
-            {
-                return true;
-            }
-
-            return false;
-        }
+        return Environments.Contains(currentEnv);
     }
 }

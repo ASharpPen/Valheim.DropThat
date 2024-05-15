@@ -1,5 +1,5 @@
 ﻿
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Models;
+namespace DropThat.Drop.CharacterDropSystem.Models;
 
 public enum EntityType
 {

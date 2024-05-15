@@ -1,13 +1,12 @@
 ﻿
-namespace Valheim.DropThat.Integrations.EpicLootIntegration
+namespace DropThat.Integrations.EpicLootIntegration;
+
+internal enum Rarity
 {
-    internal enum Rarity
-    {
-        None,
-        Magic,
-        Rare,
-        Epic,
-        Legendary,
-        Unique
-    }
+    None,
+    Magic,
+    Rare,
+    Epic,
+    Legendary,
+    Unique
 }

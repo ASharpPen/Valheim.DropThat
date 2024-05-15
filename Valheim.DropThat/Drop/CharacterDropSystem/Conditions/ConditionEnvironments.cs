@@ -1,39 +1,38 @@
 ﻿using System.Collections.Generic;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Utilities;
+using System.Linq;
+using DropThat.Drop.CharacterDropSystem.Models;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
+
+public sealed class ConditionEnvironments : IDropCondition
 {
-    internal class ConditionEnvironments : ICondition
+    public HashSet<string> Environments { get; set; }
+
+    public void SetEnvironments(IEnumerable<string> environments)
     {
-        private static ConditionEnvironments _instance;
+        Environments = environments?
+            .Select(x => x
+                .Trim()
+                .ToUpperInvariant())
+            .ToHashSet();
+    }
 
-        public static ConditionEnvironments Instance => _instance ??= new();
+    public bool IsPointless() => (Environments?.Count ?? 0) == 0;
 
-        public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended dropExtended, CharacterDrop characterDrop)
+    public bool IsValid(DropContext context)
+    {
+        if (Environments is null ||
+            Environments.Count == 0)
         {
-            if (!string.IsNullOrEmpty(dropExtended.Config.ConditionEnvironments.Value))
-            {
-                var envMan = EnvMan.instance;
-                var currentEnv = envMan.GetCurrentEnvironment();
-
-                var environments = dropExtended.Config.ConditionEnvironments.Value.SplitByComma(true);
-
-                if (environments.Count > 0)
-                {
-                    var requiredSet = new HashSet<string>(environments);
-
-                    if (!requiredSet.Contains(currentEnv.m_name.Trim().ToUpperInvariant()))
-                    {
-                        Log.LogTrace($"{nameof(dropExtended.Config.ConditionEnvironments)}: Disabling drop {drop.m_prefab.name} due to environment {currentEnv.m_name} not being in required list.");
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return true;
         }
+
+        var currentEnv = EnvMan.instance.GetCurrentEnvironment();
+
+        var envName = currentEnv.m_name
+            .Trim()
+            .ToUpperInvariant();
+
+        return Environments.Contains(envName);
     }
 }

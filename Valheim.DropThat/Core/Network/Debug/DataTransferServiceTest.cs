@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Valheim.DropThat.Core.Network
+namespace DropThat.Core.Network
 {
     [HarmonyPatch(typeof(ZNet))]
     public static class DataTransferServiceTest

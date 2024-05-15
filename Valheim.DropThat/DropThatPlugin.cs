@@ -1,31 +1,36 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using Valheim.DropThat.Configuration;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Core.Network;
+using DropThat.Configuration;
+using ThatCore.Logging;
 
-namespace Valheim.DropThat
+namespace DropThat;
+
+
+// The LocalizationCache is only here to help ordering mods for slightly improved load performance.
+[BepInDependency("com.maxsch.valheim.LocalizationCache", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("asharppen.valheim.spawn_that", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("randyknapp.mods.epicloot", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("org.bepinex.plugins.creaturelevelcontrol", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInPlugin(ModId, PluginName, Version)]
+public sealed class DropThatPlugin : BaseUnityPlugin
 {
-    [BepInDependency("asharppen.valheim.spawn_that", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency("randyknapp.mods.epicloot", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency("org.bepinex.plugins.creaturelevelcontrol", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInPlugin(ModId, PluginName, Version)]
-    public class DropThatPlugin : BaseUnityPlugin
+    public const string ModId = "asharppen.valheim.drop_that";
+    public const string PluginName = "Drop That!";
+    public const string Version = "3.0.0";
+
+    // Awake is called once when both the game and the plug-in are loaded
+    void Awake()
     {
-        public const string ModId = "asharppen.valheim.drop_that";
-        public const string PluginName = "Drop That!";
-        public const string Version = "2.3.9";
+        Log.SetLogger(new BepInExLogger(Logger));
 
-        // Awake is called once when both the game and the plug-in are loaded
-        void Awake()
-        {
-            Log.Logger = Logger;
+#if !RELEASE
+        Log.DevelopmentEnabled = true;
+#endif
 
-            ConfigurationManager.LoadGeneralConfigurations();
+        GeneralConfigManager.Load();
 
-            new Harmony(ModId).PatchAll();
+        new Harmony(ModId).PatchAll();
 
-            NetworkSetup.SetupNetworking();
-        }
+        Startup.SetupServices();
     }
 }

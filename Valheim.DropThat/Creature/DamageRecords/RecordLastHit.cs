@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Drop.CharacterDropSystem.Models;
-using Valheim.DropThat.Utilities;
+﻿using DropThat.Caches;
+using DropThat.Drop.CharacterDropSystem.Models;
+using DropThat.Utilities;
+using ThatCore.Cache;
+using UnityEngine;
 
-namespace Valheim.DropThat.Creature.DamageRecords;
+namespace DropThat.Creature.DamageRecords;
 
 /// <summary>
 /// Local cache of last hit data.
@@ -15,6 +15,11 @@ public static class RecordLastHit
 
     public static DamageRecord GetLastHit(Character character)
     {
+        if (character.IsNull())
+        {
+            return null;
+        }
+
         if(LastHits.TryGet(character, out DamageRecord lastHit))
         {
             return lastHit;
@@ -56,7 +61,7 @@ public static class RecordLastHit
             return EntityType.Other;
         }
 
-        var attackerCharacter = ComponentCache.GetComponent<Character>(attacker);
+        var attackerCharacter = ComponentCache.Get<Character>(attacker);
 
         if (attackerCharacter.IsNull())
         {

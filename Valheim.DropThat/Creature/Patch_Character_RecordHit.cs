@@ -1,16 +1,14 @@
 ﻿using HarmonyLib;
 using System;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Utilities;
+using DropThat.Caches;
+using ThatCore.Logging;
+using ThatCore.Extensions;
 
-namespace Valheim.DropThat.Creature;
+namespace DropThat.Creature;
 
 [HarmonyPatch(typeof(Character))]
 internal static class Patch_Character_RecordHit
 {
-    private const string ZdoHealth = "health";
-
     [HarmonyPatch(nameof(Character.ApplyDamage))]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.Last)] // Let other prefixes apply their changes, so we can properly pick up the final result.
@@ -18,28 +16,22 @@ internal static class Patch_Character_RecordHit
     {
         try
         {
-#if DEBUG
-                Log.LogTrace("Applying damage.");
-#endif
+            Log.Development?.Log("Applying damage.");
 
             if (__instance.IsNull())
             {
                 return;
             }
 
-            var zdo = ZdoCache.GetZDO(__instance.gameObject);
+            var zdo = ZdoCache.GetZDO(__instance);
 
             if (zdo is null)
             {
-#if DEBUG
-                    Log.LogTrace($"[{__instance.name}] Skipping record of last hit.");
-#endif
+                Log.Development?.Log($"[{__instance.name}] Skipping record of last hit.");
                 return;
             }
 
-#if DEBUG
-                Log.LogTrace($"[{__instance.name}] Recording hit.");
-#endif
+            Log.Development?.Log($"[{__instance.name}] Recording hit.");
 
             DamageRecords.RecordLastHit.SetLastHit(__instance, hit);
             DamageRecords.RecordRecentHits.SetRecentHit(__instance, hit);
@@ -47,7 +39,7 @@ internal static class Patch_Character_RecordHit
         }
         catch (Exception e)
         {
-            Log.LogError("Error during attempt at recording last hit", e);
+            Log.Error?.Log("Error during attempt at recording last hit", e);
         }
     }
 }

@@ -1,60 +1,31 @@
-﻿// #define VERBOSE
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using UnityEngine;
-using Valheim.DropThat.Caches;
-using Valheim.DropThat.Core;
-using Valheim.DropThat.Creature.DamageRecords;
-using Valheim.DropThat.Drop.CharacterDropSystem.Caches;
-using Valheim.DropThat.Drop.CharacterDropSystem.Models;
-using Valheim.DropThat.Utilities;
+using DropThat.Creature.DamageRecords;
+using DropThat.Drop.CharacterDropSystem.Models;
+using ThatCore.Extensions;
+using ThatCore.Logging;
 
-namespace Valheim.DropThat.Drop.CharacterDropSystem.Conditions;
+namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public class ConditionHitByEntityTypeRecently : ICondition
+public sealed class ConditionHitByEntityTypeRecently : IDropCondition
 {
-    private static ConditionHitByEntityTypeRecently _instance;
+    public HashSet<EntityType> EntityTypes { get; set; }
 
-    public static ConditionHitByEntityTypeRecently Instance => _instance ??= new();
+    public bool IsPointless() => (EntityTypes?.Count ?? 0) == 0;
 
-    public bool ShouldFilter(CharacterDrop.Drop drop, DropExtended extended, CharacterDrop characterDrop)
+    public bool IsValid(DropContext context)
     {
-        if (drop is null || 
-            characterDrop.IsNull() ||
-            extended?.Config is null)
+        if (EntityTypes is null ||
+            EntityTypes.Count == 0)
         {
-            return false;
+            return true;
         }
 
-        var character = CharacterCache.GetCharacter(characterDrop);
+        var character = context.Character;
 
-        // Ignore if no character is associated with drop.
         if (character.IsNull())
         {
-            return false;
-        }
-
-#if DEBUG && VERBOSE
-        Log.LogTrace($"[{character.name}] Checking ConditionHitByEntityTypeRecently=" + extended.Config.ConditionHitByEntityTypeRecently.Value);
-#endif
-
-        var configTypes = extended.Config.ConditionHitByEntityTypeRecently.Value.SplitByComma();
-
-        List<EntityType> entities;
-
-        if (configTypes.Count == 0)
-        {
-            // Ignore if there are no entity types for condition to check.
-            return false;
-        }
-        else if (!configTypes.TryConvertToEnum(out entities))
-        {
-#if DEBUG
-            Log.LogWarning($"[{character.name}] Failed to convert EntityType to enum: " + configTypes.Join());
-#endif
-            return false;
+            return true;
         }
 
         var recentHits = RecordRecentHits.GetRecentHits(character);
@@ -64,11 +35,11 @@ public class ConditionHitByEntityTypeRecently : ICondition
         Log.LogTrace($"[{character.name}] Searching for hits by: " + entities.Join());
 #endif
 
-        var match = recentHits.Any(x => entities.Contains(x.AttackerType));
+        var match = recentHits.Any(x => EntityTypes.Contains(x.AttackerType));
 
         if (!match)
         {
-            Log.LogTrace($"Filtered drop '{drop.m_prefab.name}' due not being hit recently by required entity type.");
+            Log.Trace?.Log($"Filtered drop '{context.DropInfo.DisplayName}' due not being hit recently by required entity type.");
         }
 
         return !match;

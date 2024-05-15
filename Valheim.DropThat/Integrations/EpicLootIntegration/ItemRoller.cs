@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using Valheim.DropThat.Core;
+﻿using ThatCore.Logging;
+using UnityEngine;
 
-namespace Valheim.DropThat.Integrations.EpicLootIntegration;
+namespace DropThat.Integrations.EpicLootIntegration;
 
 internal static class ItemRoller
 {
@@ -9,17 +9,14 @@ internal static class ItemRoller
     {
         if (!EpicLoot.EpicLoot.CanBeMagicItem(itemData))
         {
-#if DEBUG
-            Log.LogTrace($"Item '{itemData.m_shared.m_name}' can't be made magic.");
-#endif
+            Log.Development?.Log($"Item '{itemData.m_shared.m_name}' can't be made magic.");
+
             return false;
         }
 
         var rarity = ItemService.RollRarity(parameters);
 
-#if DEBUG
-        Log.LogTrace($"Item '{itemData.m_shared.m_name}' rolled rarity '{rarity}'.");
-#endif
+        Log.Development?.Log($"Item '{itemData.m_shared.m_name}' rolled rarity '{rarity}'.");
 
         if (rarity is Rarity.None)
         {
