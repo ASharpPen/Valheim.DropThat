@@ -70,7 +70,7 @@ internal static class Patch_Init
     [HarmonyPatch(typeof(MineRock5))]
     internal static class Patch_MineRock5_Awake_InitDropContext
     {
-        [HarmonyPatch(nameof(MineRock5.Start))]
+        [HarmonyPatch(nameof(MineRock5.Awake))]
         [HarmonyPostfix]
         private static void SetLink(MineRock5 __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_dropItems);

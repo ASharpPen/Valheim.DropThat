@@ -6,5 +6,5 @@ public sealed class ConditionNotAfternoon : IDropCondition
 {
     public bool IsPointless() => false;
 
-    public bool IsValid(DropContext context) => !EnvMan.instance.IsAfternoon();
+    public bool IsValid(DropContext context) => !EnvMan.IsAfternoon();
 }

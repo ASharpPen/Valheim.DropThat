@@ -7,5 +7,5 @@ public sealed class ConditionDaytimeNotDay : IDropCondition
     public bool IsPointless() => false;
 
     public bool IsValid(DropContext context) =>
-        !EnvMan.instance.IsDay();
+        !EnvMan.IsDay();
 }

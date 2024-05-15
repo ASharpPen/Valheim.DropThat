@@ -6,5 +6,5 @@ public sealed class ConditionNotNight : IDropCondition
 {
     public bool IsPointless() => false;
 
-    public bool IsValid(DropContext context) => !EnvMan.instance.IsNight();
+    public bool IsValid(DropContext context) => !EnvMan.IsNight();
 }
