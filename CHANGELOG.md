@@ -1,0 +1,144 @@
+- v3.0.0:
+  - Compatibility: Valheim v0.218.15.
+	- Almost complete rewrite of the code. Config loading time should be almost unnoticeable now, even for many- or large config files.
+	- Improved feedback when loading configs. If config has typos or unrecognized options, the file and line will be written as warnings in the log on load.
+	- Added command: `dropthat:reload`, triggers a reload of all configs. This will also reload nearby objects with drop tables (which turns out, is almost everything), to ensure the loaded drops are applied correctly. Requires being an admin if on a server.
+	- Simplfied name of options starting with `Set`, such as `SetChanceToDrop` to `ChanceToDrop`. The old naming will still work but will be considered deprecated.
+	- New options:
+		- CharacterDrop: `Enable`. Finally added a simple toggle for just enabling / disabling a drop.
+		- CharacterDrop: `ConditionNotGlobalKeys`
+		- DropTable: `Enable`
+		- DropTable: `GlobalKeysAll`
+		- DropTable: `GlobalKeysNotAny`
+		- DropTable: `GlobalKeysNotAll`
+		- DropTable: `ConditionWithinCircle`
+	- Removed options from `drop_that.cfg`:
+		- DropTable: ClearAllExisting
+		- DropTable: ClearAllExistingWhenModified
+		- DropTable: AlwaysAppend
+	- Added new debugging options to `drop_that.cfg`:
+		- DropTable: WriteLoadedDropTableDropsToFile
+		- DropTable: WriteDropTablesToFileAfterChanges
+		- CharacterDrop: WriteLoadedCharacterDropsToFile
+		- CharacterDrop: WriteCharacterDropsToFileAfterChanges
+- v2.3.13:
+	- Fixed: Unable to datamine dungeons if nothing else had caused them to load. Result was a bunch of unity logs about rooms not being loaded.
+- v2.3.12:
+	- Compatibility: Valheim v0.217.46.
+- v2.3.11:
+	- Fixed: Compatibility with Valheim v.0.217.29. Serialization issue when syncing configs from servers resolved.
+	- Added soft-dependency for LocalizationCache, to help it get loaded earlier.
+- v2.3.10:
+	- Added DisableResourceModifierScaling to both CharacterDrop and DropTable settings.
+	- Added support for world-modifier resource scaling when using DropTable configs.
+- v2.3.9:
+	- Fixed: Compatibility with Valheim v.0.217.14.
+- v2.3.8:
+	- Fixed: Vanilla bug that causes the internal name of rocks to change. This resulted in Drop That configs for DropTables coming from MineRock5 to be unable to work.
+- v2.3.7:
+	- Fixed: Compatibility with Valheim v0.216.9.
+- v2.3.6:
+	- Fixed potential null-reference error when using ConditionHitByEntityTypeRecently, and improved fallback for edge cases.
+- v2.3.5:
+	- Compatibility with Epic Loot v0.9.5.
+- v2.3.4:
+	- Fixed sync when having a large amount of configs.
+	- Additional null check while recording hits.
+- v2.3.3:
+	- Fixed DropTable Epic Loot modifier. Items should now properly be able to roll with non-unique rarity.
+	- Fixed detection of Spawn That installation.
+	- Fixed potential transpiler conflict.
+- v2.3.2:
+	- Null checks null checks null checks. 
+	- Fixed issue with debug file creation breaking during startup, due to unexpected empty objects.
+	- Fixed dumb mistake in 2.3.1 fix.
+- v2.3.1:
+	- Additional error handling and checks for empty objects.
+- v2.3.0:
+	- Added condition ConditionHitByEntityTypeRecently to CharacterDrop, to help with issue of ConditionKilledByEntityType handling status effect deaths as "Other".
+- v2.2.0:
+	- Added modifier SetDurability to CharacterDrop and DropTable.
+- v2.1.5:
+	- Fixed bug with DropTable configured loot dropping at (0,0).
+- v2.1.4:
+	- Added RRR compatibility for ConditionHasItem. Previously did not take into account RRR renaming items with a custom pattern.
+	- Added additional error handling.
+	- Reduced debug logs on config load.
+- v2.1.3:
+	- Fixed potential null-reference errors during DropTable condition checks.  
+- v2.1.2:
+	- Fixed CharacterDrop named lists not applying modifiers correctly for ragdolled creatures. Eg., EpicLoot settings skipped.
+	- Fixed rarity rolling for EpicLoot not skipping rarities with weight 0.
+- v2.1.1:
+	- Fixed CharacterDrop configuration "ClearAllExistingWhenModified=true" not properly clearing modified tables.
+- v2.1.0:
+	- Added cllc conditions ConditionWorldLevelMin/Max.
+	- Fixed DropTable SetAmountMin/Max not being used for some entities.
+	- Added fallback for DropTable when other mods take control of the item instantiation. This should reduce compatibility issues, although full functionality is not always possible.
+	- Fixed unmodified DropTable's being affected by Drop That.
+	- Added internal buffer and dispatcher for packages. Should hopefully reduce server lag and disconnects when joining.
+	- Splitting config packages based on type, to reduce risk of them growing too big.
+- v2.0.1:
+	- Fixed potential issue when drop tables woke up before configs were loaded / synced. Default drops will be used for that table until object is reloaded (eg. moving far away and coming back).
+- v2.0.0:
+	- Massive increase in supported loot tables. Finally you can access those seagals!
+	- Breaking change: Configuration renaming and changes
+	- Named lists. Custom lists of drops can now be created and referred to by name when setting up entities.
+	- Added condition ConditionKilledByEntityType, for identifying if killer was a player, creature or something else.
+	- Added conditions for distance to center of map.
+	- Optimized location data sync.
+	- Documentation moved to wiki
+- v1.10.1: 
+	- Fixed issue with modifiers (eg. SetQualityLevel) not being applied in certain scenarios.
+	- Fixed issue with Oozer not spawning more blobs when modified with Drop That. Turns out, not all drops are items. I encourage creative use of this knowledge, but wash my hands of the consequences.
+	- Fixed unintended references to Spawn That, causing errors when not installed.
+- v1.10.0: 
+	- Optimized config sync.
+	- Added settings for dropping items in stacks. Both global and/or per item.
+	- Added settings for limiting max amount of a drop. Both global and/or per item.
+	- Added conditions for killed while having specified statuses (eg. burning, smoked).
+	- Added condition for killed by skill type (eg. swords, unarmed).
+	- Added condition for killed by damage type (eg. blunt, fire).
+	- Added condition for spawn location, and general setting for outputting all location names in a file.
+	- Added setting "SetQualityLevel".
+	- Added additional options for Epic Loot to roll specific unique legendaries.
+- v1.9.0: 
+	- Added conditions for creature faction.
+	- Added support for Spawn That condition "ConditionTemplateId", allowing for drops only for a specific template.
+	- Added sub-folder search for supplemental configs. It should now be possible to place Drop That supplemental files in any folder in the bepinex config folder.
+- v1.8.2: 
+	- Updated support for Epic Loot to v0.7.10. Added world luck factor to loot drops. Magic Items should no longer cause endless drops and error spam.
+- v1.8.1: 
+	- Fixed endless drop and error spam when Epic Loot was NOT installed.
+- v1.8.0: 
+	- Added support for Epic Loot.
+- v1.7.0: 
+	- Added conditions for mod Creature Level and Loot Control.
+	- Improved config merging. Supplemental files interacting with same creature will now merge in item configs from each.
+	- Rewrote internal configuration management to support soft-dependant, mod-specific configurations.
+- v1.6.2: 
+	- Fixed option AlwaysAppend being ignored.
+	- Fixed drops with no configuration being discarded
+- v1.6.1: 
+	- Fixed empty ConditionHasItem not being considered "all allowed".
+- v1.6.0: 
+	- Added output file for creature items.
+	- Added conditions for creature items (eg. skeleton_bow)
+	- Added conditions for creature states (eg. tamed, event)
+- v1.5.0: 
+	- Adding option in drop_that.cfg to generate a file containing all default drop table items. Long missing feature, I know.
+- v1.4.0: 
+	- Server-to-client config synchronization added.
+	- Removed option "LoadDropTableConfigsOnWorldStart". This will be done by default now (including the general config).
+- v1.3.3: 
+	- Fixed quality being set to 3 by mistake. Leftover from discarded feature, ups!
+	- Fixed readme example.
+- v1.3.0: 
+	- Fixed lie about drop table configurations reloading on world start. It should work properly now!
+	- Added support for setting drop conditions on each item
+	- Added support for selecting whether to apply conditions at time of spawn or death.
+- v1.2.0: 
+	- Port and rewrite of configuration system from [Custom Raids](https://valheim.thunderstore.io/package/ASharpPen/Custom_Raids/)
+	- Now supports loading of templates
+	- Additional general configuration options
+	- Now supports reloading of drop table configurations when reloading world. This means you can avoid having to completely restart the game if you only change the loot configs.

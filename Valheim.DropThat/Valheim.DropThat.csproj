@@ -108,7 +108,7 @@
 
 	</Target>
 
-	<Target Name="PrepareReleaseArtifacts" AfterTargets="Build" Condition="'$(Configuration)'=='Release'">
+	<Target Name="PrepareReleaseArtifacts" AfterTargets="Pack" Condition="'$(Configuration)'=='Release'">
 
 		<PropertyGroup>
 			<OutputNugetDir>$([System.IO.Path]::GetFullPath($([System.IO.Path]::Combine($(OutputDir),'..'))))</OutputNugetDir>
@@ -119,6 +119,7 @@
 
 			<DropThatDll>$(OutputPath)$(AssemblyName).dll</DropThatDll>
 			<Readme>$([System.IO.Path]::Combine($(RepoDir),'README.md'))</Readme>
+			<Changelog>$([System.IO.Path]::Combine($(RepoDir),'CHANGELOG.md'))</Changelog>
 			<Icon>$([System.IO.Path]::Combine($(ThunderStoreDir),'icon.png'))</Icon>
 			<Manifest>$([System.IO.Path]::Combine($(ThunderStoreDir),'manifest.json'))</Manifest>
 		</PropertyGroup>
@@ -128,7 +129,7 @@
 		<RemoveDir Directories="$(ReleaseDir)" />
 		<MakeDir Directories="$(ReleaseDir)" />
 
-		<Copy SourceFiles="$(DropThatDll);$(Readme);$(Icon);$(Manifest)" DestinationFolder="$(ReleaseDir)" />
+		<Copy SourceFiles="$(DropThatDll);$(Readme);$(Icon);$(Manifest);$(Changelog)" DestinationFolder="$(ReleaseDir)" />
 
 		<ZipDirectory SourceDirectory="$(ReleaseDir)" Overwrite="true" DestinationFile="$([System.IO.Path]::Combine($(ThunderStoreDir),'DropThat_v$(Version).zip'))" />
 
