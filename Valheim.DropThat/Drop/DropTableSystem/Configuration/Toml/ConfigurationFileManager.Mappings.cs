@@ -54,7 +54,7 @@ internal static partial class ConfigurationFileManager
                     "SetDropChance", 
                     100, 
                     "Deprecated (use DropChance). Chance to drop anything at all.",
-                    (value, builder) => builder.DropChance = value)
+                    (value, builder) => builder.DropChance = value / 100)
                 .Map<float?>(
                     "DropChance", 100, "Chance to drop anything at all.",
                     (value, builder) => builder.DropChance = value / 100)
