@@ -97,7 +97,7 @@ internal static partial class ConfigurationFileManager
                     "SetChanceToDrop", 
                     100f, 
                     "Deprecated (use ChanceToDrop). Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
-                    (value, builder) => builder.ChanceToDrop = value)
+                    (value, builder) => builder.ChanceToDrop = value / 100)
                 .Map<float?>(
                     "ChanceToDrop", 
                     100f, 

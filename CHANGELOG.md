@@ -1,3 +1,6 @@
+- v3.0.1:
+	- Fixed: Old DropTable `SetDropChance` not being internally divided by 100.
+	- Fixed: Old CharacterDrop `SetChanceToDrop` not being internally divided by 100.
 - v3.0.0:
   - Compatibility: Valheim v0.218.15.
 	- Almost complete rewrite of the code. Config loading time should be almost unnoticeable now, even for many- or large config files.

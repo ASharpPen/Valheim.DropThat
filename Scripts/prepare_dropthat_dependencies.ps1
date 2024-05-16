@@ -106,7 +106,7 @@ Strip "$profilePath\BepInEx\plugins\RandyKnapp-EpicLoot" "RandyKnapp-EpicLoot" -
 Strip "$profilePath\BepInEx\plugins\Smoothbrain-CreatureLevelAndLootControl" "Smoothbrain-CreatureLevelAndLootControl"
 
 # ThatCore
-$version = "1.0.0"
+$version = "1.0.1"
 $coreDir = "$output\ThatCore"
 
 if (-not(Test-Path($coreDir)))
