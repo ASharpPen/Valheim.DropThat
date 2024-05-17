@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Config;
 using ThatCore.Config.Toml;
@@ -135,7 +136,7 @@ internal sealed class CharacterDropConfigMapper
         {
             var mobConfig = MobLayer.Execute(mobTemplate, config);
 
-            foreach (var drop in mobTemplate.Drops)
+            foreach (var drop in mobTemplate.Drops.OrderBy(x => x.Key))
             {
                 var dropConfig = DropLayer.Execute(drop.Value, mobConfig);
 

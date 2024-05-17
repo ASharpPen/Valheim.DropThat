@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
 using ThatCore.Config;
 using ThatCore.Config.Toml;
@@ -100,7 +101,7 @@ internal sealed class DropTableConfigMapper
         {
             var tableConfig = TableMappingLayer.Execute(tableTemplate, config);
 
-            foreach (var drop in tableTemplate.Drops)
+            foreach (var drop in tableTemplate.Drops.OrderBy(x => x.Key))
             {
                 var dropConfig = DropMappingLayer.Execute(drop.Value, tableConfig);
 
