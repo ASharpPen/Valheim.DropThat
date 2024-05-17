@@ -5,6 +5,7 @@ using DropThat.Caches;
 using DropThat.Drop.DropTableSystem.Managers;
 using DropThat.Drop.DropTableSystem.Models;
 using ThatCore.Extensions;
+using ThatCore.Logging;
 using UnityEngine;
 
 namespace DropThat.Drop.DropTableSystem.Services;
@@ -61,31 +62,31 @@ internal static class DropTableCompiler
     {
         DropTable dropTable = null;
 
-        if (ComponentCache.TryGet<Container>(prefab, out var container))
+        if (prefab.TryGetComponent<Container>(out var container))
         {
             dropTable = container.m_defaultItems;
         }
-        else if (ComponentCache.TryGet<DropOnDestroyed>(prefab, out var dropOnDestroyed))
+        else if (prefab.TryGetComponent<DropOnDestroyed>(out var dropOnDestroyed))
         {
             dropTable = dropOnDestroyed.m_dropWhenDestroyed;
         }
-        else if (ComponentCache.TryGet<LootSpawner>(prefab, out var lootSpawner))
+        else if (prefab.TryGetComponent<LootSpawner>(out var lootSpawner))
         {
             dropTable = lootSpawner.m_items;
         }
-        else if (ComponentCache.TryGet<TreeBase>(prefab, out var treeBase))
+        else if (prefab.TryGetComponent<TreeBase>(out var treeBase))
         {
             dropTable = treeBase.m_dropWhenDestroyed;
         }
-        else if (ComponentCache.TryGet<TreeLog>(prefab, out var treeLog))
+        else if (prefab.TryGetComponent<TreeLog>(out var treeLog))
         {
             dropTable = treeLog.m_dropWhenDestroyed;
         }
-        else if (ComponentCache.TryGet<MineRock>(prefab, out var mineRock))
+        else if (prefab.TryGetComponent<MineRock>(out var mineRock))
         {
             dropTable = mineRock.m_dropItems;
         }
-        else if (ComponentCache.TryGet<MineRock5>(prefab, out var mineRock5))
+        else if (prefab.TryGetComponent<MineRock5>(out var mineRock5))
         {
             dropTable = mineRock5.m_dropItems;
         }
