@@ -1,3 +1,6 @@
+- v3.0.2:
+	- Fixed: Some DropTable types (like chests) were dropping their possible drops, instead of the rolled set. Oops.
+	- Fixed: DropTable debug files for `loaded` changes and `after changes` were not generated correctly.
 - v3.0.1:
 	- Fixed: Old DropTable `SetDropChance` not being internally divided by 100.
 	- Fixed: Old CharacterDrop `SetChanceToDrop` not being internally divided by 100.

@@ -6,6 +6,7 @@ using DropThat.Drop.DropTableSystem.Configuration.Toml;
 using DropThat.Drop.DropTableSystem.Managers;
 using ThatCore.Config.Toml;
 using ThatCore.Lifecycle;
+using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Debug;
 
@@ -76,7 +77,11 @@ internal static class DebugWriter
 
     public static void WriteExpectedPostChangesToDisk()
     {
+        Log.Development?.Log("Attempting to write post changes for " + ZNetScene.instance.m_prefabs.Count + " prefabs");
+
         var drops = DropTableManager.CompileAllPrefabDrops();
+
+        Log.Development?.Log("Compiled post changes for " + drops.Count + " drop tables");
 
         var config = ConfigurationFileManager.ConfigMapper.MapToConfigFromTemplates(drops);
 
@@ -92,6 +97,6 @@ internal static class DebugWriter
                 $"# See https://github.com/ASharpPen/Valheim.DropThat/wiki/DropTable-Configuration for additional details."
         });
 
-        DebugFileWriter.WriteFile(content, "drop_that.drop_table.loaded.cfg", "loaded DropTable configs");
+        DebugFileWriter.WriteFile(content, "drop_that.drop_table.after_changes.cfg", "expected drop tables after applying changes");
     }
 }
