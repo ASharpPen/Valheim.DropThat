@@ -51,6 +51,8 @@ internal static class DropRollerService
             dropTable.m_dropMin,
             dropTable.m_dropMax + 1);
 
+        Log.Trace?.Log($"Rolling drops {dropCount} times (from possible range {dropTable.m_dropMin} to {dropTable.m_dropMax}).");
+
         List<DropTableDrop> results = new(dropCount);
 
         for(int i = 0; i < dropCount; i++)

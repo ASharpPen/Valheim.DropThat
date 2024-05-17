@@ -96,15 +96,15 @@ internal static class DropTableSessionManager
 
         if (Log.TraceEnabled)
         {
-            Log.Trace?.Log($"Dropping {drops.Count} items:");
-            foreach (var drop in drops)
+            Log.Trace?.Log($"Dropping {rolledDrops.Count} items:");
+            foreach (var drop in rolledDrops)
             {
                 Log.Trace?.Log($"\t{drop.DropData.m_item.name}");
             }
         }
 
         // Apply modifiers, roll/scale drop amount and finalize results as ItemData.
-        var convertedDrops = drops.SelectMany(drop =>
+        var convertedDrops = rolledDrops.SelectMany(drop =>
             DropScalerService.ScaleDropsAsItemData(source, drop));
 
         return convertedDrops
