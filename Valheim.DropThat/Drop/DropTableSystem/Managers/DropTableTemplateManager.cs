@@ -59,14 +59,21 @@ public static class DropTableTemplateManager
         // Reset currently loaded creatures, so that drop tables can be re-applied.
         foreach (var instance in DropTableSessionManager.DropTableInstances.Values)
         {
-            Log.Development?.Log($"Attempting to destroy '{instance.GetName()}'");
-
             if (instance.IsNotNull())
             {
                 // Delete gameobject, and leave it to ZnetScene to re-instantiate it.
                 // Replicates behaviour of ZnetScene.RemoveObjects removing objects far away.
-                var znetView = instance.GetComponent<ZNetView>();
+                if (!instance.TryGetComponent<ZNetView>(out ZNetView znetView))
+                {
+                    continue;
+                }
+
                 ZDO zdo = znetView.GetZDO();
+
+                if (zdo is null)
+                {
+                    continue;
+                }
 
                 // Remove ZDO reference from ZNetView
                 znetView.ResetZDO();
