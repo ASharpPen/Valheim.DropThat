@@ -1,3 +1,5 @@
+- v3.0.3:
+	- Fixed: Command `dropthat:reload` threw null-reference errors in some cases for modded entities.
 - v3.0.2:
 	- Fixed: Some DropTable types (like chests) were dropping their possible drops, instead of the rolled set. Oops.
 	- Fixed: DropTable debug files for `loaded` changes and `after changes` were not generated correctly.
