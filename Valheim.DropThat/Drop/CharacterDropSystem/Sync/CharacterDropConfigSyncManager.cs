@@ -56,8 +56,8 @@ internal static class CharacterDropConfigSyncManager
         // Conditions
         serializer.RegisterType(typeof(ConditionBiome));
         serializer.RegisterType(typeof(ConditionCreatureState));
-        serializer.RegisterType(typeof(ConditionDistanceToCenterMin));
         serializer.RegisterType(typeof(ConditionDistanceToCenterMax));
+        serializer.RegisterType(typeof(ConditionDistanceToCenterMin));
         serializer.RegisterType(typeof(ConditionEnvironments));
         serializer.RegisterType(typeof(ConditionFaction));
         serializer.RegisterType(typeof(ConditionGlobalKeysAny));
@@ -72,6 +72,7 @@ internal static class CharacterDropConfigSyncManager
         serializer.RegisterType(typeof(ConditionLevelMax));
         serializer.RegisterType(typeof(ConditionLevelMin));
         serializer.RegisterType(typeof(ConditionLocation));
+        serializer.RegisterType(typeof(ConditionNotAfternoon));
         serializer.RegisterType(typeof(ConditionNotCreatureState));
         serializer.RegisterType(typeof(ConditionNotDay));
         serializer.RegisterType(typeof(ConditionNotFaction));
