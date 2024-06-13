@@ -1,3 +1,5 @@
+- v3.0.4:
+	- Fixed: Servers failing to sync CharacterDrop configs when `ConditionNotAfternoon` was used.
 - v3.0.3:
 	- Fixed: Command `dropthat:reload` threw null-reference errors in some cases for modded entities.
 - v3.0.2:
