@@ -27,7 +27,8 @@ public static class DropTableTemplateManager
 
     public static DropTableTemplate GetTemplate(string prefabName)
     {
-        if (Templates.TryGetValue(prefabName, out var template))
+        if (prefabName is not null &&
+            Templates.TryGetValue(prefabName, out var template))
         {
             return template;
         }
@@ -35,12 +36,21 @@ public static class DropTableTemplateManager
         return null;
     }
 
-    public static bool TryGetTemplate(string prefabName, out DropTableTemplate template) =>
-        Templates.TryGetValue(prefabName, out template);
+    public static bool TryGetTemplate(string prefabName, out DropTableTemplate template)
+    {
+        if (prefabName is not null)
+        {
+            return Templates.TryGetValue(prefabName, out template);
+        }
+        template = null;
+        return false;
+    }
+        
 
     public static bool TryGetTemplate(string prefabName, int id, out DropTableDropTemplate dropTemplate)
     {
-        if (Templates.TryGetValue(prefabName, out var template))
+        if (prefabName is not null &&
+            Templates.TryGetValue(prefabName, out var template))
         {
             return template.Drops.TryGetValue(id, out dropTemplate);
         }
