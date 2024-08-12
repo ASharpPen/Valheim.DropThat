@@ -1,3 +1,5 @@
+- v3.0.6:
+	- Compatibility: Moved debug printouts to slightly later in world startup. This is to allow time for modded creatures to be added and therefore show in the debug files.
 - v3.0.5:
 	- Fixed: Parsing warnings when some config list entries were ending with a `,`, like for biomes. These should have been harmless but annoying.
 	- Additional null-checks for DropTable lookups. Certain modded prefabs caused Drop That to throw errors when attempting to find matching config template.

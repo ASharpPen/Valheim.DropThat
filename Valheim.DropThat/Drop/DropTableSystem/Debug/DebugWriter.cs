@@ -12,36 +12,34 @@ namespace DropThat.Drop.DropTableSystem.Debug;
 
 internal static class DebugWriter
 {
+    private static bool Spawned = false;
     private static bool ConfigsLoaded = false;
-
-    private static bool ZnetSceneStarted = false;
 
     public static void Configure()
     {
         LifecycleManager.OnWorldInit += () =>
         {
+            Spawned = false;
             ConfigsLoaded = false;
-            ZnetSceneStarted = false;
         };
 
-        DropThatLifecycleManager.OnZnetSceneStarted += () =>
+        LifecycleManager.OnFindSpawnPointFirstTime += () =>
         {
-            ConfigsLoaded = true;
+            Spawned = true;
 
             TryWriteFiles();
         };
 
         DropSystemConfigManager.OnConfigsLoaded += () =>
         {
-            ZnetSceneStarted = true;
+            ConfigsLoaded = true;
 
             TryWriteFiles();
         };
 
         static void TryWriteFiles()
         {
-            if (!ConfigsLoaded ||
-                !ZnetSceneStarted)
+            if (!Spawned || !ConfigsLoaded)
             {
                 return;
             }

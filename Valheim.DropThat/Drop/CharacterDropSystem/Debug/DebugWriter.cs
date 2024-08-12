@@ -7,49 +7,44 @@ using DropThat.Debugging;
 using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using DropThat.Configuration;
 using ThatCore.Lifecycle;
-using DropThat.Core;
 
 namespace DropThat.Drop.CharacterDropSystem.Debug;
 
 internal static class DebugWriter
 {
+    private static bool Spawned = false;
     private static bool ConfigsLoaded = false;
-    private static bool ZnetSceneStarted = false;
 
     public static void Configure()
     {
         LifecycleManager.OnWorldInit += () =>
         {
+            Spawned = false;
             ConfigsLoaded = false;
-            ZnetSceneStarted = false;
         };
 
         LifecycleManager.OnFindSpawnPointFirstTime += () =>
         {
+            Spawned = true;
+
             if (GeneralConfigManager.Config?.WriteCreatureItemsToFile)
             {
                 CreatureItemFileWriter.WriteToFile();
             }
-        };
-
-        DropThatLifecycleManager.OnZnetSceneStarted += () =>
-        {
-            ConfigsLoaded = true;
 
             TryWriteDebugFiles();
         };
 
         DropSystemConfigManager.OnConfigsLoaded += () =>
         {
-            ZnetSceneStarted = true;
+            ConfigsLoaded = true;
 
             TryWriteDebugFiles();
         };
 
         static void TryWriteDebugFiles()
         {
-            if (!ConfigsLoaded ||
-                !ZnetSceneStarted)
+            if (!Spawned || !ConfigsLoaded)
             {
                 return;
             }
