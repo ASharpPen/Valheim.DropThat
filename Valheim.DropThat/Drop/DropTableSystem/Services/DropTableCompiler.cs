@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DropThat.Caches;
 using DropThat.Drop.DropTableSystem.Managers;
 using DropThat.Drop.DropTableSystem.Models;
 using ThatCore.Extensions;
-using ThatCore.Logging;
 using UnityEngine;
 
 namespace DropThat.Drop.DropTableSystem.Services;
@@ -25,7 +23,8 @@ internal static class DropTableCompiler
         // Scan ZNetScene for prefabs with drop tables.
         foreach (var prefab in ZNetScene.instance.m_prefabs)
         {
-            if (TryCompileDrops(prefab, applyTemplate, out var result))
+            if (prefab.IsNotNull() &&
+                TryCompileDrops(prefab, applyTemplate, out var result))
             {
                 results.Add(result);
             }
@@ -106,6 +105,20 @@ internal static class DropTableCompiler
         bool applyTemplate,
         DropTable table)
     {
+        var drops = table.m_drops?
+            .Select((x, i) =>
+                new DropTableDropTemplate()
+                {
+                    Id = i,
+                    PrefabName = x.m_item.GetCleanedName(),
+                    AmountMin = x.m_stackMin,
+                    AmountMax = x.m_stackMax,
+                    Weight = x.m_weight,
+                    DisableResourceModifierScaling = x.m_dontScale,
+                })
+            .ToDictionary(x => x.Id)
+            ?? [];
+
         DropTableTemplate resultTemplate = new DropTableTemplate
             {
                 PrefabName = prefabName,
@@ -113,18 +126,7 @@ internal static class DropTableCompiler
                 DropMin = table.m_dropMin,
                 DropMax = table.m_dropMax,
                 DropOnlyOnce = table.m_oneOfEach,
-                Drops = table.m_drops
-                    .Select((x, i) =>
-                        new DropTableDropTemplate()
-                        {
-                            Id = i,
-                            PrefabName = x.m_item.GetCleanedName(),
-                            AmountMin = x.m_stackMin,
-                            AmountMax = x.m_stackMax,
-                            Weight = x.m_weight,
-                            DisableResourceModifierScaling = x.m_dontScale,
-                        })
-                    .ToDictionary(x => x.Id)
+                Drops = drops,
             };
 
         if (!applyTemplate ||

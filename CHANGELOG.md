@@ -1,3 +1,6 @@
+- v3.0.7:
+	- Fixed: Potential null-reference exception for DropTable during debug file generation.
+	- Fixed: Potential null-reference exception for CharacterDrop during debug file generation.
 - v3.0.6:
 	- Compatibility: Moved debug printouts to slightly later in world startup. This is to allow time for modded creatures to be added and therefore show in the debug files.
 - v3.0.5:
