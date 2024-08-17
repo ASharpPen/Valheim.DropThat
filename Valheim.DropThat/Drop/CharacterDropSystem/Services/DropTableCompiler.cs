@@ -84,7 +84,7 @@ internal static class DropTableCompiler
                         new CharacterDropDropTemplate
                         {
                             Id = i,
-                            PrefabName = x.m_prefab.name,
+                            PrefabName = x.m_prefab.GetCleanedName(),
                             AmountMin = x.m_amountMin,
                             AmountMax = x.m_amountMax,
                             ChanceToDrop = x.m_chance,
@@ -92,7 +92,7 @@ internal static class DropTableCompiler
                             ScaleByLevel = x.m_levelMultiplier,
                             DisableResourceModifierScaling = x.m_dontScale
                         })
-                    .ToDictionary(x => x.Id) ?? new()
+                    .ToDictionary(x => x.Id) ?? []
             };
         }
 
