@@ -60,7 +60,7 @@ internal sealed class SimpleLocationMessage : IMessage
             simpleLocations.Add(new SimpleLocation
             {
                 LocationName = LocationNames[location.Location],
-                Position = ZoneSystem.instance.GetZonePos(position),
+                Position = ZoneSystem.GetZonePos(position),
                 ZonePosition = position
             });
         }

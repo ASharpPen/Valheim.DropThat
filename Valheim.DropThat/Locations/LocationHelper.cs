@@ -39,7 +39,7 @@ public static class LocationHelper
             return null;
         }
 
-        var zoneId = ZoneSystem.instance.GetZone(position);
+        var zoneId = ZoneSystem.GetZone(position);
 
         if (ZoneSystem.instance.IsNotNull() &&
             (ZoneSystem.instance.m_locationInstances?.Count ?? 0) > 0)
