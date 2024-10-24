@@ -14,7 +14,7 @@ internal static class ReflectionUtils
         {
             return InstantiateGameObject ??= typeof(UnityEngine.Object)
                 .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                .Where(x => x.Name.StartsWith(nameof(UnityEngine.Object.Instantiate)))
+                .Where(x => x.Name.Equals(nameof(UnityEngine.Object.Instantiate)))
                 .Where(m => m.IsGenericMethod)
                 .First(m => m.ContainsGenericParameters && m.GetParameters().Length == 3)
                 .GetGenericMethodDefinition()
