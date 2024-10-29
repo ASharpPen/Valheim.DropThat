@@ -1,3 +1,6 @@
+- v3.0.8:
+	- Compatibility: v0.219.13.
+	- Fixed: Potential exceptions during config load for DropTable and CharacterDrop.
 - v3.0.7:
 	- Fixed: Potential null-reference exception for DropTable during debug file generation.
 	- Fixed: Potential null-reference exception for CharacterDrop during debug file generation.
