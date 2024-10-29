@@ -97,12 +97,12 @@ internal static partial class ConfigurationFileManager
                     "SetChanceToDrop", 
                     100f, 
                     "Deprecated (use ChanceToDrop). Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
-                    (value, builder) => builder.ChanceToDrop = value / 100)
+                    (value, builder) => builder.ChanceToDrop = (value ?? 100) / 100)
                 .Map<float?>(
                     "ChanceToDrop", 
                     100f, 
                     "Chance to drop. 100 is 100%.\nExample values: 0, 50, 0.15",
-                    (value, builder) => builder.ChanceToDrop = value / 100))
+                    (value, builder) => builder.ChanceToDrop = (value ?? 100) / 100))
             .ToFile(config => config
                 .Map("ChanceToDrop", x => x.ChanceToDrop * 100))
 
@@ -342,7 +342,7 @@ internal static partial class ConfigurationFileManager
                     "ConditionBiomes", 
                     null, 
                     "List of biome names that allow the item to drop while they are active.\nEg. Meadows, Swamp. Leave empty to always allow.",
-                    (value, builder) => builder.BiomeBitmask = value.ToBitmask())
+                    (value, builder) => builder.BiomeBitmask = value?.ToBitmask() ?? Heightmap.Biome.None)
                 )
             .ToFile(config => config
                 .Using(x => x.Conditions.GetOrDefault<ConditionBiome>())
@@ -394,7 +394,7 @@ internal static partial class ConfigurationFileManager
                     "ConditionFaction", 
                     null, 
                     "List of factions that will enable this drop. If empty, allows all.\nEg. Undead, Boss",
-                    (value, builder) => builder.Factions = value.ToArray())
+                    (value, builder) => builder.Factions = value?.ToArray())
                 )
             .ToFile(config => config
                 .Using(x => x.Conditions.GetOrDefault<ConditionFaction>())
