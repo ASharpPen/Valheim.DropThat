@@ -1,16 +1,15 @@
-﻿using DropThat.Caches;
-using DropThat.Creature;
+﻿using DropThat.Creature;
 using DropThat.Drop.CharacterDropSystem.Managers;
 using DropThat.Drop.CharacterDropSystem.Models;
 using DropThat.Utilities.Valheim;
 
 namespace DropThat.Drop.CharacterDropSystem.Conditions;
 
-public sealed class ConditionBiome : IDropCondition
+public sealed class ConditionNotBiome : IDropCondition
 {
     public Heightmap.Biome BiomeBitmask { get; set; }
 
-    static ConditionBiome()
+    static ConditionNotBiome()
     {
         CharacterDropEventManager.OnDropTableInitializeSet.Add(RecordSpawnInfoService.SetSpawnBiomeIfMissing);
     }
@@ -31,6 +30,6 @@ public sealed class ConditionBiome : IDropCondition
             return false;
         }
 
-        return (spawnBiome.Value & BiomeBitmask) > 0;
+        return (spawnBiome.Value & BiomeBitmask) == 0;
     }
 }

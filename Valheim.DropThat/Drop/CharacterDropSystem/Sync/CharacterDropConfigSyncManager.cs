@@ -73,9 +73,17 @@ internal static class CharacterDropConfigSyncManager
         serializer.RegisterType(typeof(ConditionLevelMin));
         serializer.RegisterType(typeof(ConditionLocation));
         serializer.RegisterType(typeof(ConditionNotAfternoon));
+        serializer.RegisterType(typeof(ConditionNotBiome));
         serializer.RegisterType(typeof(ConditionNotCreatureState));
         serializer.RegisterType(typeof(ConditionNotDay));
+        serializer.RegisterType(typeof(ConditionNotEnvironments));
         serializer.RegisterType(typeof(ConditionNotFaction));
+        serializer.RegisterType(typeof(ConditionNotKilledByDamageType));
+        serializer.RegisterType(typeof(ConditionNotKilledByEntityType));
+        serializer.RegisterType(typeof(ConditionNotKilledBySkillType));
+        serializer.RegisterType(typeof(ConditionNotKilledWithStatusAll));
+        serializer.RegisterType(typeof(ConditionNotKilledWithStatusAny));
+        serializer.RegisterType(typeof(ConditionNotLocation));
         serializer.RegisterType(typeof(ConditionNotNight));
 
         // Modifiers - Epic Loot

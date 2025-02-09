@@ -1,3 +1,19 @@
+- v3.1.0:
+	- New options:
+		- CharacterDrop: `ConditionNotBiomes`
+		- CharacterDrop: `ConditionNotEnvironments`
+		- CharacterDrop: `ConditionNotKilledByDamageType`
+		- CharacterDrop: `ConditionNotKilledByEntityType`
+		- CharacterDrop: `ConditionNotKilledBySkillType`
+		- CharacterDrop: `ConditionNotKilledWithStatus`
+		- CharacterDrop: `ConditionNotKilledWithStatuses`
+		- CharacterDrop: `ConditionNotLocation`
+		- DropTable: `ConditionNoteBiomes`
+		- DropTable: `ConditionNotEnvironments`
+		- DropTable: `ConditionNotLocation`
+		- DropTable: `ConditionNotWithinCircle`
+	- Fixed: `drop_that.drop_table.after_changes.cfg` was in certain situations displaying the finalized drop indexes, instead of the id's used for configuring them.
+	- Fixed: `drop_that.character_drop.items.txt` generating empty on first load.
 - v3.0.8:
 	- Compatibility: v0.219.13.
 	- Fixed: Potential exceptions during config load for DropTable and CharacterDrop.

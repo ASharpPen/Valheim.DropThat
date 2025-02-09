@@ -27,11 +27,6 @@ internal static class DebugWriter
         {
             Spawned = true;
 
-            if (GeneralConfigManager.Config?.WriteCreatureItemsToFile)
-            {
-                CreatureItemFileWriter.WriteToFile();
-            }
-
             TryWriteDebugFiles();
         };
 
@@ -62,6 +57,11 @@ internal static class DebugWriter
             if (GeneralConfigManager.Config?.WriteCharacterDropsToFileAfterChanges)
             {
                 WriteExpectedPostChangesToDisk();
+            }
+
+            if (GeneralConfigManager.Config?.WriteCreatureItemsToFile)
+            {
+                CreatureItemFileWriter.WriteToFile();
             }
         }
     }

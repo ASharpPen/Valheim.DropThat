@@ -212,8 +212,8 @@ internal static partial class ConfigurationFileManager
             .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionLevelMin>())
                 .Map<int?>(
-                    "ConditionMinLevel", 
-                    -1, 
+                    "ConditionMinLevel",
+                    -1,
                     "Minimum level of mob for which item drops.",
                     (value, builder) => builder.MinLevel = value)
                 )
@@ -225,7 +225,7 @@ internal static partial class ConfigurationFileManager
             .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionLevelMax>())
                 .Map<int?>(
-                    "ConditionMaxLevel", -1, 
+                    "ConditionMaxLevel", -1,
                     "Maximum level of mob for which item drops.",
                     (value, builder) => builder.MaxLevel = value)
                 )
@@ -236,18 +236,18 @@ internal static partial class ConfigurationFileManager
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "ConditionNotDay", 
-                    false, 
+                    "ConditionNotDay",
+                    false,
                     "If true, will not drop during daytime.",
                     (value, builder) =>
                     {
-                        if (value == true) 
-                        { 
-                            builder.Conditions.GetOrCreate<ConditionNotDay>(); 
+                        if (value == true)
+                        {
+                            builder.Conditions.GetOrCreate<ConditionNotDay>();
                         }
-                        else 
-                        { 
-                            builder.Conditions.Remove<ConditionNotDay>(); 
+                        else
+                        {
+                            builder.Conditions.Remove<ConditionNotDay>();
                         }
                     })
                 )
@@ -257,8 +257,8 @@ internal static partial class ConfigurationFileManager
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "ConditionNotAfternoon", 
-                    false, 
+                    "ConditionNotAfternoon",
+                    false,
                     "If true, will not drop during afternoon.",
                     (value, builder) =>
                     {
@@ -266,7 +266,7 @@ internal static partial class ConfigurationFileManager
                         {
                             builder.Conditions.GetOrCreate<ConditionNotAfternoon>();
                         }
-                        else 
+                        else
                         {
                             builder.Conditions.Remove<ConditionNotAfternoon>();
                         }
@@ -278,8 +278,8 @@ internal static partial class ConfigurationFileManager
             .AddOption()
             .FromFile(config => config
                 .Map<bool?>(
-                    "ConditionNotNight", 
-                    false, 
+                    "ConditionNotNight",
+                    false,
                     "If true, will not drop during night.",
                     (value, builder) =>
                     {
@@ -300,21 +300,34 @@ internal static partial class ConfigurationFileManager
             .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionEnvironments>())
                 .Map<List<string>>(
-                    "ConditionEnvironments", 
-                    null, 
+                    "ConditionEnvironments",
+                    null,
                     "List of environment names that allow the item to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.",
                     (value, builder) => builder.SetEnvironments(value))
                 )
-            .ToFile(config => config    
+            .ToFile(config => config
                 .Using(x => x.Conditions.GetOrDefault<ConditionEnvironments>())
                 .Map("ConditionEnvironments", x => x.Environments?.ToList()))
 
             .AddOption()
             .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotEnvironments>())
+                .Map<List<string>>(
+                    "ConditionNotEnvironments",
+                    null,
+                    "List of environment names that disable the drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.",
+                    (value, builder) => builder.SetEnvironments(value))
+                )
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotEnvironments>())
+                .Map("ConditionNotEnvironments", x => x.Environments?.ToList()))
+
+            .AddOption()
+            .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionGlobalKeysAny>())
                 .Map<List<string>>(
-                    "ConditionGlobalKeys", 
-                    null, 
+                    "ConditionGlobalKeys",
+                    null,
                     "List of global keys names that allow the item to drop while they are active.\nEg. defeated_eikthyr,defeated_gdking.Leave empty to always allow.",
                     (value, builder) => builder.GlobalKeys = value?.ToArray())
                 )
@@ -326,8 +339,8 @@ internal static partial class ConfigurationFileManager
             .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionGlobalKeysNotAny>())
                 .Map<List<string>>(
-                    "ConditionNotGlobalKeys", 
-                    null, 
+                    "ConditionNotGlobalKeys",
+                    null,
                     "List of global key names that stop the item from dropping if any are detected.\nEg. defeated_eikthyr,defeated_gdking",
                     (value, builder) => builder.GlobalKeys = value?.ToArray())
                 )
@@ -339,14 +352,26 @@ internal static partial class ConfigurationFileManager
             .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionBiome>())
                 .Map<List<Heightmap.Biome>>(
-                    "ConditionBiomes", 
-                    null, 
+                    "ConditionBiomes",
+                    null,
                     "List of biome names that allow the item to drop while they are active.\nEg. Meadows, Swamp. Leave empty to always allow.",
                     (value, builder) => builder.BiomeBitmask = value?.ToBitmask() ?? Heightmap.Biome.None)
                 )
             .ToFile(config => config
                 .Using(x => x.Conditions.GetOrDefault<ConditionBiome>())
                 .Map("ConditionBiomes", x => x.BiomeBitmask.Split().ConvertAll(x => x.ToString())))
+
+            .AddOption()
+            .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotBiome>())
+                .Map<List<Heightmap.Biome>>(
+                    "ConditionNotBiomes",
+                    null,
+                    "List of biome names that disables the drop. The biome is determined upon spawn.\nEg. Meadows, Swamp. Leave empty to always allow.",
+                    (value, builder) => builder.BiomeBitmask = value?.ToBitmask() ?? Heightmap.Biome.None))
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotBiome>())
+                .Map("ConditionNotBiomes", x => x.BiomeBitmask.Split().ConvertAll(x => x.ToString())))
 
             .AddOption()
             .FromFile(config => config
@@ -419,12 +444,25 @@ internal static partial class ConfigurationFileManager
                 .Map<List<string>>(
                     "ConditionLocation", 
                     null, 
-                    "List of location names. When mob spawned in one of the listed locations, this drop is enabled.\nEg. Runestone_Boars",
+                    "List of location names. When mob is spawned in one of the listed locations, this drop is enabled.\nEg. Runestone_Boars",
                     (value, builder) => builder.SetLocations(value))
                 )
             .ToFile(config => config
                 .Using(x => x.Conditions.GetOrDefault<ConditionLocation>())
                 .Map("ConditionLocation", x => x.Locations?.ToList()))
+
+            .AddOption()
+            .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotLocation>())
+                .Map<List<string>>(
+                    "ConditionNotLocation",
+                    null,
+                    "List of location names. When mob is spawned in a location that is not listed, this drop is enabled.\nEg. Runestone_Boars",
+                    (value, builder) => builder.SetLocations(value))
+                )
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotLocation>())
+                .Map("ConditionNotLocation", x => x.Locations?.ToList()))
 
             .AddOption()
             .FromFile(config => config
@@ -467,16 +505,42 @@ internal static partial class ConfigurationFileManager
 
             .AddOption()
             .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotKilledByDamageType>())
+                .Map<List<HitData.DamageType>>(
+                    "ConditionNotKilledByDamageType",
+                    null,
+                    "List of damage types that will disable this drop, if they were part of the final killing blow. If empty, this condition is ignored.\nEg. Blunt, Fire",
+                    (value, builder) => builder.DamageTypeMask = value?.ToBitmask() ?? 0)
+                )
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotKilledByDamageType>())
+                .Map("ConditionNotKilledByDamageType", x => x.DamageTypeMask.Split()))
+
+            .AddOption()
+            .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionKilledWithStatusAny>())
                 .Map<List<string>>(
                     "ConditionKilledWithStatus", 
                     null, 
-                    "List of statuses that mob had any of while dying, to enable this drop. If empty, this condition is ignored.\nEg. Burning, Smoked",
+                    "List of statuses that will enable this drop, if any were present at the mobs death. If empty, this condition is ignored.\nEg. Burning, Smoked",
                     (value, builder) => builder.SetStatuses(value))
                 )
             .ToFile(config => config
                 .Using(x => x.Conditions.GetOrDefault<ConditionKilledWithStatusAny>())
                 .Map("ConditionKilledWithStatus", x => x.Statuses?.ToList()))
+
+            .AddOption()
+            .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotKilledWithStatusAny>())
+                .Map<List<string>>(
+                    "ConditionNotKilledWithStatus",
+                    null,
+                    "List of statuses that will enable this drop, if none were present at the mobs death. If empty, this condition is ignored.\nEg. Burning, Smoked",
+                    (value, builder) => builder.SetStatuses(value))
+                )
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotKilledWithStatusAny>())
+                .Map("ConditionNotKilledWithStatus", x => x.Statuses?.ToList()))
 
             .AddOption()
             .FromFile(config => config
@@ -493,11 +557,24 @@ internal static partial class ConfigurationFileManager
 
             .AddOption()
             .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotKilledWithStatusAll>())
+                .Map<List<string>>(
+                    "ConditionNotKilledWithStatuses",
+                    null,
+                    "List of statuses that will enable this drop, if all were not present at the time of the mobs death. If empty, this condition is ignored.\nEg. Burning, Smoked",
+                    (value, builder) => builder.SetStatuses(value))
+                )
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotKilledWithStatusAll>())
+                .Map("ConditionNotKilledWithStatuses", x => x.Statuses?.ToList()))
+
+            .AddOption()
+            .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionKilledBySkillType>())
                 .Map<List<Skills.SkillType>>(
                     "ConditionKilledBySkillType", 
                     null, 
-                    "List of skill types that will enable this drop, if they were listed as the skill causing the damage of the final killing blow. If empty, this condition is ignored.\nEg. Swords, Unarmed",
+                    "List of skill types that will enable this drop if they were listed as the skill causing the damage of the final killing blow. If empty, this condition is ignored.\nEg. Swords, Unarmed",
                     (value, builder) => builder.SkillTypes = value?.ToHashSet())
                 )
             .ToFile(config => config
@@ -506,16 +583,42 @@ internal static partial class ConfigurationFileManager
 
             .AddOption()
             .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotKilledBySkillType>())
+                .Map<List<Skills.SkillType>>(
+                    "ConditionNotKilledBySkillType",
+                    null,
+                    "List of skill types that will disable this drop if they were listed as the skill causing the damage of the final killing blow. If empty, this condition is ignored.\nEg. Swords, Unarmed",
+                    (value, builder) => builder.SkillTypes = value?.ToHashSet())
+                )
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotKilledBySkillType>())
+                .Map("ConditionNotKilledBySkillType", x => x.SkillTypes?.ToList()))
+
+            .AddOption()
+            .FromFile(config => config
                 .Using(x => x.Conditions.GetOrCreate<ConditionKilledByEntityType>())
                 .Map<List<EntityType>>(
                     "ConditionKilledByEntityType", 
                     null, 
-                    "List of entity types that if causing the last hit, will enable this drop. If empty, this condition is ignored.\nEg. Player, Creature, Other",
+                    "List of entity types that if causing the last hit will enable this drop. If empty, this condition is ignored.\nEg. Player, Creature, Other",
                     (value, builder) => builder.EntityTypes = value?.Distinct().ToArray())
                 )
             .ToFile(config => config
                 .Using(x => x.Conditions.GetOrDefault<ConditionKilledByEntityType>())
                 .Map("ConditionKilledByEntityType", x => x.EntityTypes?.ToList()))
+
+            .AddOption()
+            .FromFile(config => config
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotKilledByEntityType>())
+                .Map<List<EntityType>>(
+                    "ConditionNotKilledByEntityType",
+                    null,
+                    "List of entity types that if causing the last hit will disable this drop. If empty, this condition is ignored.\nEg. Player, Creature, Other",
+                    (value, builder) => builder.EntityTypes = value?.Distinct().ToArray())
+                )
+            .ToFile(config => config
+                .Using(x => x.Conditions.GetOrDefault<ConditionNotKilledByEntityType>())
+                .Map("ConditionNotKilledByEntityType", x => x.EntityTypes?.ToList()))
 
             .AddOption()
             .FromFile(config => config
