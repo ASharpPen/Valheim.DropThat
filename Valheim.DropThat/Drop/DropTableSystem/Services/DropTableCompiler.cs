@@ -160,8 +160,9 @@ internal static class DropTableCompiler
             else if (dropTemplate.Enabled != false)
             {
                 // Add new
-                resultTemplate.Drops[entry.Key] = new()
+                resultTemplate.Drops[entry.Key] = new DropTableDropTemplate()
                 {
+                    Id = entry.Key,
                     PrefabName = dropTemplate.PrefabName,
                     AmountMin = dropTemplate.AmountMin,
                     AmountMax = dropTemplate.AmountMax,
