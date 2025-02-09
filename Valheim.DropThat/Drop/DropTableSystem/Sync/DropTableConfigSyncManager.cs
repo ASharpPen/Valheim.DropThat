@@ -62,6 +62,10 @@ internal static class DropTableConfigSyncManager
         serializer.RegisterType(typeof(ConditionGlobalKeysNotAll));
         serializer.RegisterType(typeof(ConditionGlobalKeysNotAny));
         serializer.RegisterType(typeof(ConditionLocation));
+        serializer.RegisterType(typeof(ConditionNotBiome));
+        serializer.RegisterType(typeof(ConditionNotEnvironments));
+        serializer.RegisterType(typeof(ConditionNotLocation));
+        serializer.RegisterType(typeof(ConditionNotWithinCircle));
         serializer.RegisterType(typeof(ConditionWithinCircle));
 
         // Modifiers - Epic Loot

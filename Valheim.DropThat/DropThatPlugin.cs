@@ -16,7 +16,7 @@ public sealed class DropThatPlugin : BaseUnityPlugin
 {
     public const string ModId = "asharppen.valheim.drop_that";
     public const string PluginName = "Drop That!";
-    public const string Version = "3.0.8";
+    public const string Version = "3.1.0";
 
     // Awake is called once when both the game and the plug-in are loaded
     void Awake()

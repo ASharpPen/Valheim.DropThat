@@ -77,7 +77,6 @@ internal static class DropTableCompiler
         {
             resultMob = new()
             {
-
                 PrefabName = prefabName,
                 Drops = prefab.m_drops?
                     .Select((x, i) =>

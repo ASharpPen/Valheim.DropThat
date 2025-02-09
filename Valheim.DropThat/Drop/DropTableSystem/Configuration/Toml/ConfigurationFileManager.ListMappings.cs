@@ -112,6 +112,16 @@ internal static partial class ConfigurationFileManager
 
         mapper.AddDropOption()
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotBiome>())
+                .Map<List<Heightmap.Biome>>(
+                    "ConditionNotBiomes",
+                    default,
+                    "Biomes in which drop is disabled. If empty, condition will be ignored.",
+                    (value, builder) => builder.SetBiomes(value))
+                );
+
+        mapper.AddDropOption()
+            .FromFile(c => c
                 .Map<bool?>(
                     "ConditionNotDay",
                     null,
@@ -175,6 +185,16 @@ internal static partial class ConfigurationFileManager
                     "ConditionEnvironments",
                     default,
                     "List of environ ment names that allow the item  to drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.",
+                    (value, builder) => builder.SetEnvironments(value))
+                );
+
+        mapper.AddDropOption()
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotEnvironments>())
+                .Map<List<string>>(
+                    "ConditionNotEnvironments",
+                    default,
+                    "List of environment names that disable the drop while they are active.\nEg. Misty, Thunderstorm. Leave empty to always allow.",
                     (value, builder) => builder.SetEnvironments(value))
                 );
 
@@ -254,11 +274,35 @@ internal static partial class ConfigurationFileManager
 
         mapper.AddDropOption()
             .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotWithinCircle>())
+                .Map<float?>(
+                    "ConditionNotWithinCircle.CenterX", null, "Center X coordinate of circle within which drop is disabled.",
+                    (value, condition) => condition.CenterX = value ?? 0f)
+                .Map<float?>(
+                    "ConditionNotWithinCircle.CenterZ", null, "Center Z coordinate of circle within which drop is disabled.",
+                    (value, condition) => condition.CenterZ = value ?? 0f)
+                .Map<float?>(
+                    "ConditionNotWithinCircle.Radius", null, "Radius of circle within which drop is disabled.",
+                    (value, condition) => condition.Radius = value ?? -1f)
+                );
+
+        mapper.AddDropOption()
+            .FromFile(c => c
                 .Using(x => x.Conditions.GetOrCreate<ConditionLocation>())
                 .Map<List<string>>(
             "ConditionLocation",
             null,
             "List of location names. When spawned in one of the listed locations, this drop is enabled.\nEg.Runestone_Boars",
+                    (value, condition) => condition.SetLocations(value))
+                );
+
+        mapper.AddDropOption()
+            .FromFile(c => c
+                .Using(x => x.Conditions.GetOrCreate<ConditionNotLocation>())
+                .Map<List<string>>(
+            "ConditionNotLocation",
+            null,
+            "List of location names. When spawned in one of the listed locations, this drop is disabled.\nEg.Runestone_Boars",
                     (value, condition) => condition.SetLocations(value))
                 );
 
