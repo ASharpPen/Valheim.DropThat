@@ -3,8 +3,7 @@ obj
 packages
 bin
 .vs/*
-*/Thunderstore/*/*
+Thunderstore/*/*
 Examples/*/*/*
 *.zip
-Thunderstore
 Scripts/NStrip
