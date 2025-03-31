@@ -1,3 +1,5 @@
+- v3.1.1:
+	- Fixed: Setting QualityLevel didn't always apply correctly, and would instead modify durability.
 - v3.1.0:
 	- New options:
 		- CharacterDrop: `ConditionNotBiomes`

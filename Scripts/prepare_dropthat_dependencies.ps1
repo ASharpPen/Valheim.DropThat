@@ -92,6 +92,7 @@ CopyFile "$profilePath\BepInEx\core\BepInEx.dll" "BepInEx"
 # Valheim
 Strip "$valheimPath\assembly_valheim.dll" "Valheim" -Publicize
 Strip "$valheimPath\assembly_utils.dll" "Valheim" -Publicize
+Strip "$valheimPath\SoftReferenceableAssets.dll" "Valheim" -Publicize
 
 # Unity
 CopyFile "$valheimPath\UnityEngine.dll" "Unity"

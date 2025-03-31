@@ -28,7 +28,7 @@ public sealed class ModifierQualityLevel : IItemModifier
         }
 
         Log.Trace?.Log($"Setting quality level of item '{itemDrop.name}' to {QualityLevel}.");
-        itemDrop.m_itemData.m_durability = QualityLevel.Value;
+        itemDrop.m_itemData.m_quality = QualityLevel.Value;
     }
 
     public void Modify(ItemModifierContext<ItemDrop.ItemData> drop)
