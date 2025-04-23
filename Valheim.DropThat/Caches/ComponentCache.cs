@@ -76,7 +76,7 @@ public sealed class ComponentCache
         {
             cache.ComponentTable.Add(componentType, component);
             
-            if (cached.IsNull())
+            if (component.IsNull())
             {
                 comp = null;
                 return false;

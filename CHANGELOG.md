@@ -1,3 +1,5 @@
+- v3.1.2:
+	- Fixed: `drop_that.drop_table.before_changes.cfg` generating empty. Introduced in 3.1.0 when fixing the items file, apparently the problem was just moved.
 - v3.1.1:
 	- Fixed: Setting QualityLevel didn't always apply correctly, and would instead modify durability.
 - v3.1.0:
