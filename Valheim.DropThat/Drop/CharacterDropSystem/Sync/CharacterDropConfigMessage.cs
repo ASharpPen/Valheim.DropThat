@@ -25,6 +25,8 @@ internal sealed class CharacterDropConfigMessage : IMessage
 
     public void AfterUnpack()
     {
+        Templates ??= new();
+
         CharacterDropTemplateManager.ResetTemplates(Templates.Values);
 
         Log.Debug?.Log($"Unpacked CharacterDrop configurations: " +
