@@ -15,4 +15,6 @@ public static class InstallationManager
 #endif
 
     public static bool CLLCInstalled { get; } = Type.GetType("CreatureLevelControl.API, CreatureLevelControl") is not null;
+
+    public static bool StarLevelSystemInstalled { get; } = Type.GetType("StarLevelSystem.StarLevelSystem,StarLevelSystem") is not null;
 }

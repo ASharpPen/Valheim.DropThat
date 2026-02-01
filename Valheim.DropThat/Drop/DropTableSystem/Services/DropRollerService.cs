@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Utilities;
+using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
 

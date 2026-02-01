@@ -4,12 +4,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
-using DropThat.Drop.DropTableSystem.Wrapper;
 using DropThat.Drop.Options;
 using ThatCore.Cache;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
+using static CharacterDrop;
 
 namespace DropThat.Drop.DropTableSystem.Managers;
 
@@ -17,13 +17,15 @@ namespace DropThat.Drop.DropTableSystem.Managers;
 /// Logic for general workflow surrounding configuring
 /// drop table, running conditions and applying modifiers.
 /// </summary>
-internal static class DropTableSessionManager
+public static class DropTableSessionManager
 {
     public static ManagedCache<GameObject> DropTableInstances { get; } = new();
 
     private static ConditionalWeakTable<DropTable, GameObject> SourceLinkTable { get; } = new();
     private static ConditionalWeakTable<DropTable, DropTableTemplate> TemplateLinkTable { get; } = new();
     private static ConditionalWeakTable<DropTable, List<DropTableDrop>> DropsByTable { get; } = new();
+
+    private static ConditionalWeakTable<DropTable, List<DropTableDrop>> SessionDrops { get; } = new();
 
     /// <summary>
     /// Initialize references from drop table to source.
@@ -104,12 +106,12 @@ internal static class DropTableSessionManager
         }
 
         // Apply modifiers, roll/scale drop amount and finalize results as ItemData.
-        var convertedDrops = rolledDrops.SelectMany(drop =>
-            DropScalerService.ScaleDropsAsItemData(source, drop));
-
-        return convertedDrops
+        var convertedDrops = rolledDrops
+            .SelectMany(drop => DropScalerService.ScaleDropsAsItemData(source, drop))
             .Where(x => x is not null)
             .ToList();
+
+        return convertedDrops;
     }
 
     /// <summary>
@@ -142,11 +144,22 @@ internal static class DropTableSessionManager
 
         // Convert to GameObject.
         // In vanilla, these are the prefabs referenced by the ItemDrop.
-        var convertedDrops = rolledDrops.SelectMany(DropScalerService.ScaleDropsAsGameObjects);
+        List<DropTableDrop> dropConfigs = [];
 
-        return convertedDrops
+        var convertedDrops = rolledDrops
+            .SelectMany(DropScalerService.ScaleDropsAsGameObjects)
             .Where(x => x is not null)
             .ToList();
+
+        if (SessionDrops.TryGetValue(dropTable, out _))
+        {
+            // This is probably not likely, but just in case the same droptable is rolled multiple times, make sure to clean up cache.
+            SessionDrops.Remove(dropTable);
+        }
+
+        SessionDrops.Add(dropTable, dropConfigs);
+
+        return convertedDrops;
     }
 
     private static List<DropTableDrop> PrepareTable(DropTable dropTable)
@@ -174,51 +187,26 @@ internal static class DropTableSessionManager
     }
 
     /// <summary>
-    /// Short-term state between <see cref="UnwrapDrop(GameObject)"/> and <see cref="Modify"/>.
-    /// </summary>
-    private static GameObject _currentWrapped;
-
-    /// <summary>
-    /// Unwrap GameObject is possible, in preparation for instantiation of drop.
-    /// 
-    /// Wrapping is done during generation of drop list, and consists of wrapping up the prefab
-    /// that is intended to get dropped, in a custom GameObject that we can trace through
-    /// the code flow. Unnwrapping involves replacing said custom GameObject on the stack with
-    /// the prefab it wraps, while storing the trackable reference of the wrapper for operations
-    /// slighty further ahead in the workflow.
-    /// </summary>
-    public static GameObject UnwrapDrop(GameObject wrappedDrop)
-    {
-        try
-        {
-            _currentWrapped = wrappedDrop;
-
-            return wrappedDrop.Unwrap();
-        }
-        catch (Exception e)
-        {
-            Log.Error?.Log("Error while attempting to unwrap drop", e);
-            return wrappedDrop;
-        }
-    }
-
-    /// <summary>
     /// Modify dropped object after it has been instantiated.
+    /// Note, this is not relevant when using ItemDrop.ItemData, since the modifiers are already applied for the ItemData itself.
     /// </summary>
-    public static void ModifyInstantiatedDrop(GameObject drop)
+    public static void ModifyInstantiatedObjectDrop(GameObject drop, DropTable dropTable, int index)
     {
         try
         {
-            if (WrapperCache.TryGet(_currentWrapped, out var cache) &&
-                cache.Wrapper.Drop?.DropTemplate is not null)
+            if (index >= 0 &&
+               SessionDrops.TryGetValue(dropTable, out var configs) &&
+               index < configs.Count)
             {
+                var config = configs[index];
+
                 ItemModifierContext<GameObject> dropContext = new()
                 {
                     Item = drop,
                     Position = drop.transform.position,
                 };
 
-                cache.Wrapper.Drop.DropTemplate.ItemModifiers.ForEach(modifier =>
+                config.DropTemplate?.ItemModifiers?.ForEach(modifier =>
                 {
                     try
                     {
@@ -227,14 +215,28 @@ internal static class DropTableSessionManager
                     catch (Exception e)
                     {
                         Log.Error?.Log($"Error while attempting to apply modifier '{modifier.GetType().Name}' to drop '{drop}'. Skipping modifier.", e);
-
                     }
                 });
             }
-        } 
+        }
         catch (Exception e)
         {
             Log.Error?.Log($"Error while preparing to modify drop '{drop}'. Skipping modifiers.", e);
+        }
+    }
+
+    public static void Cleanup(DropTable dropTable)
+    {
+        try
+        {
+            if (dropTable is not null)
+            {
+                SessionDrops.Remove(dropTable);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Error?.Log($"Error while cleaning up DropTable.", e);
         }
     }
 }

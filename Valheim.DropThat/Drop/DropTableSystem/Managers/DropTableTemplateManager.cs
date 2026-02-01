@@ -66,7 +66,7 @@ public static class DropTableTemplateManager
         Templates = templates.ToDictionary(x => x.PrefabName);
 
 #if !TEST
-        // Reset currently loaded creatures, so that drop tables can be re-applied.
+        // Reset currently loaded entities, so that drop tables can be re-applied.
         foreach (var instance in DropTableSessionManager.DropTableInstances.Values)
         {
             if (instance.IsNotNull())

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DropThat.Caches;
 using DropThat.Drop.DropTableSystem.Models;
-using DropThat.Drop.DropTableSystem.Wrapper;
 using DropThat.Drop.Options;
 using ThatCore.Extensions;
 using ThatCore.Logging;
@@ -27,21 +26,6 @@ internal static class DropScalerService
         for (int i = 0; i < amount; i++)
         {
             GameObject dropObject = drop.DropData.m_item;
-
-            if (drop.DropTemplate is not null)
-            {
-                // We need an object instance to track, so that we can run modifiers after instantiation.
-                // So we create a Wrapper object that can be tracked if list and its order is modified later.
-                // Multiple other mods are doing operations in here that muddy the tracking,
-                // so this is necessary even if it is costly and fiddly.
-                var wrapper = dropObject.Wrap();
-
-                // Store reference to template objects
-                wrapper.Drop = drop;
-
-                // Use wrapper object instead of original prefab.
-                dropObject = wrapper.gameObject;
-            }
 
             results[i] = dropObject;
         }

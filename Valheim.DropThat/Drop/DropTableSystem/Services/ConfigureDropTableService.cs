@@ -2,6 +2,7 @@
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Utilities;
+using ThatCore.Extensions;
 using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Services;

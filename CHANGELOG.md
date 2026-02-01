@@ -1,3 +1,7 @@
+- v3.1.3:
+	- Compatibility: Rewrote patches to allow some being disabled when `StarLevelSystems` is installed, letting it handle drop instantiation and call DropThat.
+	- Compatibility: Recompiled against `EpicLoot` 0.12.10. Updated to net4.8.1 accordingly.
+	- Compatibility: Removed an old and ugly compatibility solution for Veinminer as its now deprecated.
 - v3.1.2:
 	- Fixed: `drop_that.drop_table.before_changes.cfg` generating empty. Introduced in 3.1.0 when fixing the items file, apparently the problem was just moved.
 - v3.1.1:

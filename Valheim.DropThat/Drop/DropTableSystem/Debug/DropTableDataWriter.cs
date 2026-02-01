@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using DropThat.Utilities;
 using DropThat.Debugging;
 using DropThat.Utilities.Valheim;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Debug;
 
