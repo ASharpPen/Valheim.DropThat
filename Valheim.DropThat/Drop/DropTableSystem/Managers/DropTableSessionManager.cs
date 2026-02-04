@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using DropThat.Drop.DropTableSystem.Models;
 using DropThat.Drop.DropTableSystem.Services;
 using DropThat.Drop.Options;
@@ -9,7 +8,6 @@ using ThatCore.Cache;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 using UnityEngine;
-using static CharacterDrop;
 
 namespace DropThat.Drop.DropTableSystem.Managers;
 
@@ -19,16 +17,13 @@ namespace DropThat.Drop.DropTableSystem.Managers;
 /// </summary>
 public static class DropTableSessionManager
 {
-    public static ManagedCache<GameObject> DropTableInstances { get; } = new();
-
-    private static ConditionalWeakTable<DropTable, GameObject> SourceLinkTable { get; } = new();
-    private static ConditionalWeakTable<DropTable, DropTableTemplate> TemplateLinkTable { get; } = new();
-    private static ConditionalWeakTable<DropTable, List<DropTableDrop>> DropsByTable { get; } = new();
-
-    private static ConditionalWeakTable<DropTable, List<DropTableDrop>> SessionDrops { get; } = new();
+    internal static ManagedCache<GameObject> DropTableInstances { get; } = new();
+    private static ManagedCache<DropTableTemplate> TemplateLinks { get; } = new();
+    private static MonoBehaviour SessionEntity { get; set; }
+    private static List<DropTableDrop> SessionDrops { get; set; }
 
     /// <summary>
-    /// Initialize references from drop table to source.
+    /// Initialize and prepare table.
     /// </summary>
     public static void Initialize(MonoBehaviour source, DropTable dropTable)
     {
@@ -41,31 +36,33 @@ public static class DropTableSessionManager
                 return;
             }
 
-            if (SourceLinkTable.TryGetValue(dropTable, out _))
-            {
-                return;
-            }
-
             DropTableInstances.Set(source.gameObject, source.gameObject);
-            SourceLinkTable.Add(dropTable, source.gameObject);
 
             if (DropTableTemplateManager.TryGetTemplate(source.GetCleanedName(), out var template))
             {
-                TemplateLinkTable.Remove(dropTable);
-                TemplateLinkTable.Add(dropTable, template);
-
-                PrepareTable(dropTable);
+                TemplateLinks.Set(source, template);
+                SessionDrops = PrepareTable(dropTable, template);
             }
         }
         catch (Exception e)
         {
-            Log.Error?.Log($"Error while attempting to store reference from drop table to its source.", e);
+            Log.Error?.Log($"Error while attempting to initialize DropTable configuration.", e);
         }
     }
 
-    public static bool HasChanges(DropTable dropTable)
+    public static bool HasChanges()
     {
-        return TemplateLinkTable.TryGetValue(dropTable, out _);
+        if (SessionEntity.IsNotNull())
+        {
+            return TemplateLinks.TryGet(SessionEntity, out _);
+        }
+
+        return false;
+    }
+
+    public static void StartSession(MonoBehaviour source)
+    {
+        SessionEntity = source;
     }
 
     /// <summary>
@@ -78,23 +75,32 @@ public static class DropTableSessionManager
             return new();
         }
 
-        List<DropTableDrop> drops;
-
-        if (!DropsByTable.TryGetValue(dropTable, out drops))
-        {
-            Log.Warning?.Log("Attempted to generate drops without having prepared DropTable. Attempting recovery, but something is wrong.");
-
-            drops = PrepareTable(dropTable);
-        }
-
-        // Roll drops
-        if (!SourceLinkTable.TryGetValue(dropTable, out var source))
+        if (SessionEntity.IsNull())
         {
             // Something is wrong. We shouldn't be trying to overhaul drop generation without droptable source being linked.
             return new();
         }
 
-        var rolledDrops = DropRollerService.RollDrops(dropTable, source, drops);
+        List<DropTableDrop> drops = SessionDrops;
+
+        if (drops is null)
+        {
+            Log.Warning?.Log($"{SessionEntity.GetCleanedName()}: Attempted to generate drops without having prepared DropTable. Attempting recovery, but something is wrong.");
+
+            if (DropTableTemplateManager.TryGetTemplate(SessionEntity.GetCleanedName(), out var template))
+            {
+                TemplateLinks.Set(SessionEntity, template);
+                drops = PrepareTable(dropTable, template);
+            }
+            else
+            {
+                // Recovery failed or no templates found. Prepare using default drops in table.
+                drops = PrepareTable(dropTable, new());
+            }
+        }
+
+        // Roll drops
+        var rolledDrops = DropRollerService.RollDrops(dropTable, SessionEntity.gameObject, drops);
 
         if (Log.TraceEnabled)
         {
@@ -107,7 +113,7 @@ public static class DropTableSessionManager
 
         // Apply modifiers, roll/scale drop amount and finalize results as ItemData.
         var convertedDrops = rolledDrops
-            .SelectMany(drop => DropScalerService.ScaleDropsAsItemData(source, drop))
+            .SelectMany(drop => DropScalerService.ScaleDropsAsItemData(SessionEntity.gameObject, drop))
             .Where(x => x is not null)
             .ToList();
 
@@ -124,64 +130,51 @@ public static class DropTableSessionManager
             return new();
         }
 
-        List<DropTableDrop> drops;
-
-        if (!DropsByTable.TryGetValue(dropTable, out drops))
-        {
-            Log.Warning?.Log("Attempted to generate drops without having prepared DropTable. Attempting recovery, but something is wrong.");
-
-            drops = PrepareTable(dropTable);
-        }
-
-        // Roll drops
-        if (!SourceLinkTable.TryGetValue(dropTable, out var source))
+        if (SessionEntity.IsNull())
         {
             // Something is wrong. We shouldn't be trying to overhaul drop generation without droptable source being linked.
             return new();
         }
 
-        var rolledDrops = DropRollerService.RollDrops(dropTable, source, drops);
+        List<DropTableDrop> drops = SessionDrops;
 
-        // Convert to GameObject.
-        // In vanilla, these are the prefabs referenced by the ItemDrop.
-        List<DropTableDrop> dropConfigs = [];
-
-        var convertedDrops = rolledDrops
-            .SelectMany(DropScalerService.ScaleDropsAsGameObjects)
-            .Where(x => x is not null)
-            .ToList();
-
-        if (SessionDrops.TryGetValue(dropTable, out _))
+        if (drops is null)
         {
-            // This is probably not likely, but just in case the same droptable is rolled multiple times, make sure to clean up cache.
-            SessionDrops.Remove(dropTable);
+            Log.Warning?.Log($"{SessionEntity.GetCleanedName()}: Attempted to generate drops without having prepared DropTable. Attempting recovery, but something is wrong.");
+
+            if (DropTableTemplateManager.TryGetTemplate(SessionEntity.GetCleanedName(), out var template))
+            {
+                TemplateLinks.Set(SessionEntity, template);
+                drops = PrepareTable(dropTable, template);
+            }
+            else
+            {
+                // Recovery failed or no templates found. Prepare using default drops in table.
+                drops = PrepareTable(dropTable, new());
+            }
         }
 
-        SessionDrops.Add(dropTable, dropConfigs);
+        // Roll drops
+        var rolledDrops = DropRollerService.RollDrops(dropTable, SessionEntity.gameObject, drops);
+
+        // Convert to GameObject.
+        var convertedDrops = rolledDrops
+            .SelectMany(DropScalerService.ScaleDropsAsGameObjects)
+            .Where(x => x.IsNotNull())
+            .ToList();
+
+        SessionDrops = rolledDrops;
 
         return convertedDrops;
     }
 
-    private static List<DropTableDrop> PrepareTable(DropTable dropTable)
+    private static List<DropTableDrop> PrepareTable(DropTable dropTable, DropTableTemplate template)
     {
-        // Find configs
-        DropTableTemplate template;
-
-        if (!TemplateLinkTable.TryGetValue(dropTable, out template))
-        {
-            Log.Warning?.Log("Attempted to generate drops without having template linked to DropTable.");
-            // Something is wrong. We shouldn't be trying to overhaul drop generation without a template with changes being linked.
-            return new(0);
-        }
-
         // Configure table
         ConfigureDropTableService.ConfigureTable(dropTable, template);
 
         // Create list of configured drops for table.
         var drops = ConfigureDropTableService.CreateDropList(dropTable, template);
-
-        DropsByTable.Remove(dropTable);
-        DropsByTable.Add(dropTable, drops);
 
         return drops;
     }
@@ -190,15 +183,16 @@ public static class DropTableSessionManager
     /// Modify dropped object after it has been instantiated.
     /// Note, this is not relevant when using ItemDrop.ItemData, since the modifiers are already applied for the ItemData itself.
     /// </summary>
-    public static void ModifyInstantiatedObjectDrop(GameObject drop, DropTable dropTable, int index)
+    /// <param name="drop">New instantiated instance of the drop.</param>
+    /// <param name="index">Index of drop in the list returned from DropTable.GetDropList.</param>
+    public static void ModifyDrop(GameObject drop, int index)
     {
         try
         {
             if (index >= 0 &&
-               SessionDrops.TryGetValue(dropTable, out var configs) &&
-               index < configs.Count)
+               index < SessionDrops?.Count)
             {
-                var config = configs[index];
+                var config = SessionDrops[index];
 
                 ItemModifierContext<GameObject> dropContext = new()
                 {
@@ -225,14 +219,12 @@ public static class DropTableSessionManager
         }
     }
 
-    public static void Cleanup(DropTable dropTable)
+    public static void EndSession()
     {
         try
         {
-            if (dropTable is not null)
-            {
-                SessionDrops.Remove(dropTable);
-            }
+            SessionEntity = null;
+            SessionDrops = null;
         }
         catch (Exception e)
         {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using DropThat.Drop.DropTableSystem.Managers;
@@ -25,13 +24,7 @@ internal static class Patch_ModifyInstantiatedDrops
         [HarmonyPatch(nameof(DropOnDestroyed.OnDestroyed))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
-            instructions.InsertDropManagementInstructions<DropOnDestroyed>(ModifyInstantiatedObjectDrop);
-
-        private static GameObject ModifyInstantiatedObjectDrop(GameObject drop, DropOnDestroyed instance, int index)
-        {
-            DropTableSessionManager.ModifyInstantiatedObjectDrop(drop, instance.m_dropWhenDestroyed, index);
-            return drop;
-        }
+            instructions.InsertDropManagementInstructions<DropOnDestroyed>();
     }
 
     [HarmonyPatch(typeof(LootSpawner))]
@@ -40,13 +33,7 @@ internal static class Patch_ModifyInstantiatedDrops
         [HarmonyPatch(nameof(LootSpawner.UpdateSpawner))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
-            instructions.InsertDropManagementInstructions<LootSpawner>(ModifyInstantiatedObjectDrop);
-
-        private static GameObject ModifyInstantiatedObjectDrop(GameObject drop, LootSpawner instance, int index)
-        {
-            DropTableSessionManager.ModifyInstantiatedObjectDrop(drop, instance.m_items, index);
-            return drop;
-        }
+            instructions.InsertDropManagementInstructions<LootSpawner>();
     }
 
     [HarmonyPatch(typeof(TreeLog))]
@@ -69,16 +56,9 @@ internal static class Patch_ModifyInstantiatedDrops
                 new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
             .Advance(1)
             // Insert own call, expecting gameobject to be on top of stack
-            .InsertAndAdvance(OpCodes.Ldarg_0)
             .InsertAndAdvance(index.GetLdlocFromStLoc())
             .InsertAndAdvance(Transpilers.EmitDelegate(ModifyInstantiatedObjectDrop))
             .InstructionEnumeration();
-
-        private static GameObject ModifyInstantiatedObjectDrop(GameObject drop, TreeLog instance, int index)
-        {
-            DropTableSessionManager.ModifyInstantiatedObjectDrop(drop, instance.m_dropWhenDestroyed, index);
-            return drop;
-        }
     }
 
     [HarmonyPatch(typeof(TreeBase))]
@@ -87,13 +67,7 @@ internal static class Patch_ModifyInstantiatedDrops
         [HarmonyPatch(nameof(TreeBase.RPC_Damage))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
-            instructions.InsertDropManagementInstructions<TreeBase>(ModifyInstantiatedObjectDrop);
-
-        private static GameObject ModifyInstantiatedObjectDrop(GameObject drop, TreeBase instance, int index)
-        {
-            DropTableSessionManager.ModifyInstantiatedObjectDrop(drop, instance.m_dropWhenDestroyed, index);
-            return drop;
-        }
+            instructions.InsertDropManagementInstructions<TreeBase>();
     }
 
     [HarmonyPatch(typeof(MineRock))]
@@ -110,9 +84,9 @@ internal static class Patch_ModifyInstantiatedDrops
         private static void IncrementLoopIndex() =>
             LoopIndex++;
 
-        private static GameObject ModifyInstantiatedObjectDrop(GameObject obj, MineRock instance)
+        private static GameObject ModifyInstantiatedObjectDrop(GameObject obj)
         {
-            DropTableSessionManager.ModifyInstantiatedObjectDrop(obj, instance.m_dropItems, LoopIndex);
+            DropTableSessionManager.ModifyDrop(obj, LoopIndex);
             return obj;
         }
 
@@ -128,7 +102,6 @@ internal static class Patch_ModifyInstantiatedDrops
                 new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
             .Advance(1)
             // Insert own call, expecting gameobject to be on top of stack
-            .InsertAndAdvance(OpCodes.Ldarg_0)
             .InsertAndAdvance(Transpilers.EmitDelegate(ModifyInstantiatedObjectDrop))
             // Move forward to loop being iterated, and increment our custom index
             .MatchEndForward(new CodeMatch(OpCodes.Call, ReflectionUtils.ListGameObjectMoveNextMethod))
@@ -151,9 +124,9 @@ internal static class Patch_ModifyInstantiatedDrops
         private static void IncrementLoopIndex() =>
             LoopIndex++;
 
-        private static GameObject ModifyInstantiatedObjectDrop(GameObject obj, MineRock5 instance)
+        private static GameObject ModifyInstantiatedObjectDrop(GameObject obj)
         {
-            DropTableSessionManager.ModifyInstantiatedObjectDrop(obj, instance.m_dropItems, LoopIndex);
+            DropTableSessionManager.ModifyDrop(obj, LoopIndex);
             return obj;
         }
 
@@ -169,7 +142,6 @@ internal static class Patch_ModifyInstantiatedDrops
                 new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
             .Advance(1)
             // Insert own call, expecting gameobject to be on top of stack
-            .InsertAndAdvance(OpCodes.Ldarg_0)
             .InsertAndAdvance(Transpilers.EmitDelegate(ModifyInstantiatedObjectDrop))
             // Move forward to loop being iterated, and increment our custom index
             .MatchEndForward(new CodeMatch(OpCodes.Call, ReflectionUtils.ListGameObjectMoveNextMethod))
@@ -179,8 +151,7 @@ internal static class Patch_ModifyInstantiatedDrops
     }
 
     private static IEnumerable<CodeInstruction> InsertDropManagementInstructions<T>(
-        this IEnumerable<CodeInstruction> instructions,
-        Func<GameObject, T, int, GameObject> modifyAction) =>
+        this IEnumerable<CodeInstruction> instructions) =>
             new CodeMatcher(instructions)
             // Move to right before drop is instantiated
             .MatchForward(false,
@@ -194,8 +165,13 @@ internal static class Patch_ModifyInstantiatedDrops
                 new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
             .Advance(1)
             // Insert own call, expecting gameobject to be on top of stack
-            .InsertAndAdvance(OpCodes.Ldarg_0)
             .InsertAndAdvance(loadIndex)
-            .InsertAndAdvance(Transpilers.EmitDelegate(modifyAction))
+            .InsertAndAdvance(Transpilers.EmitDelegate(ModifyInstantiatedObjectDrop))
             .InstructionEnumeration();
+
+    private static GameObject ModifyInstantiatedObjectDrop(GameObject obj, int index)
+    {
+        DropTableSessionManager.ModifyDrop(obj, index);
+        return obj;
+    }
 }

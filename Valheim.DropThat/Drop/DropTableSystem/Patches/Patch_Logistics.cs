@@ -4,14 +4,14 @@ using HarmonyLib;
 namespace DropThat.Drop.DropTableSystem.Patches;
 
 /// <summary>
-/// Store reference from gameobject of DropTable to the DropTable itself,
-/// and cleanup the reference when the gameobject is destroyed.
+/// 1) Init: Store references to the DropTable's gameobject and prepare
+/// the DropTable with initial drop configurations if a template exist.
+/// 2) Begin: Track gameobject when starting a potential drop session.
+/// 3) Modify: Drop modifiers applied to rolled items.
+/// 4) End: Clean up references when the potential drop session has ended.
 /// 
-/// Since the DropTable is a standard object and not a unity engine Object, we need
-/// to store what object it belongs with for later reference.
-/// 
-/// On finishing whatever function can roll and instantiate drops,
-/// call cleanup to remove drop configs referenced for the session.
+/// Drop modifications in step 3) are handled in a separate patch 
+/// to allow better patch control when compatibility is needed.
 /// </summary>
 internal static class Patch_Logistics
 {
@@ -20,8 +20,18 @@ internal static class Patch_Logistics
     {
         [HarmonyPatch(nameof(Container.Awake))]
         [HarmonyPrefix]
-        private static void SetLink(Container __instance) =>
+        private static void Init(Container __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_defaultItems);
+
+        [HarmonyPatch(nameof(Container.AddDefaultItems))]
+        [HarmonyPrefix]
+        private static void Begin(Container __instance) =>
+            DropTableSessionManager.StartSession(__instance);
+
+        [HarmonyPatch(nameof(Container.AddDefaultItems))]
+        [HarmonyPostfix]
+        private static void End() =>
+            DropTableSessionManager.EndSession();
     }
 
     [HarmonyPatch(typeof(DropOnDestroyed))]
@@ -29,14 +39,18 @@ internal static class Patch_Logistics
     {
         [HarmonyPatch(nameof(DropOnDestroyed.Awake))]
         [HarmonyPostfix]
-        private static void SetLink(DropOnDestroyed __instance) =>
+        private static void Init(DropOnDestroyed __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
 
+        [HarmonyPatch(nameof(DropOnDestroyed.OnDestroyed))]
+        [HarmonyPrefix]
+        private static void Begin(DropOnDestroyed __instance) =>
+            DropTableSessionManager.StartSession(__instance);
 
         [HarmonyPatch(nameof(DropOnDestroyed.OnDestroyed))]
         [HarmonyPostfix]
-        private static void Clean(DropOnDestroyed __instance) =>
-            DropTableSessionManager.Cleanup(__instance.m_dropWhenDestroyed);
+        private static void End() =>
+            DropTableSessionManager.EndSession();
     }
 
     [HarmonyPatch(typeof(LootSpawner))]
@@ -44,13 +58,18 @@ internal static class Patch_Logistics
     {
         [HarmonyPatch(nameof(LootSpawner.Awake))]
         [HarmonyPostfix]
-        private static void SetLink(LootSpawner __instance) =>
+        private static void Init(LootSpawner __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_items);
 
         [HarmonyPatch(nameof(LootSpawner.UpdateSpawner))]
+        [HarmonyPrefix]
+        private static void Begin(LootSpawner __instance) =>
+            DropTableSessionManager.StartSession(__instance);
+
+        [HarmonyPatch(nameof(LootSpawner.UpdateSpawner))]
         [HarmonyPostfix]
-        private static void Clean(LootSpawner __instance) =>
-            DropTableSessionManager.Cleanup(__instance.m_items);
+        private static void End() =>
+            DropTableSessionManager.EndSession();
     }
 
     [HarmonyPatch(typeof(TreeBase))]
@@ -58,13 +77,18 @@ internal static class Patch_Logistics
     {
         [HarmonyPatch(nameof(TreeBase.Awake))]
         [HarmonyPostfix]
-        private static void SetLink(TreeBase __instance) =>
+        private static void Init(TreeBase __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
 
         [HarmonyPatch(nameof(TreeBase.RPC_Damage))]
+        [HarmonyPrefix]
+        private static void Begin(TreeBase __instance) =>
+            DropTableSessionManager.StartSession(__instance);
+
+        [HarmonyPatch(nameof(TreeBase.RPC_Damage))]
         [HarmonyPostfix]
-        private static void Clean(TreeBase __instance) =>
-            DropTableSessionManager.Cleanup(__instance.m_dropWhenDestroyed);
+        private static void End() =>
+            DropTableSessionManager.EndSession();
     }
 
     [HarmonyPatch(typeof(TreeLog))]
@@ -72,13 +96,18 @@ internal static class Patch_Logistics
     {
         [HarmonyPatch(nameof(TreeLog.Awake))]
         [HarmonyPostfix]
-        private static void SetLink(TreeLog __instance) =>
+        private static void Init(TreeLog __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_dropWhenDestroyed);
 
         [HarmonyPatch(nameof(TreeLog.Destroy))]
+        [HarmonyPrefix]
+        private static void Begin(TreeLog __instance) =>
+            DropTableSessionManager.StartSession(__instance);
+
+        [HarmonyPatch(nameof(TreeLog.Destroy))]
         [HarmonyPostfix]
-        private static void Clean(TreeLog __instance) =>
-            DropTableSessionManager.Cleanup(__instance.m_dropWhenDestroyed);
+        private static void End() =>
+            DropTableSessionManager.EndSession();
     }
 
     [HarmonyPatch(typeof(MineRock))]
@@ -86,13 +115,18 @@ internal static class Patch_Logistics
     {
         [HarmonyPatch(nameof(MineRock.Start))]
         [HarmonyPostfix]
-        private static void SetLink(MineRock __instance) =>
+        private static void Init(MineRock __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_dropItems);
 
         [HarmonyPatch(nameof(MineRock.RPC_Hit))]
+        [HarmonyPrefix]
+        private static void Begin(MineRock __instance) =>
+            DropTableSessionManager.StartSession(__instance);
+
+        [HarmonyPatch(nameof(MineRock.RPC_Hit))]
         [HarmonyPostfix]
-        private static void Clean(MineRock __instance) =>
-            DropTableSessionManager.Cleanup(__instance.m_dropItems);
+        private static void End() =>
+            DropTableSessionManager.EndSession();
     }
 
     [HarmonyPatch(typeof(MineRock5))]
@@ -101,12 +135,17 @@ internal static class Patch_Logistics
         [HarmonyPatch(nameof(MineRock5.Awake))]
         [HarmonyPostfix]
         [HarmonyPriority(Priority.LowerThanNormal)] // Give time for the name fix patch to apply.
-        private static void SetLink(MineRock5 __instance) =>
+        private static void Init(MineRock5 __instance) =>
             DropTableSessionManager.Initialize(__instance, __instance.m_dropItems);
 
         [HarmonyPatch(nameof(MineRock5.DamageArea))]
+        [HarmonyPrefix]
+        private static void Begin(MineRock5 __instance) =>
+            DropTableSessionManager.StartSession(__instance);
+
+        [HarmonyPatch(nameof(MineRock5.DamageArea))]
         [HarmonyPostfix]
-        private static void Clean(MineRock5 __instance) =>
-            DropTableSessionManager.Cleanup(__instance.m_dropItems);
+        private static void End() =>
+            DropTableSessionManager.EndSession();
     }
 }
