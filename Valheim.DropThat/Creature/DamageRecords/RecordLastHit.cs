@@ -1,7 +1,7 @@
 ﻿using DropThat.Caches;
 using DropThat.Drop.CharacterDropSystem.Models;
-using DropThat.Utilities;
 using ThatCore.Cache;
+using ThatCore.Extensions;
 using UnityEngine;
 
 namespace DropThat.Creature.DamageRecords;

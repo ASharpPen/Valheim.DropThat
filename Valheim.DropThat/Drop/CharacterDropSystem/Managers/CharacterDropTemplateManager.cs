@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Models;
-using DropThat.Drop.CharacterDropSystem.Services;
 using ThatCore.Extensions;
 using ThatCore.Lifecycle;
 using ThatCore.Logging;

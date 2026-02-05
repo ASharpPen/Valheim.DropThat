@@ -2,7 +2,7 @@
 $profilePath = ""
 
 # Path to Valheim\valheim_Data\Managed dir.
-$valheimPath = ""
+$valheimPath = "C:\Program Files (x86)\Steam\steamapps\common\Valheim\valheim_Data\Managed"
 
 $output = "..\libs\";
 $nstripDir = ".\NStrip"
@@ -107,7 +107,7 @@ Strip "$profilePath\BepInEx\plugins\RandyKnapp-EpicLoot" "RandyKnapp-EpicLoot" -
 Strip "$profilePath\BepInEx\plugins\Smoothbrain-CreatureLevelAndLootControl" "Smoothbrain-CreatureLevelAndLootControl"
 
 # ThatCore
-$version = "1.0.2"
+$version = "1.0.3"
 $coreDir = "$output\ThatCore"
 
 if (-not(Test-Path($coreDir)))

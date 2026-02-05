@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -7,6 +9,7 @@ namespace DropThat.Utilities;
 internal static class ReflectionUtils
 {
     private static MethodInfo InstantiateGameObject = null;
+    private static MethodInfo ListGameObjectMoveNext = null;
 
     public static MethodInfo InstantiateGameObjectMethod
     {
@@ -22,6 +25,14 @@ internal static class ReflectionUtils
                     m.GetParameters()[2].ParameterType == typeof(Quaternion))
                 .GetGenericMethodDefinition()
                 .MakeGenericMethod(typeof(GameObject));
+        }
+    }
+
+    public static MethodInfo ListGameObjectMoveNextMethod
+    {
+        get
+        {             
+            return ListGameObjectMoveNext ??= typeof(List<GameObject>.Enumerator).GetMethod(nameof(IEnumerator.MoveNext));
         }
     }
 }

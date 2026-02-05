@@ -18,7 +18,7 @@ namespace DropThat.Drop.CharacterDropSystem.Managers;
 /// Logic for general workflow surrounding configuring
 /// drop table, running conditions and applying modifiers.
 /// </summary>
-internal static class CharacterDropSessionManager
+public static class CharacterDropSessionManager
 {
     public static ManagedCache<CharacterDrop> CharacterDropInstances { get; } = new();
 

@@ -3,6 +3,7 @@ using UnityEngine;
 using DropThat.Utilities;
 using ThatCore.Logging;
 using ThatCore.Lifecycle;
+using ThatCore.Extensions;
 
 namespace DropThat.Locations;
 

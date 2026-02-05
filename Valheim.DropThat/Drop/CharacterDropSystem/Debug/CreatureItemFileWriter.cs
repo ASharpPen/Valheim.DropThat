@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DropThat.Utilities;
 using ThatCore.Logging;
 using DropThat.Debugging;
 using DropThat.Caches;
+using ThatCore.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Debug;
 
