@@ -1,3 +1,5 @@
+- v3.1.4: 
+	- Fixed: Warnings in log when rolling drops for some configured DropTables.
 - v3.1.3:
 	- Compatibility: Rewrote patches to allow some being disabled when `StarLevelSystems` is installed, letting it handle drop instantiation and call DropThat.
 	- Compatibility: Recompiled against `EpicLoot` 0.12.10. Updated to net4.8.1 accordingly.

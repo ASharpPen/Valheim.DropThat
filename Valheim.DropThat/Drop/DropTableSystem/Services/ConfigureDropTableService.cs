@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DropThat.Drop.DropTableSystem.Models;
-using DropThat.Utilities;
 using ThatCore.Extensions;
 using ThatCore.Logging;
 
@@ -48,6 +47,8 @@ internal static class ConfigureDropTableService
                 })
             .ToList();
 
+        Log.Trace?.Log($"Configuring drops for {template.PrefabName}:");
+
         foreach (var dropTemplate in template.Drops.OrderBy(x => x.Key))
         {
             if (dropTemplate.Value.TemplateEnabled is not null &&
@@ -64,11 +65,11 @@ internal static class ConfigureDropTableService
                 if (!string.IsNullOrEmpty(dropTemplate.Value.PrefabName) &&
                     existingDropPrefab == template.PrefabName)
                 {
-                    Log.Trace?.Log($"Configuring existing drop '{dropTemplate.Key}:{existingDropPrefab}'.");
+                    Log.Trace?.Log($"\t'{dropTemplate.Key}:{existingDropPrefab}'.");
                 }
                 else
                 {
-                    Log.Trace?.Log($"Configuring and changing existing drop '{dropTemplate.Key}:{existingDropPrefab}' to {dropTemplate.Value.PrefabName}.");
+                    Log.Trace?.Log($"\t'{dropTemplate.Key}:{existingDropPrefab}' -> '{dropTemplate.Value.PrefabName}'.");
                 }
 
                 var drop = drops[dropTemplate.Key];
