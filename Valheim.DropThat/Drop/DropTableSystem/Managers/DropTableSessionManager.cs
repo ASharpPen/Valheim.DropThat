@@ -18,9 +18,16 @@ namespace DropThat.Drop.DropTableSystem.Managers;
 public static class DropTableSessionManager
 {
     internal static ManagedCache<GameObject> DropTableInstances { get; } = new();
-    private static ManagedCache<DropTableTemplate> TemplateLinks { get; } = new();
+    private static ManagedCache<DropSession> Sessions { get; } = new();
     private static MonoBehaviour SessionEntity { get; set; }
     private static List<DropTableDrop> SessionDrops { get; set; }
+
+    private class DropSession
+    {
+        public DropTableTemplate Template { get; set; }
+
+        public List<DropTableDrop> Table { get; set; }
+    }
 
     /// <summary>
     /// Initialize and prepare table.
@@ -40,8 +47,11 @@ public static class DropTableSessionManager
 
             if (DropTableTemplateManager.TryGetTemplate(source.GetCleanedName(), out var template))
             {
-                TemplateLinks.Set(source, template);
-                SessionDrops = PrepareTable(dropTable, template);
+                Sessions.Set(source, new()
+                {
+                    Template = template,
+                    Table = PrepareTable(dropTable, template)
+                });
             }
         }
         catch (Exception e)
@@ -54,7 +64,7 @@ public static class DropTableSessionManager
     {
         if (SessionEntity.IsNotNull())
         {
-            return TemplateLinks.TryGet(SessionEntity, out _);
+            return Sessions.TryGet(SessionEntity, out _);
         }
 
         return false;
@@ -81,7 +91,9 @@ public static class DropTableSessionManager
             return new();
         }
 
-        List<DropTableDrop> drops = SessionDrops;
+        List<DropTableDrop> drops = Sessions.TryGet(SessionEntity, out var session)
+            ? session.Table
+            : null;
 
         if (drops is null)
         {
@@ -89,8 +101,13 @@ public static class DropTableSessionManager
 
             if (DropTableTemplateManager.TryGetTemplate(SessionEntity.GetCleanedName(), out var template))
             {
-                TemplateLinks.Set(SessionEntity, template);
-                drops = PrepareTable(dropTable, template);
+                Sessions.Set(
+                    SessionEntity,
+                    new DropSession()
+                    {
+                        Template = template,
+                        Table = drops = PrepareTable(dropTable, template)
+                    });
             }
             else
             {
@@ -104,7 +121,7 @@ public static class DropTableSessionManager
 
         if (Log.TraceEnabled)
         {
-            Log.Trace?.Log($"Dropping {rolledDrops.Count} items:");
+            Log.Trace?.Log($"{SessionEntity.GetCleanedName()}: Dropping {rolledDrops.Count} items");
             foreach (var drop in rolledDrops)
             {
                 Log.Trace?.Log($"\t{drop.DropData.m_item.name}");
@@ -136,7 +153,9 @@ public static class DropTableSessionManager
             return new();
         }
 
-        List<DropTableDrop> drops = SessionDrops;
+        List<DropTableDrop> drops = Sessions.TryGet(SessionEntity, out var session)
+            ? session.Table
+            : null;
 
         if (drops is null)
         {
@@ -144,8 +163,13 @@ public static class DropTableSessionManager
 
             if (DropTableTemplateManager.TryGetTemplate(SessionEntity.GetCleanedName(), out var template))
             {
-                TemplateLinks.Set(SessionEntity, template);
-                drops = PrepareTable(dropTable, template);
+                Sessions.Set(
+                    SessionEntity,
+                    new()
+                    {
+                        Template = template,
+                        Table = drops = PrepareTable(dropTable, template)
+                    });
             }
             else
             {
@@ -162,6 +186,15 @@ public static class DropTableSessionManager
             .SelectMany(DropScalerService.ScaleDropsAsGameObjects)
             .Where(x => x.IsNotNull())
             .ToList();
+
+        if (Log.TraceEnabled)
+        {
+            Log.Trace?.Log($"Dropping {rolledDrops.Count} items:");
+            foreach (var drop in rolledDrops)
+            {
+                Log.Trace?.Log($"\t{drop.DropData.m_item.name}");
+            }
+        }
 
         SessionDrops = rolledDrops;
 
