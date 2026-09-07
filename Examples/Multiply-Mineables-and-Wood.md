@@ -10,7 +10,7 @@ It also shows how to discover the prefab names and drop indexes for yourself, si
 
 > **Read this first - version disclaimer**
 >
-> The prefab names, drop indexes, and default table values shown below were captured from one specific version of Valheim (using Drop That! 3.1.4). Game and mod updates regularly rename prefabs, reorder drop indexes, and change default loot tables. **This page is not kept in sync with the game and the IDs here will eventually go stale.** Always regenerate the debug data (below) against your own install and confirm the names/indexes before trusting a copied config.
+> The prefab names, drop indexes, and default table values shown below were captured against **Valheim 0.221.12** (network version 36) with **Drop That! 3.1.4** (BepInExPack Valheim 5.4.2333). Game and mod updates regularly rename prefabs, reorder drop indexes, and change default loot tables. **This page is not kept in sync with the game and the IDs here will eventually go stale.** Always regenerate the debug data (below) against your own install and confirm the names/indexes before trusting a copied config.
 
 ## Step 1 - Generate the default drop table data
 
