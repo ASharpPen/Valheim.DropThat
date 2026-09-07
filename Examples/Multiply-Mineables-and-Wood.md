@@ -303,20 +303,42 @@ The same pattern extends to any variants not listed here (`AshlandsTreeLogHalf2`
 
 ## Step 3 - Test it
 
-You do not need a mod to verify this. Use the built-in console (F5, then `devcommands`) to spawn the nodes and mine them yourself:
+You do not need extra mods to verify this in singleplayer - the built-in console covers it. This is the exact chain used to confirm the config end-to-end.
+
+**Setup**
+1. Add `-console` to the game's Steam launch options so the F5 console is enabled.
+2. **If you are testing on a server**, the client must be a server admin (add the SteamID64 to `adminlist.txt` in the server's save directory), and the server needs a devcommands-enabling mod installed server-side (for example [Server devcommands](https://valheim.thunderstore.io/package/JereKuusela/Server_devcommands/)) - a vanilla dedicated server will otherwise reject the spawn/cheat commands. Also remember the drop config itself is server-side: the server must have Drop That! and this `drop_that.drop_table.cfg` loaded (via `start_server_bepinex.sh`), since clients use the server's loaded config.
+3. In-game, press **F5** and enable cheats plus movement:
 
 ```
 devcommands
 fly
 god
+```
+
+**Spawn the tools and one of every harvestable**
+
+```
 spawn PickaxeBlackMetal
+spawn AxeBlackMetal
 spawn MineRock_Copper
 spawn MineRock_Tin
 spawn silvervein
 spawn mudpile2
+spawn Beech1
+spawn Birch1
+spawn Oak1
+spawn Pinetree_01
+spawn FirTree
+spawn SwampTree1
 ```
 
-Mine each node fully and compare the total ore against vanilla. Remember the weighted-table behaviour: ore does not drop on every swing, but each ore stack that appears should now be multiplied.
+**Verify from a single node/part of each.** You do not need to clear a whole deposit - one chunk or one log tells you if it is working, as long as you read the result correctly:
+
+- **Deterministic nodes read straight off the total.** A tin deposit (`MineRock_Tin`) rolls 3-4 times for 1 ore each = 3-4 vanilla; at 3x it gives 9-12. (Confirmed: 9 = a 3-roll node x3.)
+- **Weighted nodes are read off the drop size, not the total**, because each roll randomly picks ore or junk. Watch the individual pickups: copper/tin should come out in stacks of 3, silver in stacks of 2. (Confirmed: copper dropped 3 on a copper roll; silver dropped in 2s.)
+- **Low-chance nodes need patience.** Swamp scrap piles (`mudpile2`) only drop something ~20% of chunks; mine several and confirm the scrap arrives in stacks of 3.
+- **Trees are a two-stage chop.** Fell the tree, then chop the fallen **log sections** - that is where the wood is. A swamp tree log rolls 10 times, split 50/50 Wood/ElderBark, each doubled. (Confirmed: 12 Ancient Bark = 6 rolls x2, with the other 4 rolls as wood.) An even total that is roughly double the vanilla amount is the tell.
 
 ## Notes
 
