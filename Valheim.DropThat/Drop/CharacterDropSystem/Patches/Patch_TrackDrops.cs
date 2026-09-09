@@ -126,10 +126,10 @@ public static class Patch_TrackDrops
     private static IEnumerable<CodeInstruction> TranspileLoadConfigReferences(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
-            .MatchForward(false, new CodeMatch(OpCodes.Stloc_2)) //Move to instantiation of new drop list
+            .MatchForward(false, new CodeMatch(OpCodes.Stloc_3)) //Move to instantiation of new drop list
             .Advance(1)
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_0)) //Load zdo
-            .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_2)) //Load drop list
+            .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_3)) //Load drop list
             .InsertAndAdvance(Transpilers.EmitDelegate(LoadConfigReferences))
             .InstructionEnumeration();
     }

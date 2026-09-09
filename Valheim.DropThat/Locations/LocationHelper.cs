@@ -9,7 +9,7 @@ namespace DropThat.Locations;
 
 public static class LocationHelper
 {
-    private static Dictionary<Vector2i, SimpleLocation> _simpleLocationsByZone { get; set; }
+    private static Dictionary<Vector2s, SimpleLocation> _simpleLocationsByZone { get; set; }
 
     static LocationHelper()
     {
@@ -23,7 +23,7 @@ public static class LocationHelper
     {
         if (_simpleLocationsByZone is null)
         {
-            _simpleLocationsByZone = new Dictionary<Vector2i, SimpleLocation>();
+            _simpleLocationsByZone = new Dictionary<Vector2s, SimpleLocation>();
         }
 
         foreach (var location in locations)

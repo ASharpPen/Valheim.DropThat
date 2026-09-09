@@ -55,7 +55,7 @@ internal sealed class SimpleLocationMessage : IMessage
 
         foreach (var location in Locations)
         {
-            var position = new Vector2i(location.X, location.Y);
+            var position = new Vector2s(location.X, location.Y);
 
             simpleLocations.Add(new SimpleLocation
             {
@@ -71,12 +71,12 @@ internal sealed class SimpleLocationMessage : IMessage
 
 public struct SimpleLocationDTO
 {
-    public int X;
-    public int Y;
+    public short X;
+    public short Y;
 
     public ushort Location;
 
-    public SimpleLocationDTO(Vector2i pos, ushort location)
+    public SimpleLocationDTO(Vector2s pos, ushort location)
     {
         X = pos.x;
         Y = pos.y;

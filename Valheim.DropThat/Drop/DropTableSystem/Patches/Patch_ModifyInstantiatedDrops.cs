@@ -67,7 +67,25 @@ internal static class Patch_ModifyInstantiatedDrops
         [HarmonyPatch(nameof(TreeBase.RPC_Damage))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> InsertDropManagement(IEnumerable<CodeInstruction> instructions) =>
-            instructions.InsertDropManagementInstructions<TreeBase>();
+            new CodeMatcher(instructions)
+            // Move to after drop list has been loaded
+            .MatchForward(false,
+                new CodeMatch(OpCodes.Callvirt, GetDropListMethod))
+            // Move to right before drop is instantiated
+            .MatchForward(false,
+                new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
+            // Move back to where the index used for retrieving drop item from list is loaded
+            .Advance(-4)
+            // Get the index instruction, to load again later.
+            .GetInstruction(out CodeInstruction loadIndex)
+            // Move to right after drop is instantiated
+            .MatchForward(true,
+                new CodeMatch(OpCodes.Call, ReflectionUtils.InstantiateGameObjectMethod))
+            .Advance(1)
+            // Insert own call, expecting gameobject to be on top of stack
+            .InsertAndAdvance(loadIndex)
+            .InsertAndAdvance(Transpilers.EmitDelegate(ModifyInstantiatedObjectDrop))
+            .InstructionEnumeration();
     }
 
     [HarmonyPatch(typeof(MineRock))]

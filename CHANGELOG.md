@@ -1,3 +1,5 @@
+- v3.1.5:
+	- Compatibility: Valheim v1.0.7.
 - v3.1.4: 
 	- Fixed: Warnings in log when rolling drops for some configured DropTables.
 - v3.1.3:

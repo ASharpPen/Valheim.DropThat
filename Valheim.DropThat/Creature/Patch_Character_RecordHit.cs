@@ -12,7 +12,12 @@ internal static class Patch_Character_RecordHit
     [HarmonyPatch(nameof(Character.ApplyDamage))]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.Last)] // Let other prefixes apply their changes, so we can properly pick up the final result.
-    private static void RecordLastHit(Character __instance, HitData hit)
+    private static void RecordLastHit(
+        Character __instance, 
+        HitData hit, 
+        bool showDamageText, 
+        bool triggerEffects, 
+        HitData.DamageModifier mod)
     {
         try
         {
