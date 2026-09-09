@@ -6,7 +6,7 @@ public sealed class SimpleLocation
 {
     public Vector3 Position;
 
-    public Vector2i ZonePosition;
+    public Vector2s ZonePosition;
 
     public string LocationName;
 }

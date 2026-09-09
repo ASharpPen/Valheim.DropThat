@@ -20,7 +20,7 @@ namespace DropThat.Drop.CharacterDropSystem.Managers;
 /// </summary>
 public static class CharacterDropSessionManager
 {
-    public static ManagedCache<CharacterDrop> CharacterDropInstances { get; } = new();
+    internal static ManagedCache<CharacterDrop> CharacterDropInstances { get; } = new();
 
     public static ConditionalWeakTable<CharacterDrop.Drop, DropConfigInfo> DropInstanceTable { get; } = new();
 

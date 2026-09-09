@@ -29,6 +29,10 @@ Documentation can be found on the [Drop That! wiki](https://github.com/ASharpPen
 
 # Support
 
+If you are already getting a server from Survival Servers, going through the link below sends a bit my way. No extra cost for you, but a beer for me!
+
+<a href="https://www.survivalservers.com/?ref=asharppen"><img src="https://github.com/ASharpPen/Assets/blob/e65c0aa47aadfefe39873619d5c13182d899aab4/Banners/banner-survival-servers-valheim-1280x100.png?raw=true" width="1280" height="100"></a>
+
 If you feel like it
 
 <a href="https://www.buymeacoffee.com/asharppen"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=asharppen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
