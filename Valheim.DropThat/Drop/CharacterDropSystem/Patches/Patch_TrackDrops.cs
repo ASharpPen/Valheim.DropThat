@@ -46,6 +46,7 @@ public static class Patch_TrackDrops
             .MatchForward(false, //Move to right before moving enumeration head and after having added the most recent key-value pair to results.
                 new CodeMatch(OpCodes.Ldloca_S),
                 new CodeMatch(OpCodes.Call, Anchor))
+            .Advance(1) // Make sure to move past the load, to ensure not getting skipped by branch jumps.
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_0)) //Loads the list with resulting key-value pairs.
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_3)) //Load current CharacterDrop.Drop
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0)) //Load instance
@@ -57,12 +58,13 @@ public static class Patch_TrackDrops
     {
         try
         {
-            Log.Development?.Log($"[{characterDrop.GetName()}:{drop.m_prefab.name}] Attempting to track drop");
-
             if (drop is null)
             {
+                // Normal first time. foreach starts by jumping to the move-next, which then branches back to the drop being loaded and stored.
                 return;
             }
+
+            Log.Development?.Log($"[{characterDrop.GetName()}:{drop.m_prefab.GetName()}] Attempting to track drop");
 
             if (CharacterDropSessionManager.DropInstanceTable.TryGetValue(drop, out var configInfo))
             {

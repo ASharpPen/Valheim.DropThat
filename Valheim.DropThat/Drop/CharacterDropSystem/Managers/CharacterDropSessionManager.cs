@@ -213,22 +213,28 @@ public static class CharacterDropSessionManager
             for (int i = 0; i < drops.Count; ++i)
             {
                 var item = drops[i];
+
+                int limit = -1;
+
                 if (GeneralConfigManager.Config.DropLimit > 0 && item.Value > GeneralConfigManager.Config.DropLimit)
                 {
-                    Log.Trace?.Log($"Limiting {item.Key.name}:{item.Value} to {GeneralConfigManager.Config.DropLimit}");
-
-                    drops[i] = Limit(item, GeneralConfigManager.Config.DropLimit);
-                    continue;
+                    limit = GeneralConfigManager.Config.DropLimit;
                 }
 
                 var config = TempDropListCache.GetDrop(droptable, i);
 
                 if (config?.DropTemplate?.AmountLimit >= 0 &&
-                    item.Value > config.DropTemplate.AmountLimit)
+                    item.Value > config.DropTemplate.AmountLimit &&
+                    limit > config.DropTemplate.AmountLimit)
                 {
-                    Log.Trace?.Log($"{config.DisplayName} Limiting drop amount from '{item.Value}' to '{config.DropTemplate.AmountLimit}'");
+                    limit = config.DropTemplate.AmountLimit.Value;
+                }
 
-                    drops[i] = Limit(item, config.DropTemplate.AmountLimit.Value);
+                if (limit >= 0)
+                {
+                    Log.Trace?.Log($"Limiting {item.Key.name}:{item.Value} to {limit}");
+
+                    drops[i] = Limit(item, limit);
                 }
             }
         }
