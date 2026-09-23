@@ -1,3 +1,6 @@
+- v3.1.6:
+	- Fixed: CharacterDrops where not properly tracked after Valheim v1. Affected autostacking, modifiers and drop limiters.
+	- Fixed: CharacterDrop AmountLimit could get skipped, if a dropped amount already surpassed DropLimit from `drop_that.cfg`.
 - v3.1.5:
 	- Compatibility: Valheim v1.0.7.
 - v3.1.4: 
