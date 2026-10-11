@@ -47,6 +47,10 @@ public static class HitDataExtensions
         {
             result |= HitData.DamageType.Spirit;
         }
+        if (hit.m_damage.m_nonPlayer > 0)
+        {
+            result |= HitData.DamageType.NonPlayer;
+        }
 
         return result;
     }

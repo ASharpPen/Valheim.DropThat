@@ -1,11 +1,10 @@
 ﻿using System;
 using DropThat.Configuration;
-using DropThat.Core;
 using DropThat.Debugging;
 using DropThat.Drop.DropTableSystem.Configuration.Toml;
 using DropThat.Drop.DropTableSystem.Managers;
 using ThatCore.Config.Toml;
-using ThatCore.Lifecycle;
+using ThatCore.Valheim.Lifecycle;
 using ThatCore.Logging;
 
 namespace DropThat.Drop.DropTableSystem.Debug;

@@ -1,7 +1,7 @@
 ﻿using System;
 using DropThat.Core;
 using DropThat.Drop;
-using ThatCore.Lifecycle;
+using ThatCore.Valheim.Lifecycle;
 using ThatCore.Logging;
 
 namespace DropThat.Commands;

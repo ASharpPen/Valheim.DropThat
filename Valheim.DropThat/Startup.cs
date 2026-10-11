@@ -5,7 +5,7 @@ using DropThat.Drop;
 using DropThat.Drop.CharacterDropSystem;
 using DropThat.Drop.DropTableSystem;
 using DropThat.Locations.Sync;
-using ThatCore.Lifecycle;
+using ThatCore.Valheim.Lifecycle;
 using ThatCore.Logging;
 
 namespace DropThat;

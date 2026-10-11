@@ -6,7 +6,7 @@ using ThatCore.Config.Toml.Schema;
 using DropThat.Debugging;
 using DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 using DropThat.Configuration;
-using ThatCore.Lifecycle;
+using ThatCore.Valheim.Lifecycle;
 
 namespace DropThat.Drop.CharacterDropSystem.Debug;
 

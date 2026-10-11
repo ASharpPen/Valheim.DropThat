@@ -1,5 +1,5 @@
 ﻿using DropThat.Configuration.Sync;
-using ThatCore.Lifecycle;
+using ThatCore.Valheim.Lifecycle;
 
 namespace DropThat.Configuration;
 

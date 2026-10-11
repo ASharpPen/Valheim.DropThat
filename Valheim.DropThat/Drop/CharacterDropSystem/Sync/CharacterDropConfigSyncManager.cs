@@ -7,6 +7,7 @@ using DropThat.Drop.Options.Modifiers;
 using DropThat.Drop.Options.Modifiers.ModEpicLoot;
 using ThatCore.Logging;
 using ThatCore.Network;
+using ThatCore.Valheim.Network;
 
 namespace DropThat.Drop.CharacterDropSystem.Sync;
 

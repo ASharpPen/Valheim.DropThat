@@ -1,9 +1,9 @@
 ﻿{
   "name": "Drop_That",
-  "version_number": "3.1.6",
+  "version_number": "3.1.7",
   "website_url": "https://github.com/ASharpPen/Valheim.DropThat",
   "description": "Tool for configuring loot tables.",
   "dependencies": [
-    "denikson-BepInExPack_Valheim-5.4.2350"
+    "denikson-BepInExPack_Valheim-5.4.2351"
   ]
 }
