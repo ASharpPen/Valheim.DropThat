@@ -6,7 +6,6 @@ using DropThat.Configuration;
 using HarmonyLib;
 using ThatCore.Extensions;
 using ThatCore.Logging;
-using ThatCore.Utilities.Valheim;
 
 namespace DropThat.Debugging;
 

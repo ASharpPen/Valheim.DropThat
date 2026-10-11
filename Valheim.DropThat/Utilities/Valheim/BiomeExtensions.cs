@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using ThatCore.Extensions;
-using ThatCore.Utilities.Valheim;
+using ThatCore.Valheim.Extensions;
 
 namespace DropThat.Utilities.Valheim;
 

@@ -7,6 +7,7 @@ using ThatCore.Logging;
 using ThatCore.Network;
 using DropThat.Drop.DropTableSystem.Conditions.ModSpecific.CLLC;
 using DropThat.Drop.DropTableSystem.Conditions.ModSpecific.SpawnThat;
+using ThatCore.Valheim.Network;
 
 namespace DropThat.Drop.DropTableSystem.Sync;
 

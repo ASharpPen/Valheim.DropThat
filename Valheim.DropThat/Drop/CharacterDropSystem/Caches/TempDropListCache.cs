@@ -20,7 +20,7 @@ internal sealed class TempDropListCache
 
     public static void SetDrop(UnityEngine.Component key, DropConfigInfo dropInfo, int? index = null)
     {
-        Log.Development?.Log($"Setting temp drop cache {dropInfo.Index}:{key.GetHashCode()}");
+        Log.Development?.Log($"Setting temp drop cache {index}:{dropInfo.Index}:{key.GetHashCode()}");
 
         var cache = ObjectTable.GetOrCreate(key.gameObject);
         cache.InfoByIndex[index ?? dropInfo.Index] = dropInfo;

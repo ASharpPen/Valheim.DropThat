@@ -2,7 +2,7 @@
 using System.Linq;
 using DropThat.Drop.CharacterDropSystem.Models;
 using ThatCore.Extensions;
-using ThatCore.Lifecycle;
+using ThatCore.Valheim.Lifecycle;
 using ThatCore.Logging;
 using UnityEngine;
 

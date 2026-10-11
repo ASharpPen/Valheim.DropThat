@@ -2,6 +2,7 @@
 using DropThat.Core;
 using ThatCore.Logging;
 using ThatCore.Network;
+using ThatCore.Valheim.Network;
 
 namespace DropThat.Locations.Sync;
 

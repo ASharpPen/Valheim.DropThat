@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ThatCore.Logging;
 using ThatCore.Network;
+using ThatCore.Valheim.Network;
 
 namespace DropThat.Core;
 

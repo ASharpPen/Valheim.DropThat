@@ -225,14 +225,16 @@ public static class CharacterDropSessionManager
 
                 if (config?.DropTemplate?.AmountLimit >= 0 &&
                     item.Value > config.DropTemplate.AmountLimit &&
-                    limit > config.DropTemplate.AmountLimit)
+                    (limit < 0 || limit > config.DropTemplate.AmountLimit))
                 {
+                    Log.Development?.Log($"Getting amount limit '{config.DropTemplate.AmountLimit.Value}' from {i}:{config.DisplayName}");
+
                     limit = config.DropTemplate.AmountLimit.Value;
                 }
 
                 if (limit >= 0)
                 {
-                    Log.Trace?.Log($"Limiting {item.Key.name}:{item.Value} to {limit}");
+                    Log.Trace?.Log($"Limiting '{item.Key.name}' drops from {item.Value} to {limit}");
 
                     drops[i] = Limit(item, limit);
                 }

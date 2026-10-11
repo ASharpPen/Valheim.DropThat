@@ -1,3 +1,7 @@
+- v3.1.7:
+	- Fixed: CharacterDrop tracking sometimes linked configs to drops incorrectly. Affected autostacking, modifiers and drop limiters.
+	- Fixed: CharacterDrop ConditionKilledByDamageType was missing support for DamageType nonplayer.
+	- Fixed: Debug files incorrectly writing the multi-biome 'Land' for biome conditions, even if the actually loaded biome condition was just one or more of the biomes contained in 'Land'.
 - v3.1.6:
 	- Fixed: CharacterDrops where not properly tracked after Valheim v1. Affected autostacking, modifiers and drop limiters.
 	- Fixed: CharacterDrop AmountLimit could get skipped, if a dropped amount already surpassed DropLimit from `drop_that.cfg`.

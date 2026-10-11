@@ -7,7 +7,7 @@ using DropThat.Drop.Options;
 using DropThat.Drop.Options.Modifiers;
 using DropThat.Drop.Options.Modifiers.ModEpicLoot;
 using DropThat.Integrations;
-using ThatCore.Utilities.Valheim;
+using ThatCore.Valheim.Extensions;
 
 namespace DropThat.Drop.DropTableSystem.Configuration.Toml;
 

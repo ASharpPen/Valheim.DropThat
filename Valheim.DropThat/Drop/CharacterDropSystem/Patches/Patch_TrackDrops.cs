@@ -36,17 +36,18 @@ namespace DropThat.Drop.CharacterDropSystem.Patches;
 [HarmonyPatch]
 public static class Patch_TrackDrops
 {
-    private static MethodInfo Anchor = AccessTools.Method(typeof(List<CharacterDrop.Drop>.Enumerator), "MoveNext");
-
     [HarmonyPatch(typeof(CharacterDrop), nameof(CharacterDrop.GenerateDropList))]
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> TrackDrop(IEnumerable<CodeInstruction> instructions)
     {
+        MethodInfo dropAddAnchor = AccessTools.Method(typeof(List<KeyValuePair<GameObject, int>>), nameof(List<>.Add));
+
         return new CodeMatcher(instructions)
-            .MatchForward(false, //Move to right before moving enumeration head and after having added the most recent key-value pair to results.
-                new CodeMatch(OpCodes.Ldloca_S),
-                new CodeMatch(OpCodes.Call, Anchor))
-            .Advance(1) // Make sure to move past the load, to ensure not getting skipped by branch jumps.
+            //Move to right after drop is added to result list.
+            .MatchForward(false, 
+                new CodeMatch(OpCodes.Callvirt, dropAddAnchor))
+            .Advance(1)
+            // Insert tracking.
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_0)) //Loads the list with resulting key-value pairs.
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldloc_3)) //Load current CharacterDrop.Drop
             .InsertAndAdvance(new CodeInstruction(OpCodes.Ldarg_0)) //Load instance

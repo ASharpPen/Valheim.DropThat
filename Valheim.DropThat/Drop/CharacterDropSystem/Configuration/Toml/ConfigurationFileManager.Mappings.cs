@@ -8,9 +8,9 @@ using DropThat.Drop.Options.Modifiers.ModEpicLoot;
 using DropThat.Drop.Options.Modifiers;
 using DropThat.Integrations.CllcIntegration;
 using DropThat.Integrations;
-using ThatCore.Utilities.Valheim;
 using ThatCore.Extensions;
 using DropThat.Drop.Options;
+using ThatCore.Valheim.Extensions;
 
 namespace DropThat.Drop.CharacterDropSystem.Configuration.Toml;
 

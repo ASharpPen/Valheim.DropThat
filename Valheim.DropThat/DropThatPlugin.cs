@@ -24,7 +24,7 @@ public sealed class DropThatPlugin : BaseUnityPlugin
 {
     public const string ModId = "asharppen.valheim.drop_that";
     public const string PluginName = "Drop That!";
-    public const string Version = "3.1.6";
+    public const string Version = "3.1.7";
 
     // Awake is called once when both the game and the plug-in are loaded
     void Awake()
@@ -48,7 +48,7 @@ public sealed class DropThatPlugin : BaseUnityPlugin
 
     private static void PatchCore(Harmony harmony)
     {
-        ThatCore.Lifecycle.PatchManager.ApplyPatches(harmony);
+        ThatCore.Valheim.PatchManager.ApplyPatches(harmony);
 
         harmony.PatchAll(typeof(Lifecycle_Patches));
         harmony.PatchAll(typeof(Patch_WriteLocationsToFile));
